@@ -1,0 +1,543 @@
+:root {
+  --bg-dark: #121212;
+  --bg-medium: #1e1e1e;
+  --bg-light: #2c2c2c;
+  --color-teal: #00ffff;
+  --color-text-main: #ffffff;
+  --color-text-secondary: #aaaaaa;
+  --color-border: #333333;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-dark);
+  color: var(--color-text-main);
+}
+
+/* =========================
+   DASHBOARD GRID
+========================= */
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 250px 1fr 300px;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+  background-color: var(--bg-medium);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* WATERMARK */
+.watermark-logo {
+  position: absolute;
+  inset: 0;
+  background: url('../../assets/logo.png') no-repeat center 35%;
+  background-size: 30vmax;
+  opacity: 0.05;
+  filter: grayscale(100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  gap: 20px;
+  border-bottom: 1px solid var(--color-border);
+  z-index: 3;
+}
+
+/* Hide mobile menu toggle by default (desktop) */
+.mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--color-text-main);
+  cursor: pointer;
+}
+
+/* Hide logo-mobile by default (desktop) */
+.logo-mobile {
+  display: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--color-text-main);
+  white-space: nowrap;
+}
+
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-light);
+  border-radius: 20px;
+  padding: 8px 15px;
+}
+
+.search-box input {
+  background: none;
+  border: none;
+  color: var(--color-text-main);
+  width: 100%;
+  outline: none;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.search-box input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* Tools button (desktop) */
+.tools-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-main);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.tools-button:hover {
+  background-color: var(--bg-light);
+}
+
+/* =========================
+   HERO / CENTRAL AREA
+========================= */
+
+.ai-central-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 100px 50px 50px;
+  width: 100%;
+  z-index: 2;
+}
+
+.logo-with-text {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.company-name {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  color: var(--color-text-main);
+}
+
+/* =========================
+   CTA BUTTONS (DESKTOP)
+========================= */
+
+.quick-pill-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.quick-pill-actions button {
+  background-color: #1f1f1f;
+  border: 1px solid #2e2e2e;
+  color: #e0e0e0;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quick-pill-actions button:hover {
+  transform: translateY(-3px);
+  background-color: #2a2a2a;
+}
+
+.quick-pill-actions button:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+   ASK BOX (BASE)
+========================= */
+
+.ask-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  background-color: var(--bg-dark);
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+}
+
+.ask-box:focus-within {
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.2);
+}
+
+.ask-box input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--color-text-main);
+  outline: none;
+  font-size: 15px;
+}
+
+.ask-box input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.ask-box-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ask-box-icons .fa-icon {
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 8px;
+  transition: color 0.2s ease;
+}
+
+.ask-box-icons .fa-icon:hover {
+  color: var(--color-text-main);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.global-footer-note {
+  position: absolute;
+  bottom: 12px;
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+/* =========================
+   TABLET (901px - 500px)
+========================= */
+
+@media (max-width: 900px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+
+  .top-bar {
+    padding: 12px 20px;
+    gap: 15px;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .mobile-menu-toggle svg {
+    font-size: 18px;
+  }
+
+  .logo-mobile {
+    display: block;
+    font-size: 16px;
+  }
+
+  .tools-button {
+    font-size: 0;
+    padding: 0;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tools-button svg {
+    font-size: 16px;
+  }
+
+  .ai-central-area {
+    padding: 80px 30px 40px;
+  }
+}
+
+/* =========================
+   MOBILE (500px and below)
+========================= */
+
+@media (max-width: 500px) {
+  /* HERO SECTION */
+  .ai-central-area {
+    padding: 80px 16px 24px;
+  }
+
+  .logo-with-text {
+    flex-direction: column;
+    margin-bottom: 44px;
+  }
+
+  .logo-img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .company-name {
+    font-size: 24px;
+  }
+
+  /* CTA GRID – ALL 4 SAME SIZE */
+  .quick-pill-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 16px;
+    padding: 0 4px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+  }
+
+  .quick-pill-actions button {
+    width: 100%;
+    height: 100%;
+    min-height: 56px;
+    padding: 16px 12px;
+    font-size: 14px;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 22px;
+    white-space: normal;
+    align-self: stretch;
+    justify-self: stretch;
+  }
+
+  /* ASK BOX */
+  .ask-box {
+    max-width: 100%;
+    background-color: #181818;
+    padding: 14px 18px;
+    min-height: 58px;
+    margin-top: 24px;
+  }
+
+  .ask-box:focus-within {
+    border-color: var(--color-teal);
+    box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.35);
+  }
+
+  .ask-box input {
+    font-size: 16px; /* prevents iOS zoom */
+  }
+
+  .ask-box input::placeholder {
+    color: #cfcfcf;
+    opacity: 0.95;
+  }
+
+  /* FOOTER */
+  .global-footer-note {
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 0 16px;
+    bottom: 16px;
+    color: #bdbdbd;
+  }
+}
+
+/* =========================
+   SMALL MOBILE – HEADER FIX
+   iPhone SE / 375px (400px and below)
+========================= */
+
+@media (max-width: 400px) {
+  .top-bar {
+    padding: 10px 12px;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  /* MENU BUTTON – proper 44px touch target */
+  .mobile-menu-toggle {
+    min-width: 44px;
+    min-height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 255, 255, 0.1);
+    border-radius: 8px;
+  }
+
+  .mobile-menu-toggle:active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-menu-toggle svg {
+    font-size: 18px;
+  }
+
+  /* HIDE LOGO TEXT ON SMALL SCREENS */
+  .logo-mobile {
+    display: none !important;
+  }
+
+  /* SEARCH – constrained but usable */
+  .search-box {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: calc(100% - 112px); /* space for 2x 44px buttons + gaps */
+    padding: 8px 12px;
+    border-radius: 18px;
+  }
+
+  .search-box input {
+    font-size: 14px;
+    margin-left: 8px;
+  }
+
+  /* TOOLS/PIN BUTTON – proper 44px touch target */
+  .tools-button {
+    min-width: 44px;
+    min-height: 44px;
+    flex-shrink: 0;
+    padding: 0;
+    font-size: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 255, 255, 0.1);
+    border-radius: 8px;
+  }
+
+  .tools-button:active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .tools-button svg {
+    font-size: 16px;
+  }
+
+  /* CTA BUTTON TEXT SIZE ADJUSTMENT */
+  .quick-pill-actions button {
+    font-size: 13px;
+    padding: 14px 10px;
+    min-height: 52px;
+  }
+
+  /* Keep specific buttons on one line */
+  .quick-pill-actions button:nth-child(-n + 3) {
+    white-space: nowrap;
+  }
+}
+
+/* =========================
+   EXTRA SMALL (350px and below)
+========================= */
+
+@media (max-width: 350px) {
+  .top-bar {
+    padding: 8px 8px;
+    gap: 8px;
+  }
+
+  .search-box {
+    padding: 6px 10px;
+    max-width: calc(100% - 100px);
+  }
+
+  .search-box input {
+    font-size: 13px;
+  }
+
+  .quick-pill-actions {
+    gap: 12px;
+    padding: 0 2px;
+  }
+
+  .quick-pill-actions button {
+    font-size: 12px;
+    padding: 12px 8px;
+    min-height: 48px;
+    white-space: normal;
+  }
+
+  .ai-central-area {
+    padding: 70px 12px 20px;
+  }
+
+  .logo-with-text {
+    margin-bottom: 36px;
+  }
+
+  .logo-img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .company-name {
+    font-size: 22px;
+  }
+}

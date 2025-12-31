@@ -1,0 +1,132 @@
+.pricing-section {
+  padding: 70px 20px 100px; /* moved content up (top reduced) */
+  background-color: #0f1123;
+  text-align: center;
+}
+
+.pricing-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pricing-headline {
+  font-size: 2.8rem;
+  color: #ffffff;
+  margin-bottom: 10px; /* slightly tighter */
+}
+
+.pricing-subheadline {
+  font-size: 1.1rem;
+  color: #cbd5f5;
+  max-width: 700px;
+  margin: 0 auto 40px auto; /* was 60px -> moved grid upward */
+  line-height: 1.7;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+/* CARD */
+.pricing-card {
+  background: #0a0b14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 30px rgba(106, 236, 225, 0.15);
+}
+
+/* FEATURED */
+.pricing-card.featured {
+  border: 2px solid #6aece1;
+  box-shadow: 0 0 35px rgba(106, 236, 225, 0.25);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #6aece1;
+  color: #0a0b14;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* HEADER */
+.pricing-card-header h3 {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #6aece1;
+}
+
+.price span {
+  font-size: 1rem;
+  color: #cbd5f5;
+  font-weight: 400;
+}
+
+/* FEATURES */
+.features-list {
+  list-style: none;
+  text-align: left;
+  margin: 25px 0; /* was 35px 0 -> moves list upward */
+  padding: 0;
+  flex-grow: 1;
+}
+
+.features-list li {
+  color: #cbd5f5;
+  margin-bottom: 14px;
+  padding-left: 26px;
+  position: relative;
+}
+
+.features-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #6aece1;
+}
+
+/* BUTTON */
+.pricing-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #6aece1;
+  background: transparent;
+  color: #6aece1;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.pricing-btn:hover {
+  background: #6aece1;
+  color: #0a0b14;
+}
+
+.featured-btn {
+  background: #6aece1;
+  color: #0a0b14;
+}

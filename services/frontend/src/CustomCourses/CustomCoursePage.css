@@ -1,0 +1,345 @@
+.custom-course-main {
+  min-height: 100vh;
+  background-color: var(--bg-medium);
+  color: var(--color-text-main);
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.custom-hero {
+  height: 100vh;
+  min-height: 400px;
+
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.custom-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 18, 18, 0.4),
+    rgba(18, 18, 18, 0.9)
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 20px;
+}
+
+.custom-title {
+  font-size: 4.5rem;
+  color: var(--color-teal);
+  margin-bottom: 24px;
+  font-weight: 900;
+}
+
+.custom-desc {
+  font-size: 1.6rem;
+  color: #e0e0e0;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.hero-cta {
+  background-color: var(--color-teal);
+  color: #000;
+  font-weight: bold;
+  padding: 18px 50px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 8px 30px rgba(0, 255, 255, 0.4);
+}
+
+.hero-cta:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(0, 255, 255, 0.6);
+}
+
+/* Benefits Section */
+.section-title {
+  text-align: center;
+  font-size: 3rem;
+  color: var(--color-teal);
+  margin: 80px 0 60px;
+}
+
+.benefits-section {
+  padding: 0 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+}
+
+.benefit-card {
+  background-color: var(--bg-light);
+  border-radius: 24px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s ease;
+  opacity: 0; /* Necessary for your animation */
+}
+
+.benefit-card:hover {
+  transform: translateY(-20px);
+  border: 2px solid var(--color-teal);
+  box-shadow: 0 20px 50px rgba(0, 255, 255, 0.3);
+}
+
+.benefit-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.benefit-card p {
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+/* Testimonials */
+.testimonials-section {
+  padding: 100px 40px;
+  background-color: var(--bg-dark);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background: var(--bg-medium);
+  padding: 40px;
+  border-radius: 20px;
+  border-left: 6px solid var(--color-teal);
+  opacity: 0;
+}
+
+.testimonial-text {
+  font-style: italic;
+  font-size: 1.3rem;
+  margin-bottom: 24px;
+  color: #e0e0e0;
+}
+
+.testimonial-name {
+  text-align: right;
+  font-weight: bold;
+  color: var(--color-teal);
+  font-size: 1.2rem;
+}
+
+/* Final CTA */
+.final-cta-section {
+  text-align: center;
+  padding: 120px 40px;
+  background: linear-gradient(135deg, var(--bg-medium), var(--bg-dark));
+}
+
+.final-cta-section h2 {
+  font-size: 3.5rem;
+  color: var(--color-teal);
+  margin-bottom: 24px;
+}
+
+.final-cta-section p {
+  font-size: 1.4rem;
+  color: #cccccc;
+  margin-bottom: 40px;
+}
+
+.final-cta-button {
+  background-color: var(--color-teal);
+  color: #000;
+  padding: 22px 70px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 60px;
+  cursor: pointer;
+  transition: all 0.4s;
+  box-shadow: 0 10px 40px rgba(0, 255, 255, 0.5);
+}
+
+.final-cta-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 20px 60px rgba(0, 255, 255, 0.7);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.4s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 1s ease-out forwards;
+  opacity: 0;
+}
+
+.delay-1 {
+  animation-delay: 0.3s;
+}
+.delay-2 {
+  animation-delay: 0.6s;
+}
+.delay-3 {
+  animation-delay: 0.9s;
+}
+.delay-4 {
+  animation-delay: 1.2s;
+}
+.delay-5 {
+  animation-delay: 1.5s;
+}
+.delay-6 {
+  animation-delay: 1.8s;
+}
+.delay-7 {
+  animation-delay: 2.1s;
+}
+.delay-8 {
+  animation-delay: 2.4s;
+}
+.delay-9 {
+  animation-delay: 2.7s;
+}
+.delay-10 {
+  animation-delay: 3s;
+}
+
+/* Responsive - FIXING THE 474px ISSUE */
+@media (max-width: 968px) {
+  .custom-title {
+    font-size: 3.5rem;
+  }
+  .custom-desc {
+    font-size: 1.4rem;
+  }
+  .section-title {
+    font-size: 2.5rem;
+  }
+}
+
+/* Merged Mobile Queries to stop the background from disappearing */
+@media (max-width: 968px) {
+  .custom-title {
+    font-size: 3.5rem;
+  }
+  .custom-desc {
+    font-size: 1.4rem;
+  }
+  .section-title {
+    font-size: 2.5rem;
+  }
+  .custom-hero {
+    height: 70vh;
+    min-height: 500px; /* smaller than desktop but still large enough */
+    background-position: center;
+  }
+  .hero-cta,
+  .final-cta-button {
+    font-size: 1.4rem;
+    padding: 18px 45px;
+  }
+}
+
+/* Small tablets / large phones */
+@media (max-width: 618px) {
+  .custom-hero {
+    height: 65vh;
+    min-height: 450px; /* safe minimum */
+    background-position: center;
+  }
+  .custom-title {
+    font-size: 2.6rem;
+  }
+  .hero-cta,
+  .final-cta-button {
+    font-size: 1.3rem;
+    padding: 16px 40px;
+  }
+}
+
+/* Mobile / small screens */
+@media (max-width: 480px) {
+  .custom-hero {
+    height: 60vh;
+    min-height: 400px; /* ensures image fully visible at tiny widths */
+    background-position: center;
+  }
+  .custom-title {
+    font-size: 2.2rem;
+  }
+  .benefits-grid {
+    grid-template-columns: 1fr; /* single column layout */
+  }
+  .hero-cta,
+  .final-cta-button {
+    font-size: 1.2rem;
+    padding: 14px 35px;
+  }
+}
+
+/* Optional extra small phones */
+@media (max-width: 374px) {
+  .custom-hero {
+    height: 55vh;
+    min-height: 380px;
+  }
+  .custom-title {
+    font-size: 2rem;
+  }
+  .custom-desc {
+    font-size: 1.2rem;
+  }
+  .hero-cta,
+  .final-cta-button {
+    font-size: 1.1rem;
+    padding: 12px 30px;
+  }
+}
