@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ForbiddenError } from '../utils/errors.js';
+import { CustomJWTPayload } from '../modules/auth/auth.types.js';
 
 /**
  * A higher-order function that creates a middleware for checking user roles.
@@ -9,7 +10,8 @@ import { ForbiddenError } from '../utils/errors.js';
 export const checkRole = (allowedRoles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     // The `requireAuth` middleware should have already run and attached the user to the request.
-    const user = req.user;
+    // Cast user to CustomJWTPayload to access role
+    const user = req.user as CustomJWTPayload | undefined;
 
     if (!user || !user.role || !allowedRoles.includes(user.role)) {
       // If the user doesn't exist, has no role, or their role is not in the allowed list, deny access.

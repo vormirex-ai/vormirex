@@ -4,7 +4,7 @@ import { ICourse } from './course.model.js';
 
 class CourseService {
   async create(courseData: CreateCourseInput) {
-    return courseRepository.create(courseData);
+    return courseRepository.create(courseData as any);
   }
 
   async getById(courseId: string) {

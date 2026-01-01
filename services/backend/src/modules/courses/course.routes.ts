@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import courseController from './course.controller.js';
-import validate from '../../middlewares/validate.js';
+import { validate } from '../../middleware/validate.middleware.js';
 import {
   createCourseSchema,
   updateCourseSchema,
