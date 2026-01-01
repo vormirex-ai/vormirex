@@ -21,7 +21,7 @@ app.use(
   })
 );
 // Secure the app by setting various HTTP headers
-app.use(helmet());
+app.use((helmet as unknown as () => any)());
 app.use(requestLogger);
 app.use(responseLogger);
 // Enable the Express app to parse JSON-formatted request bodies
