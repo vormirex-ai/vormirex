@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
+import { loginUser, signupUser } from '../../api/auth.js';
 
 const css = `
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -152,7 +153,15 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  /* State for form inputs */
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
+    // ... existing tab logic
     if (defaultTab === 'signup' || location.pathname.includes('signup')) {
       setActiveTab('signup');
     } else {
@@ -160,9 +169,31 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
     }
   }, [defaultTab, location.pathname]);
 
-  const handleAuth = (e: React.FormEvent) => {
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/dashboard');
+    setError('');
+    setLoading(true);
+
+    try {
+      if (activeTab === 'signup') {
+        const res = await signupUser(name, email, password);
+        if (res.success) {
+           alert(res.message); // Inform user to verify email
+           setActiveTab('login');
+        }
+      } else {
+        const res = await loginUser(email, password);
+        if (res.success) {
+           // Store token (e.g., in localStorage or context)
+           localStorage.setItem('accessToken', res.accessToken);
+           navigate('/dashboard');
+        }
+      }
+    } catch (err: any) {
+      setError(err.message || 'Authentication failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -193,6 +224,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
         </div>
 
         <form onSubmit={handleAuth}>
+          {error && <p style={{ color: 'red', marginBottom: '10px', fontSize: '13px' }}>{error}</p>}
           {activeTab === 'signup' && (
             <div className="form-group">
               <label className="form-label">Full Name</label>
@@ -201,6 +233,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
                 className="form-input"
                 placeholder="John Doe"
                 required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
           )}
@@ -212,6 +246,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
               className="form-input"
               placeholder="name@example.com"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -223,6 +259,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
                 className="form-input"
                 placeholder="••••••"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 type="button"
@@ -248,8 +286,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
             </div>
           )}
 
-          <button type="submit" className="login-btn">
-            {activeTab === 'login' ? 'Log In' : 'Create Account'}
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? 'Processing...' : (activeTab === 'login' ? 'Log In' : 'Create Account')}
           </button>
         </form>
 
