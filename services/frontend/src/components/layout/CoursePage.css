@@ -666,3 +666,61 @@
     display: none;
   }
 }
+/* =========================================
+   HERO NAV ICON BUTTONS (BACK + HOME)
+   ========================================= */
+
+.hero-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* 👈 proper gap between buttons */
+}
+
+/* Same size, same alignment */
+.nav-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+}
+
+/* Hover effect */
+.nav-icon-btn:hover {
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Active click */
+.nav-icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* =========================================
+   MOBILE ADJUSTMENTS
+   ========================================= */
+@media (max-width: 480px) {
+  .nav-icon-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
+  }
+
+  .hero-nav-group {
+    gap: 10px;
+  }
+}
