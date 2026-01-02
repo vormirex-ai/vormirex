@@ -7,27 +7,43 @@ import {
   Outlet,
 } from 'react-router-dom';
 
+/* =======================
+   COMMON LAYOUT COMPONENTS
+======================= */
 import Navbar from './components/common/Navbar';
 import Footer from './components/layout/Footer';
+
+/* =======================
+   PUBLIC PAGES
+======================= */
 import LandingPage from './pages/LandingPage';
 import AboutPage from './components/layout/AboutSection';
 import PricingsPage from './components/layout/PricingSections';
-import FeaturesPage from './components/layout/FeaturesPage'; // ✅ ADDED
+
+/* =======================
+   AUTH & DASHBOARD
+======================= */
 import VormirexAuth from './components/login/login';
 import DashboardWrapper from './components/layout/DashboardWrapper';
 import DashboardPage from './pages/DashboardPage';
+import OAuthSuccess from './components/auth/OAuthSuccess';
+import VerifyEmail from './components/auth/VerifyEmail';
+import ResetPassword from './components/auth/ResetPassword';
+
+/* =======================
+   COURSES
+======================= */
 import CoursePage from './components/layout/CoursePage';
 
+/* =======================
+   CUSTOM COURSES
+======================= */
 import BoosterPack from './CustomCourses/BoosterPack';
 import CodingMastery from './CustomCourses/CodingMastery';
-import ExamPrep from './CustomCourses/ExamPrep';
-import SavedChats from './CustomCourses/SavedChats';
-import YourProgress from './CustomCourses/YourProgress';
 
-import FeatureDetail from './components/layout/FeatureDetail';
-
-/* ---------- LAYOUTS ---------- */
-
+/* ============================================================
+   PUBLIC LAYOUT (Navbar + Footer)
+============================================================ */
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
     <Navbar />
@@ -36,40 +52,35 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
+/* ============================================================
+   COURSE LAYOUT (Navbar + Outlet + Footer) ✅ FIXED
+============================================================ */
 const CourseLayout = () => (
   <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
     <Navbar />
     <main style={{ flex: 1 }}>
-      <Outlet />
+      <Outlet /> {/* CoursePage renders ONLY ONCE */}
     </main>
     <Footer />
   </div>
 );
 
-/* ---------- APP ---------- */
-
+/* ============================================================
+   MAIN APP
+============================================================ */
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Redirect root */}
+        {/* DEFAULT */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-        {/* ===== PUBLIC ROUTES ===== */}
+        {/* ================= PUBLIC ROUTES ================= */}
         <Route
-          path="/HomePage"
+          path="/landing"
           element={
             <PublicLayout>
               <LandingPage />
-            </PublicLayout>
-          }
-        />
-
-        <Route
-          path="/features" // ✅ FIX
-          element={
-            <PublicLayout>
-              <FeaturesPage />
             </PublicLayout>
           }
         />
@@ -92,40 +103,31 @@ const App: React.FC = () => {
           }
         />
 
-        <Route
-          path="/feature/:id"
-          element={
-            <PublicLayout>
-              <FeatureDetail />
-            </PublicLayout>
-          }
-        />
-
-        {/* ===== AUTH ===== */}
+        {/* ================= AUTH ================= */}
         <Route path="/auth" element={<VormirexAuth />} />
         <Route
           path="/auth/signup"
           element={<VormirexAuth defaultTab="signup" />}
         />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
 
-        {/* ===== DASHBOARD ===== */}
+        {/* ================= DASHBOARD ================= */}
         <Route element={<DashboardWrapper />}>
           <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
 
-        {/* ===== COURSES ===== */}
+        {/* ================= COURSES ================= */}
         <Route element={<CourseLayout />}>
           <Route path="/courses" element={<CoursePage />} />
           <Route path="/course/:courseId" element={<CoursePage />} />
           <Route path="/custom/booster-pack" element={<BoosterPack />} />
           <Route path="/custom/coding-mastery" element={<CodingMastery />} />
-          <Route path="/custom/exam-prep" element={<ExamPrep />} />
-          <Route path="/custom/your-progress" element={<YourProgress />} />
-          <Route path="/custom/saved-chats" element={<SavedChats />} />
         </Route>
 
-        {/* ===== FALLBACK ===== */}
-        <Route path="*" element={<Navigate to="/Homepage" replace />} />
+        {/* ================= FALLBACK ================= */}
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
   );

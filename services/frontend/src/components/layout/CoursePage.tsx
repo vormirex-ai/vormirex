@@ -141,13 +141,16 @@ export default function CoursePage() {
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
-                className="course-btn ghost back-btn"
+                className="nav-icon-btn"
+                aria-label="Back to courses"
                 onClick={() => navigate('/courses')}
               >
                 ←
               </button>
+
               <button
-                className="course-btn ghost home-btn"
+                className="nav-icon-btn"
+                aria-label="Back to dashboard"
                 onClick={() => navigate('/dashboard')}
               >
                 🏠
