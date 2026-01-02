@@ -19,6 +19,8 @@ import Footer from './components/layout/Footer';
 import LandingPage from './pages/LandingPage';
 import AboutPage from './components/layout/AboutSection';
 import PricingsPage from './components/layout/PricingSections';
+import FeaturesPage from './components/layout/FeaturesPage';
+import FeatureDetail from './components/layout/FeatureDetail';
 
 /* =======================
    AUTH & DASHBOARD
@@ -40,6 +42,9 @@ import CoursePage from './components/layout/CoursePage';
 ======================= */
 import BoosterPack from './CustomCourses/BoosterPack';
 import CodingMastery from './CustomCourses/CodingMastery';
+import ExamPrep from './CustomCourses/ExamPrep';
+import SavedChats from './CustomCourses/SavedChats';
+import YourProgress from './CustomCourses/YourProgress';
 
 /* ============================================================
    PUBLIC LAYOUT (Navbar + Footer)
@@ -53,13 +58,13 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => (
 );
 
 /* ============================================================
-   COURSE LAYOUT (Navbar + Outlet + Footer) ✅ FIXED
+   COURSE LAYOUT (Navbar + Outlet + Footer)
 ============================================================ */
 const CourseLayout = () => (
   <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
     <Navbar />
     <main style={{ flex: 1 }}>
-      <Outlet /> {/* CoursePage renders ONLY ONCE */}
+      <Outlet />
     </main>
     <Footer />
   </div>
@@ -72,19 +77,34 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* DEFAULT */}
+        {}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
         {/* ================= PUBLIC ROUTES ================= */}
+        {}
         <Route
-          path="/landing"
+          path="/homepage"
           element={
             <PublicLayout>
               <LandingPage />
             </PublicLayout>
           }
         />
-
+        <Route
+          path="/features"
+          element={
+            <PublicLayout>
+              <FeaturesPage />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/feature/:id"
+          element={
+            <PublicLayout>
+              <FeatureDetail />
+            </PublicLayout>
+          }
+        />
         <Route
           path="/about"
           element={
@@ -93,16 +113,14 @@ const App: React.FC = () => {
             </PublicLayout>
           }
         />
-
         <Route
-          path="/pricings"
+          path="/pricing"
           element={
             <PublicLayout>
               <PricingsPage />
             </PublicLayout>
           }
         />
-
         {/* ================= AUTH ================= */}
         <Route path="/auth" element={<VormirexAuth />} />
         <Route
@@ -112,22 +130,23 @@ const App: React.FC = () => {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
-
         {/* ================= DASHBOARD ================= */}
         <Route element={<DashboardWrapper />}>
           <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
-
         {/* ================= COURSES ================= */}
         <Route element={<CourseLayout />}>
           <Route path="/courses" element={<CoursePage />} />
           <Route path="/course/:courseId" element={<CoursePage />} />
           <Route path="/custom/booster-pack" element={<BoosterPack />} />
           <Route path="/custom/coding-mastery" element={<CodingMastery />} />
+          <Route path="/custom/exam-prep" element={<ExamPrep />} />
+          <Route path="/custom/your-progress" element={<YourProgress />} />
+          <Route path="/custom/saved-chats" element={<SavedChats />} />
         </Route>
-
-        {/* ================= FALLBACK ================= */}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        {}
+        {}
+        <Route path="*" element={<Navigate to="/Homepage" replace />} />{' '}
       </Routes>
     </Router>
   );
