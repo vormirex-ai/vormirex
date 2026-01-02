@@ -5,12 +5,10 @@ import Whatisvormirex from '../components/layout/Whatisvormirex';
 import BuiltForEveryone from '../components/layout/BuiltForEveryone';
 import HowItWorks from '../components/layout/HowItWorks';
 import CourseGrid from '../components/layout/CourseGrid';
-import TestimonialSection from '../components/layout/TestimonialSection';
 import PricingSection from '../components/layout/PricingSection';
 import LearningCTA from '../components/layout/LearningCTA';
-import Footer from '../components/layout/Footer';
 
-const LandingPage = () => {
+const HomePage = () => {
   return (
     <div className="app-wrapper">
       <VormirexLanding />
@@ -25,14 +23,12 @@ const LandingPage = () => {
       <section id="courses">
         <CourseGrid />
       </section>
-      <TestimonialSection />
       <section id="pricing">
         <PricingSection />
       </section>
       <LearningCTA />
-      <Footer />
     </div>
   );
 };
 
-export default LandingPage;
+export default HomePage;

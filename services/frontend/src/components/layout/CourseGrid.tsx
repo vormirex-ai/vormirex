@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Rocket,
   Brain,
@@ -14,7 +15,6 @@ import {
 } from 'lucide-react';
 
 // --- Types ---
-
 interface CourseCategory {
   id: number;
   title: string;
@@ -99,7 +99,8 @@ const CourseGrid: React.FC<CourseGridProps> = ({
   buttonText = 'Explore All Courses',
   categories = DEFAULT_CATEGORIES,
 }) => {
-  // Logic to split title for highlighting
+  const navigate = useNavigate(); // ✅ REQUIRED ONLY
+
   const titleWords = title.split(' ');
   const firstWord = titleWords[0];
   const restOfTitle = titleWords.slice(1).join(' ');
@@ -134,17 +135,20 @@ const CourseGrid: React.FC<CourseGridProps> = ({
       </div>
 
       <div className="course-footer">
-        <button className="course-cta-button">
+        <button
+          className="course-cta-button"
+          onClick={() => navigate('/courses')}
+        >
+          {/* ✅ ONLY FUNCTIONAL ADD */}
           {buttonText} <ArrowRight size={18} />
         </button>
       </div>
 
       <style>{`
         .course-container {
-          background-color: #0B0E14; /* Matched previous Vormirex BG */
+          background-color: #0B0E14;
           color: #ffffff;
           padding: 80px 20px;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
           min-height: 100vh;
           display: flex;
           flex-direction: column;
@@ -159,11 +163,8 @@ const CourseGrid: React.FC<CourseGridProps> = ({
         .course-main-title {
           font-size: 42px;
           font-weight: 700;
-          margin-bottom: 16px;
-          letter-spacing: -0.5px;
         }
 
-        /* UPDATED: Brand color */
         .course-highlight {
           color: #6aece1;
         }
@@ -172,8 +173,7 @@ const CourseGrid: React.FC<CourseGridProps> = ({
           color: #94a3b8;
           font-size: 18px;
           max-width: 600px;
-          margin: 0 auto;
-          line-height: 1.6;
+          margin: auto;
         }
 
         .course-grid {
@@ -190,68 +190,18 @@ const CourseGrid: React.FC<CourseGridProps> = ({
           border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 16px;
           padding: 32px 20px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          cursor: pointer;
-          outline: none;
+          text-align: center;
+          transition: 0.3s;
         }
 
-        /* UPDATED: Hover effect with brand color and glow */
-        .course-card:hover, .course-card:focus {
-          background: rgba(255, 255, 255, 0.06);
-          transform: translateY(-5px);
+        .course-card:hover {
           border-color: #6aece1;
-          box-shadow: 0 10px 30px -10px rgba(106, 236, 225, 0.15);
+          transform: translateY(-5px);
         }
 
         .course-icon-wrapper {
-          background: rgba(255, 255, 255, 0.05);
-          width: 48px;
-          height: 48px;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 20px;
-          /* UPDATED: Brand color */
           color: #6aece1;
-        }
-
-        .course-card-title {
-          font-size: 16px;
-          font-weight: 600;
-          margin-bottom: 8px;
-          text-align: center;
-        }
-
-        .course-card-learners {
-          font-size: 13px;
-          color: #64748b;
-          margin-bottom: 16px;
-        }
-
-        .course-dots {
-          display: flex;
-          gap: 6px;
-        }
-
-        .course-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #334155;
-        }
-
-        /* UPDATED: Active dot brand color */
-        .course-dot.active {
-          background: #6aece1;
-        }
-
-        .course-footer {
-          display: flex;
-          justify-content: center;
+          margin-bottom: 20px;
         }
 
         .course-cta-button {
@@ -260,25 +210,15 @@ const CourseGrid: React.FC<CourseGridProps> = ({
           color: #ffffff;
           padding: 14px 32px;
           border-radius: 30px;
-          font-size: 16px;
-          font-weight: 500;
           display: flex;
           align-items: center;
           gap: 10px;
           cursor: pointer;
-          transition: all 0.2s ease;
         }
 
-        /* UPDATED: Button hover brand color */
         .course-cta-button:hover {
           background: #6aece1;
           color: #0B0E14;
-          border-color: #6aece1;
-        }
-
-        @media (max-width: 768px) {
-          .course-main-title { font-size: 32px; }
-          .course-container { padding: 40px 20px; }
         }
       `}</style>
     </div>

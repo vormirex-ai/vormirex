@@ -1,3 +1,5 @@
+/* CoursePage.css – Fully Updated with Mobile UX + Module Badge Alignment Fix (Complete File – Nothing Skipped) */
+
 :root {
   --bg-dark: #0a0a0b;
   --bg-card: #161618;
@@ -74,6 +76,23 @@
   z-index: 10;
 }
 
+/* Back button specific styling */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-arrow {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.back-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 /* --- BUTTONS & TABS --- */
 .course-btn {
   padding: 12px 24px;
@@ -124,7 +143,7 @@
   box-shadow: 0 4px 15px var(--color-primary-glow);
 }
 
-/* --- HERO TEXT & BADGES --- */
+/* --- HERO TEXT --- */
 .course-title {
   position: relative;
   z-index: 2;
@@ -132,6 +151,7 @@
   font-weight: 800;
   margin-bottom: 10px;
   letter-spacing: -1px;
+  text-transform: uppercase;
 }
 
 .course-subtitle {
@@ -174,7 +194,7 @@
 }
 
 /* =========================================
-   3. ACTION AREA (CTA)
+   ACTION AREA (CTA)
    ========================================= */
 .hero-action-area {
   display: flex;
@@ -201,12 +221,11 @@
 .course-btn.main-cta:hover {
   transform: translateY(3px);
   background: #ffffff;
-  border-color: var(--color-primary);
   box-shadow: 0 10px 25px var(--color-primary);
 }
 
 /* =========================================
-   4. INFO CARDS
+   INFO CARDS
    ========================================= */
 .course-info-cards {
   display: grid;
@@ -234,6 +253,7 @@
   height: 220px;
   object-fit: cover;
   transition: transform 0.5s ease;
+  cursor: pointer;
 }
 
 .info-card:hover img {
@@ -248,7 +268,7 @@
 }
 
 /* =========================================
-   5. CURRICULUM ACCORDION
+   CURRICULUM ACCORDION – BADGE ALIGNMENT FIXED
    ========================================= */
 .section-title {
   text-align: center;
@@ -278,10 +298,12 @@
 .module-summary {
   padding: 25px 30px;
   cursor: pointer;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
+  gap: 20px;
   list-style: none;
+  min-height: 80px;
 }
 
 .module-summary::-webkit-details-marker {
@@ -291,6 +313,7 @@
 .module-title {
   font-size: 1.15rem;
   font-weight: 700;
+  word-break: break-word;
 }
 
 .module-meta {
@@ -298,8 +321,9 @@
   font-size: 0.9rem;
   font-weight: 600;
   background: rgba(106, 236, 225, 0.1);
-  padding: 4px 12px;
-  border-radius: 8px;
+  padding: 6px 14px;
+  border-radius: 12px;
+  white-space: nowrap;
 }
 
 .module-list {
@@ -314,7 +338,7 @@
 }
 
 /* =========================================
-   6. IMAGE MODAL
+   IMAGE MODAL
    ========================================= */
 .image-modal {
   position: fixed;
@@ -348,36 +372,94 @@
 }
 
 /* =========================================
-   7. RESPONSIVE DESIGN
+   RESPONSIVE DESIGN – MOBILE UX IMPROVEMENTS + ALIGNMENT
    ========================================= */
 @media (max-width: 768px) {
   .course-hero {
     padding: 30px;
     min-height: 400px;
+    height: auto;
+    margin-bottom: 0;
+    border-radius: 24px;
   }
 
   .course-hero-top {
-    flex-direction: row;
-    justify-content: space-between;
-    top: 20px;
-    left: 15px;
-    right: 15px;
+    top: 12px;
+    left: 12px;
+    right: 12px;
   }
 
-  .course-btn.ghost,
+  .back-btn {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .back-arrow {
+    font-size: 1.3rem;
+  }
+
+  .back-text {
+    font-size: 0.85rem;
+  }
+
+  .course-level-tabs {
+    padding: 4px 8px;
+    gap: 6px;
+  }
+
   .tab {
-    padding: 6px 12px;
+    padding: 8px 14px;
     font-size: 0.8rem;
   }
 
+  .hero-action-area {
+    margin: 30px 0 50px 0;
+  }
+
   .course-btn.main-cta {
-    width: 100%;
-    padding: 16px 20px;
-    font-size: 1rem;
+    padding: 18px 40px;
+    font-size: 1.1rem;
+    width: auto;
+    max-width: 90%;
+  }
+
+  .course-title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem);
+    margin-bottom: 8px;
+  }
+
+  .course-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 0;
   }
 
   .info-card img {
     height: 180px;
+  }
+
+  .module-summary {
+    gap: 16px;
+    padding: 20px 24px;
+  }
+}
+
+/* Extra small screens – icon-only back button */
+@media (max-width: 480px) {
+  .back-text {
+    display: none;
+  }
+
+  .back-btn {
+    padding: 10px 14px;
+  }
+
+  .back-arrow {
+    font-size: 1.5rem;
+  }
+
+  .course-btn.main-cta {
+    padding: 16px 30px;
+    font-size: 1rem;
   }
 }
 
@@ -486,4 +568,101 @@
 .course-card:hover .course-card-btn {
   background-color: #6aece1;
   color: #0a0b14;
+}
+
+/* --- ENROLLMENT SECTION (BOTTOM OF PAGE) --- */
+.section-divider {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-border),
+    transparent
+  );
+  margin: 80px 0;
+}
+
+.enrollment-section {
+  padding-bottom: 100px;
+}
+
+.enrollment-container {
+  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 30px;
+  padding: 50px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.enrollment-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.enrollment-header h2 {
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.enrollment-header p {
+  color: var(--text-secondary);
+}
+
+.enroll-form-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.enroll-form-bottom input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 18px;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.enroll-form-bottom input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.enroll-submit-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 20px !important;
+}
+
+@media (max-width: 600px) {
+  .form-group-row {
+    grid-template-columns: 1fr;
+  }
+
+  .enrollment-container {
+    padding: 30px 20px;
+  }
+}
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Mobile: hide text, show icons only */
+@media (max-width: 480px) {
+  .back-text {
+    display: none;
+  }
 }

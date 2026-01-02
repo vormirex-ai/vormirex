@@ -141,17 +141,6 @@ const HowItWorks = () => {
             <StatCard key={index} {...stat} />
           ))}
         </div>
-
-        <div className="partners-section">
-          <p className="partners-title">Trusted by learners from</p>
-          <div className="partners-list">
-            {partners.map((partner) => (
-              <span key={partner} className="partner-item">
-                {partner}
-              </span>
-            ))}
-          </div>
-        </div>
       </section>
 
       <style>{`
