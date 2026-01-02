@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import { loginUser, signupUser } from '../../api/auth.js';
+import { loginUser, signupUser, forgotPassword, BASE_URL } from '../../api/auth.js';
 
 const css = `
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -157,6 +157,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [resetEmail, setResetEmail] = useState(''); // New state for forgot password
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -168,6 +169,27 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
       setActiveTab('login');
     }
   }, [defaultTab, location.pathname]);
+
+  const handleForgotPasswordSubmit = async () => {
+    if (!resetEmail) {
+      setError('Please enter your email.');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    try {
+      const res = await forgotPassword(resetEmail);
+      if (res.success) {
+        alert(res.message);
+        setIsModalOpen(false);
+        setResetEmail('');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to send reset link');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -186,7 +208,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
         if (res.success) {
            // Store token (e.g., in localStorage or context)
            localStorage.setItem('accessToken', res.accessToken);
-           navigate('/dashboard');
+           localStorage.setItem('user', JSON.stringify(res.user));
+           window.location.href = '/dashboard';
         }
       }
     } catch (err: any) {
@@ -300,7 +323,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
         <button
           className="google-btn"
           type="button"
-          onClick={() => navigate('/dashboard')}
+          // Redirect to backend Google OAuth endpoint
+          onClick={() => window.location.href = `${BASE_URL}/google`}
         >
           Continue with Google
         </button>
@@ -333,16 +357,17 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
                 type="email"
                 className="form-input"
                 placeholder="name@example.com"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
               />
             </div>
+            {error && <p style={{ color: 'red', marginBottom: '10px', fontSize: '13px' }}>{error}</p>}
             <button
               className="login-btn"
-              onClick={() => {
-                alert('Email sent!');
-                setIsModalOpen(false);
-              }}
+              disabled={loading}
+              onClick={handleForgotPasswordSubmit}
             >
-              Send Link
+              {loading ? 'Sending...' : 'Send Link'}
             </button>
           </div>
         </div>

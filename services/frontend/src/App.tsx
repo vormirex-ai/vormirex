@@ -26,6 +26,9 @@ import PricingsPage from './components/layout/PricingSections';
 import VormirexAuth from './components/login/login';
 import DashboardWrapper from './components/layout/DashboardWrapper';
 import DashboardPage from './pages/DashboardPage';
+import OAuthSuccess from './components/auth/OAuthSuccess';
+import VerifyEmail from './components/auth/VerifyEmail';
+import ResetPassword from './components/auth/ResetPassword';
 
 /* =======================
    COURSES
@@ -106,6 +109,9 @@ const App: React.FC = () => {
           path="/auth/signup"
           element={<VormirexAuth defaultTab="signup" />}
         />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
 
         {/* ================= DASHBOARD ================= */}
         <Route element={<DashboardWrapper />}>

@@ -13,7 +13,7 @@ export const signup = async (
   res: Response
 ) => {
   const result = await authService.signup(req.body);
-  return res.status(201).json({ success: true, data: result });
+  return res.status(201).json({ success: true, ...result });
 };
 
 export const login = async (
