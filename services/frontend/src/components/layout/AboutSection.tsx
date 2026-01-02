@@ -1,15 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AboutSection.css';
 
 const AboutVormirex: React.FC = () => {
+  const navigate = useNavigate(); // Hook to handle page navigation
+
   return (
     <div className="about-wrapper">
       {/* ================= HERO SECTION ================= */}
       <section className="about-hero">
         <h1>About Us</h1>
         <p>
-          We’re building Vormirex to make learning fun, interactive,
-          stress-free, and powered by AI for students everywhere.
+          We’re building Vormirex to make mastering high-demand tech skills
+          interactive, industry-focused, and powered by AI.
         </p>
       </section>
 
@@ -19,30 +22,30 @@ const AboutVormirex: React.FC = () => {
           <h2>Our Story</h2>
 
           <p>
-            School studies often feel boring and difficult to enjoy. YouTube
-            videos are mixed and distracting, and group study becomes hard
-            without the right tools. Students end up wasting time searching for
-            quality content instead of actually learning.
+            Traditional learning paths for tech often feel disconnected from the
+            real world. Generic tutorials are often outdated, and self-learning
+            can feel isolated and overwhelming without the right guidance.
           </p>
 
           <p>
-            <strong>Vormirex</strong> was created to solve this problem. It is
-            an AI-powered education app that turns boring study sessions into
-            fun, interactive learning experiences through live video calls,
-            quizzes, and instant AI doubt solving.
+            <strong>Vormirex</strong> was created to bridge this gap. It is an
+            AI-powered skill development platform that transforms complex
+            technical subjects into engaging, hands-on experiences through live
+            collaboration and instant AI support.
           </p>
 
           <p>
-            Whether it’s Maths, Science, Coding, English, or Job Skills,
-            Vormirex feels like learning from a close friend sitting right next
-            to you.
+            Whether you are diving into{' '}
+            <strong>Cyber Security, Data Science, or Data Analytics</strong>,
+            Vormirex provides a collaborative environment that feels like
+            working in a real-world tech team.
           </p>
         </div>
 
         <div className="story-image">
           <img
             src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
-            alt="Students learning together"
+            alt="Tech professionals collaborating"
           />
         </div>
       </section>
@@ -52,40 +55,50 @@ const AboutVormirex: React.FC = () => {
         <h2>Why Vormirex?</h2>
 
         <ul>
-          <li>🎯 AI tutor available 24/7 to clear all doubts</li>
-          <li>🎮 Live group video classes with games & quizzes</li>
           <li>
-            📚 All subjects in one place — Maths, Science, Coding, English
+            🛡️ Specialized tracks in Cyber Security, Data Science, and Analytics
           </li>
-          <li>🧠 Personalized learning paths for every student</li>
-          <li>📊 Progress tracking via smart dashboards</li>
+          <li>🤖 24/7 AI Mentor to debug code and explain complex concepts</li>
+          <li>💻 Live group sessions with real-world project simulations</li>
+          <li>🛠️ Hands-on labs designed for industry readiness</li>
+          <li>📊 Personalized skill-mapping to track your career growth</li>
         </ul>
       </section>
 
       {/* ================= HOW IT WORKS ================= */}
       <section className="about-features">
-        <h2>How Students Use Vormirex</h2>
+        <h2>The Vormirex Experience</h2>
 
         <ul>
-          <li>📝 Sign up easily</li>
-          <li>📹 Join live group video sessions</li>
-          <li>🤖 Ask questions to the AI tutor anytime</li>
-          <li>🧩 Participate in quizzes and activities</li>
-          <li>📈 Track learning progress on dashboard</li>
+          <li>🚀 Select your career-focused learning path</li>
+          <li>📹 Join live collaborative workshops with peers</li>
+          <li>🔍 Solve real-world datasets and security challenges</li>
+          <li>🤖 Get instant feedback from the AI technical assistant</li>
+          <li>💼 Build a portfolio that gets you noticed by recruiters</li>
         </ul>
       </section>
 
       {/* ================= CTA SECTION ================= */}
       <section className="about-cta">
-        <h2>Join Us on Our Journey</h2>
+        <h2>Master the Future of Tech</h2>
         <p>
-          We’re building the future of stress-free education and looking for
-          learners, educators, and innovators to grow with us.
+          Join a community of innovators and start building the skills that the
+          modern industry demands.
         </p>
 
         <div className="cta-buttons">
-          <button className="primary-btn">View Courses</button>
-          <button className="secondary-btn">Contact Us</button>
+          {/* Navigates to the Courses page */}
+          <button className="primary-btn" onClick={() => navigate('/courses')}>
+            View Courses
+          </button>
+
+          {/* Navigates to the Contact page */}
+          <button
+            className="secondary-btn"
+            onClick={() => navigate('/contact')}
+          >
+            Contact Us
+          </button>
         </div>
       </section>
     </div>

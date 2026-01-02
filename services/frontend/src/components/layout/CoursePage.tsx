@@ -44,8 +44,6 @@ export default function CoursePage() {
       : 'Explore Courses | Vormirex';
   }, [course]);
 
-  /* ================= IMAGE HELPERS ================= */
-
   const getCatalogImage = (id: string) => {
     const map: Record<string, string> = {
       'data-science': WhyDS,
@@ -78,14 +76,10 @@ export default function CoursePage() {
     return course.levels.find((l) => l.level === level) ?? course.levels[0];
   }, [course, level]);
 
-  /* ============================================================
-     VIEW 1: COURSE CATALOG (ONLY 3 UNIQUE CARDS)
-     ============================================================ */
+  /* VIEW 1: CATALOG */
   if (!courseId) {
     const uniqueCourses = Array.from(
-      new Map(
-        Object.values(COURSES).map((course) => [course.id, course])
-      ).values()
+      new Map(Object.values(COURSES).map((c) => [c.id, c])).values()
     );
 
     return (
@@ -114,9 +108,7 @@ export default function CoursePage() {
     );
   }
 
-  /* ============================================================
-     VIEW 2: ERROR STATE
-     ============================================================ */
+  /* VIEW 2: ERROR */
   if (!course) {
     return (
       <div className="course-page">
@@ -136,13 +128,10 @@ export default function CoursePage() {
     );
   }
 
-  /* ============================================================
-     VIEW 3: COURSE DETAIL PAGE
-     ============================================================ */
+  /* VIEW 3: DETAIL PAGE */
   return (
     <div className="course-page">
       <div className="course-shell">
-        {/* HERO */}
         <header className="course-hero">
           <video autoPlay muted loop playsInline className="hero-video-bg">
             <source src={heroVideo} type="video/mp4" />
@@ -150,12 +139,20 @@ export default function CoursePage() {
           <div className="course-hero-overlay" />
 
           <div className="course-hero-top">
-            <button
-              className="course-btn ghost"
-              onClick={() => navigate('/courses')}
-            >
-              ← All Courses
-            </button>
+            <div className="hero-nav-group">
+              <button
+                className="course-btn ghost back-btn"
+                onClick={() => navigate('/courses')}
+              >
+                ←
+              </button>
+              <button
+                className="course-btn ghost home-btn"
+                onClick={() => navigate('/dashboard')}
+              >
+                🏠
+              </button>
+            </div>
 
             <div className="course-level-tabs">
               <button
@@ -174,14 +171,12 @@ export default function CoursePage() {
           </div>
         </header>
 
-        {/* CTA */}
         <div className="hero-action-area">
           <button className="course-btn main-cta" onClick={handleViewSyllabus}>
             Download Full Syllabus (PDF)
           </button>
         </div>
 
-        {/* INFO CARDS */}
         <section className="course-info-cards">
           <div className="info-card">
             <img
@@ -191,7 +186,6 @@ export default function CoursePage() {
             />
             <p className="info-card-title">Why {course.title}</p>
           </div>
-
           <div className="info-card">
             <img
               src={detailImages.career}
@@ -200,7 +194,6 @@ export default function CoursePage() {
             />
             <p className="info-card-title">Career Path</p>
           </div>
-
           <div className="info-card">
             <img
               src={detailImages.gain}
@@ -211,10 +204,8 @@ export default function CoursePage() {
           </div>
         </section>
 
-        {/* CURRICULUM */}
         <section className="course-content">
           <h2 className="section-title">{level} Curriculum</h2>
-
           <div className="modules">
             {levelBlock?.modules.map((m, idx) => (
               <details key={m.title} className="module" open={idx === 0}>
@@ -232,7 +223,6 @@ export default function CoursePage() {
           </div>
         </section>
 
-        {/* IMAGE MODAL */}
         {modalImage && (
           <div className="image-modal" onClick={closeImage}>
             <img src={modalImage} alt="Enlarged" />

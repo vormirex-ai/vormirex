@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './SidebarLeft.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -62,14 +62,37 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <button className="new-chat-button" onClick={showComingSoon}>
-        <FontAwesomeIcon icon={faPlus} /> New Chat
-      </button>
 
-      {/* FIXED: Now navigates to '/' instead of '/landing' */}
-      <button className="new-chat-button" onClick={() => navigate('/landing')}>
+      {/* FIXED: New Chat Right-click support added */}
+      <Link
+        to="/dashboard"
+        className="new-chat-button"
+        style={{
+          textDecoration: 'none',
+          display: 'block',
+          textAlign: 'center',
+        }}
+        onClick={(e) => {
+          // Normal click chesthe Coming Soon modal chupistundi
+          // Right-click chesthe browser URL ni kotha tab lo open chestundi
+          showComingSoon();
+        }}
+      >
+        <FontAwesomeIcon icon={faPlus} /> New Chat
+      </Link>
+
+      {/* FIXED: VORMIREX Right-click support added */}
+      <Link
+        to="/landing"
+        className="new-chat-button"
+        style={{
+          textDecoration: 'none',
+          display: 'block',
+          textAlign: 'center',
+        }}
+      >
         <FontAwesomeIcon icon={faGlobe} /> VORMIREX
-      </button>
+      </Link>
 
       {/* Navigation Sections */}
       <nav className="main-nav">
