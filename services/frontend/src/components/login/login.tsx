@@ -337,7 +337,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
           className="google-btn"
           type="button"
           onClick={() => {
-            window.location.href = `http://localhost:5000/api/auth/google`;
+            window.location.href = `${BASE_URL}/google`;
           }}
         >
           Continue with Google
