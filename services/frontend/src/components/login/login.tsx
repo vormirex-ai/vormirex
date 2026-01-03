@@ -165,14 +165,16 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Correctly sync UI state based on URL on load and path changes
+  // FIXED: Set initial tab based on URL path and props
   useEffect(() => {
-    if (location.pathname.includes('signup')) {
+    if (defaultTab) {
+      setActiveTab(defaultTab);
+    } else if (location.pathname.includes('signup')) {
       setActiveTab('signup');
     } else {
       setActiveTab('login');
     }
-  }, [location.pathname]);
+  }, [location.pathname, defaultTab]);
 
   const handleForgotPasswordSubmit = async () => {
     if (!resetEmail) {
@@ -207,8 +209,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
           alert(
             res.message || 'Account created! Please check your email to verify.'
           );
-          // Redirect to login route instead of just changing state
-          navigate('/auth/login');
+          navigate('/auth/login'); // Stay within auth routes
           setName('');
           setEmail('');
           setPassword('');
@@ -242,13 +243,13 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
         <div className="tabs">
           <button
             className={`tab ${activeTab === 'login' ? 'active' : ''}`}
-            onClick={() => navigate('/auth/login')} // Updated to sync URL
+            onClick={() => navigate('/auth/login')}
           >
             Log In
           </button>
           <button
             className={`tab ${activeTab === 'signup' ? 'active' : ''}`}
-            onClick={() => navigate('/auth/signup')} // Updated to sync URL
+            onClick={() => navigate('/auth/signup')}
           >
             Sign Up
           </button>

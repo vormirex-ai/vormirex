@@ -79,7 +79,7 @@ const Navbar: React.FC<{ brandName?: string }> = ({
   };
 
   const handleSignIn = () => {
-    navigate('/auth');
+    navigate('/auth/login'); // FIXED: Now goes to /auth/login instead of /auth
     closeMenu();
   };
 

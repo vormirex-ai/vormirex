@@ -122,7 +122,11 @@ const App: React.FC = () => {
           }
         />
         {/* ================= AUTH ================= */}
-        <Route path="/auth" element={<VormirexAuth />} />
+        <Route path="/auth" element={<VormirexAuth defaultTab="login" />} />
+        <Route
+          path="/auth/login"
+          element={<VormirexAuth defaultTab="login" />}
+        />
         <Route
           path="/auth/signup"
           element={<VormirexAuth defaultTab="signup" />}
@@ -146,7 +150,7 @@ const App: React.FC = () => {
         </Route>
         {}
         {}
-        <Route path="*" element={<Navigate to="/Homepage" replace />} />{' '}
+        <Route path="*" element={<Navigate to="/homepage" replace />} />{' '}
       </Routes>
     </Router>
   );
