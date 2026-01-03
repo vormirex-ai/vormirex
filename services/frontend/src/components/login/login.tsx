@@ -165,13 +165,14 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Correctly sync UI state based on URL on load and path changes
   useEffect(() => {
-    if (defaultTab === 'signup' || location.pathname.includes('signup')) {
+    if (location.pathname.includes('signup')) {
       setActiveTab('signup');
     } else {
       setActiveTab('login');
     }
-  }, [defaultTab, location.pathname]);
+  }, [location.pathname]);
 
   const handleForgotPasswordSubmit = async () => {
     if (!resetEmail) {
@@ -206,7 +207,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
           alert(
             res.message || 'Account created! Please check your email to verify.'
           );
-          setActiveTab('login');
+          // Redirect to login route instead of just changing state
+          navigate('/auth/login');
           setName('');
           setEmail('');
           setPassword('');
@@ -216,7 +218,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
         if (res.success) {
           localStorage.setItem('accessToken', res.accessToken);
           localStorage.setItem('user', JSON.stringify(res.user));
-          window.location.href = '/dashboard'; // or use navigate('/dashboard')
+          window.location.href = '/dashboard';
         }
       }
     } catch (err: any) {
@@ -240,13 +242,13 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
         <div className="tabs">
           <button
             className={`tab ${activeTab === 'login' ? 'active' : ''}`}
-            onClick={() => setActiveTab('login')}
+            onClick={() => navigate('/auth/login')} // Updated to sync URL
           >
             Log In
           </button>
           <button
             className={`tab ${activeTab === 'signup' ? 'active' : ''}`}
-            onClick={() => setActiveTab('signup')}
+            onClick={() => navigate('/auth/signup')} // Updated to sync URL
           >
             Sign Up
           </button>
@@ -311,7 +313,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  setError(''); // Clear any previous errors
+                  setError('');
                   setIsModalOpen(true);
                 }}
               >

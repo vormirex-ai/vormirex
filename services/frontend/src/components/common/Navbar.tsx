@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, User, LogOut, ChevronDown } from 'lucide-react';
+import {
+  Menu,
+  X,
+  User,
+  LogOut,
+  ChevronDown,
+  LayoutDashboard,
+} from 'lucide-react';
 import ComingSoonModal from './ComingSoonModal';
 import logo from '../../assets/logo.png';
 import './Navbar.css';
@@ -57,12 +64,11 @@ const Navbar: React.FC<{ brandName?: string }> = ({
     if (href.startsWith('/')) {
       navigate(href);
     } else if (href.startsWith('#')) {
-      // Scroll to section if on landing page
       if (location.pathname !== '/landing') {
         navigate('/landing');
         setTimeout(() => {
           document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
-        }, 100); // slight delay for DOM to load
+        }, 100);
       } else {
         const el = document.querySelector(href);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -77,8 +83,8 @@ const Navbar: React.FC<{ brandName?: string }> = ({
     closeMenu();
   };
 
-  const handleStartFree = () => {
-    navigate('/auth/signup');
+  const handleBackToDashboard = () => {
+    navigate('/dashboard');
     closeMenu();
   };
 
@@ -94,7 +100,6 @@ const Navbar: React.FC<{ brandName?: string }> = ({
 
   const toggleProfileMenu = () => setShowProfileMenu(!showProfileMenu);
 
-  // Navbar links
   const navLinks = [
     { label: 'Features', href: '/features' },
     { label: 'Courses', href: '/courses' },
@@ -143,8 +148,12 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                   <button className="btn-signin" onClick={handleSignIn}>
                     Sign In
                   </button>
-                  <button className="btn-start" onClick={handleStartFree}>
-                    Start Free
+                  <button
+                    className="btn-back-dashboard-mobile"
+                    onClick={handleBackToDashboard}
+                  >
+                    <LayoutDashboard size={16} />
+                    Back to Dashboard
                   </button>
                 </>
               )}
@@ -184,8 +193,12 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                   <button className="btn-signin" onClick={handleSignIn}>
                     Sign In
                   </button>
-                  <button className="btn-start" onClick={handleStartFree}>
-                    Start Free
+                  <button
+                    className="btn-back-dashboard"
+                    onClick={handleBackToDashboard}
+                  >
+                    <LayoutDashboard size={16} />
+                    Back to Dashboard
                   </button>
                 </>
               )}
@@ -207,7 +220,6 @@ const Navbar: React.FC<{ brandName?: string }> = ({
         onClose={() => setIsModalOpen(false)}
       />
 
-      {/* Inline CSS for dropdown */}
       <style>{`
         .profile-dropdown-container { position: relative; }
         .profile-trigger { display: flex; align-items: center; gap: 8px; cursor: pointer; color: white; padding: 4px; border-radius: 8px; transition: background 0.2s; }
@@ -225,6 +237,25 @@ const Navbar: React.FC<{ brandName?: string }> = ({
         .mobile-profile-section { padding: 10px 0; display: flex; flex-direction: column; gap: 15px; align-items: center; }
         .mobile-user-info { display: flex; align-items: center; gap: 10px; color: #00d4d4; font-weight: 600; }
         .btn-logout-mobile { display: flex; align-items: center; gap: 8px; background: #1f222a; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        
+        .btn-back-dashboard, .btn-back-dashboard-mobile { 
+          display: flex; 
+          align-items: center; 
+          gap: 8px; 
+          background: rgba(255, 255, 255, 0.05); 
+          border: 1px solid rgba(255, 255, 255, 0.2); 
+          color: #ffffff; 
+          padding: 10px 16px; 
+          border-radius: 8px; 
+          font-size: 14px; 
+          cursor: pointer; 
+          transition: all 0.2s ease;
+        }
+        .btn-back-dashboard:hover, .btn-back-dashboard-mobile:hover { 
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.4);
+        }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </>
