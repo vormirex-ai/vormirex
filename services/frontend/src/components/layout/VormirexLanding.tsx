@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Play, Circle, LayoutDashboard } from 'lucide-react'; // Added LayoutDashboard icon
+import { Sparkles, Play, Circle, LayoutDashboard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 
@@ -43,8 +43,18 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         </h1>
         <p className="hero-subtitle">{heroSubtitle}</p>
 
+        {/* CTA Group - ORDER: Dashboard → Start Free → Try AI Demo */}
         <div className="cta-group">
-          {/* 1. START FREE */}
+          {/* 1. BACK TO DASHBOARD */}
+          <button
+            className="btn-dashboard large"
+            onClick={() => navigate('/dashboard')}
+          >
+            <LayoutDashboard size={18} />
+            Back to Dashboard
+          </button>
+
+          {/* 2. START FREE (PRIMARY) */}
           <button
             className="btn-primary-hero large"
             onClick={() => navigate('/auth/signup')}
@@ -53,20 +63,7 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
             Start Free
           </button>
 
-          {/* 2. BACK TO DASHBOARD (The New Button) */}
-          <button
-            className="btn-secondary large"
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              borderColor: 'rgba(255, 255, 255, 0.3)',
-              color: '#fff',
-            }}
-            onClick={() => navigate('/dashboard')}
-          >
-            <LayoutDashboard size={18} />
-            Back to Dashboard
-          </button>
-
+          {/* 3. TRY AI DEMO (SECONDARY) */}
           <button className="btn-secondary large">
             <Play size={18} fill="currentColor" />
             Try AI Demo
@@ -119,7 +116,6 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
       </main>
 
       <style>{`
-        /* ... existing styles ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         .container { min-height: 100vh; background-color: #0a0b14; color: #ffffff; font-family: 'Inter', sans-serif; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; position: relative; }
         .watermark-logo { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 420px; height: 420px; opacity: 0; z-index: 0; pointer-events: none; transition: opacity 0.6s ease; }
@@ -132,10 +128,33 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         .cyan-text { color: #6aece1; }
         .hero-subtitle { color: #94a3b8; font-size: 1.2rem; max-width: 600px; margin-bottom: 40px; position: relative; z-index: 2; padding: 0 20px; }
         .cta-group { display: flex; gap: 20px; margin-bottom: 60px; position: relative; z-index: 2; flex-wrap: wrap; justify-content: center; }
+        
+        /* DASHBOARD BUTTON STYLES */
+        .btn-dashboard { 
+          background: rgba(255, 255, 255, 0.05); 
+          border: 1px solid rgba(255, 255, 255, 0.2); 
+          color: #ffffff; 
+          padding: 14px 32px; 
+          border-radius: 12px; 
+          cursor: pointer; 
+          display: flex; 
+          align-items: center; 
+          gap: 8px; 
+          transition: all 0.2s ease; 
+        }
+        .btn-dashboard:hover { 
+          background: rgba(255, 255, 255, 0.1); 
+          border-color: rgba(255, 255, 255, 0.4); 
+          transform: scale(1.05); 
+        }
+        .btn-dashboard.large { padding: 16px 36px; font-size: 1rem; }
+
         .btn-primary-hero { background: #6aece1; border: none; color: #0a0b14; padding: 14px 32px; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .btn-primary-hero:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(106, 236, 225, 0.5); }
+        .btn-primary-hero.large { padding: 16px 36px; font-size: 1rem; }
         .btn-secondary { background: rgba(106, 236, 225, 0.05); border: 1px solid #6aece1; color: #6aece1; padding: 14px 32px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.2s ease, background 0.2s ease; }
         .btn-secondary:hover { transform: scale(1.05); background: rgba(106, 236, 225, 0.15); }
+        .btn-secondary.large { padding: 16px 36px; font-size: 1rem; }
         .stats-container { display: flex; gap: 60px; margin-bottom: 60px; position: relative; z-index: 2; }
         .stat-item h3 { font-size: 2.5rem; margin: 0; color: #6aece1; }
         .stat-item p { color: #94a3b8; font-size: 0.9rem; }
@@ -150,7 +169,7 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         .suggestion-chip { background: none; border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 8px 16px; border-radius: 20px; cursor: pointer; margin-right: 8px; font-size: 0.85rem; transition: all 0.2s ease; }
         .suggestion-chip:hover { background: rgba(106, 236, 225, 0.1); border-color: #6aece1; color: #6aece1; }
         @media (max-width: 960px) { .hero-title { font-size: 2.5rem; } .stats-container { flex-direction: column; gap: 20px; } }
-        @media (max-width: 480px) { .hero-title { font-size: 2rem; } .cta-group { flex-direction: column; } .btn-primary-hero, .btn-secondary { width: 100%; } }
+        @media (max-width: 480px) { .hero-title { font-size: 2rem; } .cta-group { flex-direction: column; } .btn-primary-hero, .btn-secondary, .btn-dashboard { width: 100%; } }
       `}</style>
     </div>
   );
