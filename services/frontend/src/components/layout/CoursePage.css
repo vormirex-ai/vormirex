@@ -404,3 +404,722 @@
     padding: 8px 20px;
   }
 }
+.badge {
+  background: rgba(106, 236, 225, 0.1);
+
+  color: var(--color-primary);
+
+  padding: 6px 16px;
+
+  border-radius: 100px;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  border: 1px solid var(--color-border);
+}
+
+/* =========================================
+
+ACTION AREA (CTA)
+
+========================================= */
+
+.hero-action-area {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 60px 0 80px 0;
+
+  position: relative;
+
+  z-index: 10;
+}
+
+.course-btn.main-cta {
+  background: var(--color-primary);
+
+  color: #000;
+
+  padding: 22px 60px;
+
+  font-size: 1.3rem;
+
+  font-weight: 800;
+
+  border-radius: 100px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  box-shadow: 0 15px 35px var(--color-primary-glow);
+}
+
+.course-btn.main-cta:hover {
+  transform: translateY(3px);
+
+  background: #ffffff;
+
+  box-shadow: 0 10px 25px var(--color-primary);
+}
+
+/* =========================================
+
+INFO CARDS
+
+========================================= */
+
+.course-info-cards {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+  gap: 30px;
+
+  margin-bottom: 80px;
+}
+
+.info-card {
+  background: var(--bg-card);
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  transition: var(--transition);
+}
+
+.info-card:hover {
+  border-color: var(--color-primary);
+
+  transform: translateY(-10px);
+
+  background: #1c1c1f;
+}
+
+.info-card img {
+  width: 100%;
+
+  height: 220px;
+
+  object-fit: cover;
+
+  transition: transform 0.5s ease;
+
+  cursor: pointer;
+}
+
+.info-card:hover img {
+  transform: scale(1.08);
+}
+
+.info-card-title {
+  padding: 25px;
+
+  text-align: center;
+
+  font-size: 1.2rem;
+
+  font-weight: 700;
+}
+
+/* =========================================
+
+CURRICULUM ACCORDION – BADGE ALIGNMENT FIXED
+
+========================================= */
+
+.section-title {
+  text-align: center;
+
+  margin-bottom: 30px;
+
+  font-size: 2rem;
+
+  font-weight: 800;
+}
+
+.modules {
+  display: grid;
+
+  gap: 15px;
+}
+
+.module {
+  background: var(--bg-glass);
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  overflow: hidden;
+
+  transition: var(--transition);
+}
+
+.module:hover {
+  border-color: var(--color-border);
+
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.module-summary {
+  padding: 25px 30px;
+
+  cursor: pointer;
+
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+
+  align-items: center;
+
+  gap: 20px;
+
+  list-style: none;
+
+  min-height: 80px;
+}
+
+.module-summary::-webkit-details-marker {
+  display: none;
+}
+
+.module-title {
+  font-size: 1.15rem;
+
+  font-weight: 700;
+
+  word-break: break-word;
+}
+
+.module-meta {
+  color: var(--color-primary);
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+
+  background: rgba(106, 236, 225, 0.1);
+
+  padding: 6px 14px;
+
+  border-radius: 12px;
+
+  white-space: nowrap;
+}
+
+.module-list {
+  padding: 0 30px 30px 50px;
+
+  margin: 0;
+
+  color: var(--text-secondary);
+}
+
+.module-list li {
+  margin-bottom: 12px;
+
+  line-height: 1.6;
+}
+
+/* =========================================
+
+IMAGE MODAL
+
+========================================= */
+
+.image-modal {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.95);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 1000;
+
+  cursor: zoom-out;
+
+  backdrop-filter: blur(10px);
+}
+
+.image-modal img {
+  max-width: 90%;
+
+  max-height: 85%;
+
+  border-radius: 15px;
+
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+
+  animation: modalScale 0.3s ease-out;
+}
+
+@keyframes modalScale {
+  from {
+    transform: scale(0.9);
+
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+
+    opacity: 1;
+  }
+}
+
+/* =========================================
+
+RESPONSIVE DESIGN – MOBILE UX IMPROVEMENTS + ALIGNMENT
+
+========================================= */
+
+@media (max-width: 768px) {
+  .course-hero {
+    padding: 30px;
+
+    min-height: 400px;
+
+    height: auto;
+
+    margin-bottom: 0;
+
+    border-radius: 24px;
+  }
+
+  .course-hero-top {
+    top: 12px;
+
+    left: 12px;
+
+    right: 12px;
+  }
+
+  .back-btn {
+    padding: 8px 12px;
+
+    gap: 6px;
+  }
+
+  .back-arrow {
+    font-size: 1.3rem;
+  }
+
+  .back-text {
+    font-size: 0.85rem;
+  }
+
+  .course-level-tabs {
+    padding: 4px 8px;
+
+    gap: 6px;
+  }
+
+  .tab {
+    padding: 8px 14px;
+
+    font-size: 0.8rem;
+  }
+
+  .hero-action-area {
+    margin: 30px 0 50px 0;
+  }
+
+  .course-btn.main-cta {
+    padding: 18px 40px;
+
+    font-size: 1.1rem;
+
+    width: auto;
+
+    max-width: 90%;
+  }
+
+  .course-title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem);
+
+    margin-bottom: 8px;
+  }
+
+  .course-subtitle {
+    font-size: 1.1rem;
+
+    margin-bottom: 0;
+  }
+
+  .info-card img {
+    height: 180px;
+  }
+
+  .module-summary {
+    gap: 16px;
+
+    padding: 20px 24px;
+  }
+}
+
+/* Extra small screens – icon-only back button */
+
+@media (max-width: 480px) {
+  .back-text {
+    display: none;
+  }
+
+  .back-btn {
+    padding: 10px 14px;
+  }
+
+  .back-arrow {
+    font-size: 1.5rem;
+  }
+
+  .course-btn.main-cta {
+    padding: 16px 30px;
+
+    font-size: 1rem;
+  }
+}
+
+.course-level-tabs.ds-tabs {
+  min-width: 200px;
+
+  max-width: 220px;
+}
+
+/* --- Styles for Course List/Catalog View --- */
+
+.course-list-page {
+  padding: 60px 20px 40px;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  color: #fff;
+
+  min-height: 100vh;
+
+  background-color: #0a0b14;
+}
+
+.course-list-header {
+  text-align: center;
+
+  margin-bottom: 50px;
+}
+
+.course-list-header h1 {
+  font-size: 2.5rem;
+
+  margin-bottom: 10px;
+
+  font-weight: 700;
+
+  color: #6aece1;
+}
+
+.course-list-header p {
+  font-size: 1.1rem;
+
+  color: #cbd5f5;
+
+  max-width: 600px;
+
+  margin: 0 auto;
+}
+
+.course-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
+  gap: 30px;
+}
+
+.course-card {
+  background: #0f1123;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  cursor: pointer;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.course-card:hover {
+  transform: translateY(-10px);
+
+  box-shadow: 0 10px 30px rgba(106, 236, 225, 0.2);
+}
+
+.course-card-img {
+  width: 100%;
+
+  height: 200px;
+
+  object-fit: cover;
+}
+
+.course-card-content {
+  padding: 25px;
+
+  flex-grow: 1;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.course-card-content h3 {
+  font-size: 1.5rem;
+
+  margin-bottom: 8px;
+
+  color: #6aece1;
+}
+
+.course-card-tagline {
+  font-weight: 500;
+
+  color: #e5e7eb;
+
+  margin-bottom: 15px;
+
+  font-style: italic;
+}
+
+.course-card-desc {
+  color: #cbd5f5;
+
+  font-size: 0.95rem;
+
+  line-height: 1.6;
+
+  flex-grow: 1;
+
+  margin-bottom: 20px;
+}
+
+.course-card-btn {
+  background: transparent;
+
+  border: 1px solid #6aece1;
+
+  color: #6aece1;
+
+  padding: 10px 15px;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  font-weight: 600;
+
+  transition: background-color 0.3s, color 0.3s;
+
+  align-self: flex-start;
+}
+
+.course-card:hover .course-card-btn {
+  background-color: #6aece1;
+
+  color: #0a0b14;
+}
+
+/* --- ENROLLMENT SECTION (BOTTOM OF PAGE) --- */
+
+.section-divider {
+  border: 0;
+
+  height: 1px;
+
+  background: linear-gradient(
+    to right,
+
+    transparent,
+    var(--color-border),
+    transparent
+  );
+
+  margin: 80px 0;
+}
+
+.enrollment-section {
+  padding-bottom: 100px;
+}
+
+.enrollment-container {
+  background: var(--bg-card);
+
+  border: 1px solid var(--color-border);
+
+  border-radius: 30px;
+
+  padding: 50px;
+
+  max-width: 800px;
+
+  margin: 0 auto;
+
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.enrollment-header {
+  text-align: center;
+
+  margin-bottom: 40px;
+}
+
+.enrollment-header h2 {
+  font-size: 2rem;
+
+  color: var(--color-primary);
+
+  margin-bottom: 10px;
+}
+
+.enrollment-header p {
+  color: var(--text-secondary);
+}
+
+.enroll-form-bottom {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.form-group-row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+.enroll-form-bottom input {
+  background: rgba(255, 255, 255, 0.03);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  padding: 18px;
+
+  border-radius: 12px;
+
+  color: white;
+
+  font-size: 1rem;
+
+  transition: var(--transition);
+}
+
+.enroll-form-bottom input:focus {
+  outline: none;
+
+  border-color: var(--color-primary);
+
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.enroll-submit-btn {
+  width: 100%;
+
+  margin-top: 10px;
+
+  padding: 20px !important;
+}
+
+@media (max-width: 600px) {
+  .form-group-row {
+    grid-template-columns: 1fr;
+  }
+
+  .enrollment-container {
+    padding: 30px 20px;
+  }
+}
+
+.nav-buttons {
+  display: flex;
+
+  gap: 10px;
+}
+
+/* Mobile: hide text, show icons only */
+
+@media (max-width: 480px) {
+  .back-text {
+    display: none;
+  }
+}
+
+/* =========================================
+
+HERO NAV ICON BUTTONS (BACK + HOME)
+
+========================================= */
+
+.hero-nav-group {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px; /* 👈 proper gap between buttons */
+}
+
+/* Same size, same alignment */
+
+.nav-icon-btn {
+  width: 44px;
+
+  height: 44px;
+
+  border-radius: 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.55);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+
+  color: #ffffff;
+
+  font-size: 1.2rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(10px);
+
+  transition: all 0.25s ease;
+}
