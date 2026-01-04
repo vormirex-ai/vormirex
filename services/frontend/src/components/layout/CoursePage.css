@@ -10,14 +10,11 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Base Layout */
+/* ================= BASE ================= */
 .course-page {
   min-height: 100vh;
-  background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: 'Poppins', sans-serif;
-  padding-bottom: 40px;
-  overflow-x: hidden;
 }
 
 .course-shell {
@@ -26,9 +23,11 @@
   padding: 0 20px;
 }
 
-/* =========================================
-   HERO SECTION - FULL VIDEO VISIBILITY
-   ========================================= */
+/* ================= HERO ================= */
+.course-hero-wrapper {
+  position: relative;
+}
+
 .course-hero {
   position: relative;
   width: 100vw;
@@ -36,39 +35,28 @@
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-
-  /* Standard Desktop Aspect Ratio */
   aspect-ratio: 16 / 4.5;
   background: #000;
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
-  margin-bottom: 40px;
 }
 
 .hero-video-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Ensures the whole image/video is visible */
-  z-index: 1;
+  object-fit: contain;
 }
 
 .course-hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.4) 0%,
-    transparent 30%,
-    transparent 70%,
-    rgba(0, 0, 0, 0.4) 100%
+    rgba(0, 0, 0, 0.55),
+    transparent,
+    rgba(0, 0, 0, 0.55)
   );
-  z-index: 2;
 }
 
+/* ================= HERO TOP ================= */
 .course-hero-top {
   position: absolute;
   top: 20px;
@@ -76,59 +64,51 @@
   right: 20px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   z-index: 10;
 }
 
-/* =========================================
-   NAV & TAB BUTTONS
-   ========================================= */
 .hero-nav-group {
   display: flex;
   gap: 12px;
 }
 
 .nav-icon-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
   cursor: pointer;
-  backdrop-filter: blur(8px);
   transition: var(--transition);
 }
 
 .nav-icon-btn:hover {
   border-color: var(--color-primary);
-  background: rgba(106, 236, 225, 0.1);
+  background: rgba(106, 236, 225, 0.12);
 }
 
+/* ================= TABS ================= */
 .course-level-tabs {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.85);
   padding: 4px;
   border-radius: 14px;
   display: flex;
   gap: 4px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tab {
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
   padding: 8px 18px;
   border-radius: 10px;
-  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
   font-weight: 600;
-  font-size: 0.85rem;
-  transition: var(--transition);
-  white-space: nowrap; /* Prevents text wrapping */
+  cursor: pointer;
 }
 
 .tab.active {
@@ -136,39 +116,37 @@
   color: #000;
 }
 
-/* =========================================
-   ACTION AREA & INFO CARDS
-   ========================================= */
+/* BELOW HERO TABS (mobile/tablet) */
+.course-level-tabs.below-hero {
+  display: none;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* ================= CTA ================= */
 .hero-action-area {
   text-align: center;
-  margin-bottom: 60px;
+  margin: 40px 0;
 }
 
 .course-btn.main-cta {
   background: var(--color-primary);
   color: #000;
-  padding: 18px 45px;
-  font-size: 1.1rem;
-  font-weight: 800;
+  padding: 20px 50px;
   border-radius: 100px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
   border: none;
   cursor: pointer;
   box-shadow: 0 10px 25px var(--color-primary-glow);
-  transition: var(--transition);
 }
 
-.course-btn.main-cta:hover {
-  transform: translateY(-3px);
-  background: #fff;
-}
-
+/* ================= INFO CARDS ================= */
 .course-info-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
 }
 
 .info-card {
@@ -176,7 +154,6 @@
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  text-align: center;
 }
 
 .info-card img {
@@ -184,17 +161,121 @@
   height: 200px;
   object-fit: cover;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.info-card img:hover {
+  transform: scale(1.05);
 }
 
 .info-card-title {
   padding: 20px;
+  text-align: center;
   font-weight: 700;
-  font-size: 1.1rem;
+}
+
+/* ================= CURRICULUM ================= */
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.modules {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.module {
+  background: var(--bg-glass);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.module-summary {
+  padding: 20px 25px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.module-title {
+  font-weight: 700;
+}
+
+.module-meta {
+  color: var(--color-primary);
+  background: rgba(106, 236, 225, 0.1);
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.module-list {
+  padding: 0 25px 20px 45px;
+  color: var(--text-secondary);
+}
+
+/* ================= IMAGE MODAL ================= */
+.image-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.image-modal img {
+  max-width: 90%;
+  max-height: 85%;
+  border-radius: 10px;
+}
+
+/* ================= RESPONSIVE FIX ================= */
+/* < 949px = tabs BELOW hero */
+@media (max-width: 948px) {
+  /* hero lo tabs hide */
+  .course-hero-top .course-level-tabs {
+    display: none;
+  }
+
+  /* hero kindha tabs show */
+  .course-level-tabs.below-hero {
+    display: flex;
+    background: #161618;
+    padding: 6px;
+    border-radius: 14px;
+    gap: 6px;
+  }
+
+  /* image ki gap */
+  .course-hero {
+    margin-bottom: 30px;
+    aspect-ratio: 16 / 9;
+  }
 }
 
 /* =========================================
-   CURRICULUM / MODULES
+   MOBILE RESPONSIVENESS
    ========================================= */
+@media (max-width: 600px) {
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .course-card-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .tab {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+}
 .section-title {
   font-size: 1.8rem;
   margin-bottom: 30px;
@@ -260,866 +341,147 @@
   max-height: 80%;
   border-radius: 10px;
 }
+:root {
+  --bg-dark: #0a0a0b;
+  --bg-card: #161618;
+  --bg-glass: rgba(255, 255, 255, 0.03);
+  --color-primary: #6aece1;
+  --color-primary-glow: rgba(106, 236, 225, 0.4);
+  --color-border: rgba(106, 236, 225, 0.15);
+  --text-main: #ffffff;
+  --text-secondary: #a0a0a5;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 /* =========================================
-   MEDIA QUERIES (UPDATED FOR FIX)
+   VIEW 1: COURSE LIST / CATALOG
    ========================================= */
-
-/* 
-   TABLET View (approx 600px - 1024px)
-   Here we stack them on the left, as there is usually enough room 
-   below the buttons before the text starts on medium screens.
-*/
-@media (max-width: 1024px) {
-  .course-hero {
-    aspect-ratio: 16 / 7;
-  }
-
-  .course-hero-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-}
-
-/* 
-   MOBILE View (Phones < 600px) 
-   CRITICAL FIX: 
-   1. Switch back to ROW layout to minimize vertical height.
-   2. Use space-between to push Nav to Left and Tabs to Right.
-   3. This clears the "SECURITY" text which is on the Left side of the image.
-*/
-@media (max-width: 600px) {
-  .course-hero {
-    aspect-ratio: 16 / 10;
-  }
-
-  .course-hero-top {
-    /* Override the tablet column layout */
-    flex-direction: row !important;
-    justify-content: space-between;
-    align-items: flex-start;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-  }
-
-  /* Reduce Icon Size for Mobile */
-  .nav-icon-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-  }
-  .hero-nav-group {
-    gap: 8px;
-  }
-
-  /* Reduce Tab Size for Mobile */
-  .course-level-tabs {
-    padding: 3px;
-    border-radius: 10px;
-  }
-
-  .tab {
-    padding: 6px 10px;
-    font-size: 0.7rem; /* Smaller text to fit */
-    border-radius: 8px;
-  }
-
-  .course-btn.main-cta {
-    width: 90%;
-    padding: 15px;
-    font-size: 1rem;
-  }
-}
-/* =========================================
-   MOBILE View (Phones < 600px) 
-   FIX: Move Tabs BELOW the hero image to avoid 
-   covering the graphics or text.
-   ========================================= */
-@media (max-width: 600px) {
-  /* 1. Adjust Hero Container */
-  .course-hero {
-    /* Allow the tabs to hang outside the bottom box */
-    overflow: visible !important;
-    /* Add extra margin at bottom so tabs don't cover the 'Download' button below */
-    margin-bottom: 80px;
-    aspect-ratio: 16 / 10;
-  }
-
-  /* 2. Make the Top Container a "Ghost" layer */
-  .course-hero-top {
-    /* Reset flex positioning so we can place items manually */
-    display: block;
-    position: absolute;
-    /* Stretch to cover full hero size so we can position relative to bottom */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    /* CRITICAL: Let clicks pass through this layer to the video/image behind */
-    pointer-events: none;
-  }
-
-  /* 3. Position Back/Home Buttons (Top Left) */
-  .hero-nav-group {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    /* Re-enable clicks for these buttons */
-    pointer-events: auto;
-    gap: 8px;
-  }
-
-  .nav-icon-btn {
-    width: 36px;
-    height: 36px;
-    background: rgba(0, 0, 0, 0.7); /* Darker background for visibility */
-  }
-
-  /* 4. Position Level Tabs (OUTSIDE - Bottom Center) */
-  .course-level-tabs {
-    position: absolute;
-    top: auto; /* Ignore top */
-    bottom: -55px; /* Push it 55px BELOW the image */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%);
-
-    /* Re-enable clicks */
-    pointer-events: auto;
-
-    /* Styling to make it look like a floating toolbar */
-    width: max-content;
-    background: #161618; /* Solid dark color so it stands out */
-    border: 1px solid rgba(106, 236, 225, 0.3); /* Slight cyan border */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    padding: 6px;
-    border-radius: 12px;
-    z-index: 50;
-  }
-
-  .tab {
-    font-size: 0.8rem;
-    padding: 8px 20px;
-  }
-}
-.badge {
-  background: rgba(106, 236, 225, 0.1);
-
-  color: var(--color-primary);
-
-  padding: 6px 16px;
-
-  border-radius: 100px;
-
-  font-size: 0.85rem;
-
-  font-weight: 600;
-
-  border: 1px solid var(--color-border);
-}
-
-/* =========================================
-
-ACTION AREA (CTA)
-
-========================================= */
-
-.hero-action-area {
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  margin: 60px 0 80px 0;
-
-  position: relative;
-
-  z-index: 10;
-}
-
-.course-btn.main-cta {
-  background: var(--color-primary);
-
-  color: #000;
-
-  padding: 22px 60px;
-
-  font-size: 1.3rem;
-
-  font-weight: 800;
-
-  border-radius: 100px;
-
-  text-transform: uppercase;
-
-  letter-spacing: 1.5px;
-
-  box-shadow: 0 15px 35px var(--color-primary-glow);
-}
-
-.course-btn.main-cta:hover {
-  transform: translateY(3px);
-
-  background: #ffffff;
-
-  box-shadow: 0 10px 25px var(--color-primary);
-}
-
-/* =========================================
-
-INFO CARDS
-
-========================================= */
-
-.course-info-cards {
-  display: grid;
-
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-
-  gap: 30px;
-
-  margin-bottom: 80px;
-}
-
-.info-card {
-  background: var(--bg-card);
-
-  border-radius: 24px;
-
-  overflow: hidden;
-
-  border: 1px solid rgba(255, 255, 255, 0.05);
-
-  transition: var(--transition);
-}
-
-.info-card:hover {
-  border-color: var(--color-primary);
-
-  transform: translateY(-10px);
-
-  background: #1c1c1f;
-}
-
-.info-card img {
-  width: 100%;
-
-  height: 220px;
-
-  object-fit: cover;
-
-  transition: transform 0.5s ease;
-
-  cursor: pointer;
-}
-
-.info-card:hover img {
-  transform: scale(1.08);
-}
-
-.info-card-title {
-  padding: 25px;
-
-  text-align: center;
-
-  font-size: 1.2rem;
-
-  font-weight: 700;
-}
-
-/* =========================================
-
-CURRICULUM ACCORDION – BADGE ALIGNMENT FIXED
-
-========================================= */
-
-.section-title {
-  text-align: center;
-
-  margin-bottom: 30px;
-
-  font-size: 2rem;
-
-  font-weight: 800;
-}
-
-.modules {
-  display: grid;
-
-  gap: 15px;
-}
-
-.module {
-  background: var(--bg-glass);
-
-  border-radius: 20px;
-
-  border: 1px solid rgba(255, 255, 255, 0.05);
-
-  overflow: hidden;
-
-  transition: var(--transition);
-}
-
-.module:hover {
-  border-color: var(--color-border);
-
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.module-summary {
-  padding: 25px 30px;
-
-  cursor: pointer;
-
-  display: grid;
-
-  grid-template-columns: 1fr auto;
-
-  align-items: center;
-
-  gap: 20px;
-
-  list-style: none;
-
-  min-height: 80px;
-}
-
-.module-summary::-webkit-details-marker {
-  display: none;
-}
-
-.module-title {
-  font-size: 1.15rem;
-
-  font-weight: 700;
-
-  word-break: break-word;
-}
-
-.module-meta {
-  color: var(--color-primary);
-
-  font-size: 0.9rem;
-
-  font-weight: 600;
-
-  background: rgba(106, 236, 225, 0.1);
-
-  padding: 6px 14px;
-
-  border-radius: 12px;
-
-  white-space: nowrap;
-}
-
-.module-list {
-  padding: 0 30px 30px 50px;
-
-  margin: 0;
-
-  color: var(--text-secondary);
-}
-
-.module-list li {
-  margin-bottom: 12px;
-
-  line-height: 1.6;
-}
-
-/* =========================================
-
-IMAGE MODAL
-
-========================================= */
-
-.image-modal {
-  position: fixed;
-
-  inset: 0;
-
-  background: rgba(0, 0, 0, 0.95);
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  z-index: 1000;
-
-  cursor: zoom-out;
-
-  backdrop-filter: blur(10px);
-}
-
-.image-modal img {
-  max-width: 90%;
-
-  max-height: 85%;
-
-  border-radius: 15px;
-
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-
-  animation: modalScale 0.3s ease-out;
-}
-
-@keyframes modalScale {
-  from {
-    transform: scale(0.9);
-
-    opacity: 0;
-  }
-
-  to {
-    transform: scale(1);
-
-    opacity: 1;
-  }
-}
-
-/* =========================================
-
-RESPONSIVE DESIGN – MOBILE UX IMPROVEMENTS + ALIGNMENT
-
-========================================= */
-
-@media (max-width: 768px) {
-  .course-hero {
-    padding: 30px;
-
-    min-height: 400px;
-
-    height: auto;
-
-    margin-bottom: 0;
-
-    border-radius: 24px;
-  }
-
-  .course-hero-top {
-    top: 12px;
-
-    left: 12px;
-
-    right: 12px;
-  }
-
-  .back-btn {
-    padding: 8px 12px;
-
-    gap: 6px;
-  }
-
-  .back-arrow {
-    font-size: 1.3rem;
-  }
-
-  .back-text {
-    font-size: 0.85rem;
-  }
-
-  .course-level-tabs {
-    padding: 4px 8px;
-
-    gap: 6px;
-  }
-
-  .tab {
-    padding: 8px 14px;
-
-    font-size: 0.8rem;
-  }
-
-  .hero-action-area {
-    margin: 30px 0 50px 0;
-  }
-
-  .course-btn.main-cta {
-    padding: 18px 40px;
-
-    font-size: 1.1rem;
-
-    width: auto;
-
-    max-width: 90%;
-  }
-
-  .course-title {
-    font-size: clamp(1.8rem, 8vw, 2.8rem);
-
-    margin-bottom: 8px;
-  }
-
-  .course-subtitle {
-    font-size: 1.1rem;
-
-    margin-bottom: 0;
-  }
-
-  .info-card img {
-    height: 180px;
-  }
-
-  .module-summary {
-    gap: 16px;
-
-    padding: 20px 24px;
-  }
-}
-
-/* Extra small screens – icon-only back button */
-
-@media (max-width: 480px) {
-  .back-text {
-    display: none;
-  }
-
-  .back-btn {
-    padding: 10px 14px;
-  }
-
-  .back-arrow {
-    font-size: 1.5rem;
-  }
-
-  .course-btn.main-cta {
-    padding: 16px 30px;
-
-    font-size: 1rem;
-  }
-}
-
-.course-level-tabs.ds-tabs {
-  min-width: 200px;
-
-  max-width: 220px;
-}
-
-/* --- Styles for Course List/Catalog View --- */
-
 .course-list-page {
   padding: 60px 20px 40px;
-
   max-width: 1200px;
-
   margin: 0 auto;
-
-  color: #fff;
-
   min-height: 100vh;
-
   background-color: #0a0b14;
 }
 
 .course-list-header {
   text-align: center;
-
   margin-bottom: 50px;
-}
-
-.course-list-header h1 {
-  font-size: 2.5rem;
-
-  margin-bottom: 10px;
-
-  font-weight: 700;
-
-  color: #6aece1;
-}
-
-.course-list-header p {
-  font-size: 1.1rem;
-
-  color: #cbd5f5;
-
-  max-width: 600px;
-
-  margin: 0 auto;
 }
 
 .course-grid {
   display: grid;
-
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-
   gap: 30px;
 }
 
 .course-card {
   background: #0f1123;
-
   border-radius: 12px;
-
   overflow: hidden;
-
   border: 1px solid rgba(255, 255, 255, 0.1);
-
   cursor: pointer;
-
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-
   display: flex;
-
   flex-direction: column;
 }
 
 .course-card:hover {
   transform: translateY(-10px);
-
   box-shadow: 0 10px 30px rgba(106, 236, 225, 0.2);
 }
 
 .course-card-img {
   width: 100%;
-
   height: 200px;
-
   object-fit: cover;
 }
 
 .course-card-content {
   padding: 25px;
-
   flex-grow: 1;
-
   display: flex;
-
   flex-direction: column;
 }
 
 .course-card-content h3 {
   font-size: 1.5rem;
-
   margin-bottom: 8px;
-
   color: #6aece1;
-}
-
-.course-card-tagline {
-  font-weight: 500;
-
-  color: #e5e7eb;
-
-  margin-bottom: 15px;
-
-  font-style: italic;
 }
 
 .course-card-desc {
   color: #cbd5f5;
-
   font-size: 0.95rem;
-
   line-height: 1.6;
-
   flex-grow: 1;
-
   margin-bottom: 20px;
 }
 
 .course-card-btn {
   background: transparent;
-
   border: 1px solid #6aece1;
-
   color: #6aece1;
-
   padding: 10px 15px;
-
   border-radius: 20px;
-
   cursor: pointer;
-
   font-weight: 600;
-
-  transition: background-color 0.3s, color 0.3s;
-
+  transition: all 0.3s;
   align-self: flex-start;
 }
 
 .course-card:hover .course-card-btn {
   background-color: #6aece1;
-
   color: #0a0b14;
 }
 
-/* --- ENROLLMENT SECTION (BOTTOM OF PAGE) --- */
-
-.section-divider {
-  border: 0;
-
-  height: 1px;
-
-  background: linear-gradient(
-    to right,
-
-    transparent,
-    var(--color-border),
-    transparent
-  );
-
-  margin: 80px 0;
-}
-
-.enrollment-section {
-  padding-bottom: 100px;
-}
-
-.enrollment-container {
-  background: var(--bg-card);
-
-  border: 1px solid var(--color-border);
-
-  border-radius: 30px;
-
-  padding: 50px;
-
-  max-width: 800px;
-
-  margin: 0 auto;
-
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-.enrollment-header {
-  text-align: center;
-
-  margin-bottom: 40px;
-}
-
-.enrollment-header h2 {
-  font-size: 2rem;
-
-  color: var(--color-primary);
-
-  margin-bottom: 10px;
-}
-
-.enrollment-header p {
+/* =========================================
+   VIEW 2: TAB BUTTONS (REUSABLE COMPONENT)
+   ========================================= */
+.tab {
+  background: transparent;
+  border: none;
   color: var(--text-secondary);
-}
-
-.enroll-form-bottom {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 20px;
-}
-
-.form-group-row {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 20px;
-}
-
-.enroll-form-bottom input {
-  background: rgba(255, 255, 255, 0.03);
-
-  border: 1px solid rgba(255, 255, 255, 0.1);
-
-  padding: 18px;
-
-  border-radius: 12px;
-
-  color: white;
-
-  font-size: 1rem;
-
+  padding: 8px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
   transition: var(--transition);
+  white-space: nowrap;
 }
 
-.enroll-form-bottom input:focus {
-  outline: none;
-
-  border-color: var(--color-primary);
-
-  background: rgba(255, 255, 255, 0.07);
+.tab.active {
+  background: var(--color-primary);
+  color: #000;
 }
 
-.enroll-submit-btn {
-  width: 100%;
-
-  margin-top: 10px;
-
-  padding: 20px !important;
-}
-
-@media (max-width: 600px) {
-  .form-group-row {
-    grid-template-columns: 1fr;
-  }
-
-  .enrollment-container {
-    padding: 30px 20px;
-  }
-}
-
-.nav-buttons {
-  display: flex;
-
-  gap: 10px;
-}
-
-/* Mobile: hide text, show icons only */
-
-@media (max-width: 480px) {
-  .back-text {
-    display: none;
-  }
+/* Tab Container (usually wraps TabButtons in your TSX) */
+.course-level-tabs {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px;
+  border-radius: 14px;
+  display: inline-flex;
+  gap: 4px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 600px) {
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
 
-HERO NAV ICON BUTTONS (BACK + HOME)
+  .course-card-btn {
+    width: 100%;
+    text-align: center;
+  }
 
-========================================= */
-
-.hero-nav-group {
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px; /* 👈 proper gap between buttons */
-}
-
-/* Same size, same alignment */
-
-.nav-icon-btn {
-  width: 44px;
-
-  height: 44px;
-
-  border-radius: 12px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background: rgba(0, 0, 0, 0.55);
-
-  border: 1px solid rgba(255, 255, 255, 0.35);
-
-  color: #ffffff;
-
-  font-size: 1.2rem;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  backdrop-filter: blur(10px);
-
-  transition: all 0.25s ease;
+  .tab {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
 }

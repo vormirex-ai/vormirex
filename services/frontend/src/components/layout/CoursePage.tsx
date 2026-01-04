@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { LayoutDashboard, ArrowLeft } from 'lucide-react';
 import './CoursePage.css';
 import { COURSES, CourseId, CourseLevel } from '../../data/courses';
 
@@ -25,18 +26,10 @@ import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
 export default function CoursePage() {
   const navigate = useNavigate();
   const { courseId } = useParams<{ courseId: CourseId }>();
-
   const course = courseId ? COURSES[courseId] : undefined;
 
   const [level, setLevel] = useState<CourseLevel>('Foundation');
   const [modalImage, setModalImage] = useState<string | null>(null);
-
-  const openImage = (img: string) => setModalImage(img);
-  const closeImage = () => setModalImage(null);
-
-  const handleViewSyllabus = () => {
-    window.open(SyllabusPDF, '_blank', 'noopener,noreferrer');
-  };
 
   useEffect(() => {
     document.title = course
@@ -81,24 +74,24 @@ export default function CoursePage() {
     const uniqueCourses = Array.from(
       new Map(Object.values(COURSES).map((c) => [c.id, c])).values()
     );
-
     return (
       <div className="course-list-page">
+        <header className="course-list-header"></header>
         <div className="course-grid">
-          {uniqueCourses.map((courseItem) => (
+          {uniqueCourses.map((item) => (
             <div
-              key={courseItem.id}
+              key={item.id}
               className="course-card"
-              onClick={() => navigate(`/course/${courseItem.id}`)}
+              onClick={() => navigate(`/course/${item.id}`)}
             >
               <img
-                src={getCatalogImage(courseItem.id)}
-                alt={courseItem.title}
+                src={getCatalogImage(item.id)}
+                alt={item.title}
                 className="course-card-img"
               />
               <div className="course-card-content">
-                <h3>{courseItem.title}</h3>
-                <p className="course-card-desc">{courseItem.description}</p>
+                <h3>{item.title}</h3>
+                <p className="course-card-desc">{item.description}</p>
                 <button className="course-card-btn">View Details →</button>
               </div>
             </div>
@@ -108,27 +101,25 @@ export default function CoursePage() {
     );
   }
 
-  /* VIEW 2: ERROR */
-  if (!course) {
-    return (
-      <div className="course-page">
-        <div
-          className="course-shell"
-          style={{ textAlign: 'center', padding: '100px 0' }}
-        >
-          <h1>Course not found</h1>
-          <button
-            className="course-btn main-cta"
-            onClick={() => navigate('/courses')}
-          >
-            Back to Catalog
-          </button>
-        </div>
-      </div>
-    );
-  }
+  /* REUSABLE TAB COMPONENT TO AVOID DRIFT */
+  const TabButtons = () => (
+    <>
+      <button
+        className={`tab ${level === 'Foundation' ? 'active' : ''}`}
+        onClick={() => setLevel('Foundation')}
+      >
+        Foundation
+      </button>
+      <button
+        className={`tab ${level === 'Advanced' ? 'active' : ''}`}
+        onClick={() => setLevel('Advanced')}
+      >
+        Advanced
+      </button>
+    </>
+  );
 
-  /* VIEW 3: DETAIL PAGE */
+  /* VIEW 2: DETAIL PAGE */
   return (
     <div className="course-page">
       <div className="course-shell">
@@ -138,45 +129,40 @@ export default function CoursePage() {
           </video>
           <div className="course-hero-overlay" />
 
-          {/* This container now has relative positioning and padding to prevent touching the video graphics */}
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
                 className="nav-icon-btn"
-                aria-label="Back to courses"
+                title="Back to Courses"
                 onClick={() => navigate('/courses')}
               >
-                ←
+                <ArrowLeft size={20} />
               </button>
-
               <button
                 className="nav-icon-btn"
-                aria-label="Back to dashboard"
+                title="Dashboard"
                 onClick={() => navigate('/dashboard')}
               >
-                🏠
+                <LayoutDashboard size={20} />
               </button>
             </div>
-
-            <div className="course-level-tabs">
-              <button
-                className={`tab ${level === 'Foundation' ? 'active' : ''}`}
-                onClick={() => setLevel('Foundation')}
-              >
-                Foundation
-              </button>
-              <button
-                className={`tab ${level === 'Advanced' ? 'active' : ''}`}
-                onClick={() => setLevel('Advanced')}
-              >
-                Advanced
-              </button>
+            {/* DESKTOP TABS */}
+            <div className="course-level-tabs desktop-tabs">
+              <TabButtons />
             </div>
           </div>
         </header>
 
+        {/* MOBILE TABS (Visible via CSS Media Query) */}
+        <div className="course-level-tabs below-hero">
+          <TabButtons />
+        </div>
+
         <div className="hero-action-area">
-          <button className="course-btn main-cta" onClick={handleViewSyllabus}>
+          <button
+            className="course-btn main-cta"
+            onClick={() => window.open(SyllabusPDF, '_blank')}
+          >
             Download Full Syllabus (PDF)
           </button>
         </div>
@@ -185,7 +171,7 @@ export default function CoursePage() {
           <div className="info-card">
             <img
               src={getCatalogImage(courseId)}
-              onClick={() => openImage(getCatalogImage(courseId))}
+              onClick={() => setModalImage(getCatalogImage(courseId))}
               alt="Why"
             />
             <p className="info-card-title">Why {course.title}</p>
@@ -193,7 +179,7 @@ export default function CoursePage() {
           <div className="info-card">
             <img
               src={detailImages.career}
-              onClick={() => openImage(detailImages.career)}
+              onClick={() => setModalImage(detailImages.career)}
               alt="Career"
             />
             <p className="info-card-title">Career Path</p>
@@ -201,7 +187,7 @@ export default function CoursePage() {
           <div className="info-card">
             <img
               src={detailImages.gain}
-              onClick={() => openImage(detailImages.gain)}
+              onClick={() => setModalImage(detailImages.gain)}
               alt="Gain"
             />
             <p className="info-card-title">What You’ll Gain</p>
@@ -228,7 +214,7 @@ export default function CoursePage() {
         </section>
 
         {modalImage && (
-          <div className="image-modal" onClick={closeImage}>
+          <div className="image-modal" onClick={() => setModalImage(null)}>
             <img src={modalImage} alt="Enlarged" />
           </div>
         )}
