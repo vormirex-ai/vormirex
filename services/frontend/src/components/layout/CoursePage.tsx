@@ -138,6 +138,7 @@ export default function CoursePage() {
           </video>
           <div className="course-hero-overlay" />
 
+          {/* This container now has relative positioning and padding to prevent touching the video graphics */}
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
