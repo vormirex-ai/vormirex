@@ -82,7 +82,7 @@ const App: React.FC = () => {
         {/* ================= PUBLIC ROUTES ================= */}
         {}
         <Route
-          path="/homepage"
+          path="/home"
           element={
             <PublicLayout>
               <LandingPage />
