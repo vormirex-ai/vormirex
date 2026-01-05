@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LayoutDashboard, ArrowLeft } from 'lucide-react';
 import './CoursePage.css';
@@ -30,6 +30,7 @@ export default function CoursePage() {
 
   const [level, setLevel] = useState<CourseLevel>('Foundation');
   const [modalImage, setModalImage] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     document.title = course
@@ -69,14 +70,54 @@ export default function CoursePage() {
     return course.levels.find((l) => l.level === level) ?? course.levels[0];
   }, [course, level]);
 
-  /* VIEW 1: CATALOG */
+  // HD VIDEO & AUTOPLAY LOGIC
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+
+    const playVideo = async () => {
+      try {
+        await video.play();
+      } catch (err) {
+        console.warn('Autoplay blocked, waiting for interaction');
+      }
+    };
+
+    if (video.readyState >= 3) {
+      playVideo();
+    } else {
+      video.addEventListener('canplay', playVideo);
+    }
+
+    const handleInteraction = () => {
+      video.play();
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+    };
+
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+
+    return () => {
+      video.removeEventListener('canplay', playVideo);
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+    };
+  }, [heroVideo]);
+
   if (!courseId) {
     const uniqueCourses = Array.from(
       new Map(Object.values(COURSES).map((c) => [c.id, c])).values()
     );
     return (
       <div className="course-list-page">
-        <header className="course-list-header"></header>
+        <div className="course-list-header">
+          <h1>Our Courses</h1>
+        </div>
         <div className="course-grid">
           {uniqueCourses.map((item) => (
             <div
@@ -101,62 +142,56 @@ export default function CoursePage() {
     );
   }
 
-  /* REUSABLE TAB COMPONENT TO AVOID DRIFT */
-  const TabButtons = () => (
-    <>
-      <button
-        className={`tab ${level === 'Foundation' ? 'active' : ''}`}
-        onClick={() => setLevel('Foundation')}
-      >
-        Foundation
-      </button>
-      <button
-        className={`tab ${level === 'Advanced' ? 'active' : ''}`}
-        onClick={() => setLevel('Advanced')}
-      >
-        Advanced
-      </button>
-    </>
-  );
-
-  /* VIEW 2: DETAIL PAGE */
   return (
-    <div className="course-page">
+    <div className="course-page" data-course={courseId}>
       <div className="course-shell">
         <header className="course-hero">
-          <video autoPlay muted loop playsInline className="hero-video-bg">
+          <video
+            ref={videoRef}
+            key={heroVideo}
+            className="hero-video-bg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          >
             <source src={heroVideo} type="video/mp4" />
           </video>
+
           <div className="course-hero-overlay" />
 
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
                 className="nav-icon-btn"
-                title="Back to Courses"
                 onClick={() => navigate('/courses')}
               >
-                <ArrowLeft size={20} />
+                <ArrowLeft size={24} />
               </button>
               <button
                 className="nav-icon-btn"
-                title="Dashboard"
                 onClick={() => navigate('/dashboard')}
               >
-                <LayoutDashboard size={20} />
+                <LayoutDashboard size={24} />
               </button>
             </div>
-            {/* DESKTOP TABS */}
             <div className="course-level-tabs desktop-tabs">
-              <TabButtons />
+              <button
+                className={`tab ${level === 'Foundation' ? 'active' : ''}`}
+                onClick={() => setLevel('Foundation')}
+              >
+                Foundation
+              </button>
+              <button
+                className={`tab ${level === 'Advanced' ? 'active' : ''}`}
+                onClick={() => setLevel('Advanced')}
+              >
+                Advanced
+              </button>
             </div>
           </div>
         </header>
-
-        {/* MOBILE TABS (Visible via CSS Media Query) */}
-        <div className="course-level-tabs below-hero">
-          <TabButtons />
-        </div>
 
         <div className="hero-action-area">
           <button
@@ -174,7 +209,7 @@ export default function CoursePage() {
               onClick={() => setModalImage(getCatalogImage(courseId))}
               alt="Why"
             />
-            <p className="info-card-title">Why {course.title}</p>
+            <p className="info-card-title">Why {course?.title}</p>
           </div>
           <div className="info-card">
             <img

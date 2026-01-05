@@ -148,7 +148,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
               </li>
               <li onClick={() => navigate('/custom/exam-prep')}>
                 <FontAwesomeIcon icon={faClipboardList} className="nav-icon" />{' '}
-                Exam Prep
+                Exam Preparation
               </li>
               <li onClick={() => navigate('/custom/your-progress')}>
                 <FontAwesomeIcon icon={faChartLine} className="nav-icon" /> Your
