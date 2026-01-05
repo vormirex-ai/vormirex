@@ -46,13 +46,6 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         {/* CTA Group - ORDER: Dashboard → Start Free → Try AI Demo */}
         <div className="cta-group">
           {/* 1. BACK TO DASHBOARD */}
-          <button
-            className="btn-dashboard large"
-            onClick={() => navigate('/dashboard')}
-          >
-            <LayoutDashboard size={18} />
-            Back to Dashboard
-          </button>
 
           {/* 2. START FREE (PRIMARY) */}
           <button
