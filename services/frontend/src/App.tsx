@@ -150,7 +150,7 @@ const App: React.FC = () => {
         </Route>
         {}
         {}
-        <Route path="*" element={<Navigate to="/homepage" replace />} />{' '}
+        <Route path="*" element={<Navigate to="/home" replace />} />{' '}
       </Routes>
     </Router>
   );
