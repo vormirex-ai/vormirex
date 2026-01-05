@@ -70,43 +70,22 @@ export default function CoursePage() {
     return course.levels.find((l) => l.level === level) ?? course.levels[0];
   }, [course, level]);
 
-  // HD VIDEO & AUTOPLAY LOGIC
+  // VIDEO AUTOPLAY LOGIC
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     video.muted = true;
-    video.defaultMuted = true;
     video.playsInline = true;
 
-    const playVideo = async () => {
-      try {
-        await video.play();
-      } catch (err) {
-        console.warn('Autoplay blocked, waiting for interaction');
-      }
+    const playVideo = () => {
+      video.play().catch(() => console.log('Autoplay blocked'));
     };
 
-    if (video.readyState >= 3) {
-      playVideo();
-    } else {
-      video.addEventListener('canplay', playVideo);
-    }
+    if (video.readyState >= 3) playVideo();
+    else video.addEventListener('canplay', playVideo);
 
-    const handleInteraction = () => {
-      video.play();
-      window.removeEventListener('click', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-    };
-
-    window.addEventListener('click', handleInteraction);
-    window.addEventListener('touchstart', handleInteraction);
-
-    return () => {
-      video.removeEventListener('canplay', playVideo);
-      window.removeEventListener('click', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-    };
+    return () => video.removeEventListener('canplay', playVideo);
   }, [heroVideo]);
 
   if (!courseId) {
@@ -154,13 +133,10 @@ export default function CoursePage() {
             muted
             loop
             playsInline
-            preload="auto"
           >
             <source src={heroVideo} type="video/mp4" />
           </video>
-
           <div className="course-hero-overlay" />
-
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
@@ -176,6 +152,7 @@ export default function CoursePage() {
                 <LayoutDashboard size={24} />
               </button>
             </div>
+            {/* DESKTOP TABS */}
             <div className="course-level-tabs desktop-tabs">
               <button
                 className={`tab ${level === 'Foundation' ? 'active' : ''}`}
@@ -192,6 +169,22 @@ export default function CoursePage() {
             </div>
           </div>
         </header>
+
+        {/* MOBILE/TABLET TABS (Visible between 375px - 948px) */}
+        <div className="course-level-tabs below-hero">
+          <button
+            className={`tab ${level === 'Foundation' ? 'active' : ''}`}
+            onClick={() => setLevel('Foundation')}
+          >
+            Foundation
+          </button>
+          <button
+            className={`tab ${level === 'Advanced' ? 'active' : ''}`}
+            onClick={() => setLevel('Advanced')}
+          >
+            Advanced
+          </button>
+        </div>
 
         <div className="hero-action-area">
           <button

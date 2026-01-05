@@ -1,6 +1,7 @@
 :root {
   --bg-dark: #0a0a0b;
   --bg-card: #161618;
+  --bg-glass: rgba(255, 255, 255, 0.03);
   --color-primary: #6aece1;
   --color-primary-glow: rgba(106, 236, 225, 0.4);
   --color-border: rgba(106, 236, 225, 0.15);
@@ -9,111 +10,161 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-main);
   font-family: 'Poppins', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* ================= HERO SECTION (HD ENHANCED) ================= */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ================= BASE WRAPPER ================= */
+.course-page {
+  min-height: 100vh;
+  color: var(--text-main);
+}
+
+.course-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ================= HERO ================= */
 .course-hero {
   position: relative;
-  width: 100%;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
   height: 85vh;
   min-height: 550px;
   background: #000;
   overflow: hidden;
 }
 
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* ... migatha styles anni same ... */
+
 .hero-video-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   position: absolute;
   top: 50%;
   left: 50%;
   min-width: 100%;
   min-height: 100%;
-  width: auto;
-  height: auto;
+  transform: translate(-50%, -50%) translateZ(0);
   z-index: 1;
-  transform: translate(-50%, -50%) translateZ(0); /* HD Stability */
-  object-fit: cover;
-  pointer-events: none;
+  opacity: 1; /* Change this from 0 to 1 */
+  background: #000; /* Video load ayye varaku black screen untundi */
+}
 
-  /* SHARPNESS & CLARITY FIX */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  filter: contrast(1.1) brightness(1.05); /* HD Colors */
+/* ... migatha styles anni same ... */
+.hero-video-bg.loaded {
+  opacity: 1;
 }
 
 .course-hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to bottom,
-    rgba(10, 10, 11, 0.5) 0%,
-    transparent 50%,
-    rgba(10, 10, 11, 1) 100%
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.3) 35%,
+    rgba(0, 0, 0, 0.7) 100%
   );
   z-index: 2;
-  backdrop-filter: saturate(1.3); /* High quality saturation */
+  pointer-events: none;
 }
 
-/* ================= UI ELEMENTS ================= */
 .course-hero-top {
   position: absolute;
   top: 40px;
   left: 40px;
   right: 40px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  z-index: 10;
+  z-index: 5;
+}
+
+.hero-nav-group {
+  display: flex;
+  gap: 12px;
 }
 
 .nav-icon-btn {
   width: 50px;
   height: 50px;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.6);
   border: 1px solid var(--color-border);
-  color: white;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   backdrop-filter: blur(10px);
+  cursor: pointer;
   transition: var(--transition);
 }
 
 .nav-icon-btn:hover {
   background: var(--color-primary);
   color: #000;
-  box-shadow: 0 0 20px var(--color-primary-glow);
+  box-shadow: 0 0 30px var(--color-primary-glow);
 }
 
 .course-level-tabs {
-  background: rgba(0, 0, 0, 0.6);
+  display: inline-flex;
+  gap: 6px;
   padding: 6px;
-  border-radius: 14px;
-  display: flex;
-  backdrop-filter: blur(15px);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.65);
   border: 1px solid var(--color-border);
+  backdrop-filter: blur(12px);
+}
+
+.course-level-tabs.below-hero {
+  display: none;
 }
 
 .tab {
-  padding: 10px 25px;
   border: none;
   background: transparent;
   color: var(--text-secondary);
   font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px 22px;
+  border-radius: 12px;
   cursor: pointer;
-  border-radius: 10px;
   transition: var(--transition);
+}
+
+.tab:hover {
+  color: var(--color-primary);
 }
 
 .tab.active {
@@ -121,59 +172,132 @@ body {
   color: #000;
 }
 
-/* ================= CONTENT AREA ================= */
+.video-loading,
+.video-error {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: rgba(10, 10, 11, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 46px;
+  height: 46px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.play-button-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle,
+    rgba(10, 10, 11, 0.35),
+    rgba(0, 0, 0, 0.75)
+  );
+}
+
+.play-button {
+  border: none;
+  background: var(--color-primary);
+  color: #000;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 10px 35px var(--color-primary-glow);
+}
+
+.play-button:hover {
+  transform: translateY(-3px) scale(1.05);
+}
+
+/* ================= CTA ================= */
 .hero-action-area {
   text-align: center;
-  margin: -40px 0 80px;
+  /* We use a large positive margin-top to push it away from the video */
+  margin-top: 80px;
+  margin-bottom: 60px;
   position: relative;
-  z-index: 15;
+  z-index: 6;
+}
+
+.course-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 18px 46px;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
 .course-btn.main-cta {
   background: var(--color-primary);
   color: #000;
-  padding: 20px 50px;
-  border-radius: 100px;
-  font-size: 1.1rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 15px 40px var(--color-primary-glow);
+  box-shadow: 0 15px 35px var(--color-primary-glow); /* Slightly reduced shadow for cleaner look */
+  padding: 16px 40px;
+}
+.course-btn.main-cta:hover {
+  transform: translateY(-3px);
 }
 
+/* ================= INFO CARDS ================= */
 .course-info-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto 100px;
+  margin: 60px auto 100px; /* Increased top margin from 0 to 60px */
   padding: 0 20px;
+  max-width: 1200px;
 }
 
 .info-card {
   background: var(--bg-card);
   border-radius: 24px;
   border: 1px solid var(--color-border);
-  transition: var(--transition);
   overflow: hidden;
+  transition: var(--transition);
 }
 
 .info-card img {
-  width: 100%;
   height: 250px;
   object-fit: cover;
+  transition: var(--transition);
   cursor: pointer;
+}
+
+.info-card img:hover {
+  transform: scale(1.05);
 }
 
 .info-card-title {
   padding: 20px;
   text-align: center;
-  color: var(--color-primary);
-  font-weight: 700;
   font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-primary);
 }
 
+/* ================= CURRICULUM ================= */
 .course-content {
   max-width: 900px;
   margin: 0 auto 100px;
@@ -182,205 +306,80 @@ body {
 
 .section-title {
   text-align: center;
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   color: var(--color-primary);
-  margin-bottom: 50px;
+  margin-bottom: 40px;
+}
+
+.modules {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .module {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-glass);
   border: 1px solid var(--color-border);
-  border-radius: 16px;
-  margin-bottom: 15px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.module summary {
+  list-style: none;
 }
 
 .module-summary {
-  padding: 25px;
-  cursor: pointer;
+  padding: 24px;
   display: flex;
   justify-content: space-between;
-  font-weight: 700;
+  align-items: center;
+  cursor: pointer;
 }
 
+.module-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.module-meta {
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  background: rgba(106, 236, 225, 0.1);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+.module-list {
+  padding: 0 30px 24px 45px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ================= MODAL ================= */
 .image-modal {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  backdrop-filter: blur(15px);
+  z-index: 2000;
 }
 
-@media (max-width: 948px) {
-  .desktop-tabs {
-    display: none;
-  }
-  .course-level-tabs.below-hero {
-    display: flex;
-    margin: 30px auto;
-    max-width: fit-content;
-  }
-  .course-hero {
-    height: 60vh;
-  }
-}
-/* ================= MOBILE & TABLET FIX ================= */
-@media (max-width: 948px) {
-  .course-hero-top {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    right: 16px;
-
-    display: flex;
-    flex-direction: row; /* KEEP ROW */
-    justify-content: space-between; /* LEFT & RIGHT */
-    align-items: flex-start;
-
-    z-index: 20;
-  }
-
-  /* LEFT ICON STACK */
-  .hero-nav-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  /* RIGHT TABS */
-  .course-level-tabs.desktop-tabs {
-    display: flex !important;
-    align-self: flex-start;
-  }
-
-  .tab {
-    padding: 8px 14px;
-    font-size: 0.85rem;
-  }
-
-  .nav-icon-btn {
-    width: 40px;
-    height: 40px;
-  }
+.image-modal img {
+  max-width: 90%;
+  max-height: 85%;
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
 }
 
-@media (max-width: 480px) {
-  .tab {
-    padding: 8px 15px; /* Narrower tabs for small phones */
-    font-size: 14px;
-  }
-}
-/* Ensure the top nav spans the full width and pushes items to the edges */
-.course-hero-top {
-  position: absolute;
-  top: 20px; /* Reduced from 40px for better mobile fit */
-  left: 20px;
-  right: 20px;
-  display: flex;
-  justify-content: space-between; /* This pushes nav-group left and tabs right */
-  align-items: flex-start;
-  z-index: 10;
-}
-
-/* Ensure the buttons stay in a neat group on the left */
-.hero-nav-group {
-  display: flex;
-  flex-direction: column; /* Matches your screenshot stack */
-  gap: 10px;
-}
-
-/* Fix the Media Query so buttons don't disappear */
-@media (max-width: 948px) {
-  .desktop-tabs {
-    display: flex !important; /* Forces visibility */
-  }
-
-  /* Make tabs slightly smaller for tablets/phones */
-  .tab {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-  }
-
-  .nav-icon-btn {
-    width: 42px;
-    height: 42px;
-  }
-}
-
-/* Special handling for very small screens (iPhone SE / 375px) */
-@media (max-width: 480px) {
-  .course-hero-top {
-    top: 15px;
-    left: 15px;
-    right: 15px;
-  }
-
-  .course-level-tabs {
-    padding: 4px;
-  }
-}
-@media (max-width: 480px) {
-  .course-level-tabs {
-    padding: 4px;
-  }
-
-  .tab {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-}
-/* ================= MOBILE & TABLET RIGHT-SIDE STACK ================= */
-@media (max-width: 948px) {
-  .course-hero-top {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    right: 16px;
-
-    display: flex;
-    justify-content: space-between; /* LEFT & RIGHT */
-    align-items: flex-start;
-    z-index: 20;
-  }
-
-  /* LEFT SIDE (Back + Dashboard) */
-  .hero-nav-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  /* RIGHT SIDE (Foundation + Advanced) */
-  .course-level-tabs.desktop-tabs {
-    display: flex !important;
-    flex-direction: column; /* 👈 STACK VERTICALLY */
-    gap: 10px;
-    padding: 6px;
-    align-self: flex-start;
-  }
-
-  .tab {
-    padding: 10px 18px;
-    font-size: 0.9rem;
-    border-radius: 12px;
-    text-align: center;
-    min-width: 120px;
-  }
-}
-@media (max-width: 480px) {
-  .tab {
-    padding: 8px 14px;
-    font-size: 0.8rem;
-    min-width: 105px;
-  }
-}
-/* ================= COURSE LIST PAGE ================= */
+/* ================= COURSE LIST VIEW ================= */
 .course-list-page {
-  min-height: 100vh;
-  background: var(--bg-dark);
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 80px 20px;
+  min-height: 100vh;
 }
 
 .course-list-header {
@@ -394,71 +393,192 @@ body {
   color: var(--color-primary);
 }
 
-/* GRID */
 .course-grid {
-  max-width: 1300px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 35px;
 }
 
-/* CARD */
 .course-card {
   background: var(--bg-card);
-  border-radius: 22px;
-  overflow: hidden;
-  cursor: pointer;
+  border-radius: 24px;
   border: 1px solid var(--color-border);
-  transition: var(--transition);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
 .course-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-6px);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
 }
 
-/* IMAGE */
 .course-card-img {
-  width: 100%;
   height: 200px;
   object-fit: cover;
 }
 
-/* CONTENT */
 .course-card-content {
-  padding: 22px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex-grow: 1;
 }
 
 .course-card-content h3 {
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--text-main);
 }
 
 .course-card-desc {
-  font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.5;
+  flex-grow: 1;
 }
 
-/* BUTTON */
 .course-card-btn {
-  margin-top: auto;
-  background: transparent;
+  align-self: flex-start;
+  border: 1px solid var(--color-primary);
   color: var(--color-primary);
-  border: none;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: left;
-  padding: 0;
+  padding: 10px 18px;
+  border-radius: 20px;
+  background: transparent;
+  font-weight: 600;
+  transition: var(--transition);
 }
 
-.course-card-btn:hover {
-  text-decoration: underline;
+.course-card:hover .course-card-btn {
+  background: var(--color-primary);
+  color: #000;
+}
+
+/* ================= VIDEO STATES ================= */
+.video-error small {
+  color: var(--text-secondary);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1200px) {
+  .course-shell {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .course-hero {
+    height: 65vh;
+  }
+}
+
+@media (max-width: 948px) {
+  .course-hero {
+    height: 60vh;
+  }
+
+  .course-hero-top {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .hero-nav-group {
+    flex-direction: column;
+  }
+
+  .course-level-tabs.desktop-tabs {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .course-level-tabs.below-hero {
+    display: flex;
+    justify-content: center;
+    margin: 30px auto;
+  }
+
+  .tab {
+    padding: 8px 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .course-hero {
+    height: 55vh;
+    min-height: 420px;
+  }
+
+  .course-info-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .course-level-tabs.desktop-tabs {
+    display: none;
+  }
+
+  .course-level-tabs.below-hero {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 600px) {
+  .course-list-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .course-card-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .course-hero-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .course-level-tabs.below-hero {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tab {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-hero {
+    height: 50vh;
+  }
+
+  .course-hero-top {
+    top: 14px;
+    left: 14px;
+    right: 14px;
+  }
+
+  .nav-icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .tab {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .hero-action-area {
+    margin-top: -30px;
+  }
 }
