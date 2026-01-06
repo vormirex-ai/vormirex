@@ -136,33 +136,44 @@ export default function CoursePage() {
           >
             <source src={heroVideo} type="video/mp4" />
           </video>
+
           <div className="course-hero-overlay" />
+
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
                 className="nav-icon-btn"
                 onClick={() => navigate('/courses')}
+                aria-label="Back to courses"
               >
                 <ArrowLeft size={24} />
               </button>
               <button
                 className="nav-icon-btn"
                 onClick={() => navigate('/dashboard')}
+                aria-label="Go to dashboard"
               >
                 <LayoutDashboard size={24} />
               </button>
             </div>
+
             {/* DESKTOP TABS */}
-            <div className="course-level-tabs desktop-tabs">
+            <div
+              className="course-level-tabs desktop-tabs"
+              role="tablist"
+              aria-label="Course level"
+            >
               <button
                 className={`tab ${level === 'Foundation' ? 'active' : ''}`}
                 onClick={() => setLevel('Foundation')}
+                type="button"
               >
                 Foundation
               </button>
               <button
                 className={`tab ${level === 'Advanced' ? 'active' : ''}`}
                 onClick={() => setLevel('Advanced')}
+                type="button"
               >
                 Advanced
               </button>
@@ -171,16 +182,22 @@ export default function CoursePage() {
         </header>
 
         {/* MOBILE/TABLET TABS (Visible between 375px - 948px) */}
-        <div className="course-level-tabs below-hero">
+        <div
+          className="course-level-tabs below-hero"
+          role="tablist"
+          aria-label="Course level"
+        >
           <button
             className={`tab ${level === 'Foundation' ? 'active' : ''}`}
             onClick={() => setLevel('Foundation')}
+            type="button"
           >
             Foundation
           </button>
           <button
             className={`tab ${level === 'Advanced' ? 'active' : ''}`}
             onClick={() => setLevel('Advanced')}
+            type="button"
           >
             Advanced
           </button>
@@ -190,6 +207,7 @@ export default function CoursePage() {
           <button
             className="course-btn main-cta"
             onClick={() => window.open(SyllabusPDF, '_blank')}
+            type="button"
           >
             Download Full Syllabus (PDF)
           </button>

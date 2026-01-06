@@ -8,7 +8,7 @@ interface CustomCoursePageProps {
   testimonials?: { name: string; text: string }[];
   heroImageUrl: string;
   featureImages: string[];
-  pdfUrl?: string; // Added PDF prop
+  pdfUrl?: string;
 }
 
 const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
@@ -22,7 +22,7 @@ const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
 }) => {
   const handlePdfOpen = () => {
     if (pdfUrl) {
-      window.open(pdfUrl, '_blank'); // Open PDF in new tab
+      window.open(pdfUrl, '_blank');
     } else {
       alert('PDF not available.');
     }

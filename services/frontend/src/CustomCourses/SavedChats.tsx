@@ -2,7 +2,7 @@ import React from 'react';
 import CustomCoursePage from './CustomCoursePage';
 
 // Import local images
-import savedchats from '../CustomCourses/assets/savedchats.jpg';
+import savedchats from '../CustomCourses/assets/savedchatss.jpg';
 import savedchats1 from '../CustomCourses/assets/savedchats1.jpg';
 import savedchats2 from '../CustomCourses/assets/savedchat2.png';
 import savedchats3 from '../CustomCourses/assets/savedchat3.png';
