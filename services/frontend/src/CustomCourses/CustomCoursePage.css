@@ -5,27 +5,37 @@
   overflow-x: hidden;
 }
 
-/* Hero Section */
+/* ================= HERO SECTION ================= */
 .custom-hero {
   height: 100vh;
   min-height: 400px;
 
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+
+  /* 🔥 Image quality improvements */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  filter: saturate(1.05) contrast(1.05);
+
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
+/* Gradient overlay – REDUCED DARKNESS */
 .custom-hero::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(18, 18, 18, 0.4),
-    rgba(18, 18, 18, 0.9)
+    rgba(18, 18, 18, 0.25),
+    rgba(18, 18, 18, 0.65)
   );
 }
 
@@ -69,7 +79,14 @@
   box-shadow: 0 15px 40px rgba(0, 255, 255, 0.6);
 }
 
-/* Benefits Section */
+/* Desktop-only premium parallax */
+@media (min-width: 1024px) {
+  .custom-hero {
+    background-attachment: fixed;
+  }
+}
+
+/* ================= BENEFITS SECTION ================= */
 .section-title {
   text-align: center;
   font-size: 3rem;
@@ -96,7 +113,7 @@
   text-align: center;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   transition: all 0.5s ease;
-  opacity: 0; /* Necessary for your animation */
+  opacity: 0;
 }
 
 .benefit-card:hover {
@@ -118,7 +135,7 @@
   line-height: 1.6;
 }
 
-/* Testimonials */
+/* ================= TESTIMONIALS ================= */
 .testimonials-section {
   padding: 100px 40px;
   background-color: var(--bg-dark);
@@ -154,7 +171,7 @@
   font-size: 1.2rem;
 }
 
-/* Final CTA */
+/* ================= FINAL CTA ================= */
 .final-cta-section {
   text-align: center;
   padding: 120px 40px;
@@ -191,7 +208,7 @@
   box-shadow: 0 20px 60px rgba(0, 255, 255, 0.7);
 }
 
-/* Animations */
+/* ================= ANIMATIONS ================= */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -252,20 +269,7 @@
   animation-delay: 3s;
 }
 
-/* Responsive - FIXING THE 474px ISSUE */
-@media (max-width: 968px) {
-  .custom-title {
-    font-size: 3.5rem;
-  }
-  .custom-desc {
-    font-size: 1.4rem;
-  }
-  .section-title {
-    font-size: 2.5rem;
-  }
-}
-
-/* Merged Mobile Queries to stop the background from disappearing */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 968px) {
   .custom-title {
     font-size: 3.5rem;
@@ -278,54 +282,36 @@
   }
   .custom-hero {
     height: 70vh;
-    min-height: 500px; /* smaller than desktop but still large enough */
+    min-height: 500px;
     background-position: center;
-  }
-  .hero-cta,
-  .final-cta-button {
-    font-size: 1.4rem;
-    padding: 18px 45px;
+    background-attachment: scroll;
   }
 }
 
-/* Small tablets / large phones */
 @media (max-width: 618px) {
   .custom-hero {
     height: 65vh;
-    min-height: 450px; /* safe minimum */
-    background-position: center;
+    min-height: 450px;
+    background-position: center top;
   }
   .custom-title {
     font-size: 2.6rem;
   }
-  .hero-cta,
-  .final-cta-button {
-    font-size: 1.3rem;
-    padding: 16px 40px;
-  }
 }
 
-/* Mobile / small screens */
 @media (max-width: 480px) {
   .custom-hero {
     height: 60vh;
-    min-height: 400px; /* ensures image fully visible at tiny widths */
-    background-position: center;
+    min-height: 400px;
   }
   .custom-title {
     font-size: 2.2rem;
   }
   .benefits-grid {
-    grid-template-columns: 1fr; /* single column layout */
-  }
-  .hero-cta,
-  .final-cta-button {
-    font-size: 1.2rem;
-    padding: 14px 35px;
+    grid-template-columns: 1fr;
   }
 }
 
-/* Optional extra small phones */
 @media (max-width: 374px) {
   .custom-hero {
     height: 55vh;
@@ -337,9 +323,189 @@
   .custom-desc {
     font-size: 1.2rem;
   }
-  .hero-cta,
-  .final-cta-button {
-    font-size: 1.1rem;
-    padding: 12px 30px;
+}
+.custom-course-main {
+  min-height: 100vh;
+  background-color: #0a0a0a; /* Darker base for better contrast */
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* ================= HERO SECTION ================= */
+.custom-hero {
+  height: 100vh;
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* High Quality Image Settings */
+  image-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0); /* Hardware acceleration */
+  backface-visibility: hidden;
+
+  /* Color Enhancement */
+  filter: saturate(1.1) contrast(1.05);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Premium Gradient Overlay */
+.custom-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(10, 10, 10, 1) 100%
+  );
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 1000px;
+  padding: 0 20px;
+}
+
+.custom-title {
+  font-size: clamp(2.5rem, 8vw, 5rem); /* Fluid typography */
+  color: var(--color-teal, #00ced1);
+  margin-bottom: 24px;
+  font-weight: 900;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.custom-desc {
+  font-size: clamp(1.1rem, 3vw, 1.7rem);
+  color: #f0f0f0;
+  margin-bottom: 40px;
+  line-height: 1.5;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hero-cta {
+  background-color: var(--color-teal, #00ced1);
+  color: #000;
+  font-weight: 800;
+  padding: 20px 50px;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(0, 206, 209, 0.3);
+}
+
+.hero-cta:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(0, 206, 209, 0.5);
+}
+
+/* ================= BENEFITS SECTION ================= */
+.benefits-section {
+  padding: 100px 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--color-teal, #00ced1);
+  margin-bottom: 60px;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.benefit-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px); /* Glassmorphism */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 30px;
+  transition: all 0.4s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-15px);
+  border-color: var(--color-teal, #00ced1);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.benefit-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  /* Ensure sub-images are also high quality */
+  image-rendering: auto;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.delay-1 {
+  animation-delay: 0.2s;
+}
+.delay-2 {
+  animation-delay: 0.4s;
+}
+/* ... (Keep other delays) */
+
+/* ================= RESPONSIVE ================= */
+@media (min-width: 1024px) {
+  .custom-hero {
+    background-attachment: fixed;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-hero {
+    background-attachment: scroll;
+  } /* Better quality on mobile */
+  .hero-content {
+    padding-top: 60px;
   }
 }

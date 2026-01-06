@@ -34,7 +34,7 @@ const SidebarRight: React.FC<SidebarRightProps> = ({
       </button>
       <h2>Learning Tools</h2>
 
-      <div className="progress-card" onClick={showComingSoon}>
+      <div className="progress-card">
         <h3>TODAY'S PROGRESS</h3>
         <div className="progress-details">
           <div className="daily-goals">

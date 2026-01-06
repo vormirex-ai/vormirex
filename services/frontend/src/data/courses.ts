@@ -1,4 +1,9 @@
-export type CourseId = 'cyber-security' | 'data-analytics' | 'data-science';
+export type CourseId =
+  | 'cyber-security'
+  | 'data-analytics'
+  | 'data-science'
+  | 'ai-ml';
+
 export type CourseLevel = 'Foundation' | 'Advanced';
 
 export interface CourseModule {
@@ -267,6 +272,7 @@ export const COURSES: Record<CourseId, Course> = {
       },
     ],
   },
+
   /* -------------------------------------------------------------------------- */
   /* DATA ANALYTICS */
   /* -------------------------------------------------------------------------- */
@@ -406,6 +412,7 @@ export const COURSES: Record<CourseId, Course> = {
       },
     ],
   },
+
   /* -------------------------------------------------------------------------- */
   /* CYBER SECURITY */
   /* -------------------------------------------------------------------------- */
@@ -608,6 +615,274 @@ export const COURSES: Record<CourseId, Course> = {
           },
         ],
         highlights: ['Certificate'],
+      },
+    ],
+  },
+
+  /* -------------------------------------------------------------------------- */
+  /* AI / ML ENGINEER – NEW COURSE */
+  /* -------------------------------------------------------------------------- */
+  'ai-ml': {
+    id: 'ai-ml',
+    title: 'AI / ML Engineer',
+    subtitle: 'Foundation → Advanced',
+    description:
+      'Complete roadmap to become a production-ready AI/ML Engineer – from mathematical foundations and core ML to deep learning, LLMs, MLOps, and end-to-end deployment.',
+    levels: [
+      {
+        level: 'Foundation',
+        duration: '2 months',
+        modules: [
+          {
+            title: 'Mathematical Foundations',
+            items: [
+              'Linear Algebra: vectors, matrices, dot product, eigen concepts',
+              'Probability basics: events, distributions',
+              'Statistics: mean, variance, standard deviation',
+              'Calculus basics: derivatives, gradients (intuition only)',
+            ],
+          },
+          {
+            title: 'Python for Data Science',
+            items: [
+              'Python fundamentals (loops, functions, OOP basics)',
+              'NumPy (arrays, broadcasting, vectorization)',
+              'Pandas (dataframes, indexing, merging)',
+              'Jupyter Notebook workflow',
+            ],
+          },
+          {
+            title: 'Data Handling & EDA',
+            items: [
+              'Data cleaning (missing values, duplicates)',
+              'Data preprocessing & scaling',
+              'Feature engineering basics',
+              'Exploratory Data Analysis (EDA)',
+              'Data visualization (Matplotlib, Seaborn)',
+            ],
+          },
+          {
+            title: 'Supervised Learning – Regression',
+            items: [
+              'Machine Learning pipeline',
+              'Linear Regression',
+              'Multiple Linear Regression',
+              'Logistic Regression',
+              'Bias–variance tradeoff',
+              'Hands-on mini project',
+            ],
+          },
+          {
+            title: 'Supervised Learning – Classification',
+            items: [
+              'Decision Trees',
+              'Random Forest',
+              'K-Nearest Neighbors (KNN)',
+              'Support Vector Machines (SVM)',
+              'Evaluation metrics (Accuracy, Precision, Recall, F1)',
+            ],
+          },
+          {
+            title: 'Unsupervised Learning',
+            items: [
+              'K-Means clustering',
+              'Hierarchical clustering',
+              'Dimensionality reduction (PCA)',
+              'Use cases & visualization',
+            ],
+          },
+          {
+            title: 'Deep Learning Basics',
+            items: [
+              'Neural Network fundamentals',
+              'Activation functions',
+              'Backpropagation intuition',
+              'CNN basics (image understanding)',
+              'RNN basics (sequence data)',
+            ],
+          },
+          {
+            title: 'Model Evaluation & Deployment',
+            items: [
+              'Cross-validation',
+              'Hyper-parameter tuning',
+              'Regularization techniques',
+              'Intro to deployment',
+              'Deploy ML model using Streamlit',
+              'Foundation final project',
+            ],
+          },
+        ],
+        highlights: ['Certificate', 'Foundation Project'],
+      },
+      {
+        level: 'Advanced',
+        duration: '5 months',
+        modules: [
+          {
+            title: 'Advanced Mathematics',
+            items: [
+              'Multivariate calculus',
+              'Optimization techniques (GD, SGD)',
+              'Convex optimization',
+            ],
+          },
+          {
+            title: 'Bayesian & Probabilistic ML',
+            items: [
+              'Bayesian inference',
+              'Probability models',
+              'Probabilistic graphical models',
+            ],
+          },
+          {
+            title: 'Advanced Machine Learning',
+            items: [
+              'Regularization (L1, L2, ElasticNet)',
+              'Kernel methods',
+              'Model selection strategies',
+            ],
+          },
+          {
+            title: 'Ensemble Learning',
+            items: [
+              'Gradient Boosting',
+              'XGBoost',
+              'LightGBM',
+              'Feature importance & tuning',
+            ],
+          },
+          {
+            title: 'CNN Deep Dive',
+            items: [
+              'CNN architectures',
+              'Image classification',
+              'Object detection basics',
+              'Transfer learning',
+            ],
+          },
+          {
+            title: 'Advanced Computer Vision',
+            items: [
+              'Object detection (YOLO, SSD, Faster R-CNN)',
+              'Image segmentation (U-Net, Mask R-CNN)',
+            ],
+          },
+          {
+            title: 'RNNs & Transformers',
+            items: [
+              'RNN, LSTM, GRU',
+              'Seq2Seq models',
+              'Attention mechanism',
+              'Transformers overview',
+            ],
+          },
+          {
+            title: 'Generative Models',
+            items: [
+              'GANs',
+              'VAEs',
+              'Diffusion models',
+              'Image & text generation projects',
+            ],
+          },
+          {
+            title: 'NLP Fundamentals',
+            items: [
+              'Text preprocessing',
+              'Tokenization',
+              'Word embeddings (Word2Vec, GloVe, FastText)',
+            ],
+          },
+          {
+            title: 'Advanced NLP Tasks',
+            items: [
+              'Sentiment analysis',
+              'Named Entity Recognition (NER)',
+              'Text summarization',
+              'Question Answering',
+            ],
+          },
+          {
+            title: 'Large Language Models',
+            items: [
+              'Transformer architecture deep dive',
+              'BERT, GPT overview',
+              'Prompt engineering',
+              'Fine-tuning LLMs',
+            ],
+          },
+          {
+            title: 'LLM Applications',
+            items: [
+              'Chatbots',
+              'RAG systems',
+              'LLM evaluation',
+              'LLM deployment basics',
+            ],
+          },
+          {
+            title: 'MLOps Fundamentals',
+            items: [
+              'ML lifecycle',
+              'Model versioning (DVC, MLflow)',
+              'Experiment tracking',
+            ],
+          },
+          {
+            title: 'CI/CD for ML',
+            items: [
+              'Git & GitHub',
+              'CI/CD pipelines',
+              'GitHub Actions / Jenkins for ML',
+            ],
+          },
+          {
+            title: 'Deployment & Scaling',
+            items: [
+              'Docker',
+              'Kubernetes basics',
+              'REST APIs for ML',
+              'Scaling inference',
+            ],
+          },
+          {
+            title: 'Monitoring & Reliability',
+            items: [
+              'Model monitoring',
+              'Data & concept drift',
+              'Logging & alerting',
+              'Production best practices',
+            ],
+          },
+          {
+            title: 'Advanced Topics',
+            items: [
+              'Graph Neural Networks (GNNs)',
+              'Time-Series forecasting',
+              'Anomaly detection',
+            ],
+          },
+          {
+            title: 'Ethical & Responsible AI',
+            items: [
+              'Bias & fairness',
+              'Explainable AI',
+              'Privacy-preserving ML',
+              'Federated learning & DP',
+            ],
+          },
+          {
+            title: 'Capstone Project',
+            items: [
+              'Problem definition & data pipeline',
+              'Model development & evaluation',
+              'End-to-end deployment',
+              'Documentation, presentation & demo',
+            ],
+          },
+        ],
+        highlights: ['Certificate', 'Capstone Project with Deployment'],
       },
     ],
   },

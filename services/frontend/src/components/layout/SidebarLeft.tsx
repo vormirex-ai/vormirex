@@ -119,7 +119,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
                 <FontAwesomeIcon icon={faChartLine} className="nav-icon" /> Data
                 Analytics
               </li>
-              <li onClick={showComingSoon}>
+              <li onClick={() => navigate('/course/ai-ml')}>
                 <FontAwesomeIcon icon={faLightbulb} className="nav-icon" /> AI /
                 ML
               </li>
