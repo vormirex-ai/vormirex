@@ -9,17 +9,23 @@ import CyberVideo from '../../assets/cybersecurity.mp4';
 import DataScienceVideo from '../../assets/datascience.mp4';
 import DataAnalyticsVideo from '../../assets/dataanalytics.mp4';
 
+// NEW: Static hero image for AI/ML
+import AIMLHero from '../../assets/aiml.jpg'; // ← Create this (1920x1080 recommended)
+
 import WhyCyber from '../../assets/whylearncyber.jpg';
 import WhyDS from '../../assets/whylearndatascince.jpeg';
 import WhyDA from '../../assets/whylearndataana.jpeg';
+import WhyAI from '../../assets/aiml.jpg';
 
 import CareerCyber from '../../assets/carrerincyber.jpeg';
 import CareerDA from '../../assets/carrerindataana.jpeg';
 import CareerDS from '../../assets/carrerindatascience.jpeg';
+import CareerAI from '../../assets/aiml.jpg';
 
 import GainCyber from '../../assets/gainincyber.jpeg';
 import GainDS from '../../assets/gainindatascience.jpeg';
-import GainDA from '../../assets/carerindataana.jpeg';
+import GainDA from '../../assets/gainindatascience.jpeg';
+import GainAI from '../../assets/aiml.jpg';
 
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
 
@@ -43,17 +49,26 @@ export default function CoursePage() {
       'data-science': WhyDS,
       'data-analytics': WhyDA,
       'cyber-security': WhyCyber,
+      'ai-ml': WhyAI || WhyDS,
     };
     return map[id] || WhyCyber;
   };
 
-  const heroVideo = useMemo(() => {
-    const map: Record<string, string> = {
+  // Hero media: video for others, static image for AI/ML
+  const heroMedia = useMemo(() => {
+    if (courseId === 'ai-ml') {
+      return { type: 'image' as const, src: AIMLHero };
+    }
+
+    const videoMap: Record<string, string> = {
       'cyber-security': CyberVideo,
       'data-science': DataScienceVideo,
       'data-analytics': DataAnalyticsVideo,
     };
-    return courseId ? map[courseId] : CyberVideo;
+    return {
+      type: 'video' as const,
+      src: videoMap[courseId!] || CyberVideo,
+    };
   }, [courseId]);
 
   const detailImages = useMemo(() => {
@@ -61,6 +76,7 @@ export default function CoursePage() {
       'cyber-security': { career: CareerCyber, gain: GainCyber },
       'data-science': { career: CareerDS, gain: GainDS },
       'data-analytics': { career: CareerDA, gain: GainDA },
+      'ai-ml': { career: CareerAI || CareerDS, gain: GainAI || GainDS },
     };
     return courseId ? images[courseId] : images['cyber-security'];
   }, [courseId]);
@@ -70,8 +86,10 @@ export default function CoursePage() {
     return course.levels.find((l) => l.level === level) ?? course.levels[0];
   }, [course, level]);
 
-  // VIDEO AUTOPLAY LOGIC
+  // Autoplay only for video
   useEffect(() => {
+    if (heroMedia.type !== 'video') return;
+
     const video = videoRef.current;
     if (!video) return;
 
@@ -86,7 +104,7 @@ export default function CoursePage() {
     else video.addEventListener('canplay', playVideo);
 
     return () => video.removeEventListener('canplay', playVideo);
-  }, [heroVideo]);
+  }, [heroMedia]);
 
   if (!courseId) {
     const uniqueCourses = Array.from(
@@ -125,55 +143,54 @@ export default function CoursePage() {
     <div className="course-page" data-course={courseId}>
       <div className="course-shell">
         <header className="course-hero">
-          <video
-            ref={videoRef}
-            key={heroVideo}
-            className="hero-video-bg"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src={heroVideo} type="video/mp4" />
-          </video>
+          {/* Conditional Hero Media */}
+          {heroMedia.type === 'video' ? (
+            <video
+              ref={videoRef}
+              key={heroMedia.src}
+              className="hero-video-bg"
+              autoPlay
+              muted
+              loop
+              playsInline
+            >
+              <source src={heroMedia.src} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <img
+              src={heroMedia.src}
+              alt={`${course?.title} Hero`}
+              className="hero-video-bg hero-image-bg" // Reuse same class + new one
+            />
+          )}
 
           <div className="course-hero-overlay" />
-
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
                 className="nav-icon-btn"
                 onClick={() => navigate('/courses')}
-                aria-label="Back to courses"
               >
                 <ArrowLeft size={24} />
               </button>
               <button
                 className="nav-icon-btn"
                 onClick={() => navigate('/dashboard')}
-                aria-label="Go to dashboard"
               >
                 <LayoutDashboard size={24} />
               </button>
             </div>
-
-            {/* DESKTOP TABS */}
-            <div
-              className="course-level-tabs desktop-tabs"
-              role="tablist"
-              aria-label="Course level"
-            >
+            <div className="course-level-tabs desktop-tabs">
               <button
                 className={`tab ${level === 'Foundation' ? 'active' : ''}`}
                 onClick={() => setLevel('Foundation')}
-                type="button"
               >
                 Foundation
               </button>
               <button
                 className={`tab ${level === 'Advanced' ? 'active' : ''}`}
                 onClick={() => setLevel('Advanced')}
-                type="button"
               >
                 Advanced
               </button>
@@ -181,23 +198,17 @@ export default function CoursePage() {
           </div>
         </header>
 
-        {/* MOBILE/TABLET TABS (Visible between 375px - 948px) */}
-        <div
-          className="course-level-tabs below-hero"
-          role="tablist"
-          aria-label="Course level"
-        >
+        {/* Mobile Tabs */}
+        <div className="course-level-tabs below-hero">
           <button
             className={`tab ${level === 'Foundation' ? 'active' : ''}`}
             onClick={() => setLevel('Foundation')}
-            type="button"
           >
             Foundation
           </button>
           <button
             className={`tab ${level === 'Advanced' ? 'active' : ''}`}
             onClick={() => setLevel('Advanced')}
-            type="button"
           >
             Advanced
           </button>
@@ -207,7 +218,6 @@ export default function CoursePage() {
           <button
             className="course-btn main-cta"
             onClick={() => window.open(SyllabusPDF, '_blank')}
-            type="button"
           >
             Download Full Syllabus (PDF)
           </button>
@@ -216,9 +226,10 @@ export default function CoursePage() {
         <section className="course-info-cards">
           <div className="info-card">
             <img
-              src={getCatalogImage(courseId)}
-              onClick={() => setModalImage(getCatalogImage(courseId))}
+              src={getCatalogImage(courseId!)}
+              onClick={() => setModalImage(getCatalogImage(courseId!))}
               alt="Why"
+              loading="lazy"
             />
             <p className="info-card-title">Why {course?.title}</p>
           </div>
@@ -227,6 +238,7 @@ export default function CoursePage() {
               src={detailImages.career}
               onClick={() => setModalImage(detailImages.career)}
               alt="Career"
+              loading="lazy"
             />
             <p className="info-card-title">Career Path</p>
           </div>
@@ -235,8 +247,9 @@ export default function CoursePage() {
               src={detailImages.gain}
               onClick={() => setModalImage(detailImages.gain)}
               alt="Gain"
+              loading="lazy"
             />
-            <p className="info-card-title">What You’ll Gain</p>
+            <p className="info-card-title">What You'll Gain</p>
           </div>
         </section>
 
