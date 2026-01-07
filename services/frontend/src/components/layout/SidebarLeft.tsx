@@ -53,17 +53,29 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
 
       {/* Logo Section */}
       <div className="sidebar-header">
+        {/* ✅ Logo Click goes to /home */}
         <img
           src={logoWithoutText}
           className="sidebar-logo-img"
           alt="Vormirex Logo"
+          role="button"
+          tabIndex={0}
+          onClick={() => navigate('/home')} // Navigate to landing page
+          onKeyDown={(e) => e.key === 'Enter' && navigate('/home')}
         />
-        <span className="sidebar-company-name">VORMIREX</span>
+        <span
+          className="sidebar-company-name"
+          role="button"
+          tabIndex={0}
+          onClick={() => navigate('/home')} // Optional: make text clickable too
+          onKeyDown={(e) => e.key === 'Enter' && navigate('/home')}
+        >
+          VORMIREX
+        </span>
       </div>
 
       {/* Action Buttons */}
-
-      {/* FIXED: New Chat Right-click support added */}
+      {/* New Chat */}
       <Link
         to="/dashboard"
         className="new-chat-button"
@@ -73,17 +85,15 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
           textAlign: 'center',
         }}
         onClick={(e) => {
-          // Normal click chesthe Coming Soon modal chupistundi
-          // Right-click chesthe browser URL ni kotha tab lo open chestundi
           showComingSoon();
         }}
       >
         <FontAwesomeIcon icon={faPlus} /> New Chat
       </Link>
 
-      {/* FIXED: VORMIREX Right-click support added */}
+      {/* VORMIREX Button */}
       <Link
-        to="/landing"
+        to="/home"
         className="new-chat-button"
         style={{
           textDecoration: 'none',
