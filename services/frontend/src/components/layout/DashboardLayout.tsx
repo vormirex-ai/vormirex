@@ -1,5 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 import './DashboardLayout.css';
 
 import {
@@ -9,6 +10,7 @@ import {
   faMicrophone,
   faBars,
 } from '@fortawesome/free-solid-svg-icons';
+
 import logoWithoutText from '../../assets/logo.png';
 
 interface DashboardLayoutProps {
@@ -22,6 +24,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   toggleRightSidebar,
   showComingSoon,
 }) => {
+  const navigate = useNavigate(); // ✅ Used for navigation
+
   return (
     <main className="main-content">
       {/* WATERMARK ELEMENT */}
@@ -65,7 +69,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             src={logoWithoutText}
             className="logo-img"
             alt="Vormirex - AI-Powered Learning Platform Logo"
+            role="button"
+            tabIndex={0}
+            onClick={() => navigate('/home')} // ✅ Logo click goes to home
+            onKeyDown={(e) => e.key === 'Enter' && navigate('/home')}
           />
+
           {/* SEO FIX: Changed from span to h1 for primary keyword ranking */}
           <h1 className="company-name">VORMIREX</h1>
         </div>
