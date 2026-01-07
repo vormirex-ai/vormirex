@@ -1,4 +1,5 @@
 import React from 'react';
+import SEO from '../components/common/SEO';
 import VormirexLanding from '../components/layout/VormirexLanding';
 import SoundFamiliar from '../components/layout/SoundFamiliar';
 import Whatisvormirex from '../components/layout/Whatisvormirex';
@@ -11,6 +12,10 @@ import LearningCTA from '../components/layout/LearningCTA';
 const HomePage = () => {
   return (
     <div className="app-wrapper">
+      <SEO
+        title="Vormirex – AI-Powered Learning Platform"
+        description="Vormirex is an AI-powered learning platform offering personalized study paths, group learning rooms, and a 24/7 AI teacher to help you learn faster and smarter."
+      />
       <VormirexLanding />
       <SoundFamiliar />
       <section id="about">

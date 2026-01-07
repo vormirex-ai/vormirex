@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
+import SEO from '../common/SEO';
+
 /* =============================
    THEME COLORS (ABOUT MATCH)
 ============================= */
@@ -175,6 +177,11 @@ const FeaturesPage: React.FC = () => {
 
   return (
     <PageWrapper>
+      <SEO
+        title="Features – Vormirex"
+        description="Explore the powerful features of Vormirex: Real-time code editing, AI tutor, gamified progress, and live virtual classes."
+        url="https://vormirex.com/features"
+      />
       <Hero>
         <HeroContent>
           <HeroTitle>Powerful Features That Elevate Learning</HeroTitle>

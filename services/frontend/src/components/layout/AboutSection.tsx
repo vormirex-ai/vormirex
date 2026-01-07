@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import SEO from '../common/SEO';
 import './AboutSection.css';
 
 const AboutVormirex: React.FC = () => {
@@ -7,6 +8,11 @@ const AboutVormirex: React.FC = () => {
 
   return (
     <div className="about-wrapper">
+      <SEO
+        title="About Us – Vormirex"
+        description="Learn about Vormirex, the AI-powered learning platform bridging the gap between traditional education and industry demands."
+        url="https://vormirex.com/about"
+      />
       {/* ================= HERO SECTION ================= */}
       <section className="about-hero">
         <h1>About Us</h1>

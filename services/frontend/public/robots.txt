@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /custom
+Disallow: /auth/login
+Disallow: /auth/signup
+Disallow: /verify-email
+Disallow: /reset-password
+Disallow: /oauth-success
+
+Sitemap: https://vormirex.com/sitemap.xml

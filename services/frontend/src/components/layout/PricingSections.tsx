@@ -1,9 +1,15 @@
 import React from 'react';
+import SEO from '../common/SEO';
 import './PricingSections.css';
 
 const PricingPage: React.FC = () => {
   return (
     <section className="pricing-section">
+      <SEO
+        title="Pricing Plans – Vormirex"
+        description="Choose the right plan for your learning journey with Vormirex. Flexible pricing for students and professionals."
+        url="https://vormirex.com/pricing"
+      />
       <div className="pricing-container">
         <h1 className="pricing-headline">Plans and Pricing</h1>
         <p className="pricing-subheadline">
