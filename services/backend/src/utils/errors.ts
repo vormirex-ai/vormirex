@@ -52,3 +52,13 @@ export class ForbiddenError extends ApiError {
     super(message, 403);
   }
 }
+
+/**
+ * Represents a 404 Not Found error.
+ * Used when a requested resource could not be found.
+ */
+export class NotFoundError extends ApiError {
+  constructor(message = 'Resource not found') {
+    super(message, 404);
+  }
+}
