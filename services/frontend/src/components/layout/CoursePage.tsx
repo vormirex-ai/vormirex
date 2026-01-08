@@ -1,31 +1,29 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { LayoutDashboard, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, ArrowLeft, Send } from 'lucide-react';
 import './CoursePage.css';
 import { COURSES, CourseId, CourseLevel } from '../../data/courses';
 
-/* ASSET IMPORTS */
+/* ================= ASSET IMPORTS ================= */
 import CyberVideo from '../../assets/cybersecurity.mp4';
 import DataScienceVideo from '../../assets/datascience.mp4';
 import DataAnalyticsVideo from '../../assets/dataanalytics.mp4';
-
-// NEW: Static hero image for AI/ML
-import AIMLHero from '../../assets/aiml.jpg'; // ← Create this (1920x1080 recommended)
+import AIMLVideo from '../../assets/ai-ml.mp4';
 
 import WhyCyber from '../../assets/whylearncyber.jpg';
 import WhyDS from '../../assets/whylearndatascince.jpeg';
 import WhyDA from '../../assets/whylearndataana.jpeg';
-import WhyAI from '../../assets/aiml.jpg';
+import WhyAI from '../../assets/whyaiml.png';
 
 import CareerCyber from '../../assets/carrerincyber.jpeg';
 import CareerDA from '../../assets/carrerindataana.jpeg';
 import CareerDS from '../../assets/carrerindatascience.jpeg';
-import CareerAI from '../../assets/aiml.jpg';
+import CareerAI from '../../assets/carrerinaiml.png';
 
 import GainCyber from '../../assets/gainincyber.jpeg';
 import GainDS from '../../assets/gainindatascience.jpeg';
 import GainDA from '../../assets/gainindatascience.jpeg';
-import GainAI from '../../assets/aiml.jpg';
+import GainAI from '../../assets/gainaiml.png';
 
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
 
@@ -36,6 +34,7 @@ export default function CoursePage() {
 
   const [level, setLevel] = useState<CourseLevel>('Foundation');
   const [modalImage, setModalImage] = useState<string | null>(null);
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -49,36 +48,29 @@ export default function CoursePage() {
       'data-science': WhyDS,
       'data-analytics': WhyDA,
       'cyber-security': WhyCyber,
-      'ai-ml': WhyAI || WhyDS,
+      'ai-ml': WhyAI,
     };
     return map[id] || WhyCyber;
   };
 
-  // Hero media: video for others, static image for AI/ML
   const heroMedia = useMemo(() => {
-    if (courseId === 'ai-ml') {
-      return { type: 'image' as const, src: AIMLHero };
-    }
-
-    const videoMap: Record<string, string> = {
+    const videoMap: Record<CourseId, string> = {
       'cyber-security': CyberVideo,
       'data-science': DataScienceVideo,
       'data-analytics': DataAnalyticsVideo,
+      'ai-ml': AIMLVideo,
     };
-    return {
-      type: 'video' as const,
-      src: videoMap[courseId!] || CyberVideo,
-    };
+    return { type: 'video' as const, src: videoMap[courseId!] };
   }, [courseId]);
 
   const detailImages = useMemo(() => {
-    const images: Record<string, { career: string; gain: string }> = {
+    const images: Record<CourseId, { career: string; gain: string }> = {
       'cyber-security': { career: CareerCyber, gain: GainCyber },
       'data-science': { career: CareerDS, gain: GainDS },
       'data-analytics': { career: CareerDA, gain: GainDA },
-      'ai-ml': { career: CareerAI || CareerDS, gain: GainAI || GainDS },
+      'ai-ml': { career: CareerAI, gain: GainAI },
     };
-    return courseId ? images[courseId] : images['cyber-security'];
+    return images[courseId!];
   }, [courseId]);
 
   const levelBlock = useMemo(() => {
@@ -86,24 +78,25 @@ export default function CoursePage() {
     return course.levels.find((l) => l.level === level) ?? course.levels[0];
   }, [course, level]);
 
-  // Autoplay only for video
-  useEffect(() => {
-    if (heroMedia.type !== 'video') return;
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(`Request for ${course?.title}:`, formData);
+    alert(
+      'Request submitted successfully! Our counselor will reach out to you.'
+    );
+    setFormData({ name: '', email: '', phone: '' });
+  };
 
+  useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
     video.muted = true;
     video.playsInline = true;
-
-    const playVideo = () => {
+    const play = () =>
       video.play().catch(() => console.log('Autoplay blocked'));
-    };
-
-    if (video.readyState >= 3) playVideo();
-    else video.addEventListener('canplay', playVideo);
-
-    return () => video.removeEventListener('canplay', playVideo);
+    if (video.readyState >= 3) play();
+    else video.addEventListener('canplay', play);
+    return () => video.removeEventListener('canplay', play);
   }, [heroMedia]);
 
   if (!courseId) {
@@ -140,31 +133,23 @@ export default function CoursePage() {
   }
 
   return (
-    <div className="course-page" data-course={courseId}>
+    <div
+      className={`course-page course-type-${courseId}`}
+      data-course={courseId}
+    >
       <div className="course-shell">
         <header className="course-hero">
-          {/* Conditional Hero Media */}
-          {heroMedia.type === 'video' ? (
-            <video
-              ref={videoRef}
-              key={heroMedia.src}
-              className="hero-video-bg"
-              autoPlay
-              muted
-              loop
-              playsInline
-            >
-              <source src={heroMedia.src} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <img
-              src={heroMedia.src}
-              alt={`${course?.title} Hero`}
-              className="hero-video-bg hero-image-bg" // Reuse same class + new one
-            />
-          )}
-
+          <video
+            ref={videoRef}
+            key={heroMedia.src}
+            className="hero-video-bg"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src={heroMedia.src} type="video/mp4" />
+          </video>
           <div className="course-hero-overlay" />
           <div className="course-hero-top">
             <div className="hero-nav-group">
@@ -198,7 +183,6 @@ export default function CoursePage() {
           </div>
         </header>
 
-        {/* Mobile Tabs */}
         <div className="course-level-tabs below-hero">
           <button
             className={`tab ${level === 'Foundation' ? 'active' : ''}`}
@@ -224,31 +208,33 @@ export default function CoursePage() {
         </div>
 
         <section className="course-info-cards">
-          <div className="info-card">
-            <img
-              src={getCatalogImage(courseId!)}
-              onClick={() => setModalImage(getCatalogImage(courseId!))}
-              alt="Why"
-              loading="lazy"
-            />
+          <div
+            className="info-card"
+            onClick={() => setModalImage(getCatalogImage(courseId))}
+          >
+            <div className="info-card-image-wrapper">
+              <img src={getCatalogImage(courseId)} alt="Why" />
+            </div>
             <p className="info-card-title">Why {course?.title}</p>
           </div>
-          <div className="info-card">
-            <img
-              src={detailImages.career}
-              onClick={() => setModalImage(detailImages.career)}
-              alt="Career"
-              loading="lazy"
-            />
+
+          <div
+            className="info-card"
+            onClick={() => setModalImage(detailImages.career)}
+          >
+            <div className="info-card-image-wrapper">
+              <img src={detailImages.career} alt="Career" />
+            </div>
             <p className="info-card-title">Career Path</p>
           </div>
-          <div className="info-card">
-            <img
-              src={detailImages.gain}
-              onClick={() => setModalImage(detailImages.gain)}
-              alt="Gain"
-              loading="lazy"
-            />
+
+          <div
+            className="info-card"
+            onClick={() => setModalImage(detailImages.gain)}
+          >
+            <div className="info-card-image-wrapper">
+              <img src={detailImages.gain} alt="Gain" />
+            </div>
             <p className="info-card-title">What You'll Gain</p>
           </div>
         </section>
@@ -272,9 +258,59 @@ export default function CoursePage() {
           </div>
         </section>
 
+        {/* REQUEST COURSE DETAILS FORM */}
+        <section className="course-request-form">
+          <div className="form-container">
+            <div className="form-text">
+              <h2>Request Details</h2>
+              <p>
+                Interested in <strong>{course?.title}</strong>? Submit your
+                request to get a personalized syllabus walkthrough and discount
+                details.
+              </p>
+            </div>
+            <form onSubmit={handleFormSubmit} className="details-form">
+              <input
+                type="text"
+                placeholder="Full Name"
+                required
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+              />
+              <input
+                type="tel"
+                placeholder="Phone"
+                required
+                value={formData.phone}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
+              />
+              <button type="submit" className="form-submit-btn">
+                <Send size={18} style={{ marginRight: '8px' }} />
+                Submit Request
+              </button>
+            </form>
+          </div>
+        </section>
+
         {modalImage && (
           <div className="image-modal" onClick={() => setModalImage(null)}>
-            <img src={modalImage} alt="Enlarged" />
+            <div className="modal-content">
+              <img src={modalImage} alt="Preview" />
+              <button className="modal-close">×</button>
+            </div>
           </div>
         )}
       </div>
