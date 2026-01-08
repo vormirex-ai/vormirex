@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { requestLogger, responseLogger } from './middleware/requestResponse.middleware.js';
 import authRouter from './modules/auth/auth.routes.js';
+import courseRouter from './modules/courses/course.routes.js';
+import userRouter from './modules/user/user.routes.js';
 import { errorHandler } from './middleware/errorHandler.middleware.js';
 import './config/passport.js';
 
@@ -34,6 +36,8 @@ app.get('/', (req: Request, res: Response) => {
 
 // Mount the application routes AFTER core middleware
 app.use('/api/auth', authRouter);
+app.use('/api/courses', courseRouter);
+app.use('/api/users', userRouter);
 
 // --- Centralized Error Handler ---
 // This must be the LAST middleware added to the app.
