@@ -619,432 +619,7 @@ button {
     min-height: 100%;
   }
 }
-:root {
-  --bg-dark: #0a0a0b;
-  --bg-card: #161618;
-  --bg-glass: rgba(255, 255, 255, 0.03);
-  --color-primary: #6aece1;
-  --color-primary-glow: rgba(106, 236, 225, 0.4);
-  --color-border: rgba(106, 236, 225, 0.15);
-  --text-main: #ffffff;
-  --text-secondary: #a0a0a5;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background: var(--bg-dark);
-  color: var(--text-main);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-.course-page {
-  min-height: 100vh;
-  overflow-x: clip;
-}
-.course-shell {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-/* ================= HERO ================= */
-.course-hero {
-  position: relative;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  height: 75vh;
-  min-height: 500px;
-  background: #000;
-  overflow: hidden;
-}
-
-.hero-video-bg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-}
-
-.course-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    rgba(0, 0, 0, 0.4) 0%,
-    rgba(0, 0, 0, 0.2) 50%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
-  z-index: 2;
-}
-
-.course-hero-top {
-  position: absolute;
-  top: 30px;
-  left: 40px;
-  right: 40px;
-  display: flex;
-  justify-content: space-between;
-  z-index: 10;
-}
-
-.hero-nav-group {
-  display: flex;
-  gap: 15px;
-}
-
-.nav-icon-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.nav-icon-btn:hover {
-  background: var(--color-primary);
-  color: #000;
-  box-shadow: 0 0 20px var(--color-primary-glow);
-}
-
-/* ================= TABS ================= */
-.course-level-tabs {
-  display: flex;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 6px;
-  border-radius: 14px;
-  border: 1px solid var(--color-border);
-  backdrop-filter: blur(10px);
-}
-
-.tab {
-  padding: 10px 24px;
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: var(--transition);
-}
-
-.tab.active {
-  background: var(--color-primary);
-  color: #000;
-}
-.course-level-tabs.below-hero {
-  display: none;
-}
-
-/* ================= INFO CARDS (FIXED) ================= */
-.course-info-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
-  margin: -50px auto 80px; /* Pulls cards up over the hero slightly */
-  position: relative;
-  z-index: 20;
-}
-
-.info-card {
-  background: var(--bg-card);
-  border-radius: 24px;
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  transition: var(--transition);
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-.info-card:hover {
-  transform: translateY(-10px);
-  border-color: var(--color-primary);
-  box-shadow: 0 20px 50px var(--color-primary-glow);
-}
-
-/* This container ensures all images (AI, DS, etc) fit the same box */
-.info-card-image-wrapper {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  background: #000;
-}
-
-.info-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Use 'contain' if you want to see full rectangular borders */
-  transition: transform 0.5s ease;
-}
-
-.info-card:hover img {
-  transform: scale(1.1);
-}
-
-.info-card-title {
-  padding: 20px;
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: var(--color-primary);
-  text-transform: uppercase;
-}
-
-/* ================= CURRICULUM ================= */
-.section-title {
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 40px;
-  color: #fff;
-}
-
-.module {
-  background: var(--bg-glass);
-  margin-bottom: 12px;
-  border-radius: 15px;
-  border: 1px solid var(--color-border);
-}
-
-.module-summary {
-  padding: 20px 25px;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.module-title {
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-.module-list {
-  padding: 0 40px 20px;
-  color: var(--text-secondary);
-  list-style: circle;
-}
-
-/* ================= MODAL ================= */
-.image-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  backdrop-filter: blur(8px);
-}
-
-.modal-content {
-  position: relative;
-  max-width: 90%;
-  max-height: 90%;
-}
-.modal-content img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  border: 2px solid var(--color-primary);
-}
-.modal-close {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 2rem;
-  cursor: pointer;
-}
-
-/* ================= RESPONSIVE ================= */
-@media (max-width: 992px) {
-  .course-info-cards {
-    grid-template-columns: 1fr;
-    margin-top: 40px;
-  }
-  .course-hero-top {
-    flex-direction: column;
-    gap: 20px;
-    align-items: flex-start;
-  }
-  .course-level-tabs.desktop-tabs {
-    display: none;
-  }
-  .course-level-tabs.below-hero {
-    display: flex;
-    margin: 20px 0;
-    justify-content: center;
-  }
-}
-/* ================= RESPONSIVE VIDEO & LAYOUT ================= */
-
-/* Tablet & iPad Pro (Covers iPad Pro, iPad Air, Surface Pro) */
-@media (max-width: 1024px) {
-  .course-hero {
-    height: 60vh; /* Reduced height to keep video contained on taller screens */
-    min-height: 450px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Ensures the whole frame is visible without cropping */
-    background: #000; /* Adds black bars if aspect ratio doesn't match exactly */
-  }
-
-  .course-hero-top {
-    left: 20px;
-    right: 20px;
-    top: 20px;
-  }
-}
-
-/* Mobile Devices (iPhone 12/14, Pixel 7, Galaxy S20) */
-@media (max-width: 768px) {
-  .course-info-cards {
-    grid-template-columns: 1fr;
-    margin: 20px auto 40px;
-    padding: 0 15px;
-  }
-
-  .course-hero {
-    height: 50vh;
-    min-height: 350px;
-  }
-
-  .course-level-tabs.desktop-tabs {
-    display: none;
-  }
-
-  .course-level-tabs.below-hero {
-    display: flex;
-    width: calc(100% - 30px);
-    margin: 20px auto;
-    justify-content: space-around;
-  }
-}
-
-/* Compact Mobile (iPhone SE - 375px, BlackBerry Z30) */
-@media (max-width: 480px) {
-  .course-hero {
-    height: 40vh; /* Shorter hero so video isn't stretched too thin */
-    min-height: 280px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Critical: shows the full circular graphic without side-clipping */
-    width: 100%;
-    height: 100%;
-  }
-
-  .nav-icon-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .course-hero-top {
-    top: 15px;
-    left: 15px;
-    right: 15px;
-  }
-
-  /* Adjusting the CTA for small screens */
-  .course-btn.main-cta {
-    width: 100%;
-    padding: 14px 10px;
-    font-size: 0.85rem;
-  }
-}
-/* ================= CTA BUTTON PLACEMENT ================= */
-/* ================= CTA BUTTON PLACEMENT (MOVED UP) ================= */
-
-/* ================= RESPONSIVE VIDEO & LAYOUT ================= */
-
-/* Tablet & iPad Pro */
-@media (max-width: 1024px) {
-  .course-hero {
-    height: 60vh;
-    min-height: 460px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain;
-    background: #000;
-  }
-
-  .hero-action-area {
-    /* Pulls button closer to video on tablets */
-    margin-top: 30px;
-  }
-}
-
-/* Mobile Devices (iPhone 12/14, Pixel 7, etc.) */
-@media (max-width: 768px) {
-  .course-hero {
-    height: 50vh;
-    min-height: 320px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain;
-  }
-
-  .hero-action-area {
-    margin-top: 25px;
-  }
-
-  .course-info-cards {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    /* Reduced margin to bring cards up closer to the button */
-    margin-top: 20px;
-  }
-}
-
-/* Compact Mobile (iPhone SE - 375px) */
-@media (max-width: 480px) {
-  .course-hero {
-    height: 40vh;
-    min-height: 240px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain;
-  }
-
-  .hero-action-area {
-    /* Minimum margin to keep button visible right under the video */
-    margin-top: 20px;
-  }
-
-  .course-btn.main-cta {
-    width: calc(100% - 40px);
-    max-width: 300px;
-    padding: 10px 15px;
-    font-size: 0.8rem;
-  }
-}
 /* ================= REQUEST FORM SECTION ================= */
 .course-request-form {
   margin: 80px auto;
@@ -1145,5 +720,78 @@ body {
   .course-request-form {
     padding: 30px 20px;
     margin: 40px 10px;
+  }
+}
+
+/* ================= MOBILE FIXES FOR SPECIFIC ISSUES ================= */
+
+/* Issue #33: Hero Banner Content Appears Congested on Mobile */
+@media (max-width: 480px) {
+  .course-hero {
+    height: 60vh; /* Increased height to reduce congestion */
+    min-height: 400px;
+  }
+
+  .course-hero-overlay {
+    background: linear-gradient(
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.4) 35%,
+      rgba(0, 0, 0, 0.8) 100%
+    ); /* Darker gradient for better text contrast */
+  }
+
+  .hero-action-area {
+    margin-top: 40px; /* Increased margin for better spacing */
+    margin-bottom: 40px;
+  }
+}
+
+/* Issue #35: Foundation / Advanced Toggle Buttons Have Small Touch Targets */
+@media (max-width: 480px) {
+  .course-level-tabs.below-hero {
+    margin: 30px 16px; /* Added horizontal padding */
+  }
+
+  .tab {
+    min-height: 48px; /* Increased from 44px to 48px for better touch target */
+    padding: 12px 16px; /* Increased padding */
+    font-size: 0.9rem; /* Slightly larger font */
+  }
+}
+
+/* Issue #36: Primary CTA Button Does Not Use Full Width on Mobile */
+@media (max-width: 480px) {
+  .course-btn.main-cta {
+    width: 100%; /* Full width */
+    max-width: none; /* Removed max-width constraint */
+    padding: 16px 20px; /* Adjusted padding */
+    font-size: 0.9rem; /* Slightly smaller font for full width */
+  }
+}
+
+/* Issue #37: Abrupt Visual Transition Between CTA and Next Section */
+@media (max-width: 480px) {
+  .course-info-cards {
+    margin-top: 60px; /* Increased margin from CTA to cards */
+    padding-top: 20px; /* Added padding at the top */
+    border-top: 1px solid var(--color-border); /* Added visual divider */
+  }
+}
+
+/* Issue #38: Header Logo and Menu Icon Appear Cramped on Mobile */
+@media (max-width: 480px) {
+  .course-hero-top {
+    top: 20px; /* Increased from 14px */
+    left: 20px; /* Increased from 16px */
+    right: 20px; /* Increased from 16px */
+  }
+
+  .nav-icon-btn {
+    width: 48px; /* Increased from 42px */
+    height: 48px; /* Increased from 42px */
+  }
+
+  .hero-nav-group {
+    gap: 16px; /* Increased gap between buttons */
   }
 }
