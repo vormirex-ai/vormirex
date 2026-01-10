@@ -39,7 +39,6 @@ button {
 .course-page {
   min-height: 100vh;
   color: var(--text-main);
-  /* Prevent accidental horizontal scrolling from any child */
   overflow-x: clip;
 }
 
@@ -59,7 +58,6 @@ button {
   min-height: 550px;
   background: #000;
   overflow: hidden;
-  /* Important: clip any overflow from video/graphics on narrow screens */
   overflow-x: clip;
 }
 
@@ -77,12 +75,11 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%) translateZ(0);
+  transform: translate(-50%, -50%);
   z-index: 1;
-  opacity: 1;
-  background: #000;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .hero-video-bg.loaded {
@@ -99,6 +96,31 @@ button {
   );
   z-index: 2;
   pointer-events: none;
+}
+
+/* Hero Content - Added for better readability */
+.course-hero-content {
+  position: absolute;
+  bottom: 80px;
+  left: 40px;
+  right: 40px;
+  z-index: 5;
+  text-align: center;
+}
+
+.course-hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+}
+
+.course-hero-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .course-hero-top {
@@ -158,10 +180,7 @@ button {
   color: var(--text-secondary);
   font-weight: 700;
   font-size: 0.9rem;
-
-  /* Accessibility: ensure minimum touch target */
   min-height: 44px;
-
   padding: 10px 22px;
   border-radius: 12px;
   cursor: pointer;
@@ -245,8 +264,6 @@ button {
   margin-bottom: 60px;
   position: relative;
   z-index: 6;
-
-  /* Helps keep CTA inside safe margins if parent changes */
   padding: 0 16px;
 }
 
@@ -265,8 +282,6 @@ button {
   color: #000;
   box-shadow: 0 15px 35px var(--color-primary-glow);
   padding: 16px 40px;
-
-  /* Mobile-safe sizing */
   max-width: 520px;
   width: fit-content;
 }
@@ -544,6 +559,21 @@ button {
   .course-level-tabs.below-hero {
     display: inline-flex;
   }
+
+  /* Mobile hero content adjustments */
+  .course-hero-content {
+    bottom: 60px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .course-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .course-hero-subtitle {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -578,7 +608,6 @@ button {
     height: 50vh;
   }
 
-  /* Issue 4: consistent padding for header elements */
   .course-hero-top {
     top: 14px;
     left: 16px;
@@ -590,14 +619,12 @@ button {
     height: 42px;
   }
 
-  /* Issue 3: tabs touch target */
   .tab {
     min-height: 44px;
     padding: 10px 12px;
     font-size: 0.85rem;
   }
 
-  /* Issue 2: CTA safe margins on both sides */
   .hero-action-area {
     margin-top: -30px;
     padding: 0 16px;
@@ -611,12 +638,29 @@ button {
     display: block;
   }
 
-  /* Issue 1: prevent right-side clipping of the circular graphic in the video */
   .hero-video-bg {
-    object-fit: contain; /* show full graphic */
-    object-position: right center; /* keep the circle visible */
+    object-fit: contain;
+    object-position: right center;
     min-width: 100%;
     min-height: 100%;
+  }
+
+  /* Enhanced mobile hero content */
+  .course-hero-content {
+    bottom: 120px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .course-hero-title {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
+  }
+
+  .course-hero-subtitle {
+    font-size: 0.9rem;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
   }
 }
 
@@ -632,7 +676,6 @@ button {
   overflow: hidden;
 }
 
-/* Subtle background glow for the form */
 .course-request-form::before {
   content: '';
   position: absolute;
@@ -728,7 +771,7 @@ button {
 /* Issue #33: Hero Banner Content Appears Congested on Mobile */
 @media (max-width: 480px) {
   .course-hero {
-    height: 60vh; /* Increased height to reduce congestion */
+    height: 60vh;
     min-height: 400px;
   }
 
@@ -737,11 +780,11 @@ button {
       rgba(0, 0, 0, 0.7) 0%,
       rgba(0, 0, 0, 0.4) 35%,
       rgba(0, 0, 0, 0.8) 100%
-    ); /* Darker gradient for better text contrast */
+    );
   }
 
   .hero-action-area {
-    margin-top: 40px; /* Increased margin for better spacing */
+    margin-top: 40px;
     margin-bottom: 40px;
   }
 }
@@ -749,49 +792,60 @@ button {
 /* Issue #35: Foundation / Advanced Toggle Buttons Have Small Touch Targets */
 @media (max-width: 480px) {
   .course-level-tabs.below-hero {
-    margin: 30px 16px; /* Added horizontal padding */
+    margin: 30px 16px;
   }
 
   .tab {
-    min-height: 48px; /* Increased from 44px to 48px for better touch target */
-    padding: 12px 16px; /* Increased padding */
-    font-size: 0.9rem; /* Slightly larger font */
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
   }
 }
 
 /* Issue #36: Primary CTA Button Does Not Use Full Width on Mobile */
 @media (max-width: 480px) {
   .course-btn.main-cta {
-    width: 100%; /* Full width */
-    max-width: none; /* Removed max-width constraint */
-    padding: 16px 20px; /* Adjusted padding */
-    font-size: 0.9rem; /* Slightly smaller font for full width */
+    width: 100%;
+    max-width: none;
+    padding: 16px 20px;
+    font-size: 0.9rem;
   }
 }
 
 /* Issue #37: Abrupt Visual Transition Between CTA and Next Section */
 @media (max-width: 480px) {
   .course-info-cards {
-    margin-top: 60px; /* Increased margin from CTA to cards */
-    padding-top: 20px; /* Added padding at the top */
-    border-top: 1px solid var(--color-border); /* Added visual divider */
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
   }
 }
 
 /* Issue #38: Header Logo and Menu Icon Appear Cramped on Mobile */
 @media (max-width: 480px) {
   .course-hero-top {
-    top: 20px; /* Increased from 14px */
-    left: 20px; /* Increased from 16px */
-    right: 20px; /* Increased from 16px */
+    top: 20px;
+    left: 20px;
+    right: 20px;
   }
 
   .nav-icon-btn {
-    width: 48px; /* Increased from 42px */
-    height: 48px; /* Increased from 42px */
+    width: 48px;
+    height: 48px;
   }
 
   .hero-nav-group {
-    gap: 16px; /* Increased gap between buttons */
+    gap: 16px;
   }
+}
+
+/* Additional enhancement for text contrast on AI/ML course */
+.course-type-ai-ml .course-hero-title {
+  color: #ffffff;
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
+}
+
+.course-type-ai-ml .course-hero-subtitle {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
 }
