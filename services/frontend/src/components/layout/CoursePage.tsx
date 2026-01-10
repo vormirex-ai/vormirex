@@ -34,15 +34,22 @@ export default function CoursePage() {
 
   const [level, setLevel] = useState<CourseLevel>('Foundation');
   const [modalImage, setModalImage] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  });
+
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  /* ================= TITLE ================= */
   useEffect(() => {
     document.title = course
       ? `${course.title} | Vormirex`
       : 'Explore Courses | Vormirex';
   }, [course]);
 
+  /* ================= CATALOG IMAGE ================= */
   const getCatalogImage = (id: string) => {
     const map: Record<string, string> = {
       'data-science': WhyDS,
@@ -53,6 +60,7 @@ export default function CoursePage() {
     return map[id] || WhyCyber;
   };
 
+  /* ================= HERO VIDEO ================= */
   const heroMedia = useMemo(() => {
     const videoMap: Record<CourseId, string> = {
       'cyber-security': CyberVideo,
@@ -63,6 +71,7 @@ export default function CoursePage() {
     return { type: 'video' as const, src: videoMap[courseId!] };
   }, [courseId]);
 
+  /* ================= DETAIL IMAGES ================= */
   const detailImages = useMemo(() => {
     const images: Record<CourseId, { career: string; gain: string }> = {
       'cyber-security': { career: CareerCyber, gain: GainCyber },
@@ -73,11 +82,13 @@ export default function CoursePage() {
     return images[courseId!];
   }, [courseId]);
 
+  /* ================= LEVEL DATA ================= */
   const levelBlock = useMemo(() => {
     if (!course) return null;
     return course.levels.find((l) => l.level === level) ?? course.levels[0];
   }, [course, level]);
 
+  /* ================= FORM ================= */
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(`Request for ${course?.title}:`, formData);
@@ -87,27 +98,35 @@ export default function CoursePage() {
     setFormData({ name: '', email: '', phone: '' });
   };
 
+  /* ================= VIDEO AUTOPLAY ================= */
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
     video.muted = true;
     video.playsInline = true;
+
     const play = () =>
       video.play().catch(() => console.log('Autoplay blocked'));
+
     if (video.readyState >= 3) play();
     else video.addEventListener('canplay', play);
+
     return () => video.removeEventListener('canplay', play);
   }, [heroMedia]);
 
+  /* ================= COURSE LIST PAGE ================= */
   if (!courseId) {
     const uniqueCourses = Array.from(
       new Map(Object.values(COURSES).map((c) => [c.id, c])).values()
     );
+
     return (
       <div className="course-list-page">
         <div className="course-list-header">
           <h1>Our Courses</h1>
         </div>
+
         <div className="course-grid">
           {uniqueCourses.map((item) => (
             <div
@@ -132,6 +151,7 @@ export default function CoursePage() {
     );
   }
 
+  /* ================= COURSE DETAIL PAGE ================= */
   return (
     <div
       className={`course-page course-type-${courseId}`}
@@ -147,10 +167,21 @@ export default function CoursePage() {
             muted
             loop
             playsInline
+            preload="auto"
           >
             <source src={heroMedia.src} type="video/mp4" />
           </video>
+
           <div className="course-hero-overlay" />
+
+          {/* HERO TEXT (Issue #34 FIX – NO REMOVALS) */}
+          <div className="course-hero-content">
+            <h1 className="course-hero-title">{course?.title}</h1>
+            <p className="course-hero-subtitle">
+              Master the future of technology
+            </p>
+          </div>
+
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
@@ -166,6 +197,7 @@ export default function CoursePage() {
                 <LayoutDashboard size={24} />
               </button>
             </div>
+
             <div className="course-level-tabs desktop-tabs">
               <button
                 className={`tab ${level === 'Foundation' ? 'active' : ''}`}
@@ -207,6 +239,7 @@ export default function CoursePage() {
           </button>
         </div>
 
+        {/* WHY / CAREER / GAIN */}
         <section className="course-info-cards">
           <div
             className="info-card"
@@ -239,8 +272,10 @@ export default function CoursePage() {
           </div>
         </section>
 
+        {/* CURRICULUM */}
         <section className="course-content">
           <h2 className="section-title">{level} Curriculum</h2>
+
           <div className="modules">
             {levelBlock?.modules.map((m, idx) => (
               <details key={m.title} className="module" open={idx === 0}>
@@ -258,7 +293,7 @@ export default function CoursePage() {
           </div>
         </section>
 
-        {/* REQUEST COURSE DETAILS FORM */}
+        {/* REQUEST FORM */}
         <section className="course-request-form">
           <div className="form-container">
             <div className="form-text">
@@ -269,6 +304,7 @@ export default function CoursePage() {
                 details.
               </p>
             </div>
+
             <form onSubmit={handleFormSubmit} className="details-form">
               <input
                 type="text"
@@ -276,7 +312,10 @@ export default function CoursePage() {
                 required
                 value={formData.name}
                 onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
+                  setFormData({
+                    ...formData,
+                    name: e.target.value,
+                  })
                 }
               />
               <input
@@ -285,7 +324,10 @@ export default function CoursePage() {
                 required
                 value={formData.email}
                 onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
+                  setFormData({
+                    ...formData,
+                    email: e.target.value,
+                  })
                 }
               />
               <input
@@ -294,7 +336,10 @@ export default function CoursePage() {
                 required
                 value={formData.phone}
                 onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
+                  setFormData({
+                    ...formData,
+                    phone: e.target.value,
+                  })
                 }
               />
               <button type="submit" className="form-submit-btn">
@@ -305,6 +350,7 @@ export default function CoursePage() {
           </div>
         </section>
 
+        {/* IMAGE MODAL */}
         {modalImage && (
           <div className="image-modal" onClick={() => setModalImage(null)}>
             <div className="modal-content">
