@@ -29,7 +29,12 @@ export const login = async (
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  const userResponse = { id: user._id, name: user.name, email: user.email };
+  const userResponse = {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
 
   return res.json({ success: true, accessToken, user: userResponse });
 };
