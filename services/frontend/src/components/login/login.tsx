@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import SEO from '../common/SEO';
 import logo from '../../assets/logo.png';
 import {
   loginUser,
@@ -232,6 +233,15 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   return (
     <div className="login-page-root">
       <style>{css}</style>
+      <SEO
+        title={activeTab === 'login' ? 'Log In - Vormirex' : 'Sign Up - Vormirex'}
+        description="Access your personal AI tutor or create a new account to start mastering coding skills with Vormirex."
+        url={
+          activeTab === 'login'
+            ? 'https://vormirex.com/auth/login'
+            : 'https://vormirex.com/auth/signup'
+        }
+      />
       <div className="login-container">
         <div className="logo-section">
           <img src={logo} alt="Vormirex Logo" className="logo" />
