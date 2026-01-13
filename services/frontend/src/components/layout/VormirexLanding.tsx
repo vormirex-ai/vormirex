@@ -43,11 +43,8 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         </h1>
         <p className="hero-subtitle">{heroSubtitle}</p>
 
-        {/* CTA Group - ORDER: Dashboard → Start Free → Try AI Demo */}
+        {/* CTA Group */}
         <div className="cta-group">
-          {/* 1. BACK TO DASHBOARD */}
-
-          {/* 2. START FREE (PRIMARY) */}
           <button
             className="btn-primary-hero large"
             onClick={() => navigate('/auth/signup')}
@@ -56,12 +53,14 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
             Start Free
           </button>
 
-          {/* 3. TRY AI DEMO (SECONDARY) */}
           <button className="btn-secondary large">
             <Play size={18} fill="currentColor" />
             Try AI Demo
           </button>
         </div>
+
+        {/* TICKET #37 FIX: Visual divider between CTA and Stats */}
+        <div className="section-divider"></div>
 
         {/* Stats */}
         <div className="stats-container">
@@ -119,10 +118,32 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         .badge { background: rgba(255, 255, 255, 0.05); margin-top: 40px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #94a3b8; margin-bottom: 24px; position: relative; z-index: 2; }
         .hero-title { font-size: 4rem; font-weight: 800; max-width: 850px; line-height: 1.1; margin-bottom: 20px; position: relative; z-index: 2; padding: 0 20px; }
         .cyan-text { color: #6aece1; }
-        .hero-subtitle { color: #94a3b8; font-size: 1.2rem; max-width: 600px; margin-bottom: 40px; position: relative; z-index: 2; padding: 0 20px; }
-        .cta-group { display: flex; gap: 20px; margin-bottom: 60px; position: relative; z-index: 2; flex-wrap: wrap; justify-content: center; }
         
-        /* DASHBOARD BUTTON STYLES */
+        /* TICKET #34 FIX: Improved text contrast */
+        .hero-subtitle { 
+          color: #c8d4e6; /* Lighter color for better contrast */
+          font-size: 1.2rem; 
+          max-width: 600px; 
+          margin-bottom: 40px; 
+          position: relative; 
+          z-index: 2; 
+          padding: 0 20px;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Subtle shadow for readability */
+        }
+        
+        .cta-group { display: flex; gap: 20px; margin-bottom: 40px; position: relative; z-index: 2; flex-wrap: wrap; justify-content: center; padding: 0 20px; width: 100%; max-width: 500px; }
+        
+        /* TICKET #37 FIX: Section divider */
+        .section-divider {
+          width: 80%;
+          max-width: 400px;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(106, 236, 225, 0.3), transparent);
+          margin: 20px 0 40px 0;
+          position: relative;
+          z-index: 2;
+        }
+        
         .btn-dashboard { 
           background: rgba(255, 255, 255, 0.05); 
           border: 1px solid rgba(255, 255, 255, 0.2); 
@@ -142,10 +163,10 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         }
         .btn-dashboard.large { padding: 16px 36px; font-size: 1rem; }
 
-        .btn-primary-hero { background: #6aece1; border: none; color: #0a0b14; padding: 14px 32px; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .btn-primary-hero { background: #6aece1; border: none; color: #0a0b14; padding: 14px 32px; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .btn-primary-hero:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(106, 236, 225, 0.5); }
         .btn-primary-hero.large { padding: 16px 36px; font-size: 1rem; }
-        .btn-secondary { background: rgba(106, 236, 225, 0.05); border: 1px solid #6aece1; color: #6aece1; padding: 14px 32px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.2s ease, background 0.2s ease; }
+        .btn-secondary { background: rgba(106, 236, 225, 0.05); border: 1px solid #6aece1; color: #6aece1; padding: 14px 32px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s ease, background 0.2s ease; }
         .btn-secondary:hover { transform: scale(1.05); background: rgba(106, 236, 225, 0.15); }
         .btn-secondary.large { padding: 16px 36px; font-size: 1rem; }
         .stats-container { display: flex; gap: 60px; margin-bottom: 60px; position: relative; z-index: 2; }
@@ -161,8 +182,120 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         .ai-message { color: #94a3b8; line-height: 1.6; margin-bottom: 20px; }
         .suggestion-chip { background: none; border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 8px 16px; border-radius: 20px; cursor: pointer; margin-right: 8px; font-size: 0.85rem; transition: all 0.2s ease; }
         .suggestion-chip:hover { background: rgba(106, 236, 225, 0.1); border-color: #6aece1; color: #6aece1; }
-        @media (max-width: 960px) { .hero-title { font-size: 2.5rem; } .stats-container { flex-direction: column; gap: 20px; } }
-        @media (max-width: 480px) { .hero-title { font-size: 2rem; } .cta-group { flex-direction: column; } .btn-primary-hero, .btn-secondary, .btn-dashboard { width: 100%; } }
+        
+        @media (max-width: 960px) { 
+          .hero-title { font-size: 2.5rem; } 
+          .stats-container { flex-direction: column; gap: 20px; } 
+        }
+        
+        /* MOBILE FIXES (iPhone SE and similar) */
+        @media (max-width: 480px) { 
+          /* TICKET #33 FIX: Reduce congestion with better spacing */
+          .hero {
+            padding: 60px 0 40px 0; /* Reduced top padding */
+          }
+          
+          .badge {
+            margin-top: 20px; /* Reduced from 40px */
+            margin-bottom: 20px; /* Reduced spacing */
+            font-size: 0.75rem;
+            padding: 6px 12px;
+          }
+          
+          .hero-title { 
+            font-size: 1.85rem; /* Slightly smaller for breathing room */
+            margin-bottom: 16px;
+            line-height: 1.15;
+          } 
+          
+          /* TICKET #34 FIX: Better contrast on mobile */
+          .hero-subtitle {
+            font-size: 0.95rem;
+            margin-bottom: 28px; /* Reduced from 40px */
+            line-height: 1.5;
+            color: #d4dde9; /* Even lighter on mobile for contrast */
+            padding: 0 24px;
+          }
+          
+          /* TICKET #33 FIX: Better CTA group spacing */
+          .cta-group { 
+            flex-direction: column; 
+            gap: 12px; /* Reduced from 20px */
+            margin-bottom: 24px; /* Reduced */
+            padding: 0 24px;
+            width: 100%;
+          }
+          
+          /* TICKET #36 FIX: Full-width buttons on mobile */
+          .btn-primary-hero, 
+          .btn-secondary, 
+          .btn-dashboard { 
+            width: 100%; 
+            justify-content: center;
+          }
+          
+          .btn-primary-hero.large,
+          .btn-secondary.large {
+            padding: 14px 24px; /* Slightly reduced vertical padding */
+            font-size: 0.95rem;
+          }
+          
+          /* TICKET #37 FIX: Visible divider on mobile */
+          .section-divider {
+            width: 60%;
+            margin: 16px 0 28px 0;
+          }
+          
+          /* TICKET #33 FIX: Compact stats on mobile */
+          .stats-container {
+            flex-direction: row; /* Horizontal on mobile */
+            gap: 24px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+          
+          .stat-item h3 {
+            font-size: 1.75rem;
+          }
+          
+          .stat-item p {
+            font-size: 0.75rem;
+          }
+          
+          .ai-card-wrapper {
+            padding: 0 16px;
+          }
+          
+          .ai-card {
+            padding: 20px;
+          }
+          
+          .status-indicator {
+            top: -28px;
+            font-size: 0.7rem;
+          }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 375px) {
+          .hero-title {
+            font-size: 1.65rem;
+          }
+          
+          .hero-subtitle {
+            font-size: 0.9rem;
+            padding: 0 20px;
+          }
+          
+          .stats-container {
+            gap: 16px;
+          }
+          
+          .stat-item h3 {
+            font-size: 1.5rem;
+          }
+        }
       `}</style>
     </div>
   );
