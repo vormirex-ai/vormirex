@@ -44,7 +44,20 @@ export const updateUserRole = async (req: Request, res: Response) => {
   res.status(200).json({ message: 'User role updated', user });
 };
 
+export const deleteUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const user = await User.findByIdAndDelete(id);
+
+  if (!user) {
+    throw new NotFoundError('User not found');
+  }
+
+  res.status(200).json({ message: 'User deleted successfully' });
+};
+
 export default {
   getAllUsers,
   updateUserRole,
+  deleteUser,
 };
