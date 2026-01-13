@@ -849,3 +849,74 @@ button {
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
 }
+/* Mobile Hero Section Fixes */
+@media (max-width: 480px) {
+  .course-hero {
+    height: 60vh; /* Increased from 50vh to allow more content space */
+    min-height: 450px; /* Adjusted for smaller screens */
+  }
+
+  .course-hero-overlay {
+    /* Slightly reduced gradient opacity for better text readability */
+    background: linear-gradient(
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.4) 40%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+  }
+
+  .course-hero-top {
+    top: 16px; /* Reduced from 20px to fit smaller viewports */
+    left: 16px;
+    right: 16px;
+  }
+
+  /* Increased padding for hero action area to separate from hero content */
+  .hero-action-area {
+    margin-top: 20px; /* Removed negative margin to prevent overlap */
+    margin-bottom: 40px;
+    padding: 0 16px;
+  }
+} /* Mobile Hero Text Adjustments */
+@media (max-width: 480px) {
+  .course-type-ai-ml .course-hero-title {
+    font-size: 2.5rem; /* Increased from 2rem for better visibility */
+    margin-bottom: 12px;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8); /* Enhanced shadow */
+  }
+
+  .course-type-ai-ml .course-hero-subtitle {
+    font-size: 1.1rem; /* Increased from 1rem for better readability */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  }
+} /* Mobile Toggle Buttons (Foundation/Advanced) */
+@media (max-width: 480px) {
+  .course-level-tabs.below-hero {
+    margin: 20px 16px; /* Increased margin for spacing */
+  }
+
+  .tab {
+    min-height: 50px; /* Increased from 44px for larger touch targets */
+    padding: 12px 16px; /* Expanded padding */
+    font-size: 0.95rem; /* Slightly increased font size */
+  }
+} /* Mobile Primary CTA Button */
+@media (max-width: 480px) {
+  .course-btn.main-cta {
+    width: 100%; /* Full width */
+    max-width: none; /* Removed max-width constraint */
+    padding: 16px 20px; /* Expanded padding for better touch area */
+    font-size: 1rem; /* Slightly increased font size */
+  }
+} /* Mobile Section Spacing Fixes */
+@media (max-width: 480px) {
+  .course-info-cards {
+    margin-top: 40px; /* Increased margin from 60px to improve flow */
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border); /* Visual divider */
+  }
+
+  .course-content {
+    margin-top: 40px; /* Added spacing between CTA and curriculum */
+  }
+}
