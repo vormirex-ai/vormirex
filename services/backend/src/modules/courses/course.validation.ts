@@ -9,7 +9,10 @@ export const createCourseSchema = z.object({
       .min(10, 'Description must be at least 10 characters'),
     price: z.number().min(0, 'Price cannot be negative'),
     thumbnail: z.string().url('Thumbnail must be a valid URL'),
-    instructorId: z.string().min(1, 'Instructor ID is required'),
+    instructorId: z
+      .string()
+      .min(1, 'Instructor ID is required')
+      .regex(/^[0-9a-fA-F]{24}$/, 'Invalid Instructor ID format'),
     tags: z.array(z.string()).optional(),
     level: z.enum(['BEGINNER', 'INTERMEDIATE', 'ADVANCED']).optional(),
     
@@ -40,6 +43,17 @@ export const updateCourseSchema = z.object({
 });
 
 export type CreateCourseInput = z.infer<typeof createCourseSchema>['body'];
+
+export const addModuleSchema = z.object({
+  body: z.object({
+    levelId: z.string().min(1, 'Level ID is required'), // Which level (Foundation/Advanced) to add this module to
+    title: z.string().min(3, 'Module title is required'),
+    items: z.array(z.string()).optional(),
+  }),
+  params: z.object({
+    id: z.string().min(1, 'Course ID is required'),
+  }),
+});
 
 export const courseIdParamsSchema = z.object({
   params: z.object({ id: z.string().min(1, 'Course ID is required') }),

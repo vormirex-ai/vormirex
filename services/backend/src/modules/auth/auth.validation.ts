@@ -32,27 +32,34 @@ const nameSchema = z
   );
 
 export const signupValidationSchema = z.object({
-  name: nameSchema,
-  email: emailSchema,
-  password: passwordSchema,
+  body: z.object({
+    name: nameSchema,
+    email: emailSchema,
+    password: passwordSchema,
+  }),
 });
 
 export const loginValidationSchema = z.object({
-  email: emailSchema,
-  password: passwordSchema,
+  body: z.object({
+    email: emailSchema,
+    password: passwordSchema,
+  }),
 });
 
 export const forgotPasswordSchema = z.object({
-  // The request body should contain an email.
-  email: emailSchema,
+  body: z.object({
+    email: emailSchema,
+  }),
 });
 
 export const resetPasswordSchema = z.object({
-  token: z.string().nonempty('Token is required'),
-  password: passwordSchema,
+  body: z.object({
+    token: z.string().nonempty('Token is required'),
+    password: passwordSchema,
+  }),
 });
 
-export type SignupBody = z.infer<typeof signupValidationSchema>;
-export type LoginBody = z.infer<typeof loginValidationSchema>;
-export type ForgotPasswordBody = z.infer<typeof forgotPasswordSchema>;
-export type ResetPasswordBody = z.infer<typeof resetPasswordSchema>;
+export type SignupBody = z.infer<typeof signupValidationSchema>['body'];
+export type LoginBody = z.infer<typeof loginValidationSchema>['body'];
+export type ForgotPasswordBody = z.infer<typeof forgotPasswordSchema>['body'];
+export type ResetPasswordBody = z.infer<typeof resetPasswordSchema>['body'];

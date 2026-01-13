@@ -4,6 +4,7 @@ export enum CourseLevel {
   BEGINNER = 'BEGINNER',
   INTERMEDIATE = 'INTERMEDIATE',
   ADVANCED = 'ADVANCED',
+  FOUNDATION = 'FOUNDATION',
 }
 
 export enum CourseStatus {
@@ -44,7 +45,7 @@ const courseModuleSchema = new Schema(
     title: { type: String, required: true },
     items: { type: [String], default: [] },
   },
-  { _id: false } // No need for separate IDs for sub-documents if not referenced directly
+  { _id: true } // Generated ID allowed for targeting
 );
 
 // Sub-schema for course levels (Foundation/Advanced)
@@ -59,7 +60,7 @@ const courseLevelSchema = new Schema(
     highlights: { type: [String], default: [] },
     modules: { type: [courseModuleSchema], default: [] },
   },
-  { _id: false }
+  { _id: true }
 );
 
 const courseSchema = new Schema<ICourse>(

@@ -20,3 +20,24 @@ export const requireAuth = (
     next();
   });
 };
+
+export const optionalAuth = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith('Bearer ')) {
+    return next();
+  }
+
+  const token = header.split(' ')[1];
+  if (!token) return next();
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!, (err, decoded) => {
+    if (!err && decoded) {
+      req.user = decoded;
+    }
+    next();
+  });
+};
