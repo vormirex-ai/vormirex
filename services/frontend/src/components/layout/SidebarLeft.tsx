@@ -77,7 +77,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
       {/* Action Buttons */}
       {/* New Chat */}
       <Link
-        to="/dashboard"
+        to="/"
         className="new-chat-button"
         style={{
           textDecoration: 'none',

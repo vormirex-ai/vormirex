@@ -5,7 +5,7 @@
       "destination": "https://vormirex-backend.vercel.app/api/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!assets/|favicon.ico|logo.png|manifest.json|robots.txt|sitemap.xml|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg).*)",
       "destination": "/index.html"
     }
   ]

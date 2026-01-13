@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LayoutDashboard, ArrowLeft, Send } from 'lucide-react';
 import './CoursePage.css';
+import SEO from '../common/SEO';
 import { COURSES, CourseId, CourseLevel } from '../../data/courses';
 
 /* ================= ASSET IMPORTS ================= */
@@ -157,6 +158,11 @@ export default function CoursePage() {
       className={`course-page course-type-${courseId}`}
       data-course={courseId}
     >
+      <SEO
+        title={`${course?.title} | Vormirex`}
+        description={course?.description || "Master the future of technology with Vormirex."}
+        url={`https://vormirex.com/course/${courseId}`}
+      />
       <div className="course-shell">
         <header className="course-hero">
           <video
