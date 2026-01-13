@@ -5,6 +5,7 @@ import { requestLogger, responseLogger } from './middleware/requestResponse.midd
 import authRouter from './modules/auth/auth.routes.js';
 import courseRouter from './modules/courses/course.routes.js';
 import userRouter from './modules/user/user.routes.js';
+import analyticsRouter from './modules/analytics/analytics.routes.js';
 import { errorHandler } from './middleware/errorHandler.middleware.js';
 import './config/passport.js';
 
@@ -38,6 +39,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/auth', authRouter);
 app.use('/api/courses', courseRouter);
 app.use('/api/users', userRouter);
+app.use('/api/analytics', analyticsRouter);
 
 // --- Centralized Error Handler ---
 // This must be the LAST middleware added to the app.

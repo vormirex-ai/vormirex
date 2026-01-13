@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import courseController from './course.controller.js';
 import { validate } from '../../middleware/validate.middleware.js';
-import { requireAuth } from '../../middleware/auth.middleware.js';
+import { requireAuth, optionalAuth } from '../../middleware/auth.middleware.js';
 import { checkRole } from '../../middleware/rbac.middleware.js';
 import {
   createCourseSchema,
   updateCourseSchema,
   courseIdParamsSchema,
+  addModuleSchema,
 } from './course.validation.js';
 
 const router = Router();
@@ -21,7 +22,7 @@ router.post(
 );
 
 // GET /api/courses - Get all courses (with pagination)
-router.get('/', courseController.getAll);
+router.get('/', optionalAuth, courseController.getAll);
 
 // GET /api/courses/:id - Get a single course details
 router.get('/:id', validate(courseIdParamsSchema), courseController.getOne);
@@ -42,6 +43,33 @@ router.delete(
   checkRole(['admin']),
   validate(courseIdParamsSchema),
   courseController.remove
+);
+
+// POST /api/courses/:id/publish - Publish a course (Admin only)
+router.post(
+  '/:id/publish',
+  requireAuth,
+  checkRole(['admin']),
+  validate(courseIdParamsSchema),
+  courseController.publish
+);
+
+// POST /api/courses/:id/unpublish - Unpublish a course (Admin only)
+router.post(
+  '/:id/unpublish',
+  requireAuth,
+  checkRole(['admin']),
+  validate(courseIdParamsSchema),
+  courseController.unpublish
+);
+
+// POST /api/courses/:id/modules - Add a module to a course level (Admin only)
+router.post(
+  '/:id/modules',
+  requireAuth,
+  checkRole(['admin']),
+  validate(addModuleSchema),
+  courseController.addModule
 );
 
 export default router;
