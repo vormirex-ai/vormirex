@@ -15,4 +15,7 @@ router.get('/', userController.getAllUsers);
 // PATCH /api/users/:id/role - Update user role
 router.patch('/:id/role', userController.updateUserRole);
 
+// DELETE /api/users/:id - Delete user (admin only)
+router.delete('/:id', userController.deleteUser);
+
 export default router;
