@@ -78,9 +78,7 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         {}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         {/* ================= PUBLIC ROUTES ================= */}
-        {}
         <Route
           path="/home"
           element={
@@ -136,7 +134,8 @@ const App: React.FC = () => {
         <Route path="/oauth-success" element={<OAuthSuccess />} />
         {/* ================= DASHBOARD ================= */}
         <Route element={<DashboardWrapper />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<Navigate to="/" replace />} />
         </Route>
         {/* ================= COURSES ================= */}
         <Route element={<CourseLayout />}>

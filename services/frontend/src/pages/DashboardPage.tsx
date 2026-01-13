@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ComingSoonModal from "../components/common/ComingSoonModal";
+import SEO from "../components/common/SEO";
 import SidebarLeft from "../components/layout/SidebarLeft";
 import SidebarRight from "../components/layout/SidebarRight";
 import DashboardLayout from "../components/layout/DashboardLayout";
@@ -24,6 +25,11 @@ export default function DashboardPage() {
 
   return (
     <div className="dashboard-container">
+      <SEO
+        title="Dashboard – Vormirex"
+        description="Your personal learning dashboard. Track your courses, streaks, and upcoming live sessions."
+        url="https://vormirex.com/"
+      />
       <ComingSoonModal isOpen={isModalOpen} onClose={closeModal} />
 
       {/* LEFT SIDEBAR */}

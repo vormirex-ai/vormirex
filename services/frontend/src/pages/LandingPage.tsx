@@ -15,6 +15,7 @@ const HomePage = () => {
       <SEO
         title="Vormirex – AI-Powered Learning Platform"
         description="Vormirex is an AI-powered learning platform offering personalized study paths, group learning rooms, and a 24/7 AI teacher to help you learn faster and smarter."
+        url="https://vormirex.com/home"
       />
       <VormirexLanding />
       <SoundFamiliar />
