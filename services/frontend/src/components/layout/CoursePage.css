@@ -849,74 +849,192 @@ button {
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
 }
-/* Mobile Hero Section Fixes */
-@media (max-width: 480px) {
+/* ================= FIXED RESPONSIVE & MOBILE SOLUTIONS ================= */
+
+/* Global Tablet Adjustments */
+@media (max-width: 1024px) {
   .course-hero {
-    height: 60vh; /* Increased from 50vh to allow more content space */
-    min-height: 450px; /* Adjusted for smaller screens */
+    height: 70vh; /* Increased from 60vh to reduce congestion (#33) */
+  }
+  .course-hero-title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .course-shell {
+    padding: 0 15px;
   }
 
+  /* Issue #33 & #34: Fix congestion and readability */
+  .course-hero {
+    height: 65vh;
+    min-height: 480px;
+  }
+
+  .course-hero-content {
+    bottom: 40px; /* Lifted slightly */
+    padding: 0 20px;
+  }
+
+  .course-hero-title {
+    font-size: 2.4rem;
+    letter-spacing: -0.5px;
+  }
+
+  /* Navigation Spacing */
+  .course-hero-top {
+    top: 25px;
+    left: 20px;
+    right: 20px;
+  }
+
+  /* Toggles Visibility */
+  .course-level-tabs.desktop-tabs {
+    display: none; /* Hide top tabs on mobile to declutter header */
+  }
+
+  .course-level-tabs.below-hero {
+    display: inline-flex;
+    margin: 40px auto 20px; /* More breathing room */
+    width: calc(100% - 40px);
+    justify-content: center;
+  }
+
+  .course-info-cards {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}
+
+/* Issue #35, #36, #37: Specific Mobile / iPhone SE Fixes (375px - 480px) */
+@media (max-width: 480px) {
+  /* #33: Fix Congestion - Increase Hero Height ratio */
+  .course-hero {
+    height: 55vh;
+    min-height: 420px;
+  }
+
+  /* #34: Improve Text Readability */
   .course-hero-overlay {
-    /* Slightly reduced gradient opacity for better text readability */
     background: linear-gradient(
+      to bottom,
       rgba(0, 0, 0, 0.7) 0%,
-      rgba(0, 0, 0, 0.4) 40%,
-      rgba(0, 0, 0, 0.8) 100%
+      rgba(0, 0, 0, 0.3) 40%,
+      rgba(0, 0, 0, 0.85) 100%
     );
   }
 
-  .course-hero-top {
-    top: 16px; /* Reduced from 20px to fit smaller viewports */
-    left: 16px;
-    right: 16px;
+  .course-hero-title {
+    font-size: 2.1rem;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9); /* Stronger contrast */
   }
 
-  /* Increased padding for hero action area to separate from hero content */
-  .hero-action-area {
-    margin-top: 20px; /* Removed negative margin to prevent overlap */
-    margin-bottom: 40px;
-    padding: 0 16px;
-  }
-} /* Mobile Hero Text Adjustments */
-@media (max-width: 480px) {
-  .course-type-ai-ml .course-hero-title {
-    font-size: 2.5rem; /* Increased from 2rem for better visibility */
-    margin-bottom: 12px;
-    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8); /* Enhanced shadow */
+  .course-hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    max-width: 280px;
+    margin: 0 auto;
   }
 
-  .course-type-ai-ml .course-hero-subtitle {
-    font-size: 1.1rem; /* Increased from 1rem for better readability */
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-  }
-} /* Mobile Toggle Buttons (Foundation/Advanced) */
-@media (max-width: 480px) {
+  /* #35: Larger Touch Targets for Toggles */
   .course-level-tabs.below-hero {
-    margin: 20px 16px; /* Increased margin for spacing */
+    width: 100%;
+    margin: 35px 0;
+    padding: 8px; /* Bigger container */
+    background: rgba(22, 22, 24, 0.9);
   }
 
   .tab {
-    min-height: 50px; /* Increased from 44px for larger touch targets */
-    padding: 12px 16px; /* Expanded padding */
-    font-size: 0.95rem; /* Slightly increased font size */
-  }
-} /* Mobile Primary CTA Button */
-@media (max-width: 480px) {
-  .course-btn.main-cta {
-    width: 100%; /* Full width */
-    max-width: none; /* Removed max-width constraint */
-    padding: 16px 20px; /* Expanded padding for better touch area */
-    font-size: 1rem; /* Slightly increased font size */
-  }
-} /* Mobile Section Spacing Fixes */
-@media (max-width: 480px) {
-  .course-info-cards {
-    margin-top: 40px; /* Increased margin from 60px to improve flow */
-    padding-top: 20px;
-    border-top: 1px solid var(--color-border); /* Visual divider */
+    flex: 1;
+    min-height: 54px; /* Increased to meet mobile standards */
+    font-size: 1rem;
+    padding: 12px 20px;
   }
 
-  .course-content {
-    margin-top: 40px; /* Added spacing between CTA and curriculum */
+  /* #36: Full-Width Primary CTA */
+  .hero-action-area {
+    margin-top: 10px;
+    padding: 0; /* Remove side padding to go edge-to-edge if needed */
   }
+
+  .course-btn.main-cta {
+    width: 100% !important; /* Forces full width */
+    max-width: none;
+    border-radius: 12px; /* Less rounded looks more 'dominant' on mobile */
+    padding: 20px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 25px var(--color-primary-glow);
+  }
+
+  /* #37: Abrupt Transition - Add Visual Separator */
+  .hero-below {
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--color-border); /* Visual divider */
+    margin-bottom: 50px; /* Spacing between CTA and Why section */
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    margin-top: 20px;
+  }
+
+  /* Video Positioning - Ensure focus is on the center graphics */
+  .hero-video-bg {
+    width: auto;
+    height: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Fix for extremely small devices (e.g., Galaxy Fold outer screen) */
+@media (max-width: 320px) {
+  .course-hero-title {
+    font-size: 1.8rem;
+  }
+  .tab {
+    padding: 10px 5px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Utility to ensure the video is sharp */
+video {
+  -webkit-transform: translateZ(0); /* Force hardware acceleration */
+  image-rendering: auto;
+}
+.course-hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  height: 85vh;
+  min-height: 550px;
+  background: #000;
+  overflow: hidden;
+  overflow-x: clip;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-video-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.hero-video-bg.loaded {
+  opacity: 1;
 }
