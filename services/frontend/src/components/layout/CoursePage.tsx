@@ -258,7 +258,6 @@ export default function CoursePage() {
           </div>
         </section>
 
-        {/* REQUEST COURSE DETAILS FORM */}
         <section className="course-request-form">
           <div className="form-container">
             <div className="form-text">
