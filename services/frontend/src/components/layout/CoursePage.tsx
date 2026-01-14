@@ -181,6 +181,14 @@ export default function CoursePage() {
               </button>
             </div>
           </div>
+
+          {/* Hero content for better text positioning */}
+          <div className="course-hero-content">
+            <h1 className="course-hero-title">{course?.title}</h1>
+            <p className="course-hero-subtitle">
+              Master the future of technology
+            </p>
+          </div>
         </header>
 
         <div className="course-level-tabs below-hero">
