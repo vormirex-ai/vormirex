@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-
 import SEO from '../common/SEO';
 
 /* =============================
-   THEME COLORS (ABOUT MATCH)
+   PAGE WRAPPER
 ============================= */
-
 const PageWrapper = styled.div`
   min-height: 100vh;
   background: #0a0b14;
@@ -19,7 +17,6 @@ const PageWrapper = styled.div`
 /* =============================
    HERO
 ============================= */
-
 const Hero = styled.section`
   padding: 120px 20px;
   text-align: center;
@@ -42,7 +39,6 @@ const HeroTitle = styled.h1`
   font-weight: 800;
   color: #6aece1;
   margin-bottom: 20px;
-  letter-spacing: -1px;
 `;
 
 const HeroSubtitle = styled.p`
@@ -72,15 +68,14 @@ const CTAButton = styled.button`
 `;
 
 /* =============================
-   FEATURES
+   FEATURES (POINT WISE)
 ============================= */
-
 const FeaturesSection = styled.section`
   padding: 90px 20px;
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
 `;
 
@@ -88,55 +83,52 @@ const SectionTitle = styled.h2`
   text-align: center;
   font-size: 2.4rem;
   font-weight: 800;
-  margin-bottom: 70px;
+  margin-bottom: 60px;
   color: #6aece1;
 `;
 
-const CardsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 34px;
+const FeatureList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
 `;
 
-const FeatureCard = styled.div`
+const FeatureItem = styled.div`
   background: rgba(255, 255, 255, 0.04);
-  border-radius: 22px;
-  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: all 0.35s ease;
+  border-radius: 20px;
+  padding: 36px;
+  transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-10px);
     border-color: #6aece1;
-    box-shadow: 0 18px 40px rgba(106, 236, 225, 0.18);
-    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 15px 35px rgba(106, 236, 225, 0.15);
+    transform: translateY(-6px);
   }
 `;
 
-const FeatureImage = styled.img`
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-`;
-
-const FeatureTitle = styled.h3`
-  padding: 26px 26px 10px;
-  font-size: 1.35rem;
+const FeatureHeading = styled.h3`
+  font-size: 1.4rem;
   font-weight: 700;
   color: #6aece1;
+  margin-bottom: 16px;
 `;
 
-const FeatureDescription = styled.p`
-  padding: 0 26px 30px;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: #a9b8c2;
+const FeaturePoints = styled.ul`
+  padding-left: 18px;
+  margin: 0;
+
+  li {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #a9b8c2;
+  }
 `;
 
 /* =============================
    FINAL CTA
 ============================= */
-
 const FinalCTA = styled.section`
   margin-top: 120px;
   padding: 100px 20px;
@@ -171,7 +163,6 @@ const LargeCTAButton = styled(CTAButton)`
 /* =============================
    COMPONENT
 ============================= */
-
 const FeaturesPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -179,15 +170,16 @@ const FeaturesPage: React.FC = () => {
     <PageWrapper>
       <SEO
         title="Features – Vormirex"
-        description="Explore the powerful features of Vormirex: Real-time code editing, AI tutor, gamified progress, and live virtual classes."
+        description="Discover Vormirex features: AI-powered learning, real-time coding, gamified progress, and expert mentorship."
         url="https://vormirex.com/features"
       />
+
       <Hero>
         <HeroContent>
           <HeroTitle>Powerful Features That Elevate Learning</HeroTitle>
           <HeroSubtitle>
-            Vormirex blends technology, AI, and design to deliver an immersive
-            coding experience for modern learners.
+            Vormirex is designed to help learners build real-world coding skills
+            through smart tools, AI guidance, and structured learning paths.
           </HeroSubtitle>
           <CTAButton onClick={() => navigate('/auth/signup')}>
             Start Free Today
@@ -197,48 +189,52 @@ const FeaturesPage: React.FC = () => {
 
       <FeaturesSection>
         <Container>
-          <SectionTitle>Why Students Love Vormirex</SectionTitle>
+          <SectionTitle>Why Students Choose Vormirex</SectionTitle>
 
-          <CardsGrid>
-            <FeatureCard>
-              <FeatureImage src="https://cpwebassets.codepen.io/assets/packs/editor-projects-a0d6a9e16cf1c2c46219ef3d49370823.png" />
-              <FeatureTitle>Real-Time Code Editor</FeatureTitle>
-              <FeatureDescription>
-                Write, run, and debug code instantly without any setup.
-              </FeatureDescription>
-            </FeatureCard>
+          <FeatureList>
+            <FeatureItem>
+              <FeatureHeading>Real-Time Coding Environment</FeatureHeading>
+              <FeaturePoints>
+                <li>Instant code execution with zero setup</li>
+                <li>Supports multiple programming languages</li>
+                <li>Practice directly in the browser</li>
+              </FeaturePoints>
+            </FeatureItem>
 
-            <FeatureCard>
-              <FeatureImage src="https://verge-ai.com/wp-content/uploads/2024/04/How-AI-Chatbot-Tutors-Are-Disrupting-Traditional-Education.webp" />
-              <FeatureTitle>AI-Powered Tutor</FeatureTitle>
-              <FeatureDescription>
-                24/7 intelligent guidance to help you learn faster.
-              </FeatureDescription>
-            </FeatureCard>
+            <FeatureItem>
+              <FeatureHeading>AI-Powered Personal Tutor</FeatureHeading>
+              <FeaturePoints>
+                <li>24/7 intelligent assistance</li>
+                <li>Instant doubt resolution</li>
+                <li>Step-by-step explanations for beginners</li>
+              </FeaturePoints>
+            </FeatureItem>
 
-            <FeatureCard>
-              <FeatureImage src="https://i0.wp.com/getrapl.com/wp-content/uploads/2023/02/Image-6-Docebo-gamification.png?ssl=1" />
-              <FeatureTitle>Gamified Progress</FeatureTitle>
-              <FeatureDescription>
-                Track skills, earn rewards, and stay motivated.
-              </FeatureDescription>
-            </FeatureCard>
+            <FeatureItem>
+              <FeatureHeading>Gamified Learning Experience</FeatureHeading>
+              <FeaturePoints>
+                <li>Earn points, badges, and achievements</li>
+                <li>Track your progress visually</li>
+                <li>Stay motivated throughout your journey</li>
+              </FeaturePoints>
+            </FeatureItem>
 
-            <FeatureCard>
-              <FeatureImage src="https://cdn.prod.website-files.com/61f7efd44d01cc87c88dc6f3/6933c69e5a99a4e54096b45b_8502b3d6-0fe1-46dc-a00e-b83832adf275.jpeg" />
-              <FeatureTitle>Live Virtual Classes</FeatureTitle>
-              <FeatureDescription>
-                Learn directly from mentors in real-time sessions.
-              </FeatureDescription>
-            </FeatureCard>
-          </CardsGrid>
+            <FeatureItem>
+              <FeatureHeading>Live Mentor-Led Sessions</FeatureHeading>
+              <FeaturePoints>
+                <li>Interact with industry experts</li>
+                <li>Real-time doubt clarification</li>
+                <li>Hands-on project guidance</li>
+              </FeaturePoints>
+            </FeatureItem>
+          </FeatureList>
         </Container>
       </FeaturesSection>
 
       <FinalCTA>
         <FinalCTATitle>Start Your Learning Journey Today</FinalCTATitle>
         <FinalCTASubtitle>
-          Thousands of learners trust Vormirex to master coding skills.
+          Join thousands of learners building strong tech careers with Vormirex.
         </FinalCTASubtitle>
         <LargeCTAButton onClick={() => navigate('/auth/signup')}>
           Get Started Free

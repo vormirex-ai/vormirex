@@ -33,9 +33,9 @@ const Footer = (props: Props) => {
       {
         title: 'Company',
         links: [
-          { label: 'Features', href: '/landing#features' },
+          { label: 'Features', href: '/features' },
           { label: 'Courses', href: '/courses' },
-          { label: 'Pricing', href: '/pricings' },
+          { label: 'Pricing', href: '/pricing' },
           { label: 'About Us', href: '/about' },
         ],
       },
