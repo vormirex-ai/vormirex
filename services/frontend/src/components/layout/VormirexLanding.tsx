@@ -13,6 +13,7 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
   heroSubtitle = 'Your friendly AI teacher available 24/7 to turn studying into an exciting adventure.',
 }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // NEW: track login status
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +24,26 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // NEW: check localStorage for logged-in user (set in VormirexAuth on login)
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (e) {
+      console.error('Landing: Failed to read user from localStorage', e);
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  // NEW: handler for Start Free (kept same behavior, just extracted)
+  const handleStartFree = () => {
+    navigate('/auth/signup');
+  };
 
   return (
     <div className="container">
@@ -45,13 +66,20 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
 
         {/* CTA Group */}
         <div className="cta-group">
-          <button
-            className="btn-primary-hero large"
-            onClick={() => navigate('/auth/signup')}
-          >
-            <Sparkles size={18} />
-            Start Free
-          </button>
+          {/* 
+            Start Free button:
+            - Visible when NOT logged in (no user in localStorage)
+            - Hidden after user logs in
+          */}
+          {!isLoggedIn && (
+            <button
+              className="btn-primary-hero large"
+              onClick={handleStartFree}
+            >
+              <Sparkles size={18} />
+              Start Free
+            </button>
+          )}
 
           <button className="btn-secondary large">
             <Play size={18} fill="currentColor" />

@@ -50,26 +50,6 @@ const LearningCTA = (props: Props) => {
 
             <button className="cta-btn-secondary">{secondaryBtnText}</button>
           </div>
-
-          <div className="cta-store-group">
-            <div className="cta-store-button">
-              <Apple size={24} />
-              <div className="cta-store-text">
-                <span className="cta-store-label">Download on the</span>
-                <span className="cta-store-name">App Store</span>
-              </div>
-            </div>
-
-            <div className="cta-store-button">
-              <div className="play-icon-wrapper">
-                <Play size={18} fill="currentColor" />
-              </div>
-              <div className="cta-store-text">
-                <span className="cta-store-label">Get it on</span>
-                <span className="cta-store-name">Google Play</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
