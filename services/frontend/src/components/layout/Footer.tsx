@@ -108,6 +108,9 @@ const Footer = (props: Props) => {
                             if (link.isComingSoon) {
                               e.preventDefault();
                               setIsModalOpen(true);
+                            } else {
+                              // THIS IS THE FIX: Scroll to top when navigating
+                              window.scrollTo(0, 0);
                             }
                           }}
                         >
