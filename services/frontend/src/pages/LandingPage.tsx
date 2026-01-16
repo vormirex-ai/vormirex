@@ -4,7 +4,6 @@ import VormirexLanding from '../components/layout/VormirexLanding';
 import SoundFamiliar from '../components/layout/SoundFamiliar';
 import Whatisvormirex from '../components/layout/Whatisvormirex';
 import BuiltForEveryone from '../components/layout/BuiltForEveryone';
-import HowItWorks from '../components/layout/HowItWorks';
 import CourseGrid from '../components/layout/CourseGrid';
 import PricingSection from '../components/layout/PricingSection';
 import LearningCTA from '../components/layout/LearningCTA';
@@ -25,7 +24,6 @@ const HomePage = () => {
       <section id="features">
         <BuiltForEveryone />
       </section>
-      <HowItWorks />
       <section id="courses">
         <CourseGrid />
       </section>
