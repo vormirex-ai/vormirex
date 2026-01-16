@@ -5,10 +5,10 @@ import './CoursePage.css';
 import { COURSES, CourseId, CourseLevel } from '../../data/courses';
 
 /* ================= ASSET IMPORTS ================= */
-import CyberVideo from '../../assets/cybersecurity.mp4';
-import DataScienceVideo from '../../assets/datascience.mp4';
-import DataAnalyticsVideo from '../../assets/dataanalytics.mp4';
-import AIMLVideo from '../../assets/ai-ml.mp4';
+import CyberVideo from '../../assets/Cybersecurityv.mp4';
+import DataScienceVideo from '../../assets/D S.mp4';
+import DataAnalyticsVideo from '../../assets/DA- final.mp4';
+import AIMLVideo from '../../assets/AlML video.mp4';
 
 import WhyCyber from '../../assets/whylearncyber.jpg';
 import WhyDS from '../../assets/whylearndatascince.jpeg';
@@ -180,14 +180,6 @@ export default function CoursePage() {
                 Advanced
               </button>
             </div>
-          </div>
-
-          {/* Hero content for better text positioning */}
-          <div className="course-hero-content">
-            <h1 className="course-hero-title">{course?.title}</h1>
-            <p className="course-hero-subtitle">
-              Master the future of technology
-            </p>
           </div>
         </header>
 

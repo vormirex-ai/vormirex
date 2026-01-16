@@ -59,6 +59,9 @@ button {
   background: #000;
   overflow: hidden;
   overflow-x: clip;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .video-container {
@@ -71,7 +74,7 @@ button {
 .hero-video-bg {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* REVERTED to cover to fill the container */
   position: absolute;
   top: 50%;
   left: 50%;
@@ -638,13 +641,6 @@ button {
     display: block;
   }
 
-  .hero-video-bg {
-    object-fit: contain;
-    object-position: right center;
-    min-width: 100%;
-    min-height: 100%;
-  }
-
   /* Enhanced mobile hero content */
   .course-hero-content {
     bottom: 120px;
@@ -849,6 +845,7 @@ button {
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
 }
+
 /* ================= FIXED RESPONSIVE & MOBILE SOLUTIONS ================= */
 
 /* Global Tablet Adjustments */
@@ -980,14 +977,6 @@ button {
     font-size: 1.8rem;
     margin-top: 20px;
   }
-
-  /* Video Positioning - Ensure focus is on the center graphics */
-  .hero-video-bg {
-    width: auto;
-    height: 100%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 }
 
 /* Fix for extremely small devices (e.g., Galaxy Fold outer screen) */
@@ -1006,35 +995,352 @@ video {
   -webkit-transform: translateZ(0); /* Force hardware acceleration */
   image-rendering: auto;
 }
-.course-hero {
+
+/* ================= HERO VIDEO MEDIA QUERIES ================= */
+
+/* Large Desktops (1920px and above) */
+@media (min-width: 1920px) {
+  .course-hero {
+    height: 90vh;
+    min-height: 700px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Standard Desktops (1440px - 1919px) */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .course-hero {
+    height: 85vh;
+    min-height: 650px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Small Desktops/Large Laptops (1200px - 1439px) */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .course-hero {
+    height: 80vh;
+    min-height: 600px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Tablets Landscape (1024px - 1199px) */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .course-hero {
+    height: 75vh;
+    min-height: 550px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+
+  .course-hero-top {
+    top: 30px;
+    left: 30px;
+    right: 30px;
+  }
+}
+
+/* Tablets Portrait (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .course-hero {
+    height: 70vh;
+    min-height: 500px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+
+  .course-hero-top {
+    top: 25px;
+    left: 25px;
+    right: 25px;
+  }
+
+  .nav-icon-btn {
+    width: 45px;
+    height: 45px;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Large Phones/Small Tablets Landscape (600px - 767px) */
+@media (min-width: 600px) and (max-width: 767px) {
+  .course-hero {
+    height: 65vh;
+    min-height: 450px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+
+  .course-hero-top {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .nav-icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .course-level-tabs.desktop-tabs {
+    display: none;
+  }
+
+  .course-level-tabs.below-hero {
+    display: inline-flex;
+    margin: 25px auto;
+  }
+}
+
+/* Standard Phones Landscape (480px - 599px) */
+@media (min-width: 480px) and (max-width: 599px) {
+  .course-hero {
+    height: 60vh;
+    min-height: 400px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+
+  .course-hero-top {
+    top: 15px;
+    left: 15px;
+    right: 15px;
+  }
+
+  .nav-icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .course-level-tabs.below-hero {
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  .tab {
+    min-height: 46px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Standard Phones Portrait (375px - 479px) */
+@media (min-width: 375px) and (max-width: 479px) {
+  .course-hero {
+    height: 55vh;
+    min-height: 380px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+
+  .course-hero-top {
+    top: 15px;
+    left: 15px;
+    right: 15px;
+  }
+
+  .nav-icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .tab {
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .hero-action-area {
+    margin-top: 30px;
+    margin-bottom: 40px;
+  }
+}
+
+/* Small Phones (320px - 374px) */
+@media (max-width: 374px) {
+  .course-hero {
+    height: 50vh;
+    min-height: 320px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+
+  .course-hero-top {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .nav-icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .tab {
+    min-height: 40px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  .hero-action-area {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
+  .course-btn.main-cta {
+    padding: 14px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Ultra-wide screens (2560px and above) */
+@media (min-width: 2560px) {
+  .course-hero {
+    height: 100vh;
+    min-height: 800px;
+    max-width: 2560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    max-width: 2560px;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Foldable phones (unfolded) */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: landscape) {
+  .course-hero {
+    height: 100vh;
+    min-height: 100vh;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* iPad Pro specific */
+@media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
+  .course-hero {
+    height: 75vh;
+    min-height: 600px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* iPhone X/11/12/13 Pro specific */
+@media only screen and (min-device-width: 375px) and (max-device-width: 428px) and (-webkit-min-device-pixel-ratio: 3) {
+  .course-hero {
+    height: 52vh;
+    min-height: 360px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+
+  .course-hero-top {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+  }
+}
+
+/* iPhone SE specific */
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+  .course-hero {
+    height: 50vh;
+    min-height: 350px;
+  }
+
+  .hero-video-bg {
+    object-fit: cover; /* REVERTED to cover */
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Video container adjustments for aspect ratio */
+.video-container {
   position: relative;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  height: 85vh;
-  min-height: 550px;
-  background: #000;
-  overflow: hidden;
-  overflow-x: clip;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #000;
 }
 
+/* Ensure video maintains aspect ratio while being fully visible */
 .hero-video-bg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  image-rendering: -webkit-optimize-contrast;
+  transition: all 0.3s ease;
 }
 
-.hero-video-bg.loaded {
-  opacity: 1;
+/* Fallback for very old browsers */
+@supports not (object-fit: cover) {
+  .hero-video-bg {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+  }
 }
