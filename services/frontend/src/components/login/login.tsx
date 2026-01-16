@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Home, LayoutDashboard } from 'lucide-react';
 import SEO from '../common/SEO';
 import logo from '../../assets/logo.png';
 import {
@@ -19,6 +20,45 @@ const css = `
     padding: 20px;
     background-color: #0a0b0f;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    position: relative;
+  }
+  .nav-button-left {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 100;
+  }
+  .nav-button-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 100;
+  }
+  .nav-button-left:hover, .nav-button-right:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
   }
   .login-container {
     width: 100%;
@@ -146,6 +186,21 @@ const css = `
     position: absolute; top: 15px; right: 15px;
     background: none; border: none; color: white; cursor: pointer;
   }
+  
+  /* Mobile adjustments */
+  @media (max-width: 480px) {
+    .nav-button-left, .nav-button-right {
+      padding: 6px 12px;
+      font-size: 12px;
+      top: 10px;
+    }
+    .nav-button-left {
+      left: 10px;
+    }
+    .nav-button-right {
+      right: 10px;
+    }
+  }
 `;
 
 interface VormirexAuthProps {
@@ -244,6 +299,21 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
             : 'https://vormirex.com/auth/signup'
         }
       />
+
+      {/* Navigation buttons at corners */}
+      <button className="nav-button-left" onClick={() => navigate('/landing')}>
+        <Home size={16} />
+        Home
+      </button>
+
+      <button
+        className="nav-button-right"
+        onClick={() => navigate('/dashboard')}
+      >
+        <LayoutDashboard size={16} />
+        Back to Dashboard
+      </button>
+
       <div className="login-container">
         <div className="logo-section">
           <img src={logo} alt="Vormirex Logo" className="logo" />
