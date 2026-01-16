@@ -146,6 +146,30 @@ const css = `
     position: absolute; top: 15px; right: 15px;
     background: none; border: none; color: white; cursor: pointer;
   }
+  .success-modal-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  .success-modal-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .dashboard-btn {
+    background-color: #00d4d4;
+    border: none;
+    color: #0a0b0f;
+  }
+  .home-btn {
+    background: transparent;
+    border: 1px solid #2a2d35;
+    color: white;
+  }
 `;
 
 interface VormirexAuthProps {
@@ -156,6 +180,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
   const [showPassword, setShowPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [authSuccess, setAuthSuccess] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -207,10 +233,9 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
       if (activeTab === 'signup') {
         const res = await signupUser(name, email, password);
         if (res.success) {
-          alert(
-            res.message || 'Account created! Please check your email to verify.'
-          );
-          navigate('/auth/login'); // Stay within auth routes
+          // Show success message and buttons instead of navigating
+          setAuthSuccess(true);
+          setIsSuccessModalOpen(true);
           setName('');
           setEmail('');
           setPassword('');
@@ -220,7 +245,9 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
         if (res.success) {
           localStorage.setItem('accessToken', res.accessToken);
           localStorage.setItem('user', JSON.stringify(res.user));
-          window.location.href = '/dashboard';
+          // Show success modal instead of direct navigation
+          setAuthSuccess(true);
+          setIsSuccessModalOpen(true);
         }
       }
     } catch (err: any) {
@@ -230,11 +257,29 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
     }
   };
 
+  const handleDashboardClick = () => {
+    if (authSuccess) {
+      window.location.href = '/dashboard';
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
+  const handleHomeClick = () => {
+    if (authSuccess) {
+      window.location.href = '/';
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
     <div className="login-page-root">
       <style>{css}</style>
       <SEO
-        title={activeTab === 'login' ? 'Log In - Vormirex' : 'Sign Up - Vormirex'}
+        title={
+          activeTab === 'login' ? 'Log In - Vormirex' : 'Sign Up - Vormirex'
+        }
         description="Access your personal AI tutor or create a new account to start mastering coding skills with Vormirex."
         url={
           activeTab === 'login'
@@ -402,6 +447,51 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
             >
               {loading ? 'Sending...' : 'Send Link'}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal with Dashboard and Home buttons */}
+      {isSuccessModalOpen && (
+        <div
+          className="modal-overlay"
+          onClick={() => setIsSuccessModalOpen(false)}
+        >
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close"
+              onClick={() => setIsSuccessModalOpen(false)}
+            >
+              ✕
+            </button>
+            <h2 style={{ color: 'white', marginBottom: '15px' }}>
+              {activeTab === 'login' ? 'Login Successful!' : 'Account Created!'}
+            </h2>
+            <p
+              style={{
+                color: '#9ca3af',
+                fontSize: '14px',
+                marginBottom: '20px',
+              }}
+            >
+              {activeTab === 'login'
+                ? 'Welcome back! Where would you like to go?'
+                : 'Your account has been created successfully! Where would you like to go?'}
+            </p>
+            <div className="success-modal-buttons">
+              <button
+                className="success-modal-btn dashboard-btn"
+                onClick={handleDashboardClick}
+              >
+                Dashboard
+              </button>
+              <button
+                className="success-modal-btn home-btn"
+                onClick={handleHomeClick}
+              >
+                Home
+              </button>
+            </div>
           </div>
         </div>
       )}
