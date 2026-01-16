@@ -29,77 +29,77 @@ interface CourseGridProps {
   buttonText?: string;
 }
 
-// --- Default Data ---
+// --- Default Data (UPDATED TO IT COURSES) ---
 const DEFAULT_CATEGORIES: CourseCategory[] = [
   {
     id: 1,
-    title: 'Smart School Booster',
+    title: 'Cyber Security',
     learners: '12K+ learners',
     icon: <Rocket size={24} />,
   },
   {
     id: 2,
-    title: 'Exam Prep Kit',
+    title: 'Exam Preparation Kit', // ✅ renamed everywhere
     learners: '8K+ learners',
     icon: <Brain size={24} />,
   },
   {
     id: 3,
-    title: 'Coding Master',
+    title: 'Full Stack Development',
     learners: '15K+ learners',
     icon: <Code size={24} />,
   },
   {
     id: 4,
-    title: 'English Fluency',
+    title: 'Data Science',
     learners: '20K+ learners',
     icon: <Globe size={24} />,
   },
   {
     id: 5,
-    title: 'Digital Skills',
+    title: 'Data Analytics',
     learners: '6K+ learners',
     icon: <Palette size={24} />,
   },
   {
     id: 6,
-    title: 'Life Skills',
+    title: 'AI & Machine Learning',
     learners: '4K+ learners',
-    icon: <Heart size={24} />,
+    icon: <Sparkles size={24} />,
   },
   {
     id: 7,
-    title: 'Career Accelerator',
+    title: 'Cloud & DevOps',
     learners: '9K+ learners',
     icon: <Briefcase size={24} />,
   },
   {
     id: 8,
-    title: 'Kids Bundle',
+    title: 'Software Testing',
     learners: '7K+ learners',
     icon: <Baby size={24} />,
   },
   {
     id: 9,
-    title: 'AI Custom Path',
+    title: 'Career Transition Programs',
     learners: '5K+ learners',
-    icon: <Sparkles size={24} />,
+    icon: <Users size={24} />,
   },
   {
     id: 10,
-    title: 'Study With Friends',
+    title: 'AI-Powered Learning Paths',
     learners: '11K+ learners',
-    icon: <Users size={24} />,
+    icon: <Heart size={24} />,
   },
 ];
 
 const CourseGrid: React.FC<CourseGridProps> = ({
-  title = 'Unlock Your Potential',
-  subtitle = 'Explore our curated courses designed to transform your learning journey',
+  title = 'Unlock Your Tech Potential',
+  subtitle = 'Industry-ready courses in Cyber Security, Data Science, AI/ML, and Software Development',
   buttonText = 'Explore All Courses',
   categories = DEFAULT_CATEGORIES,
 }) => {
-  const navigate = useNavigate(); // ✅ REQUIRED ONLY
+  const navigate = useNavigate();
 
   const titleWords = title.split(' ');
   const firstWord = titleWords[0];
@@ -139,7 +139,6 @@ const CourseGrid: React.FC<CourseGridProps> = ({
           className="course-cta-button"
           onClick={() => navigate('/courses')}
         >
-          {/* ✅ ONLY FUNCTIONAL ADD */}
           {buttonText} <ArrowRight size={18} />
         </button>
       </div>
@@ -172,7 +171,7 @@ const CourseGrid: React.FC<CourseGridProps> = ({
         .course-subtitle {
           color: #94a3b8;
           font-size: 18px;
-          max-width: 600px;
+          max-width: 700px;
           margin: auto;
         }
 
@@ -192,6 +191,7 @@ const CourseGrid: React.FC<CourseGridProps> = ({
           padding: 32px 20px;
           text-align: center;
           transition: 0.3s;
+          cursor: pointer;
         }
 
         .course-card:hover {
@@ -214,6 +214,7 @@ const CourseGrid: React.FC<CourseGridProps> = ({
           align-items: center;
           gap: 10px;
           cursor: pointer;
+          transition: 0.3s;
         }
 
         .course-cta-button:hover {

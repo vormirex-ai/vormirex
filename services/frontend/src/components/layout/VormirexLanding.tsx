@@ -118,12 +118,12 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
                 <Sparkles size={20} color="#000" />
               </div>
               <div className="ai-info">
-                <span className="ai-name">VORMII</span>
+                <span className="ai-name">VORMIREX</span>
                 <span className="ai-tag">AI Tutor</span>
               </div>
             </div>
             <p className="ai-message">
-              Hello! 👋 I'm Vormi, your personal AI learning companion. What
+              Hello! 👋 I'm Vormirex, your personal AI learning companion. What
               would you like to learn today?
             </p>
             <div className="ai-suggestions">
