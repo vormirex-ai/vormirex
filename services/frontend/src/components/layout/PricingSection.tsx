@@ -109,11 +109,6 @@ const PricingSection: React.FC<Props> = ({ plans = DEFAULT_PLANS }) => {
         ))}
       </div>
 
-      <div className="footer-info">
-        <Sparkles size={14} className="sparkle-icon" />
-        <span>14-day money-back guarantee • No credit card required</span>
-      </div>
-
       <style>{`
         .pricing-container {
           background-color: #0a0a12;
