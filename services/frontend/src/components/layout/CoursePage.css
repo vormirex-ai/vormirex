@@ -383,7 +383,52 @@ button {
   color: var(--text-secondary);
   line-height: 1.6;
 }
+/* ================= HERO TEXT OVERLAY ================= */
+.course-hero-text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 30%; /* Positioned at 60% from left (slightly right of center) */
+  transform: translate(-50%, -50%); /* Center the element itself */
+  z-index: 5;
+  color: white;
+  max-width: 50%; /* Adjusted width for better balance */
+  text-align: left; /* Left-align for better readability */
+}
 
+.hero-text {
+  font-size: 2.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+.hero-text .highlight {
+  color: var(--color-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .course-hero-text-overlay {
+    left: 20px;
+    max-width: 60%;
+  }
+
+  .hero-text {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-hero-text-overlay {
+    left: 15px;
+    max-width: 70%;
+  }
+
+  .hero-text {
+    font-size: 1.6rem;
+  }
+}
 /* ================= MODAL ================= */
 .image-modal {
   position: fixed;
@@ -1319,5 +1364,67 @@ video {
     width: auto;
     height: 100%;
     max-width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  /* HERO SECTION FIX */
+  .course-hero {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    padding: 20px 0 40px;
+  }
+
+  /* TEXT OVERLAY */
+  .course-hero-text-overlay {
+    position: relative;
+    max-width: 100%;
+    padding: 16px 20px 16px 10px;
+    text-align: right; /* RIGHT SIDE */
+    overflow: visible;
+  }
+
+  /* MAIN HEADING */
+  .hero-text {
+    font-size: 20px;
+    line-height: 1.4;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  /* REMOVE FORCED BREAK */
+  .hero-text br {
+    display: none;
+  }
+
+  /* HIGHLIGHT TEXT */
+  .hero-text .highlight {
+    display: block;
+    font-size: 24px;
+    margin-top: 6px;
+  }
+}
+@media (max-width: 480px) {
+  .hero-text {
+    font-size: 15px;
+  }
+
+  .hero-text .highlight {
+    font-size: 22px;
+  }
+}
+@media (max-width: 768px) {
+  .course-hero-text-overlay {
+    position: relative;
+    max-width: 100%;
+    padding: 40px 20px 16px 10px; /* increased top padding from 16px → 40px */
+    text-align: right;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-hero-text-overlay {
+    padding-top: 30px; /* adjust for really small screens */
   }
 }
