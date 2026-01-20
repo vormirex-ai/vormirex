@@ -12,7 +12,7 @@ import examPrepPDF from '../CustomCourses/assets/CoursesPdf (2).pdf'; // PDF imp
 const ExamPrep: React.FC = () => {
   return (
     <CustomCoursePage
-      title="Exam Prep"
+      title="Exam Preparation"
       description="Score higher with realistic mock exams, smart revision plans, and proven strategies that turn stress into success."
       benefits={[
         'Unlimited full-length practice tests with instant scoring',
