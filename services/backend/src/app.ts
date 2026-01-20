@@ -6,6 +6,7 @@ import authRouter from './modules/auth/auth.routes.js';
 import courseRouter from './modules/courses/course.routes.js';
 import userRouter from './modules/user/user.routes.js';
 import analyticsRouter from './modules/analytics/analytics.routes.js';
+import progressRouter from './modules/progress/progress.routes.js';
 // import paymentRouter from './modules/payment/payment.routes.js';
 import { errorHandler } from './middleware/errorHandler.middleware.js';
 import './config/passport.js';
@@ -41,6 +42,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/courses', courseRouter);
 app.use('/api/users', userRouter);
 app.use('/api/analytics', analyticsRouter);
+app.use('/api/progress', progressRouter);
 // app.use('/api/payments', paymentRouter);
 
 // --- Centralized Error Handler ---

@@ -17,7 +17,26 @@ export const requireAuth = (
       return res.status(403).json({ message: "Invalid Token" });
 
     req.user = decoded;
-    next();
+
+    // Check if user is frozen or deleted in DB
+    // We import User dynamically to avoid circular deps if any, though here it strictly depends on modules structure.
+    // Assuming cleaner arch, we just import User at top. But let's check if we can import User model here.
+    // Yes, we can import User model.
+    import('../modules/user/user.model.js').then(async ({ default: User }) => {
+       try {
+          const payload = decoded as any; // Cast to any or CustomJWTPayload
+          const user = await User.findById(payload.userId);
+          if (!user) {
+             return res.status(401).json({ message: "User no longer exists" });
+          }
+          if (user.isFrozen) {
+             return res.status(403).json({ message: "Account is frozen. Contact support." });
+          }
+           next();
+       } catch (dbErr) {
+           return res.status(500).json({ message: "Auth Error" });
+       }
+    }).catch(err => next(err));
   });
 };
 

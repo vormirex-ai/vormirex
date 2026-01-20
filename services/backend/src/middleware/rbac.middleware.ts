@@ -12,8 +12,15 @@ export const checkRole = (allowedRoles: string[]) => {
     // The `requireAuth` middleware should have already run and attached the user to the request.
     // Cast user to CustomJWTPayload to access role
     const user = req.user as CustomJWTPayload | undefined;
+    
+    // Role Hierarchy: super-admin > admin > user
+    const hasRole = (userRole: string, requiredRole: string) => {
+      if (userRole === 'super-admin') return true; // Super admin has access to everything
+      if (userRole === 'admin' && requiredRole !== 'super-admin') return true;
+      return userRole === requiredRole;
+    };
 
-    if (!user || !user.role || !allowedRoles.includes(user.role)) {
+    if (!user || !user.role || !allowedRoles.some(role => hasRole(user.role, role))) {
       // If the user doesn't exist, has no role, or their role is not in the allowed list, deny access.
       throw new ForbiddenError();
     }

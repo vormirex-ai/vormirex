@@ -9,7 +9,7 @@ const router = Router();
 router.get(
   '/stats',
   requireAuth,
-  checkRole(['admin']),
+  checkRole(['super-admin']),
   analyticsController.getStats
 );
 

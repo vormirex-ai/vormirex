@@ -63,6 +63,15 @@ router.post(
   courseController.unpublish
 );
 
+// PATCH /api/courses/:id/visibility - Toggle course visibility (Admin only)
+router.patch(
+  '/:id/visibility',
+  requireAuth,
+  checkRole(['admin']),
+  validate(courseIdParamsSchema),
+  courseController.toggleVisibility
+);
+
 // POST /api/courses/:id/modules - Add a module to a course level (Admin only)
 router.post(
   '/:id/modules',

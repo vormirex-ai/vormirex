@@ -18,6 +18,18 @@ class CourseController {
   async getOne(req: Request, res: Response, next: NextFunction) {
     try {
       const course = await courseService.getById(req.params.id);
+      
+      const user = req.user as any;
+      const isAdmin = user && user.role === 'admin';
+
+      if (course.isHidden && !isAdmin) {
+        // Option 1: Return 404 to pretend it doesn't exist
+        // Option 2: Return 403 Forbidden
+        // Going with 404 to match typical "hidden" behavior
+        res.status(404).json({ message: 'Course not found' });
+        return;
+      }
+
       res.status(200).json({
         success: true,
         data: course,
@@ -33,7 +45,7 @@ class CourseController {
       const limit = Number(req.query.limit) || 10;
       
       // Default filter: only PUBLISHED courses
-      let filter: Record<string, any> = { status: 'PUBLISHED' };
+      let filter: Record<string, any> = { status: 'PUBLISHED', isHidden: { $ne: true } };
 
       // If user is admin, allow them to see all (remove filter)
       const user = req.user as any;
@@ -107,6 +119,21 @@ class CourseController {
         success: true,
         message: 'Module added successfully',
         data: course,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async toggleVisibility(req: Request, res: Response, next: NextFunction) {
+    try {
+      const course = await courseService.getById(req.params.id);
+      const updatedCourse = await courseService.update(req.params.id, { isHidden: !course.isHidden } as any);
+      
+      res.status(200).json({
+        success: true,
+        message: `Course is now ${updatedCourse.isHidden ? 'hidden' : 'visible'}`,
+        data: updatedCourse,
       });
     } catch (error) {
       next(error);
