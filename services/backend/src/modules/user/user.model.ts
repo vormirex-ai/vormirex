@@ -6,12 +6,13 @@ export interface IUser extends Document {
   password?: string;
   googleId?: string;
   provider: 'local' | 'google';
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' | 'super-admin';
   isVerified: boolean;
   emailVerificationToken?: string;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   timezone?: string;
+  isFrozen: boolean;
   streak: {
     current: number;
     longest: number;
@@ -26,8 +27,9 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: false, select: false },
     googleId: { type: String, unique: true, sparse: true, select: false },
     provider: { type: String, enum: ['local', 'google'], default: 'local' },
-    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    role: { type: String, enum: ['user', 'admin', 'super-admin'], default: 'user' },
     isVerified: { type: Boolean, default: false },
+    isFrozen: { type: Boolean, default: false },
     emailVerificationToken: { type: String, select: false },
     passwordResetToken: { type: String, select: false },
     passwordResetExpires: { type: Date, select: false },

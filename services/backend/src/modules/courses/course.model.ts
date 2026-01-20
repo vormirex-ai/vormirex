@@ -34,6 +34,7 @@ export interface ICourse extends Document {
   level: CourseLevel;
   levels: ICourseLevelBlock[]; // Rich curriculum structure
   status: CourseStatus;
+  isHidden: boolean;
   tags: string[];
   createdAt: Date;
   updatedAt: Date;
@@ -112,6 +113,11 @@ const courseSchema = new Schema<ICourse>(
       type: String,
       enum: Object.values(CourseStatus),
       default: CourseStatus.DRAFT,
+      index: true,
+    },
+    isHidden: {
+      type: Boolean,
+      default: false,
       index: true,
     },
     tags: {
