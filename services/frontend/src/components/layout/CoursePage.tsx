@@ -5,10 +5,10 @@ import './CoursePage.css';
 import { COURSES, CourseId, CourseLevel } from '../../data/courses';
 
 /* ================= ASSET IMPORTS ================= */
-import CyberVideo from '../../assets/Cybersecurityv.mp4';
-import DataScienceVideo from '../../assets/D S.mp4';
-import DataAnalyticsVideo from '../../assets/DA- final.mp4';
-import AIMLVideo from '../../assets/AlML video.mp4';
+import CyberVideo from '../../assets/CS.mp4';
+import DataScienceVideo from '../../assets/DS.mp4';
+import DataAnalyticsVideo from '../../assets/Data Analytics.mp4';
+import AIMLVideo from '../../assets/V3.mp4';
 
 import WhyCyber from '../../assets/whylearncyber.jpg';
 import WhyDS from '../../assets/whylearndatascince.jpeg';
@@ -151,6 +151,15 @@ export default function CoursePage() {
             <source src={heroMedia.src} type="video/mp4" />
           </video>
           <div className="course-hero-overlay" />
+
+          {/* Updated Hero Text Overlay with better mobile positioning */}
+          <div className="course-hero-text-overlay">
+            <h1 className="hero-text">
+              Unlock Your Potential with <br />
+              <span className="highlight">{course?.title}</span>
+            </h1>
+          </div>
+
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
