@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, LayoutDashboard } from 'lucide-react';
 import './CustomCoursePage.css';
 
 // ==================== IMPORT IMAGES ====================
@@ -86,45 +87,24 @@ const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
         className="custom-hero"
         style={{ backgroundImage: `url(${heroImageUrl})` }}
       >
-        {/* Navigation Buttons */}
-        <div className="course-navigation">
-          <button
-            className="nav-button back-button animate-fade-in"
-            onClick={handleBackToCourses}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              style={{ marginRight: '8px' }}
+        {/* Updated Navigation Buttons */}
+        <div className="course-hero-top">
+          <div className="hero-nav-group">
+            <button
+              className="nav-icon-btn"
+              onClick={handleBackToCourses}
+              aria-label="Back to courses"
             >
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            Back to Courses
-          </button>
-          <button
-            className="nav-button dashboard-button animate-fade-in"
-            onClick={handleDashboard}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              style={{ marginRight: '8px' }}
+              <ArrowLeft size={24} />
+            </button>
+            <button
+              className="nav-icon-btn"
+              onClick={handleDashboard}
+              aria-label="Go to dashboard"
             >
-              <rect x="3" y="3" width="7" height="7" />
-              <rect x="14" y="3" width="7" height="7" />
-              <rect x="14" y="14" width="7" height="7" />
-              <rect x="3" y="14" width="7" height="7" />
-            </svg>
-            Dashboard
-          </button>
+              <LayoutDashboard size={24} />
+            </button>
+          </div>
         </div>
 
         <div className="hero-content">
