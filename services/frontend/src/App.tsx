@@ -40,16 +40,21 @@ import CoursePage from './components/layout/CoursePage';
 /* =======================
    CUSTOM COURSES
 ======================= */
-import BoosterPack from './CustomCourses/BoosterPack';
-import CodingMastery from './CustomCourses/CodingMastery';
-import ExamPrep from './CustomCourses/ExamPrep';
-import SavedChats from './CustomCourses/SavedChats';
-import YourProgress from './CustomCourses/YourProgress';
+import {
+  BoosterPack,
+  CodingMastery,
+  ExamPrep,
+  SavedChats,
+  YourProgress,
+} from './CustomCourses/CustomCoursePage';
+import CustomCoursesList from './CustomCourses/CustomCoursesList';
 
 /* ============================================================
    PUBLIC LAYOUT (Navbar + Footer)
 ============================================================ */
-const PublicLayout = ({ children }: { children: React.ReactNode }) => (
+const PublicLayout: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
   <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
     <Navbar />
     <main style={{ flex: 1 }}>{children}</main>
@@ -60,7 +65,7 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => (
 /* ============================================================
    COURSE LAYOUT (Navbar + Outlet + Footer)
 ============================================================ */
-const CourseLayout = () => (
+const CourseLayout: React.FC = () => (
   <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
     <Navbar />
     <main style={{ flex: 1 }}>
@@ -77,7 +82,6 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {}
         {/* ================= PUBLIC ROUTES ================= */}
         <Route
           path="/home"
@@ -119,6 +123,7 @@ const App: React.FC = () => {
             </PublicLayout>
           }
         />
+
         {/* ================= AUTH ================= */}
         <Route path="/auth" element={<VormirexAuth defaultTab="login" />} />
         <Route
@@ -132,24 +137,32 @@ const App: React.FC = () => {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
+
         {/* ================= DASHBOARD ================= */}
         <Route element={<DashboardWrapper />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/dashboard" element={<Navigate to="/" replace />} />
         </Route>
+
         {/* ================= COURSES ================= */}
         <Route element={<CourseLayout />}>
+          {/* General Courses */}
           <Route path="/courses" element={<CoursePage />} />
           <Route path="/course/:courseId" element={<CoursePage />} />
+
+          {/* Custom Courses List */}
+          <Route path="/custom-courses" element={<CustomCoursesList />} />
+
+          {/* Individual Custom Courses */}
           <Route path="/custom/booster-pack" element={<BoosterPack />} />
           <Route path="/custom/coding-mastery" element={<CodingMastery />} />
           <Route path="/custom/exam-prep" element={<ExamPrep />} />
           <Route path="/custom/your-progress" element={<YourProgress />} />
           <Route path="/custom/saved-chats" element={<SavedChats />} />
         </Route>
-        {}
-        {}
-        <Route path="*" element={<Navigate to="/home" replace />} />{' '}
+
+        {/* ================= CATCH ALL ================= */}
+        <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </Router>
   );
