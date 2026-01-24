@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Bot,
   Users,
@@ -7,20 +7,33 @@ import {
   BookOpen,
   ArrowLeft,
   CheckCircle,
+  Image as ImageIcon,
 } from 'lucide-react';
 
-const contentMap: any = {
+interface FeatureData {
+  icon: React.ReactNode;
+  title: string;
+  tagline: string;
+  mainImage: string;
+  additionalImages: string[];
+  description: string;
+  points: string[];
+  extra: string;
+  cta: string;
+}
+
+const contentMap: Record<string, FeatureData> = {
   'ai-teacher': {
     icon: <Bot size={40} />,
     title: '24/7 AI Teacher',
     tagline: 'Personalized tutoring that never sleeps.',
     mainImage:
-      'https://www.leadsquared.com/wp-content/uploads/2023/06/education-chatbot-for-fee-payment-process.png',
+      'https://www.shutterstock.com/image-photo/ai-artificial-intelligence-supports-24hour-600nw-2647800225.jpg',
     additionalImages: [
-      'https://cdn.dribbble.com/userupload/17996829/file/original-9538d5106568eac4ae7c94c46523dd25.png?resize=752x&vertical=center',
-      'https://www.biz4group.com/blog/images/build-ai-classroom-app/classroom-sync.webp',
-      'https://www.shutterstock.com/image-vector/online-bot-chat-windows-website-600nw-2023618448.jpg',
-      'https://thumbs.dreamstime.com/b/child-using-laptop-virtual-ai-icons-representing-artificial-intelligence-education-personalized-learning-digital-tools-e-404959473.jpg',
+      'https://46968845.fs1.hubspotusercontent-na1.net/hubfs/46968845/AI-Generated%20Media/Images/In%20a%20vibrant%20classroom%20setting%20a%20human%20tutor%20and%20an%20AI%20tutora%20sleek%20humanoid%20robot%20with%20glowing%20blue%20accentsare%20engaged%20in%20a%20lively%20debate%20about%20the%20f-1.png',
+      'https://static1.squarespace.com/static/63c867491abe131843b09837/t/66df6e0efbccf326f812640d/1725918734173/24_7+Teach+-+Icon+-+Orange.png',
+      'https://nlcbharat.org/wp-content/uploads/2024/03/image1.jpg',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQFpPMaII4qHVuxyGeD8I6fgGSmE74xNeZWw&s',
     ],
     description:
       'Vormirex AI Teacher acts as your personal tutor available 24/7. It understands your learning style and provides instant explanations, examples, and practice questions tailored to you. Powered by advanced AI, it adapts in real-time to your progress, ensuring you grasp concepts deeply before moving on.',
@@ -41,12 +54,12 @@ const contentMap: any = {
     title: 'Group Learning Rooms',
     tagline: 'Collaborative study, reimagined.',
     mainImage:
-      'https://cms.vibe.dev/wp-content/uploads/2025/05/Remote_Team_Meeting_With_Multiple_People_Online-2-edited.png',
+      'https://images.pexels.com/photos/7644076/pexels-photo-7644076.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     additionalImages: [
-      'https://images.ctfassets.net/w6r2i5d8q73s/137DRwrtiUeG5ivHZr4shO/866c5f66c56e0a50cd42c70e7db761f3/WWB_-_Business.png',
-      'https://cms.vibe.dev/wp-content/uploads/2025/05/collaborate-on-interactive-whiteboard-edited.png',
-      'https://www.leadinglearning.com/wp-content/uploads/2022/03/Group-collaborating-scaled.jpg',
-      'https://wpvip.edutopia.org/wp-content/uploads/2022/10/iStock-1322369839-crop.jpg',
+      'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800',
+      'https://images.pexels.com/photos/3183183/pexels-photo-3183183.jpeg?auto=compress&cs=tinysrgb&w=800',
+      'https://i0.wp.com/writegroup.io/wp-content/uploads/2019/05/Image-by-You-X-Ventures-on-Unsplash.jpg?resize=866%2C577&ssl=1',
+      'https://qnextech.com/wp-content/uploads/2024/05/Q-NEX-31-1024x627.webp',
     ],
     description:
       'Study together with friends or learners worldwide in interactive virtual rooms. Share ideas, solve problems, and stay motivated through collaboration. Features real-time screen sharing and collaborative note-taking for seamless group sessions.',
@@ -67,12 +80,12 @@ const contentMap: any = {
     title: 'Personalized Paths',
     tagline: 'Your unique roadmap to success.',
     mainImage:
-      'https://www.slidekit.com/wp-content/uploads/2024/10/5-Stage-Education-Roadmap-Template.jpg',
+      'https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     additionalImages: [
-      'https://www.slideteam.net/media/catalog/product/cache/1280x720/r/e/remote_learning_dashboard_for_tracking_student_progress_slide01.jpg',
-      'https://www.slidekit.com/wp-content/uploads/2025/05/Learning-Path-PowerPoint-Template.jpg',
-      'https://www.slideteam.net/wp/wp-content/uploads/2024/06/6-Steps-in-creating-personalized-learning-plans.png',
-      'https://www.slidekit.com/wp-content/uploads/2025/01/Personal-Journey-Map-PPT-Template-and-Google-Slides.jpg',
+      'https://www.techfunnel.com/wp-content/uploads/2024/08/Personalized-Learning-Paths.jpg',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ621lguNbsOh1Ul10zmRXfy1n4uW5I8ZyAUg&s',
+      'https://www.cpduk.co.uk/sites/default/files/news-imported/cpd-iam-learning-personalised-learning-pathways.jpg',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL57vo10mFzW-htEHZj5MdhbnzT8XC4IyQ0A&s',
     ],
     description:
       'AI analyzes your strengths and weaknesses to create a personalized learning roadmap that evolves as you progress. Track your journey with visual progress maps and receive recommendations for resources that match your needs.',
@@ -93,12 +106,12 @@ const contentMap: any = {
     title: 'All Subjects',
     tagline: 'One platform for everything you want to learn.',
     mainImage:
-      'https://s3-figma-hubfile-images-production.figma.com/hub/file/carousel/img/37208f4d0f268dba816d2590219f129c0751351d',
+      'https://www.teachhub.com/wp-content/uploads/2020/09/Sept-9-Benefits-of-Group-Work_web.jpg',
     additionalImages: [
-      'https://www.oclc.org/content/dam/oclc/cloudlibrary/images/carousel_6_reports.png',
-      'https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Hero-Image-learning?resMode=sharp2&op_usm=1.5,0.65,15,0&wid=2000&hei=1125&qlt=100&fmt=png-alpha&fit=constrain',
-      'https://www.higherlogic.com/wp-content/uploads/2024/11/Learn_Hero.png',
-      'https://media.istockphoto.com/id/514856668/vector/flat-modern-icons-for-education-and-professions.jpg?s=612x612&w=0&k=20&c=BiZE2ODfdsNwo9kd0qLguGk0G93eHmqsDv-7W8CZ8jw=',
+      'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=800',
+      'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=800',
+      'https://transitionsusa.org/wp-content/uploads/2024/12/shutterstock_2111420681-scaled.jpg',
+      'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800',
     ],
     description:
       'From academics and technology to creativity and life skills, access hundreds of subjects on one unified platform. Curated by experts, with interactive modules, videos, and hands-on projects.',
@@ -116,340 +129,418 @@ const contentMap: any = {
 };
 
 const FeatureDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id = 'ai-teacher' } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const data = id ? contentMap[id] : null;
+  const data = contentMap[id] || contentMap['ai-teacher'];
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [id]);
 
-  if (!data) {
-    return <div className="built-everyone-shell">Feature not found.</div>;
-  }
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  const handleImageError = (imageId: string) => {
+    setImageErrors((prev) => ({ ...prev, [imageId]: true }));
+  };
+
+  const titleParts = data.title.split(' ');
+  const firstWord = titleParts[0];
+  const restOfTitle = titleParts.slice(1).join(' ');
 
   return (
-    <div className="built-everyone-shell feature-page">
-      <div className="detail-wrapper">
-        <button className="back-link" onClick={() => navigate(-1)}>
-          <ArrowLeft size={18} /> Back
-        </button>
+    <div className="feature-container">
+      <button className="back-btn" onClick={handleBack} aria-label="Go back">
+        <ArrowLeft size={20} />
+        <span>Back to Features</span>
+      </button>
 
-        <div className="detail-hero">
-          <div className="icon-container detail-icon">{data.icon}</div>
-
-          <h1 className="main-title">
-            {data.title.split(' ')[0]}{' '}
-            <span className="highlight">
-              {data.title.split(' ').slice(1).join(' ')}
-            </span>
+      <div className="content-wrapper">
+        <header className="header-section">
+          <div className="icon-box">{data.icon}</div>
+          <h1 className="title">
+            {firstWord} <span className="gradient-text">{restOfTitle}</span>
           </h1>
+          <p className="tagline">{data.tagline}</p>
+        </header>
 
-          <p className="subtitle">{data.tagline}</p>
+        <div className="hero-image-container">
+          {imageErrors['hero'] ? (
+            <div className="image-error-placeholder">
+              <ImageIcon size={48} />
+              <span>Image unavailable</span>
+            </div>
+          ) : (
+            <img
+              src={data.mainImage}
+              alt={data.title}
+              className="hero-image"
+              onError={() => handleImageError('hero')}
+              loading="lazy"
+            />
+          )}
+          <div className="image-overlay"></div>
         </div>
 
-        <img
-          src={data.mainImage}
-          alt={data.title}
-          className="detail-image animate-fade-in"
-        />
+        <div className="info-card">
+          <section className="description-section">
+            <p className="description-text">{data.description}</p>
 
-        <div className="detail-body">
-          <p className="detail-text">{data.description}</p>
-
-          <div className="points-list">
-            {data.points.map((p: string, i: number) => (
-              <div key={i} className="point-item animate-hover-scale">
-                <CheckCircle size={20} className="check-icon" />
-                <span>{p}</span>
-              </div>
-            ))}
-          </div>
-
-          <p className="detail-extra">{data.extra}</p>
-
-          {/* Image Gallery Section */}
-          <div className="gallery-section">
-            <h2 className="section-title">See It in Action</h2>
-            <div className="image-gallery">
-              {data.additionalImages.map((img: string, i: number) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt={`${data.title} demo ${i + 1}`}
-                  className="gallery-image animate-fade-in-stagger"
-                  style={{ animationDelay: `${i * 0.2}s` }}
-                />
+            <div className="features-grid">
+              {data.points.map((point, index) => (
+                <div key={index} className="feature-item">
+                  <div className="check-wrapper">
+                    <CheckCircle size={18} />
+                  </div>
+                  <span>{point}</span>
+                </div>
               ))}
             </div>
-          </div>
 
-          {/* CTA Button */}
-          <button className="cta-button animate-hover-pulse">{data.cta}</button>
+            <p className="extra-text">{data.extra}</p>
+          </section>
+
+          <section className="gallery-section">
+            <h2 className="gallery-title">Experience the Interface</h2>
+            <div className="gallery-grid">
+              {data.additionalImages.map((img, idx) => (
+                <div
+                  key={idx}
+                  className="gallery-item"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
+                >
+                  {imageErrors[`gallery-${idx}`] ? (
+                    <div className="image-error-placeholder">
+                      <ImageIcon size={24} />
+                    </div>
+                  ) : (
+                    <img
+                      src={img}
+                      alt="Feature preview"
+                      onError={() => handleImageError(`gallery-${idx}`)}
+                      loading="lazy"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <div className="cta-wrapper">
+            <button className="primary-cta">{data.cta}</button>
+          </div>
         </div>
       </div>
 
-      {/* ================== CSS ================== */}
       <style>{`
-        .feature-page {
-          padding-top: 80px; /* Reduced from 120px to bring content higher up */
-          background: linear-gradient(to bottom, #0a0f1e, #1a2238);
+        :root {
+          --primary: #6aece1;
+          --primary-dark: #4ab8d1;
+          --bg-dark: #0a0f1e;
+          --bg-card: rgba(255, 255, 255, 0.03);
+          --text-main: #ffffff;
+          --text-muted: #8e92a4;
+          --text-body: #cfd2dc;
+          --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+         
+          --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          --font-size-xs: 0.75rem;
+          --font-size-sm: 0.875rem;
+          --font-size-base: 1rem;
+          --font-size-lg: 1.125rem;
+          --font-size-xl: 1.25rem;
+          --font-size-2xl: 1.5rem;
+          --font-size-3xl: 1.75rem;
+          --font-size-4xl: 2.25rem;
+          --font-size-5xl: 3rem;
+         
+          --line-height-tight: 1.25;
+          --line-height-normal: 1.5;
+          --line-height-relaxed: 1.75;
+         
+          --font-weight-normal: 400;
+          --font-weight-medium: 500;
+          --font-weight-semibold: 600;
+          --font-weight-bold: 700;
+          --font-weight-extrabold: 800;
         }
 
-        .detail-wrapper {
-          max-width: 900px;
-          margin: auto;
-          padding: 0 20px;
-          text-align: center;
-          animation: fadeIn 0.6s ease-out;
+        .feature-container {
+          min-height: 100vh;
+          background: radial-gradient(circle at top right, #1a2238, #0a0f1e);
+          color: var(--text-main);
+          font-family: var(--font-family);
+          font-size: var(--font-size-base);
+          line-height: var(--line-height-normal);
+          padding: 40px 20px;
+          overflow-x: hidden;
         }
 
-        .back-link {
-          background: none;
-          border: none;
-          color: #8e92a4;
-          cursor: pointer;
+        .content-wrapper {
+          max-width: 1000px;
+          margin: 0 auto;
+          animation: slideUp 0.6s ease-out;
+        }
+
+        .back-btn {
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: var(--text-muted);
           display: flex;
           align-items: center;
-          gap: 8px;
-          margin-bottom: 20px; /* Slightly reduced */
-          font-size: 16px;
-          transition: color 0.3s ease;
+          gap: 10px;
+          padding: 10px 20px;
+          border-radius: 30px;
+          cursor: pointer;
+          font-size: var(--font-size-sm);
+          font-weight: var(--font-weight-medium);
+          transition: var(--transition);
+          margin: 0 0 40px 20px;
         }
 
-        .back-link:hover {
-          color: #6aece1;
+        .back-btn:hover {
+          color: var(--primary);
+          border-color: var(--primary);
+          background: rgba(106, 236, 221, 0.05);
+          transform: translateX(-5px);
         }
 
-        .detail-hero {
-          margin-bottom: 30px; /* Reduced from 40px */
+        .header-section {
+          text-align: center;
+          margin-bottom: 50px;
         }
 
-        .detail-icon {
-          width: 80px !important;
-          height: 80px !important;
-          margin: 0 auto 20px !important;
+        .icon-box {
+          width: 80px;
+          height: 80px;
           background: rgba(106, 236, 225, 0.1);
-          border-radius: 50%;
+          border: 1px solid rgba(106, 236, 225, 0.2);
+          border-radius: 24px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #6aece1;
-          animation: pulse 2s infinite;
+          margin: 0 auto 24px;
+          color: var(--primary);
+          box-shadow: 0 0 30px rgba(106, 236, 225, 0.1);
+          animation: float 3s ease-in-out infinite;
         }
 
-        .detail-image {
-          width: 100%;
+        .title {
+          font-size: clamp(var(--font-size-3xl), 5vw, var(--font-size-5xl));
+          font-weight: var(--font-weight-extrabold);
+          margin-bottom: 16px;
+          letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+          font-size: var(--font-size-xl);
+          color: var(--text-muted);
           max-width: 600px;
-          margin: 20px auto; /* Reduced from 30px */
-          display: block;
-          border-radius: 22px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          margin: 0 auto;
+          font-weight: var(--font-weight-medium);
         }
 
-        .detail-body {
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+        .hero-image-container {
+          position: relative;
+          width: 100%;
+          height: 450px;
           border-radius: 32px;
-          padding: 40px; /* Reduced from 50px for tighter feel */
-          text-align: left;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-          margin-top: -20px; /* Added slight overlap to pull content up */
+          overflow: hidden;
+          margin-bottom: -60px;
+          z-index: 1;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.4);
         }
 
-        .detail-text {
-          font-size: 18px;
-          color: #cfd2dc;
-          line-height: 1.8;
-          margin-bottom: 28px; /* Slightly reduced */
+        .hero-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.8s ease;
         }
 
-        .points-list {
+        .hero-image-container:hover .hero-image {
+          transform: scale(1.05);
+        }
+
+        .image-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to bottom, transparent 60%, rgba(10, 15, 30, 0.8));
+        }
+
+        .image-error-placeholder {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.05);
+          color: var(--text-muted);
+          gap: 10px;
+        }
+
+        .info-card {
+          background: rgba(20, 25, 45, 0.7);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 40px;
+          padding: 100px 60px 60px;
+          position: relative;
+          z-index: 0;
+        }
+
+        .description-text {
+          font-size: var(--font-size-lg);
+          line-height: var(--line-height-relaxed);
+          color: var(--text-body);
+          margin-bottom: 40px;
+        }
+
+        .features-grid {
           display: grid;
-          gap: 14px; /* Reduced from 16px */
-          margin-bottom: 30px; /* Reduced from 40px */
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 20px;
+          margin-bottom: 40px;
         }
 
-        .point-item {
+        .feature-item {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          padding: 16px 20px;
+          border-radius: 16px;
           display: flex;
           align-items: center;
-          gap: 12px;
-          color: #ffffff;
-          font-size: 16px;
-          padding: 12px;
-          background: rgba(255, 255, 255, 0.03);
-          border-radius: 12px;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          gap: 15px;
+          transition: var(--transition);
+          font-size: var(--font-size-sm);
         }
 
-        .point-item:hover {
-          transform: scale(1.02);
-          box-shadow: 0 4px 15px rgba(106, 236, 225, 0.2);
+        .feature-item:hover {
+          background: rgba(106, 236, 225, 0.05);
+          border-color: rgba(106, 236, 225, 0.2);
+          transform: translateY(-3px);
         }
 
-        .check-icon {
-          color: #6aece1;
-          min-width: 20px;
-        }
-
-        .detail-extra {
-          margin-top: 30px;
-          font-size: 17px;
-          color: #cfd2dc;
-          line-height: 1.7;
-          margin-bottom: 40px; /* Reduced from 50px */
-        }
-
-        /* Gallery Section */
-        .gallery-section {
-          margin-top: 40px; /* Reduced from 50px */
-        }
-
-        .section-title {
-          font-size: 24px;
-          color: #ffffff;
-          margin-bottom: 25px; /* Reduced */
-          text-align: center;
-        }
-
-        .image-gallery {
+        .check-wrapper {
+          color: var(--primary);
           display: flex;
-          flex-wrap: wrap;
+          flex-shrink: 0;
+        }
+
+        .extra-text {
+          font-size: var(--font-size-base);
+          color: var(--text-muted);
+          font-style: italic;
+          border-left: 3px solid var(--primary);
+          padding-left: 20px;
+          margin: 40px 0;
+          line-height: var(--line-height-relaxed);
+        }
+
+        .gallery-section {
+          margin-top: 60px;
+        }
+
+        .gallery-title {
+          font-size: var(--font-size-2xl);
+          margin-bottom: 30px;
+          text-align: center;
+          font-weight: var(--font-weight-semibold);
+        }
+
+        .gallery-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
           gap: 20px;
+        }
+
+        .gallery-item {
+          aspect-ratio: 4/3;
+          border-radius: 20px;
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          opacity: 0;
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .gallery-item img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+          transform: scale(1.1);
+        }
+
+        .gallery-item .image-error-placeholder {
+          height: 100%;
+          min-height: 150px;
+        }
+
+        .cta-wrapper {
+          margin-top: 60px;
+          display: flex;
           justify-content: center;
         }
 
-        .gallery-image {
-          width: 100%;
-          max-width: 280px;
-          border-radius: 16px;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-          transition: transform 0.3s ease;
-          object-fit: cover;
-          height: 200px;
-        }
-
-        .gallery-image:hover {
-          transform: scale(1.05);
-        }
-
-        /* CTA Button */
-        .cta-button {
-          display: block;
-          margin: 40px auto 0; /* Reduced from 50px */
-          padding: 15px 40px;
-          background: linear-gradient(135deg, #6aece1, #4ab8d1);
-          color: #0a0f1e;
-          font-size: 18px;
-          font-weight: bold;
+        .primary-cta {
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+          color: var(--bg-dark);
           border: none;
+          padding: 18px 48px;
           border-radius: 50px;
+          font-size: var(--font-size-lg);
+          font-weight: var(--font-weight-bold);
           cursor: pointer;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          transition: var(--transition);
+          box-shadow: 0 10px 30px rgba(106, 236, 225, 0.3);
         }
 
-        .cta-button:hover {
-          transform: scale(1.05);
-          box-shadow: 0 5px 15px rgba(106, 236, 225, 0.4);
+        .primary-cta:hover {
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 15px 40px rgba(106, 236, 225, 0.5);
         }
 
-        /* Animations */
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          to { opacity: 1; }
         }
 
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(106, 236, 225, 0.4);
-          }
-          70% {
-            box-shadow: 0 0 0 15px rgba(106, 236, 225, 0);
-          }
-          100% {
-            box-shadow: 0 0 0 0 rgba(106, 236, 225, 0);
-          }
-        }
-
-        .animate-fade-in {
-          animation: fadeIn 0.8s ease-out;
-        }
-
-        .animate-fade-in-stagger {
-          animation: fadeIn 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-hover-scale:hover {
-          transform: scale(1.02);
-        }
-
-        .animate-hover-pulse:hover {
-          animation: pulse 1.5s infinite;
-        }
-
-        /* ---------- RESPONSIVE ---------- */
-
-        @media (max-width: 1024px) {
-          .detail-body {
-            padding: 30px;
-          }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
         }
 
         @media (max-width: 768px) {
-          .feature-page {
-            padding-top: 60px; /* Even less on mobile */
-          }
-
-          .main-title {
-            font-size: 28px;
-          }
-
-          .detail-body {
-            padding: 20px;
-            border-radius: 22px;
-            margin-top: 0;
-          }
-
-          .detail-text {
-            font-size: 16px;
-          }
-
-          .image-gallery {
-            flex-direction: column;
-            align-items: center;
-          }
-
-          .gallery-image {
-            max-width: 100%;
-            height: auto;
-          }
+          .info-card { padding: 80px 30px 40px; border-radius: 30px; }
+          .hero-image-container { height: 300px; border-radius: 24px; }
+          .features-grid { grid-template-columns: 1fr; }
+          .title { font-size: var(--font-size-4xl); }
+          .tagline { font-size: var(--font-size-lg); }
         }
 
         @media (max-width: 480px) {
-          .main-title {
-            font-size: 24px;
-          }
-
-          .detail-icon {
-            width: 60px !important;
-            height: 60px !important;
-          }
-
-          .detail-image {
-            border-radius: 14px;
-          }
-
-          .cta-button {
-            font-size: 16px;
-            padding: 12px 30px;
-          }
+          .feature-container { padding: 20px 15px; }
+          .info-card { padding: 70px 20px 30px; }
+          .primary-cta { width: 100%; padding: 16px 20px; font-size: var(--font-size-base); }
+          .description-text { font-size: var(--font-size-base); }
+          .gallery-title { font-size: var(--font-size-xl); }
+          .back-btn { margin-left: 15px; }
         }
       `}</style>
     </div>

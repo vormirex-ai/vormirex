@@ -47,6 +47,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
       <button
         className="sidebar-close-button close-left"
         onClick={toggleSidebar}
+        aria-label="Close sidebar"
       >
         <FontAwesomeIcon icon={faTimes} />
       </button>
@@ -79,12 +80,8 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
       <Link
         to="/"
         className="new-chat-button"
-        style={{
-          textDecoration: 'none',
-          display: 'block',
-          textAlign: 'center',
-        }}
         onClick={(e) => {
+          e.preventDefault();
           showComingSoon();
         }}
       >
@@ -92,15 +89,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
       </Link>
 
       {/* VORMIREX Button */}
-      <Link
-        to="/home"
-        className="new-chat-button"
-        style={{
-          textDecoration: 'none',
-          display: 'block',
-          textAlign: 'center',
-        }}
-      >
+      <Link to="/home" className="vormirex-button">
         <FontAwesomeIcon icon={faGlobe} /> VORMIREX
       </Link>
 
