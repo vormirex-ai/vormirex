@@ -37,26 +37,31 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 const BuiltForEveryone: React.FC = () => {
   const audienceData = [
     {
+      id: 'cyber-security',
       icon: <ShieldCheck size={24} />,
       title: 'Cyber Security',
       description: 'Protect systems and networks from cyber threats',
     },
     {
+      id: 'data-science',
       icon: <BarChart3 size={24} />,
       title: 'Data Science',
       description: 'Analyze data and build intelligent solutions',
     },
     {
+      id: 'data-analytics',
       icon: <PieChart size={24} />,
       title: 'Data Analytics',
       description: 'Turn raw data into meaningful insights',
     },
     {
+      id: 'ai-ml',
       icon: <Brain size={24} />,
       title: 'Artificial Intelligence & ML',
       description: 'Build smart models for real-world problems',
     },
     {
+      id: 'career-programs',
       icon: <Briefcase size={24} />,
       title: 'Career Programs',
       description: 'Job-ready skills with real-world projects',
@@ -94,6 +99,11 @@ const BuiltForEveryone: React.FC = () => {
     },
   ];
 
+  // Handle click on cards to scroll to top
+  const handleCardClick = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className="built-everyone-shell">
       {/* COURSES SECTION */}
@@ -108,8 +118,19 @@ const BuiltForEveryone: React.FC = () => {
         </div>
 
         <div className="grid-small">
-          {audienceData.map((item, index) => (
-            <FeatureCard key={index} {...item} variant="small" />
+          {audienceData.map((item) => (
+            <Link
+              to={`/course/${item.id}`}
+              key={item.id}
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                display: 'flex',
+              }}
+              onClick={handleCardClick}
+            >
+              <FeatureCard {...item} variant="small" />
+            </Link>
           ))}
         </div>
       </section>
@@ -135,6 +156,7 @@ const BuiltForEveryone: React.FC = () => {
                 color: 'inherit',
                 display: 'flex',
               }}
+              onClick={handleCardClick}
             >
               <FeatureCard {...item} variant="large" />
             </Link>
@@ -209,6 +231,7 @@ const BuiltForEveryone: React.FC = () => {
           align-items: center;
           text-align: center;
           height: 100%;
+          cursor: pointer;
         }
 
         .card.large {
