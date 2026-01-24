@@ -8,13 +8,34 @@
   --color-text-secondary: #aaaaaa;
   --color-border: #333333;
   --color-hover: #3a3a3a;
-  --color-hover: #3a3a3a;
+
+  /* Font system */
+  --font-family:
+    'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.75rem; /* 28px */
+
+  /* Line heights */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Font weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 }
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
 }
 body,
 html {
@@ -23,6 +44,11 @@ html {
   background-color: var(--bg-dark);
   color: var(--color-text-main);
   min-height: 100vh;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .dashboard-container {
@@ -59,6 +85,7 @@ html {
   position: relative;
   text-align: center;
   animation: slideIn 0.3s ease-out;
+  font-family: var(--font-family);
 }
 
 @keyframes fadeIn {
@@ -99,20 +126,21 @@ html {
 
 .modal-title {
   color: var(--color-teal);
-  font-size: 2em;
+  font-size: var(--font-size-3xl);
   margin-bottom: 20px;
+  font-weight: var(--font-weight-bold);
 }
 
 .modal-message {
-  font-size: 1.1em;
+  font-size: var(--font-size-lg);
   color: var(--color-text-main);
   margin-top: 30px;
-  line-height: 1.5;
+  line-height: var(--line-height-relaxed);
 }
 
 .modal-info {
   margin-top: 20px;
-  font-size: 0.9em;
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   display: flex;
   align-items: center;
@@ -128,6 +156,7 @@ html {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  font-family: var(--font-family);
 }
 
 .sidebar-header {
@@ -144,22 +173,23 @@ html {
 }
 
 .sidebar-company-name {
-  font-size: 20px;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.025em;
 }
 
 .new-chat-button {
   background-color: #6aece1;
-  color: var(--bg-dark); /* Changed to dark for contrast */
+  color: var(--bg-dark);
   border: none;
   border-radius: 8px;
   padding: 12px 15px;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   margin-bottom: 30px;
   transition: background-color 0.2s;
+  font-family: var(--font-family);
 }
 
 .new-chat-button:hover {
@@ -168,10 +198,11 @@ html {
 
 .main-nav h3 {
   color: var(--color-text-secondary);
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
   margin-top: 20px;
   margin-bottom: 10px;
+  font-weight: var(--font-weight-semibold);
 }
 
 .main-nav ul {
@@ -181,12 +212,13 @@ html {
 .main-nav li {
   padding: 10px 0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   display: flex;
   align-items: center;
   border-radius: 4px;
   transition: all 0.2s;
+  font-family: var(--font-family);
 }
 
 .main-nav .nav-icon {
@@ -215,10 +247,11 @@ html {
 .footer-link {
   padding: 10px 0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   display: flex;
   align-items: center;
+  font-family: var(--font-family);
 }
 
 .footer-link:hover {
@@ -236,8 +269,8 @@ html {
   display: flex;
   flex-direction: column;
   position: relative;
-  /* Added for watermark stacking context */
   overflow: hidden;
+  font-family: var(--font-family);
 }
 
 /* 🔥 NEW WATERMARK CSS 🔥 */
@@ -297,8 +330,8 @@ html {
 
 .logo-mobile {
   display: none;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
 }
 
 .mobile-menu-toggle {
@@ -320,8 +353,9 @@ html {
   color: var(--color-text-main);
   width: 100%;
   outline: none;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   margin-left: 10px;
+  font-family: var(--font-family);
 }
 
 .tools-button {
@@ -329,9 +363,10 @@ html {
   color: var(--color-text-secondary);
   padding: 8px 15px;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   white-space: nowrap;
   cursor: pointer;
+  font-family: var(--font-family);
 }
 
 .ai-central-area {
@@ -362,9 +397,9 @@ html {
 }
 
 .company-name {
-  font-size: 28px;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.025em;
 }
 
 .quick-pill-actions {
@@ -380,11 +415,13 @@ html {
   border: 1px solid #2e2e2e;
   color: #e0e0e0;
   padding: 10px 18px;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   border-radius: 20px;
   cursor: pointer;
   transition: 0.2s ease;
   white-space: nowrap;
+  font-family: var(--font-family);
 }
 
 .quick-pill-actions button:hover {
@@ -414,7 +451,8 @@ html {
   border: none;
   color: var(--color-text-main);
   outline: none;
-  font-size: 15px;
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
 }
 
 .ask-box-icons .fa-icon {
@@ -430,7 +468,7 @@ html {
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
   z-index: 3; /* Ensure footer is above everything else */
 }
@@ -440,19 +478,23 @@ html {
   background-color: var(--bg-dark);
   border-left: 1px solid var(--color-border);
   padding: 20px;
+  font-family: var(--font-family);
 }
 
 .sidebar-right h2 {
   color: var(--color-text-main);
-  font-size: 18px;
+  font-size: var(--font-size-lg);
   margin-bottom: 25px;
+  font-weight: var(--font-weight-semibold);
 }
 
 .sidebar-right h3 {
   color: var(--color-text-secondary);
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
   margin-bottom: 10px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.5px;
 }
 
 .progress-card,
@@ -471,15 +513,17 @@ html {
 }
 
 .progress-details .number {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
   color: #6aece1;
+  font-family: 'Consolas', monospace;
 }
 
 .daily-goals p,
 .day-streak p {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
+  margin-top: 4px;
 }
 
 .streak-fire-icon {
@@ -499,11 +543,12 @@ html {
 
 .recent-item {
   padding: 8px 0;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   color: var(--color-text-main);
   display: flex;
   align-items: center;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .recent-item svg {
@@ -553,9 +598,10 @@ html {
 }
 
 .qa-card h4 {
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   margin: 0;
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-medium);
 }
 
 .recommended-card {
@@ -574,14 +620,16 @@ html {
 
 .recommended-card h4 {
   color: var(--color-teal);
-  font-size: 16px;
+  font-size: var(--font-size-base);
   margin-bottom: 5px;
+  font-weight: var(--font-weight-semibold);
 }
 
 .recommended-card p {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
   margin-bottom: 15px;
+  line-height: var(--line-height-normal);
 }
 
 .start-learning-button.primary-button {
@@ -591,10 +639,12 @@ html {
   border: none;
   padding: 12px;
   border-radius: 8px;
-  font-weight: bold;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
   transition: all 0.3s;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
 }
 
 .start-learning-button.primary-button:hover {
@@ -732,7 +782,7 @@ html {
     width: 100%; /* Ensure button fills the grid cell */
     white-space: normal; /* Allow button text to wrap */
     padding: 10px 10px; /* Adjust padding for smaller buttons */
-    font-size: 13px; /* Slightly smaller font */
+    font-size: var(--font-size-sm);
   }
   /* ------------------------------------------- */
 
@@ -747,7 +797,7 @@ html {
   }
 
   .company-name {
-    font-size: 24px;
+    font-size: var(--font-size-2xl);
   }
 
   .ask-box {

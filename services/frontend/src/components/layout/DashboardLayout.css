@@ -6,6 +6,24 @@
   --color-text-main: #ffffff;
   --color-text-secondary: #aaaaaa;
   --color-border: #333333;
+
+  /* Font system */
+  --font-family:
+    'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.75rem; /* 28px */
+  --font-size-4xl: 2rem; /* 32px */
+
+  /* Line heights */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
 }
 
 /* RESET */
@@ -13,7 +31,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
 }
 
 html,
@@ -23,12 +40,14 @@ body {
   overflow-x: hidden;
   background-color: var(--bg-dark);
   color: var(--color-text-main);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* =========================
-   DASHBOARD GRID
-========================= */
-
+/* ========================= DASHBOARD GRID ========================= */
 .dashboard-container {
   display: grid;
   grid-template-columns: 250px 1fr 300px;
@@ -36,16 +55,14 @@ body {
   min-height: 100vh;
 }
 
-/* =========================
-   MAIN CONTENT
-========================= */
-
+/* ========================= MAIN CONTENT ========================= */
 .main-content {
   background-color: var(--bg-medium);
   display: flex;
   flex-direction: column;
   position: relative;
   min-height: 100vh;
+  font-family: var(--font-family);
 }
 
 /* WATERMARK */
@@ -60,10 +77,7 @@ body {
   z-index: 1;
 }
 
-/* =========================
-   TOP BAR
-========================= */
-
+/* ========================= TOP BAR ========================= */
 .top-bar {
   display: flex;
   align-items: center;
@@ -71,6 +85,7 @@ body {
   gap: 20px;
   border-bottom: 1px solid var(--color-border);
   z-index: 3;
+  font-family: var(--font-family);
 }
 
 /* Hide mobile menu toggle by default (desktop) */
@@ -80,15 +95,17 @@ body {
   border: none;
   color: var(--color-text-main);
   cursor: pointer;
+  font-family: var(--font-family);
 }
 
 /* Hide logo-mobile by default (desktop) */
 .logo-mobile {
   display: none;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
   color: var(--color-text-main);
   white-space: nowrap;
+  font-family: var(--font-family);
 }
 
 .search-box {
@@ -98,6 +115,7 @@ body {
   background-color: var(--bg-light);
   border-radius: 20px;
   padding: 8px 15px;
+  font-family: var(--font-family);
 }
 
 .search-box input {
@@ -106,8 +124,9 @@ body {
   color: var(--color-text-main);
   width: 100%;
   outline: none;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   margin-left: 10px;
+  font-family: var(--font-family);
 }
 
 .search-box input::placeholder {
@@ -125,18 +144,17 @@ body {
   cursor: pointer;
   padding: 8px 12px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
   transition: background-color 0.2s ease;
+  font-family: var(--font-family);
 }
 
 .tools-button:hover {
   background-color: var(--bg-light);
 }
 
-/* =========================
-   HERO / CENTRAL AREA
-========================= */
-
+/* ========================= HERO / CENTRAL AREA ========================= */
 .ai-central-area {
   flex: 1;
   display: flex;
@@ -146,6 +164,7 @@ body {
   padding: 100px 50px 50px;
   width: 100%;
   z-index: 2;
+  font-family: var(--font-family);
 }
 
 .logo-with-text {
@@ -153,6 +172,7 @@ body {
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
+  font-family: var(--font-family);
 }
 
 .logo-img {
@@ -162,16 +182,15 @@ body {
 }
 
 .company-name {
-  font-size: 28px;
-  font-weight: bold;
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
   margin: 0;
   color: var(--color-text-main);
+  font-family: var(--font-family);
+  letter-spacing: -0.025em;
 }
 
-/* =========================
-   CTA BUTTONS (DESKTOP)
-========================= */
-
+/* ========================= CTA BUTTONS (DESKTOP) ========================= */
 .quick-pill-actions {
   display: flex;
   flex-wrap: wrap;
@@ -179,6 +198,7 @@ body {
   justify-content: center;
   margin-bottom: 25px;
   width: 100%;
+  font-family: var(--font-family);
 }
 
 .quick-pill-actions button {
@@ -186,10 +206,12 @@ body {
   border: 1px solid #2e2e2e;
   color: #e0e0e0;
   padding: 10px 18px;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-family: var(--font-family);
 }
 
 .quick-pill-actions button:hover {
@@ -201,10 +223,7 @@ body {
   transform: scale(0.97);
 }
 
-/* =========================
-   ASK BOX (BASE)
-========================= */
-
+/* ========================= ASK BOX (BASE) ========================= */
 .ask-box {
   display: flex;
   align-items: center;
@@ -215,6 +234,7 @@ body {
   border-radius: 28px;
   padding: 12px 20px;
   transition: all 0.3s ease;
+  font-family: var(--font-family);
 }
 
 .ask-box:focus-within {
@@ -228,7 +248,8 @@ body {
   border: none;
   color: var(--color-text-main);
   outline: none;
-  font-size: 15px;
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
 }
 
 .ask-box input::placeholder {
@@ -253,23 +274,18 @@ body {
   color: var(--color-text-main);
 }
 
-/* =========================
-   FOOTER
-========================= */
-
+/* ========================= FOOTER ========================= */
 .global-footer-note {
   position: absolute;
   bottom: 12px;
   width: 100%;
   text-align: center;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
+  font-family: var(--font-family);
 }
 
-/* =========================
-   TABLET (901px - 500px)
-========================= */
-
+/* ========================= TABLET (901px - 500px) ========================= */
 @media (max-width: 900px) {
   .dashboard-container {
     grid-template-columns: 1fr;
@@ -294,7 +310,7 @@ body {
 
   .logo-mobile {
     display: block;
-    font-size: 16px;
+    font-size: var(--font-size-base);
   }
 
   .tools-button {
@@ -316,10 +332,7 @@ body {
   }
 }
 
-/* =========================
-   MOBILE (500px and below)
-========================= */
-
+/* ========================= MOBILE (500px and below) ========================= */
 @media (max-width: 500px) {
   /* HERO SECTION */
   .ai-central-area {
@@ -337,7 +350,7 @@ body {
   }
 
   .company-name {
-    font-size: 24px;
+    font-size: var(--font-size-2xl);
   }
 
   /* CTA GRID – ALL 4 SAME SIZE */
@@ -356,8 +369,8 @@ body {
     height: 100%;
     min-height: 56px;
     padding: 16px 12px;
-    font-size: 14px;
-    line-height: 1.3;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-tight);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -383,7 +396,7 @@ body {
   }
 
   .ask-box input {
-    font-size: 16px; /* prevents iOS zoom */
+    font-size: var(--font-size-base); /* prevents iOS zoom */
   }
 
   .ask-box input::placeholder {
@@ -393,19 +406,15 @@ body {
 
   /* FOOTER */
   .global-footer-note {
-    font-size: 12px;
-    line-height: 1.4;
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-relaxed);
     padding: 0 16px;
     bottom: 16px;
     color: #bdbdbd;
   }
 }
 
-/* =========================
-   SMALL MOBILE – HEADER FIX
-   iPhone SE / 375px (400px and below)
-========================= */
-
+/* ========================= SMALL MOBILE – HEADER FIX iPhone SE / 375px (400px and below) ========================= */
 @media (max-width: 400px) {
   .top-bar {
     padding: 10px 12px;
@@ -451,7 +460,7 @@ body {
   }
 
   .search-box input {
-    font-size: 14px;
+    font-size: var(--font-size-sm);
     margin-left: 8px;
   }
 
@@ -482,7 +491,7 @@ body {
 
   /* CTA BUTTON TEXT SIZE ADJUSTMENT */
   .quick-pill-actions button {
-    font-size: 13px;
+    font-size: var(--font-size-sm);
     padding: 14px 10px;
     min-height: 52px;
   }
@@ -493,10 +502,7 @@ body {
   }
 }
 
-/* =========================
-   EXTRA SMALL (350px and below)
-========================= */
-
+/* ========================= EXTRA SMALL (350px and below) ========================= */
 @media (max-width: 350px) {
   .top-bar {
     padding: 8px 8px;
@@ -509,7 +515,7 @@ body {
   }
 
   .search-box input {
-    font-size: 13px;
+    font-size: var(--font-size-sm);
   }
 
   .quick-pill-actions {
@@ -518,7 +524,7 @@ body {
   }
 
   .quick-pill-actions button {
-    font-size: 12px;
+    font-size: var(--font-size-xs);
     padding: 12px 8px;
     min-height: 48px;
     white-space: normal;
@@ -538,6 +544,6 @@ body {
   }
 
   .company-name {
-    font-size: 22px;
+    font-size: var(--font-size-xl);
   }
 }

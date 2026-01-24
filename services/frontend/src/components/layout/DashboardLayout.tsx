@@ -2,7 +2,6 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import './DashboardLayout.css';
-
 import {
   faSearch,
   faThumbtack,
@@ -10,7 +9,6 @@ import {
   faMicrophone,
   faBars,
 } from '@fortawesome/free-solid-svg-icons';
-
 import logoWithoutText from '../../assets/logo.png';
 
 interface DashboardLayoutProps {
@@ -59,7 +57,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
 
         <div className="tools-button" onClick={toggleRightSidebar}>
-          Learning Tools <FontAwesomeIcon icon={faThumbtack} />
+          Learning Tools
+          <FontAwesomeIcon icon={faThumbtack} />
         </div>
       </header>
 
