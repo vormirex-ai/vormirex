@@ -85,7 +85,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
           showComingSoon();
         }}
       >
-        <FontAwesomeIcon icon={faPlus} /> New Chat
+        <FontAwesomeIcon icon={faPlus} /> NEW CHAT
       </Link>
 
       {/* VORMIREX Button */}
