@@ -54,7 +54,7 @@ button {
   width: 100vw;
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
-  height: 85vh; /* Default desktop height */
+  height: 85vh;
   min-height: 550px;
   background: #000;
   overflow: hidden;
@@ -66,8 +66,8 @@ button {
 .hero-video-bg {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Fills the screen, no black bars */
-  object-position: center; /* Keeps the center of the video in view */
+  object-fit: contain;
+  object-position: center;
   position: absolute;
   top: 0;
   left: 0;
@@ -87,31 +87,6 @@ button {
   );
   z-index: 2;
   pointer-events: none;
-}
-
-/* Hero Content - Added for better readability */
-.course-hero-content {
-  position: absolute;
-  bottom: 80px;
-  left: 40px;
-  right: 40px;
-  z-index: 5;
-  text-align: center;
-}
-
-.course-hero-title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 16px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  line-height: 1.2;
-}
-
-.course-hero-subtitle {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .course-hero-top {
@@ -190,62 +165,67 @@ button {
   color: #000;
 }
 
-.video-loading,
-.video-error {
+/* ================= HERO TEXT CONTENT ================= */
+.hero-content {
+  position: absolute;
+  left: 300px;
+  bottom: 170px; /* was 100px → move up */
+  z-index: 5;
+  max-width: 600px;
+  text-align: left;
+}
+
+.hero-text {
+  color: var(--text-main);
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+/* ================= SIDEBAR TEXT ================= */
+.video-sidebar-text {
+  position: absolute;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 320px;
+  background: rgba(10, 10, 11, 0.9);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  z-index: 15;
+  text-align: left;
+  backdrop-filter: blur(10px);
+  color: var(--text-main);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.video-sidebar-text strong {
+  color: var(--color-primary);
+}
+
+.video-sidebar-text::after {
+  content: '';
   position: absolute;
   inset: 0;
-  z-index: 3;
-  background: rgba(10, 10, 11, 0.7);
-  backdrop-filter: blur(6px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  text-align: center;
-}
-
-.loading-spinner {
-  width: 46px;
-  height: 46px;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  border-top-color: var(--color-primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.play-button-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(
-    circle,
-    rgba(10, 10, 11, 0.35),
-    rgba(0, 0, 0, 0.75)
-  );
-}
-
-.play-button {
-  border: none;
-  background: var(--color-primary);
-  color: #000;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: 0 10px 35px var(--color-primary-glow);
-}
-
-.play-button:hover {
-  transform: translateY(-3px) scale(1.05);
+  border-radius: 16px;
+  box-shadow: 0 0 40px var(--color-primary-glow);
+  z-index: -1;
+  opacity: 0.5;
 }
 
 /* ================= CTA ================= */
@@ -383,52 +363,7 @@ button {
   color: var(--text-secondary);
   line-height: 1.6;
 }
-/* ================= HERO TEXT OVERLAY ================= */
-.course-hero-text-overlay {
-  position: absolute;
-  top: 50%;
-  left: 30%; /* Positioned at 60% from left (slightly right of center) */
-  transform: translate(-50%, -50%); /* Center the element itself */
-  z-index: 5;
-  color: white;
-  max-width: 50%; /* Adjusted width for better balance */
-  text-align: left; /* Left-align for better readability */
-}
 
-.hero-text {
-  font-size: 2.8rem;
-  font-weight: 600;
-  line-height: 1.2;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  margin: 0;
-}
-
-.hero-text .highlight {
-  color: var(--color-primary);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .course-hero-text-overlay {
-    left: 20px;
-    max-width: 60%;
-  }
-
-  .hero-text {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .course-hero-text-overlay {
-    left: 15px;
-    max-width: 70%;
-  }
-
-  .hero-text {
-    font-size: 1.6rem;
-  }
-}
 /* ================= MODAL ================= */
 .image-modal {
   position: fixed;
@@ -657,10 +592,7 @@ button {
 /* Tablet and Below */
 @media (max-width: 1024px) {
   .course-hero {
-    height: 70vh; /* A good balance for tablets */
-  }
-  .course-hero-title {
-    font-size: 3rem;
+    height: 70vh;
   }
 }
 
@@ -671,7 +603,6 @@ button {
   }
 
   .course-hero {
-    /* Use a taller height on mobile to reduce extreme cropping */
     height: 65vh;
     min-height: 500px;
   }
@@ -683,7 +614,7 @@ button {
   }
 
   .course-level-tabs.desktop-tabs {
-    display: none; /* Hide top tabs on mobile */
+    display: none;
   }
 
   .course-level-tabs.below-hero {
@@ -698,15 +629,24 @@ button {
     gap: 25px;
   }
 
-  .course-hero-title {
-    font-size: 2.4rem;
+  .hero-content {
+    left: 20px;
+    bottom: 60px;
+    max-width: 90%;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
   }
 }
 
 /* Standard Mobile Phones */
 @media (max-width: 480px) {
   .course-hero {
-    /* A taller height on narrow phones prevents severe vertical cropping */
     height: 70vh;
     min-height: 600px;
   }
@@ -726,7 +666,7 @@ button {
   }
 
   .tab {
-    min-height: 48px; /* Larger touch targets */
+    min-height: 48px;
     padding: 12px 16px;
     font-size: 0.9rem;
   }
@@ -737,13 +677,22 @@ button {
   }
 
   .course-btn.main-cta {
-    width: 100% !important; /* Full-width CTA on mobile */
+    width: 100% !important;
     max-width: none;
     padding: 18px 20px;
   }
 
-  .course-hero-title {
-    font-size: 2.1rem;
+  .hero-content {
+    left: 15px;
+    bottom: 40px;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
   }
 }
 
@@ -754,8 +703,8 @@ button {
     min-height: 550px;
   }
 
-  .course-hero-title {
-    font-size: 1.9rem;
+  .hero-title {
+    font-size: 1.8rem;
   }
 }
 
@@ -772,573 +721,74 @@ button {
     margin: 40px 10px;
   }
 }
-@media (max-width: 768px) {
-  .form-container {
-    grid-template-columns: 1fr;
+
+/* ================= MEDIA QUERIES FOR SIDEBAR TEXT ================= */
+
+/* Tablet & Below: Move text BELOW video (stack vertically) */
+@media (max-width: 1200px) {
+  .video-sidebar-text {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto 0;
+    background: var(--bg-card);
+    border: 1px solid var(--color-border);
     text-align: center;
-  }
-
-  .course-request-form {
-    padding: 30px 20px;
-    margin: 40px 10px;
-  }
-}
-
-/* ================= MOBILE FIXES FOR SPECIFIC ISSUES ================= */
-
-/* Issue #33: Hero Banner Content Appears Congested on Mobile */
-@media (max-width: 480px) {
-  .course-hero {
-    height: 60vh;
-    min-height: 400px;
-  }
-
-  .course-hero-overlay {
-    background: linear-gradient(
-      rgba(0, 0, 0, 0.7) 0%,
-      rgba(0, 0, 0, 0.4) 35%,
-      rgba(0, 0, 0, 0.8) 100%
-    );
-  }
-
-  .hero-action-area {
-    margin-top: 40px;
-    margin-bottom: 40px;
-  }
-}
-
-/* Issue #35: Foundation / Advanced Toggle Buttons Have Small Touch Targets */
-@media (max-width: 480px) {
-  .course-level-tabs.below-hero {
-    margin: 30px 16px;
-  }
-
-  .tab {
-    min-height: 48px;
-    padding: 12px 16px;
-    font-size: 0.9rem;
-  }
-}
-
-/* Issue #36: Primary CTA Button Does Not Use Full Width on Mobile */
-@media (max-width: 480px) {
-  .course-btn.main-cta {
-    width: 100%;
-    max-width: none;
-    padding: 16px 20px;
-    font-size: 0.9rem;
-  }
-}
-
-/* Issue #37: Abrupt Visual Transition Between CTA and Next Section */
-@media (max-width: 480px) {
-  .course-info-cards {
-    margin-top: 60px;
-    padding-top: 20px;
-    border-top: 1px solid var(--color-border);
-  }
-}
-
-/* Issue #38: Header Logo and Menu Icon Appear Cramped on Mobile */
-@media (max-width: 480px) {
-  .course-hero-top {
-    top: 20px;
-    left: 20px;
-    right: 20px;
-  }
-
-  .nav-icon-btn {
-    width: 48px;
-    height: 48px;
-  }
-
-  .hero-nav-group {
-    gap: 16px;
-  }
-}
-
-/* Additional enhancement for text contrast on AI/ML course */
-.course-type-ai-ml .course-hero-title {
-  color: #ffffff;
-  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
-}
-
-.course-type-ai-ml .course-hero-subtitle {
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
-}
-
-/* ================= FIXED RESPONSIVE & MOBILE SOLUTIONS ================= */
-
-/* Global Tablet Adjustments */
-@media (max-width: 1024px) {
-  .course-hero {
-    height: 70vh; /* Increased from 60vh to reduce congestion (#33) */
-  }
-  .course-hero-title {
-    font-size: 3rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .course-shell {
-    padding: 0 15px;
-  }
-
-  /* Issue #33 & #34: Fix congestion and readability */
-  .course-hero {
-    height: 65vh;
-    min-height: 480px;
-  }
-
-  .course-hero-content {
-    bottom: 40px; /* Lifted slightly */
-    padding: 0 20px;
-  }
-
-  .course-hero-title {
-    font-size: 2.4rem;
-    letter-spacing: -0.5px;
-  }
-
-  /* Navigation Spacing */
-  .course-hero-top {
-    top: 25px;
-    left: 20px;
-    right: 20px;
-  }
-
-  /* Toggles Visibility */
-  .course-level-tabs.desktop-tabs {
-    display: none; /* Hide top tabs on mobile to declutter header */
-  }
-
-  .course-level-tabs.below-hero {
-    display: inline-flex;
-    margin: 40px auto 20px; /* More breathing room */
-    width: calc(100% - 40px);
-    justify-content: center;
-  }
-
-  .course-info-cards {
-    grid-template-columns: 1fr;
-    gap: 25px;
-  }
-}
-
-/* Issue #35, #36, #37: Specific Mobile / iPhone SE Fixes (375px - 480px) */
-@media (max-width: 480px) {
-  /* #33: Fix Congestion - Increase Hero Height ratio */
-  .course-hero {
-    height: 55vh;
-    min-height: 420px;
-  }
-
-  /* #34: Improve Text Readability */
-  .course-hero-overlay {
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.7) 0%,
-      rgba(0, 0, 0, 0.3) 40%,
-      rgba(0, 0, 0, 0.85) 100%
-    );
-  }
-
-  .course-hero-title {
-    font-size: 2.1rem;
-    margin-bottom: 8px;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9); /* Stronger contrast */
-  }
-
-  .course-hero-subtitle {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    max-width: 280px;
-    margin: 0 auto;
-  }
-
-  /* #35: Larger Touch Targets for Toggles */
-  .course-level-tabs.below-hero {
-    width: 100%;
-    margin: 35px 0;
-    padding: 8px; /* Bigger container */
-    background: rgba(22, 22, 24, 0.9);
-  }
-
-  .tab {
-    flex: 1;
-    min-height: 54px; /* Increased to meet mobile standards */
-    font-size: 1rem;
-    padding: 12px 20px;
-  }
-
-  /* #36: Full-Width Primary CTA */
-  .hero-action-area {
-    margin-top: 10px;
-    padding: 0; /* Remove side padding to go edge-to-edge if needed */
-  }
-
-  .course-btn.main-cta {
-    width: 100% !important; /* Forces full width */
-    max-width: none;
-    border-radius: 12px; /* Less rounded looks more 'dominant' on mobile */
     padding: 20px;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    box-shadow: 0 10px 25px var(--color-primary-glow);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   }
 
-  /* #37: Abrupt Transition - Add Visual Separator */
-  .hero-below {
-    padding-bottom: 40px;
-    border-bottom: 1px solid var(--color-border); /* Visual divider */
-    margin-bottom: 50px; /* Spacing between CTA and Why section */
-  }
-
-  .section-title {
-    font-size: 1.8rem;
-    margin-top: 20px;
+  .video-sidebar-text::after {
+    display: none;
   }
 }
 
-/* Fix for extremely small devices (e.g., Galaxy Fold outer screen) */
-@media (max-width: 320px) {
-  .course-hero-title {
-    font-size: 1.8rem;
-  }
-  .tab {
-    padding: 10px 5px;
-    font-size: 0.8rem;
+/* Mobile Portrait (max 768px): Adjust font size */
+@media (max-width: 768px) {
+  .video-sidebar-text {
+    font-size: 0.95rem;
+    padding: 16px;
   }
 }
 
-/* Utility to ensure the video is sharp */
-video {
-  -webkit-transform: translateZ(0); /* Force hardware acceleration */
-  image-rendering: auto;
+/* Mobile Landscape (600px - 767px): Adjust sidebar position */
+@media (min-width: 600px) and (max-width: 767px) {
+  .video-sidebar-text {
+    left: 30px;
+    width: 280px;
+  }
 }
 
-/* ================= HERO VIDEO MEDIA QUERIES ================= */
+/* Small Phones (max 480px): Keep sidebar visible but adjust */
+@media (max-width: 480px) {
+  .video-sidebar-text {
+    font-size: 0.9rem;
+    padding: 12px;
+    margin: 20px auto 0;
+  }
+}
 
-/* Large Desktops (1920px and above) */
-@media (min-width: 1920px) {
+/* Ultra-Wide Desktops: Widen sidebar */
+@media (min-width: 2560px) {
   .course-hero {
     height: 90vh;
     min-height: 700px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-}
-
-/* Standard Desktops (1440px - 1919px) */
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .course-hero {
-    height: 85vh;
-    min-height: 650px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-}
-
-/* Small Desktops/Large Laptops (1200px - 1439px) */
-@media (min-width: 1200px) and (max-width: 1439px) {
-  .course-hero {
-    height: 80vh;
-    min-height: 600px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-}
-
-/* Tablets Landscape (1024px - 1199px) */
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .course-hero {
-    height: 75vh;
-    min-height: 550px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-
-  .course-hero-top {
-    top: 30px;
-    left: 30px;
-    right: 30px;
-  }
-}
-
-/* Tablets Portrait (768px - 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .course-hero {
-    height: 70vh;
-    min-height: 500px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-
-  .course-hero-top {
-    top: 25px;
-    left: 25px;
-    right: 25px;
-  }
-
-  .nav-icon-btn {
-    width: 45px;
-    height: 45px;
-  }
-
-  .tab {
-    padding: 8px 16px;
-    font-size: 0.85rem;
-  }
-}
-
-/* Large Phones/Small Tablets Landscape (600px - 767px) */
-@media (min-width: 600px) and (max-width: 767px) {
-  .course-hero {
-    height: 65vh;
-    min-height: 450px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-
-  .course-hero-top {
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-
-  .nav-icon-btn {
-    width: 42px;
-    height: 42px;
-  }
-
-  .course-level-tabs.desktop-tabs {
-    display: none;
-  }
-
-  .course-level-tabs.below-hero {
-    display: inline-flex;
-    margin: 25px auto;
-  }
-}
-
-/* Standard Phones Landscape (480px - 599px) */
-@media (min-width: 480px) and (max-width: 599px) {
-  .course-hero {
-    height: 60vh;
-    min-height: 400px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-
-  .course-hero-top {
-    top: 15px;
-    left: 15px;
-    right: 15px;
-  }
-
-  .nav-icon-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .course-level-tabs.below-hero {
-    width: 100%;
-    margin: 20px 0;
-  }
-
-  .tab {
-    min-height: 46px;
-    padding: 10px 14px;
-    font-size: 0.85rem;
-  }
-}
-
-/* Standard Phones Portrait (375px - 479px) */
-@media (min-width: 375px) and (max-width: 479px) {
-  .course-hero {
-    height: 55vh;
-    min-height: 380px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-
-  .course-hero-top {
-    top: 15px;
-    left: 15px;
-    right: 15px;
-  }
-
-  .nav-icon-btn {
-    width: 38px;
-    height: 38px;
-  }
-
-  .tab {
-    min-height: 44px;
-    padding: 8px 12px;
-    font-size: 0.8rem;
-  }
-
-  .hero-action-area {
-    margin-top: 30px;
-    margin-bottom: 40px;
-  }
-}
-
-/* Small Phones (320px - 374px) */
-@media (max-width: 374px) {
-  .course-hero {
-    height: 50vh;
-    min-height: 320px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-
-  .course-hero-top {
-    top: 10px;
-    left: 10px;
-    right: 10px;
-  }
-
-  .nav-icon-btn {
-    width: 36px;
-    height: 36px;
-  }
-
-  .tab {
-    min-height: 40px;
-    padding: 6px 10px;
-    font-size: 0.75rem;
-  }
-
-  .hero-action-area {
-    margin-top: 20px;
-    margin-bottom: 30px;
-  }
-
-  .course-btn.main-cta {
-    padding: 14px 16px;
-    font-size: 0.85rem;
-  }
-}
-
-/* Ultra-wide screens (2560px and above) */
-@media (min-width: 2560px) {
-  .course-hero {
-    height: 100vh;
-    min-height: 800px;
     max-width: 2560px;
     margin-left: auto;
     margin-right: auto;
   }
 
   .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
+    object-fit: contain;
     max-width: 2560px;
     width: 100%;
     height: 100%;
   }
-}
 
-/* Foldable phones (unfolded) */
-@media (min-width: 768px) and (max-height: 1024px) and (orientation: landscape) {
-  .course-hero {
-    height: 100vh;
-    min-height: 100vh;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-}
-
-/* iPad Pro specific */
-@media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
-  .course-hero {
-    height: 75vh;
-    min-height: 600px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-}
-
-/* iPhone X/11/12/13 Pro specific */
-@media only screen and (min-device-width: 375px) and (max-device-width: 428px) and (-webkit-min-device-pixel-ratio: 3) {
-  .course-hero {
-    height: 52vh;
-    min-height: 360px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
-  }
-
-  .course-hero-top {
-    top: 20px;
-    left: 20px;
-    right: 20px;
-  }
-}
-
-/* iPhone SE specific */
-@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
-  .course-hero {
-    height: 50vh;
-    min-height: 350px;
-  }
-
-  .hero-video-bg {
-    object-fit: contain; /* Updated to contain */
-    width: 100%;
-    height: 100%;
+  .video-sidebar-text {
+    width: 450px;
+    left: 100px;
   }
 }
 
@@ -1358,73 +808,19 @@ video {
   transition: all 0.3s ease;
 }
 
+/* Animation on hover */
+@media (hover: hover) {
+  .video-sidebar-text:hover {
+    transform: translateY(-50%) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  }
+}
+
 /* Fallback for very old browsers */
 @supports not (object-fit: contain) {
   .hero-video-bg {
     width: auto;
     height: 100%;
     max-width: 100%;
-  }
-}
-@media (max-width: 768px) {
-  /* HERO SECTION FIX */
-  .course-hero {
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
-    padding: 20px 0 40px;
-  }
-
-  /* TEXT OVERLAY */
-  .course-hero-text-overlay {
-    position: relative;
-    max-width: 100%;
-    padding: 16px 20px 16px 10px;
-    text-align: right; /* RIGHT SIDE */
-    overflow: visible;
-  }
-
-  /* MAIN HEADING */
-  .hero-text {
-    font-size: 20px;
-    line-height: 1.4;
-    white-space: normal;
-    word-break: break-word;
-  }
-
-  /* REMOVE FORCED BREAK */
-  .hero-text br {
-    display: none;
-  }
-
-  /* HIGHLIGHT TEXT */
-  .hero-text .highlight {
-    display: block;
-    font-size: 24px;
-    margin-top: 6px;
-  }
-}
-@media (max-width: 480px) {
-  .hero-text {
-    font-size: 15px;
-  }
-
-  .hero-text .highlight {
-    font-size: 22px;
-  }
-}
-@media (max-width: 768px) {
-  .course-hero-text-overlay {
-    position: relative;
-    max-width: 100%;
-    padding: 40px 20px 16px 10px; /* increased top padding from 16px → 40px */
-    text-align: right;
-    overflow: visible;
-  }
-}
-
-@media (max-width: 480px) {
-  .course-hero-text-overlay {
-    padding-top: 30px; /* adjust for really small screens */
   }
 }
