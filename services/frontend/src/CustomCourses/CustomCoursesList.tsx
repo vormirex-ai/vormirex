@@ -5,8 +5,8 @@ import './CustomCoursePage.css';
 // ==================== IMPORT IMAGES ====================
 import robotBooster from './assets/robotbooster.png';
 import codingMastery from './assets/codingmastery.jpg';
-import examprep from './assets/Examprep.jpg';
-import savedchats from './assets/savedchatss.jpg';
+import examprep from './assets/ExamPrep.jpeg';
+import savedchats from './assets/savedchatss.jpeg';
 import yourprogress from './assets/yourprogress.png';
 
 const CustomCoursesList: React.FC = () => {
