@@ -6,9 +6,9 @@ import { COURSES, CourseId, CourseLevel } from '../../data/courses';
 
 /* ================= ASSET IMPORTS ================= */
 import CyberVideo from '../../assets/CS.mp4';
-import DataScienceVideo from '../../assets/DS.mp4';
-import DataAnalyticsVideo from '../../assets/Data Analytics.mp4';
-import AIMLVideo from '../../assets/V3.mp4';
+import DataScienceVideo from '../../assets/DS (1).mp4';
+import DataAnalyticsVideo from '../../assets/DAta Analytics (1).mp4';
+import AIMLVideo from '../../assets/AI ML.mp4';
 
 import WhyCyber from '../../assets/whylearncyber.jpg';
 import WhyDS from '../../assets/whylearndatascince.jpeg';
@@ -77,6 +77,17 @@ export default function CoursePage() {
     if (!course) return null;
     return course.levels.find((l) => l.level === level) ?? course.levels[0];
   }, [course, level]);
+
+  // Define subtitles directly
+  const getSubtitle = (id: CourseId) => {
+    const subtitleMap: Record<CourseId, string> = {
+      'cyber-security': 'Protect Digital Assets',
+      'data-science': 'Extract Insights from Data',
+      'data-analytics': 'Transform Data into Decisions',
+      'ai-ml': 'Build Intelligent Systems',
+    };
+    return subtitleMap[id] || 'Protect Digital Assets';
+  };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,14 +163,6 @@ export default function CoursePage() {
           </video>
           <div className="course-hero-overlay" />
 
-          {/* Updated Hero Text Overlay with better mobile positioning */}
-          <div className="course-hero-text-overlay">
-            <h1 className="hero-text">
-              Unlock Your Potential with <br />
-              <span className="highlight">{course?.title}</span>
-            </h1>
-          </div>
-
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
@@ -188,6 +191,14 @@ export default function CoursePage() {
               >
                 Advanced
               </button>
+            </div>
+          </div>
+
+          {/* HERO TEXT CONTENT */}
+          <div className="hero-content">
+            <div className="hero-text">
+              <h1 className="hero-title">{course?.title}</h1>
+              <h2 className="hero-subtitle">{getSubtitle(courseId)}</h2>
             </div>
           </div>
         </header>
