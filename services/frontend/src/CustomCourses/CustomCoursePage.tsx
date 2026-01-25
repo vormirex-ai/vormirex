@@ -18,14 +18,14 @@ import codingMastery3 from './assets/codingmastery3.png';
 import codingMastery4 from './assets/codingmastery4.png';
 
 // Exam Prep Images
-import examprep from './assets/Examprep.jpg';
+import examprep from './assets/ExamPrep.jpeg';
 import examprep1 from './assets/examprep1.png';
 import examprep2 from './assets/examprep2.png';
 import examprep3 from './assets/examprep3.png';
 import examprep4 from './assets/examprep4.png';
 
 // Saved Chats Images
-import savedchats from './assets/savedchatss.jpg';
+import savedchats from './assets/savedchatss.jpeg';
 import savedchats1 from './assets/savedchats1.jpg';
 import savedchats2 from './assets/savedchat2.png';
 import savedchats3 from './assets/savedchat3.png';
@@ -257,8 +257,8 @@ const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
           position: relative;
           width: 100%;
           display: flex;
-          align-items: center;
-          justify-content: center;
+          align-items: flex-end;
+          justify-content: flex-start;
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
@@ -290,8 +290,8 @@ const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
           inset: 0;
           background: linear-gradient(
             to bottom,
-            rgba(10, 10, 10, 0.4),
-            rgba(18, 18, 18, 0.9)
+            rgba(10, 10, 10, 0.5),
+            rgba(18, 18, 18, 0.85)
           );
           z-index: 1;
         }
@@ -343,11 +343,14 @@ const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
 
         /* Hero Content */
         .hero-content {
-          position: relative;
-          z-index: 2;
-          text-align: center;
+          position: absolute;
+          bottom: 40px;
+          left: 30px; /* Changed from fixed 400px to responsive 30px */
+          right: 24px;
           max-width: 900px;
-          padding: 0 24px;
+          z-index: 5; /* Increased z-index to ensure it's above the overlay */
+          text-align: left;
+          padding: 0 24px; /* Added padding for better mobile display */
         }
 
         .custom-title {
@@ -356,7 +359,7 @@ const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
           margin-bottom: 24px;
           font-weight: 900;
           letter-spacing: -1px;
-          text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+          text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8); /* Increased shadow for better contrast */
         }
 
         .custom-desc {
@@ -365,9 +368,7 @@ const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
           margin-bottom: 48px;
           line-height: 1.5;
           max-width: 800px;
-          margin-left: auto;
-          margin-right: auto;
-          text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
+          text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8); /* Increased shadow for better contrast */
         }
 
         /* Button Styles */
@@ -718,6 +719,10 @@ const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
             width: 100%;
             padding: 16px 24px;
           }
+
+          .hero-content {
+            padding: 0 24px 50px 30px;
+          }
         }
       `}</style>
     </main>
@@ -957,7 +962,6 @@ const CustomCoursesList: React.FC = () => {
 
 // ==================== COURSE-SPECIFIC COMPONENTS ====================
 
-// Booster Pack Component
 const BoosterPack: React.FC = () => {
   return (
     <CustomCoursePage
@@ -986,7 +990,6 @@ const BoosterPack: React.FC = () => {
   );
 };
 
-// Coding Mastery Component
 const CodingMastery: React.FC = () => {
   return (
     <CustomCoursePage
@@ -1020,7 +1023,6 @@ const CodingMastery: React.FC = () => {
   );
 };
 
-// Exam Preparation Component
 const ExamPrep: React.FC = () => {
   return (
     <CustomCoursePage
@@ -1049,7 +1051,6 @@ const ExamPrep: React.FC = () => {
   );
 };
 
-// Saved Chats Component
 const SavedChats: React.FC = () => {
   return (
     <CustomCoursePage
@@ -1066,10 +1067,7 @@ const SavedChats: React.FC = () => {
           name: 'David H.',
           text: 'I refer back to my saved explanations all the time — pure gold.',
         },
-        {
-          name: 'Anita G.',
-          text: 'Like having my own private tutor archive.',
-        },
+        { name: 'Anita G.', text: 'Like having my own private tutor archive.' },
       ]}
       heroImageUrl={savedchats}
       featureImages={[savedchats1, savedchats2, savedchats3, savedchats4]}
@@ -1078,7 +1076,6 @@ const SavedChats: React.FC = () => {
   );
 };
 
-// Your Progress Component
 const YourProgress: React.FC = () => {
   return (
     <CustomCoursePage
