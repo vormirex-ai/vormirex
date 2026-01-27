@@ -3,12 +3,15 @@ import { z } from 'zod';
 /**
  * A reusable, case-insensitive email schema that performs trimming and lowercasing.
  * This ensures that email addresses are standardized before any other processing.
+ * strict regex enforces TLD and prevents leading special characters.
  */
+const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 const emailSchema = z
   .string()
-  .email({ message: 'Invalid email address' })
   .trim()
-  .min(1, { message: 'Email is required' }) // Use .min(1) for non-empty check
+  .min(1, { message: 'Email is required' })
+  .regex(emailRegex, { message: 'Invalid email address (cannot start with special characters)' })
   .transform((val) => val.toLowerCase());
 
 const passwordSchema = z
