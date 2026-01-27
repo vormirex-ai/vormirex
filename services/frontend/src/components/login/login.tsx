@@ -220,6 +220,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const [resetEmail, setResetEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
 
   // FIXED: Set initial tab based on URL path and props
   useEffect(() => {
@@ -237,19 +238,21 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
       setError('Please enter your email.');
       return;
     }
-    setLoading(true);
+    setForgotPasswordLoading(true);
     setError('');
     try {
       const res = await forgotPassword(resetEmail);
       if (res.success) {
-        alert(res.message || 'Password reset link sent!');
         setIsModalOpen(false);
         setResetEmail('');
+        setTimeout(() => {
+          alert(res.message || 'Password reset link sent!');
+        }, 100);
       }
     } catch (err: any) {
       setError(err.message || 'Failed to send reset link');
     } finally {
-      setLoading(false);
+      setForgotPasswordLoading(false);
     }
   };
 
@@ -491,10 +494,10 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
             )}
             <button
               className="login-btn"
-              disabled={loading}
+              disabled={forgotPasswordLoading}
               onClick={handleForgotPasswordSubmit}
             >
-              {loading ? 'Sending...' : 'Send Link'}
+              {forgotPasswordLoading ? 'Sending...' : 'Send Link'}
             </button>
           </div>
         </div>
