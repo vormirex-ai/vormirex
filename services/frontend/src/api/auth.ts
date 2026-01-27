@@ -1,4 +1,5 @@
-export const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost/api/auth';
+const API_ROOT = import.meta.env.VITE_API_URL || 'http://localhost/api';
+export const BASE_URL = `${API_ROOT}/auth`;
 
 export interface User {
   id: string;

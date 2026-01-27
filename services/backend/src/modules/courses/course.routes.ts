@@ -25,7 +25,7 @@ router.post(
 router.get('/', optionalAuth, courseController.getAll);
 
 // GET /api/courses/:id - Get a single course details
-router.get('/:id', validate(courseIdParamsSchema), courseController.getOne);
+router.get('/:id', optionalAuth, validate(courseIdParamsSchema), courseController.getOne);
 
 // PATCH /api/courses/:id - Update a course (Admin only)
 router.patch(

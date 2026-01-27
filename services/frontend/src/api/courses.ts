@@ -1,15 +1,26 @@
-export const BASE_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/courses` : 'http://localhost/api/courses';
+const API_ROOT = import.meta.env.VITE_API_URL || 'http://localhost/api';
+export const BASE_URL = `${API_ROOT}/courses`;
 
 export interface Course {
   _id: string;
   title: string;
+  subtitle?: string; // Added
   description: string;
   price: number;
   thumbnail?: string;
   status: 'DRAFT' | 'PUBLISHED';
-  isHidden: boolean; // New field
+  isHidden: boolean;
   instructor: string;
   createdAt: string;
+  levels?: {
+    level: string;
+    duration?: string;
+    highlights: string[];
+    modules: {
+      title: string;
+      items: string[];
+    }[];
+  }[]; // Added for dynamic course page
 }
 
 export interface CreateCourseData {
@@ -59,7 +70,7 @@ export const getCourseById = async (id: string, token?: string): Promise<Course>
   }
 
   const data = await response.json();
-  return data.course;
+  return data.data;
 };
 
 // Admin Only
@@ -78,7 +89,7 @@ export const createCourse = async (courseData: CreateCourseData, token: string):
   }
 
   const data = await response.json();
-  return data.course;
+  return data.data;
 };
 
 // Admin Only
@@ -97,7 +108,7 @@ export const updateCourse = async (id: string, courseData: Partial<CreateCourseD
   }
 
   const data = await response.json();
-  return data.course;
+  return data.data;
 };
 
 // Admin Only
@@ -128,5 +139,5 @@ export const toggleCourseVisibility = async (id: string, token: string): Promise
   }
 
   const data = await response.json();
-  return data.course;
+  return data.data;
 };

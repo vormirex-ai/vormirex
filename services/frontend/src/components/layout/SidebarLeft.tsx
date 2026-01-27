@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import './SidebarLeft.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,8 +10,6 @@ import {
   faUserCircle,
   faGlobe,
   faCode,
-  faDatabase,
-  faLightbulb,
   faChartLine,
   faCubes,
   faLaptopCode,
@@ -21,6 +19,7 @@ import {
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import logoWithoutText from '../../assets/logo.png';
+import { getAllCourses, Course } from '../../api/courses'; // Import API
 
 interface SidebarLeftProps {
   isOpen: boolean;
@@ -34,12 +33,27 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
   showComingSoon,
 }) => {
   const navigate = useNavigate();
-  const [isSubjectsOpen, setIsSubjectsOpen] = React.useState(false);
+  // @ts-ignore
+  const location = useLocation();
+  const [isSubjectsOpen, setIsSubjectsOpen] = useState(true);
   const [isCustomCoursesOpen, setIsCustomCoursesOpen] = React.useState(false);
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const fetchedCourses = await getAllCourses();
+        console.log("Fetched Courses:", fetchedCourses);
+        setCourses(fetchedCourses);
+      } catch (error) {
+        console.error("Failed to load courses", error);
+      }
+    };
+    fetchCourses();
+  }, []);
 
   const toggleSubjects = () => setIsSubjectsOpen(!isSubjectsOpen);
-  const toggleCustomCourses = () =>
-    setIsCustomCoursesOpen(!isCustomCoursesOpen);
+  const toggleCustomCourses = () => setIsCustomCoursesOpen(!isCustomCoursesOpen);
 
   return (
     <aside className={`sidebar-left ${isOpen ? 'sidebar-open' : ''}`}>
@@ -106,22 +120,15 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
           </div>
           {isSubjectsOpen && (
             <ul>
-              <li onClick={() => navigate('/course/cyber-security')}>
-                <FontAwesomeIcon icon={faCode} className="nav-icon" /> Cyber
-                Security
-              </li>
-              <li onClick={() => navigate('/course/data-science')}>
-                <FontAwesomeIcon icon={faDatabase} className="nav-icon" /> Data
-                Science
-              </li>
-              <li onClick={() => navigate('/course/data-analytics')}>
-                <FontAwesomeIcon icon={faChartLine} className="nav-icon" /> Data
-                Analytics
-              </li>
-              <li onClick={() => navigate('/course/ai-ml')}>
-                <FontAwesomeIcon icon={faLightbulb} className="nav-icon" /> AI /
-                ML
-              </li>
+              {courses.length > 0 ? (
+                courses.map((course) => (
+                  <li key={course._id} onClick={() => navigate(`/course/${course._id}`)}>
+                    <FontAwesomeIcon icon={faCode} className="nav-icon" /> {course.title}
+                  </li>
+                ))
+              ) : (
+                <li className="no-courses">No courses available</li>
+              )}
             </ul>
           )}
         </div>

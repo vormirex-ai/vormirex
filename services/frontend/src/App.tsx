@@ -35,7 +35,8 @@ import ResetPassword from './components/auth/ResetPassword';
 /* =======================
    COURSES
 ======================= */
-import CoursePage from './components/layout/CoursePage';
+import CourseList from './components/layout/CourseList';
+import CourseDetail from './components/layout/CourseDetail';
 
 /* =======================
    CUSTOM COURSES
@@ -147,8 +148,8 @@ const App: React.FC = () => {
         {/* ================= COURSES ================= */}
         <Route element={<CourseLayout />}>
           {/* General Courses */}
-          <Route path="/courses" element={<CoursePage />} />
-          <Route path="/course/:courseId" element={<CoursePage />} />
+          <Route path="/courses" element={<CourseList />} />
+          <Route path="/course/:courseId" element={<CourseDetail />} />
 
           {/* Custom Courses List */}
           <Route path="/custom-courses" element={<CustomCoursesList />} />

@@ -1,6 +1,7 @@
 import 'express-async-errors';
-import app from './app.js';
+// Load environment variables before importing app
 import { env } from './config/env.js';
+import app from './app.js';
 import { connectDB } from './config/database.js';
 import { logger } from './config/logger.js';
 
@@ -12,8 +13,8 @@ const startServer = async () => {
   // Connect to the database
   await connectDB();
 
-  app.listen(env.PORT, () => {
-    logger.info(`🚀 Server is running on http://localhost:${env.PORT}`);
+  app.listen(env.PORT, '0.0.0.0', () => {
+    logger.info(`🚀 Server is running on http://0.0.0.0:${env.PORT}`);
   });
 };
 
