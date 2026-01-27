@@ -35,7 +35,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
   const navigate = useNavigate();
   // @ts-ignore
   const location = useLocation();
-  const [isSubjectsOpen, setIsSubjectsOpen] = useState(true);
+  const [isSubjectsOpen, setIsSubjectsOpen] = useState(false);
   const [isCustomCoursesOpen, setIsCustomCoursesOpen] = React.useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
 
