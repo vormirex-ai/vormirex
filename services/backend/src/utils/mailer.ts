@@ -32,8 +32,9 @@ export const sendEmail = async (options: EmailOptions) => {
     };
     const info = await transporter.sendMail(mailOptions);
     console.log(`✅ Email sent: ${info.messageId}`);
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error sending email:', error);
-    throw new Error('Could not send email.');
+    // Propagate the actual error so the caller can decide what to do (e.g. rollback user creation)
+    throw error;
   }
 };

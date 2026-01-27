@@ -256,6 +256,15 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    
+    // Client-side strict email check
+    // Must start with alphanumeric, no leading underscores or dots
+    const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email) && activeTab === 'signup') {
+      setError('Invalid email address (cannot start with special characters)');
+      return;
+    }
+
     setLoading(true);
 
     try {

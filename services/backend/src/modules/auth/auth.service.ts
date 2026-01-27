@@ -19,7 +19,15 @@ import {
 import { updateUserStreak } from '../../utils/streak.js';
 import type { SignupDTO, LoginDTO, CustomJWTPayload } from './auth.types.js';
 
+import { hasValidMxRecord } from '../../utils/dns.js';
+
 export const signup = async (data: SignupDTO) => {
+  // 1. Verify Domain MX Records (prevents typos like gmial.com)
+  const isDomainValid = await hasValidMxRecord(data.email);
+  if (!isDomainValid) {
+    throw new BadRequestError('Invalid email domain. Please check your email address.');
+  }
+
   const existingUser = await User.findOne({ email: data.email });
   if (existingUser) {
     // Prevent creating a new account if the email is already verified
@@ -65,12 +73,19 @@ export const signup = async (data: SignupDTO) => {
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
     const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
     const emailHtml = getVerificationEmailHTML(user.name, verificationUrl);
-    await sendEmail({
-      to: user.email,
-      subject: 'Verify Your Vormirex Account',
-      text: `Please verify your account by clicking this link: ${verificationUrl}`,
-      html: emailHtml,
-    });
+
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: 'Verify Your Vormirex Account',
+        text: `Please verify your account by clicking this link: ${verificationUrl}`,
+        html: emailHtml,
+      });
+    } catch (emailError) {
+      // Rollback: Delete the user if email fails to send (e.g. invalid address rejection)
+      await User.findByIdAndDelete(user._id);
+      throw new BadRequestError('Invalid email address - delivery failed. Please check your email.');
+    }
   }
 
   return {
