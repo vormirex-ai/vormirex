@@ -18,7 +18,7 @@ import codingMastery3 from './assets/codingmastery3.png';
 import codingMastery4 from './assets/codingmastery4.png';
 
 // Exam Prep Images
-import examprep from './assets/ExamPrep.jpeg';
+import examprep from './assets/Examprep.jpg';
 import examprep1 from './assets/examprep1.png';
 import examprep2 from './assets/examprep2.png';
 import examprep3 from './assets/examprep3.png';
