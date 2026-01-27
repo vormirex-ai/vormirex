@@ -231,11 +231,19 @@ export const resetPassword = async (token: string, newPassword: string) => {
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: new Date() }, // Check if expiry is in the future
-  });
+  }).select('+password');
 
   // If no user is found or the token is expired, throw a specific error.
   if (!user) {
     throw new BadRequestError('Invalid or expired password reset token.');
+  }
+
+  // Prevent reuse of the old password
+  if (user.password) {
+    const isSamePassword = await bcrypt.compare(newPassword, user.password);
+    if (isSamePassword) {
+      throw new BadRequestError('New password cannot be the same as the old password.');
+    }
   }
 
   // 3. Hash the new password.
