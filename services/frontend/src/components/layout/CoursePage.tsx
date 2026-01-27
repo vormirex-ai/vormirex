@@ -7,8 +7,8 @@ import { COURSES, CourseId, CourseLevel } from '../../data/courses';
 /* ================= ASSET IMPORTS ================= */
 import CyberVideo from '../../assets/CS.mp4';
 import DataScienceVideo from '../../assets/DS (1).mp4';
-import DataAnalyticsVideo from '../../assets/DAta Analytics (1).mp4';
-import AIMLVideo from '../../assets/AI ML.mp4';
+import DataAnalyticsVideo from '../../assets/V v.mp4';
+import AIMLVideo from '../../assets/AiMl (1).mp4';
 
 import WhyCyber from '../../assets/whylearncyber.jpg';
 import WhyDS from '../../assets/whylearndatascince.jpeg';
