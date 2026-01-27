@@ -361,7 +361,9 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
 
           {activeTab === 'signup' && (
             <div className="form-group">
-              <label className="form-label">Full Name</label>
+              <label className="form-label">
+                Full Name<span style={{ color: 'red' }}> *</span>
+              </label>
               <input
                 type="text"
                 className="form-input"
@@ -374,7 +376,9 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
           )}
 
           <div className="form-group">
-            <label className="form-label">Email Address</label>
+            <label className="form-label">
+              Email Address<span style={{ color: 'red' }}> *</span>
+            </label>
             <input
               type="email"
               className="form-input"
@@ -386,7 +390,9 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label">
+              Password<span style={{ color: 'red' }}> *</span>
+            </label>
             <div className="input-wrapper">
               <input
                 type={showPassword ? 'text' : 'password'}

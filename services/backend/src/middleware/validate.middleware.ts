@@ -18,8 +18,10 @@ export const validate =
       next();
     } catch (error) {
       if (error instanceof ZodError) {
+        const message = error.issues.map((issue) => issue.message).join(', ');
         return res.status(400).json({
           success: false,
+          message,
           errors: error.issues,
         });
       }
