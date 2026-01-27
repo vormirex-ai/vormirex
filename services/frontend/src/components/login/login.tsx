@@ -257,6 +257,13 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
     e.preventDefault();
     setError('');
     
+    // Client-side strict name check
+    const nameRegex = /^[a-zA-Z0-9\s.'-]+$/;
+    if (activeTab === 'signup' && !nameRegex.test(name)) {
+      setError('Name contains invalid characters');
+      return;
+    }
+
     // Client-side strict email check
     // Must start with alphanumeric, no leading underscores or dots
     const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

@@ -32,6 +32,7 @@ const nameSchema = z
       .nonempty('Name is required')
       .min(3, { message: 'Name must be at least 3 characters long' })
       .max(50, { message: 'Name must be 50 characters or less' })
+      .regex(/^[a-zA-Z0-9\s.'-]+$/, { message: 'Name contains invalid characters' })
   );
 
 export const signupValidationSchema = z.object({
