@@ -17,6 +17,10 @@ import {
   faBookmark,
   faChevronDown,
   faChevronRight,
+  faRobot,
+  faShieldAlt,
+  faChartBar,
+  faFlask,
 } from '@fortawesome/free-solid-svg-icons';
 import logoWithoutText from '../../assets/logo.png';
 import { getAllCourses, getCourseById, Course } from '../../api/courses'; // Import getCourseById
@@ -63,6 +67,29 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
   const toggleSubjects = () => setIsSubjectsOpen(!isSubjectsOpen);
   const toggleCustomCourses = () =>
     setIsCustomCoursesOpen(!isCustomCoursesOpen);
+
+  // Function to get the appropriate icon based on course title
+  const getCourseIcon = (courseTitle: string) => {
+    const title = courseTitle.toLowerCase();
+    if (
+      title.includes('ai') ||
+      title.includes('ml') ||
+      title.includes('machine learning')
+    ) {
+      return faRobot;
+    } else if (title.includes('cyber') || title.includes('security')) {
+      return faShieldAlt;
+    } else if (
+      title.includes('analytics') ||
+      title.includes('data analytics')
+    ) {
+      return faChartBar;
+    } else if (title.includes('data science')) {
+      return faFlask;
+    } else {
+      return faCode; // Default icon
+    }
+  };
 
   // Pre-fetch course data on hover for instant navigation
   const handleCourseHover = async (courseId: string) => {
@@ -147,7 +174,10 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
                     onClick={() => navigate(`/course/${course._id}`)}
                     onMouseEnter={() => handleCourseHover(course._id)} // Pre-fetch on hover
                   >
-                    <FontAwesomeIcon icon={faCode} className="nav-icon" />{' '}
+                    <FontAwesomeIcon
+                      icon={getCourseIcon(course.title)}
+                      className="nav-icon"
+                    />{' '}
                     {course.title}
                   </li>
                 ))
