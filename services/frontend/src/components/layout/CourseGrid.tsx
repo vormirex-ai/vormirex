@@ -1,3 +1,5 @@
+// src/components/CourseGrid.jsx
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -20,7 +22,7 @@ interface CourseCategory {
   title: string;
   learners: string;
   icon: React.ReactNode;
-  slug?: string; // Added slug property for routing
+  slug?: string;
 }
 
 interface CourseGridProps {
@@ -30,56 +32,56 @@ interface CourseGridProps {
   buttonText?: string;
 }
 
-// --- Default Data (UPDATED TO IT COURSES) ---
+// --- Default Data ---
 const DEFAULT_CATEGORIES: CourseCategory[] = [
   {
     id: 1,
     title: 'Cyber Security',
     learners: '12K+ learners',
     icon: <Rocket size={24} />,
-    slug: 'cyber-security', // Added slug for routing
+    slug: 'cyber-security',
   },
   {
     id: 2,
     title: 'Exam Preparation Kit',
     learners: '8K+ learners',
     icon: <Brain size={24} />,
-    slug: 'exam-preparation-kit', // Added slug for routing
+    slug: 'exam-preparation-kit',
   },
   {
     id: 3,
     title: 'Data Science',
     learners: '20K+ learners',
     icon: <Globe size={24} />,
-    slug: 'data-science', // Added slug for routing
+    slug: 'data-science',
   },
   {
     id: 4,
     title: 'Data Analytics',
     learners: '6K+ learners',
     icon: <Palette size={24} />,
-    slug: 'data-analytics', // Added slug for routing
+    slug: 'data-analytics',
   },
   {
     id: 5,
     title: 'AI & Machine Learning',
     learners: '4K+ learners',
     icon: <Sparkles size={24} />,
-    slug: 'ai-ml', // Added slug for routing
+    slug: 'ai-ml-engineer',
   },
   {
     id: 6,
     title: 'Career Transition Programs',
     learners: '5K+ learners',
     icon: <Users size={24} />,
-    slug: 'career-programs', // Added slug for routing
+    slug: 'career-programs',
   },
   {
     id: 7,
     title: 'AI-Powered Learning Paths',
     learners: '11K+ learners',
     icon: <Heart size={24} />,
-    slug: 'ai-learning-paths', // Added slug for routing
+    slug: 'ai-learning-paths',
   },
 ];
 
@@ -91,9 +93,15 @@ const CourseGrid: React.FC<CourseGridProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  // Function to handle course card click
   const handleCourseClick = (slug: string) => {
-    navigate(`/course/${slug}`);
+    // Map the grid slug to the actual course slug if needed
+    const slugMap: Record<string, string> = {
+      'ai-ml': 'ai-ml-engineer',
+      // Add other mappings as needed
+    };
+
+    const mappedSlug = slugMap[slug] || slug;
+    navigate(`/course/${mappedSlug}`);
   };
 
   const titleWords = title.split(' ');
