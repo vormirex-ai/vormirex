@@ -36,10 +36,17 @@ import GainAI from '../assets/gainaiml.png';
  */
 export const getSlug = (c) => {
   if (!c || !c.title) return '';
+
+  // Handle special cases first
+  if (c.title.toLowerCase().includes('ai & machine learning')) {
+    return 'ai-ml-engineer';
+  }
+
   return c.title
     .toLowerCase()
     .replace(/ \/ /g, '-') // Handles "Data Science / AI"
     .replace(/\//g, '-') // Handles other slashes
+    .replace(/ & /g, '-') // Handles "AI & ML"
     .replace(/ /g, '-'); // Replaces spaces with hyphens
 };
 
@@ -51,6 +58,9 @@ export const getCatalogImage = (c) => {
     'cyber-security': WhyCyber,
     'ai-ml-engineer': WhyAI,
     'ai-ml': WhyAI,
+    'exam-preparation-kit': WhyCyber, // Fallback
+    'career-programs': WhyCyber, // Fallback
+    'ai-learning-paths': WhyAI, // Fallback
   };
   // Return mapped image or a default
   return map[slug] || c?.thumbnail || WhyCyber;
@@ -64,6 +74,9 @@ export const getHeroVideo = (c) => {
     'data-analytics': DataAnalyticsVideo,
     'ai-ml-engineer': AIMLVideo,
     'ai-ml': AIMLVideo,
+    'exam-preparation-kit': CyberVideo, // Fallback
+    'career-programs': CyberVideo, // Fallback
+    'ai-learning-paths': AIMLVideo, // Fallback
   };
   return map[slug] || CyberVideo; // Default fallback
 };
@@ -76,6 +89,9 @@ export const getDetailImages = (c) => {
     'data-analytics': { career: CareerDA, gain: GainDA },
     'ai-ml-engineer': { career: CareerAI, gain: GainAI },
     'ai-ml': { career: CareerAI, gain: GainAI },
+    'exam-preparation-kit': { career: CareerCyber, gain: GainCyber }, // Fallback
+    'career-programs': { career: CareerCyber, gain: GainCyber }, // Fallback
+    'ai-learning-paths': { career: CareerAI, gain: GainAI }, // Fallback
   };
   return map[slug] || { career: CareerCyber, gain: GainCyber }; // Default fallback
 };

@@ -1,8 +1,10 @@
+// src/pages/CourseList.jsx
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Courses.css';
 import { getAllCourses, Course } from '../../api/courses';
-import { getCatalogImage } from '../../utils/courseUtils';
+import { getCatalogImage, getSlug } from '../../utils/courseUtils';
 
 export default function CourseList() {
   const navigate = useNavigate();
@@ -55,6 +57,11 @@ export default function CourseList() {
     fetchData();
   }, []);
 
+  const handleCourseClick = (course: Course) => {
+    const slug = getSlug(course);
+    navigate(`/course/${slug}`);
+  };
+
   // Skeleton loader for loading state
   if (loading) {
     return (
@@ -89,7 +96,7 @@ export default function CourseList() {
           <div
             key={item._id}
             className="course-card"
-            onClick={() => navigate(`/course/${item._id}`)}
+            onClick={() => handleCourseClick(item)}
           >
             <img
               src={getCatalogImage(item)}

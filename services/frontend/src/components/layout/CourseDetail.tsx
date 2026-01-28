@@ -4,17 +4,17 @@ import { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LayoutDashboard, ArrowLeft, Send } from 'lucide-react';
 import './Courses.css';
-import { getCourseById } from '../../api/courses';
+import { getCourseById, getAllCourses } from '../../api/courses';
 import {
   getCatalogImage,
   getHeroVideo,
   getDetailImages,
+  getSlug,
 } from '../../utils/courseUtils';
 
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
 
 // --- Type Declaration for Prefetching ---
-// This should ideally be in a separate file like 'types/global.d.ts'
 declare global {
   interface Window {
     __PREFETCHED_COURSES__?: Record<string, any>;
@@ -27,6 +27,7 @@ export default function CourseDetail() {
 
   const [course, setCourse] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [level, setLevel] = useState<'FOUNDATION' | 'ADVANCED'>('FOUNDATION');
   const [modalImage, setModalImage] = useState<string | null>(null);
@@ -34,37 +35,53 @@ export default function CourseDetail() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Check for prefetched data first for an instant navigation experience
-    const prefetchedData = window.__PREFETCHED_COURSES__?.[courseId || ''];
-    if (prefetchedData) {
-      setCourse(prefetchedData);
-      setLoading(false);
-      // Optionally clear the cache if you don't want it to persist
-      // delete window.__PREFETCHED_COURSES__[courseId!];
-      return;
-    }
-
-    // If no prefetched data, fetch it normally
-    setLoading(true);
-    const fetchData = async () => {
+    const fetchCourseData = async () => {
       try {
-        if (courseId) {
-          const fetchedCourse = await getCourseById(courseId);
-          setCourse(fetchedCourse);
-
-          // IMPORTANT: Store the fetched course in the prefetch cache for future use
-          if (!window.__PREFETCHED_COURSES__) {
-            window.__PREFETCHED_COURSES__ = {};
-          }
-          window.__PREFETCHED_COURSES__[courseId] = fetchedCourse;
+        // Check for prefetched data first
+        const prefetchedData = window.__PREFETCHED_COURSES__?.[courseId || ''];
+        if (prefetchedData) {
+          setCourse(prefetchedData);
+          setLoading(false);
+          return;
         }
-      } catch (err) {
+
+        setLoading(true);
+
+        if (!courseId) {
+          throw new Error('Course ID is required');
+        }
+
+        // Try to fetch by ID first
+        let fetchedCourse = await getCourseById(courseId);
+
+        // If not found, try to find by slug
+        if (!fetchedCourse) {
+          const allCourses = await getAllCourses();
+          fetchedCourse = allCourses.find(
+            (c) => getSlug(c) === courseId || c._id === courseId
+          );
+
+          if (!fetchedCourse) {
+            throw new Error('Course not found');
+          }
+        }
+
+        setCourse(fetchedCourse);
+
+        // Cache the fetched course
+        if (!window.__PREFETCHED_COURSES__) {
+          window.__PREFETCHED_COURSES__ = {};
+        }
+        window.__PREFETCHED_COURSES__[courseId] = fetchedCourse;
+      } catch (err: any) {
         console.error('Failed to fetch course details', err);
+        setError(err.message || 'Failed to load course');
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+
+    fetchCourseData();
   }, [courseId]);
 
   useEffect(() => {
@@ -74,10 +91,14 @@ export default function CourseDetail() {
   }, [course]);
 
   const heroMedia = useMemo(() => {
+    if (!course) return { type: 'video' as const, src: '' };
     return { type: 'video' as const, src: getHeroVideo(course) };
   }, [course]);
 
-  const detailImages = useMemo(() => getDetailImages(course), [course]);
+  const detailImages = useMemo(() => {
+    if (!course) return { career: '', gain: '' };
+    return getDetailImages(course);
+  }, [course]);
 
   const levelBlock = useMemo(() => {
     if (!course || !course.levels) return null;
@@ -95,14 +116,22 @@ export default function CourseDetail() {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !heroMedia.src) return;
+
     video.muted = true;
     video.playsInline = true;
     const play = () =>
       video.play().catch(() => console.log('Autoplay blocked'));
-    if (video.readyState >= 3) play();
-    else video.addEventListener('canplay', play);
-    return () => video.removeEventListener('canplay', play);
+
+    if (video.readyState >= 3) {
+      play();
+    } else {
+      video.addEventListener('canplay', play, { once: true });
+    }
+
+    return () => {
+      video.removeEventListener('canplay', play);
+    };
   }, [heroMedia]);
 
   // --- SKELETON LOADER ---
@@ -132,8 +161,26 @@ export default function CourseDetail() {
     );
   }
 
-  if (!course) {
-    return <div className="course-not-found">Course not found.</div>;
+  if (error || !course) {
+    return (
+      <div className="course-page">
+        <div className="course-shell">
+          <div className="course-not-found">
+            <h2>Course Not Found</h2>
+            <p>
+              {error ||
+                "The course you're looking for doesn't exist or has been moved."}
+            </p>
+            <button
+              className="course-btn main-cta"
+              onClick={() => navigate('/courses')}
+            >
+              Browse All Courses
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
