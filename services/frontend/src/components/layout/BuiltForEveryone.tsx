@@ -324,17 +324,25 @@ const BuiltForEveryone: React.FC = () => {
           margin: 0 auto;
         }
 
+        /* --- CORRECTED GRID STYLES --- */
         .grid-small {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          /* Use a fixed width for each column to ensure consistent sizing */
+          grid-template-columns: repeat(auto-fit, 180px);
+          /* Center the grid items if there is extra space in the row */
+          justify-content: center;
           gap: 20px;
         }
 
         .grid-large {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          /* Use a fixed width for each column to ensure consistent sizing */
+          grid-template-columns: repeat(auto-fit, 260px);
+          /* Center the grid items if there is extra space in the row */
+          justify-content: center;
           gap: 24px;
         }
+        /* --- END OF CORRECTED STYLES --- */
 
         .card {
           background: rgba(255, 255, 255, 0.03);
@@ -348,6 +356,9 @@ const BuiltForEveryone: React.FC = () => {
           text-align: center;
           height: 100%;
           cursor: pointer;
+          /* Ensure the card fills the grid cell */
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .card.large {
@@ -395,7 +406,7 @@ const BuiltForEveryone: React.FC = () => {
         @media (max-width: 768px) {
           .grid-small,
           .grid-large {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr; /* On small screens, cards take full width */
           }
 
           .main-title {

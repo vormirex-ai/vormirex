@@ -20,6 +20,7 @@ interface CourseCategory {
   title: string;
   learners: string;
   icon: React.ReactNode;
+  slug?: string; // Added slug property for routing
 }
 
 interface CourseGridProps {
@@ -36,42 +37,49 @@ const DEFAULT_CATEGORIES: CourseCategory[] = [
     title: 'Cyber Security',
     learners: '12K+ learners',
     icon: <Rocket size={24} />,
+    slug: 'cyber-security', // Added slug for routing
   },
   {
     id: 2,
     title: 'Exam Preparation Kit',
     learners: '8K+ learners',
     icon: <Brain size={24} />,
+    slug: 'exam-preparation-kit', // Added slug for routing
   },
   {
     id: 3,
     title: 'Data Science',
     learners: '20K+ learners',
     icon: <Globe size={24} />,
+    slug: 'data-science', // Added slug for routing
   },
   {
     id: 4,
     title: 'Data Analytics',
     learners: '6K+ learners',
     icon: <Palette size={24} />,
+    slug: 'data-analytics', // Added slug for routing
   },
   {
     id: 5,
     title: 'AI & Machine Learning',
     learners: '4K+ learners',
     icon: <Sparkles size={24} />,
+    slug: 'ai-ml', // Added slug for routing
   },
   {
     id: 6,
     title: 'Career Transition Programs',
     learners: '5K+ learners',
     icon: <Users size={24} />,
+    slug: 'career-programs', // Added slug for routing
   },
   {
     id: 7,
     title: 'AI-Powered Learning Paths',
     learners: '11K+ learners',
     icon: <Heart size={24} />,
+    slug: 'ai-learning-paths', // Added slug for routing
   },
 ];
 
@@ -82,6 +90,11 @@ const CourseGrid: React.FC<CourseGridProps> = ({
   categories = DEFAULT_CATEGORIES,
 }) => {
   const navigate = useNavigate();
+
+  // Function to handle course card click
+  const handleCourseClick = (slug: string) => {
+    navigate(`/course/${slug}`);
+  };
 
   const titleWords = title.split(' ');
   const firstWord = titleWords[0];
@@ -103,6 +116,12 @@ const CourseGrid: React.FC<CourseGridProps> = ({
             className="course-card"
             tabIndex={0}
             role="button"
+            onClick={() => category.slug && handleCourseClick(category.slug)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && category.slug) {
+                handleCourseClick(category.slug);
+              }
+            }}
           >
             <div className="course-icon-wrapper">{category.icon}</div>
             <h3 className="course-card-title">{category.title}</h3>
