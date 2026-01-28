@@ -368,14 +368,14 @@ export default function CourseDetail() {
           </video>
           <div className="course-hero-overlay" />
 
-          {/* Enhanced Video Text Overlay */}
-          <div className="video-text-overlay">
-            <div className="video-content-wrapper">
+          {/* Side Text Overlay - Not covering the video */}
+          <div className="video-side-text">
+            <div className="side-content-wrapper">
               <div className="video-badge">{courseContent.badge}</div>
-              <h1 className="video-headline">{courseContent.headline}</h1>
-              <p className="video-subtitle">{courseContent.subtitle}</p>
+              <h2 className="side-headline">{courseContent.headline}</h2>
+              <p className="side-subtitle">{courseContent.subtitle}</p>
 
-              <div className="video-highlights">
+              <div className="side-highlights">
                 {courseContent.highlights.map((highlight, index) => (
                   <div key={index} className="highlight-item">
                     <span className="highlight-icon">{highlight.icon}</span>
@@ -384,7 +384,7 @@ export default function CourseDetail() {
                 ))}
               </div>
 
-              <div className="video-stats">
+              <div className="side-stats">
                 {courseContent.stats.map((stat, index) => (
                   <div key={index} className="stat-box">
                     <div className="stat-value">{stat.value}</div>
@@ -394,12 +394,12 @@ export default function CourseDetail() {
                 ))}
               </div>
 
-              <button className="video-cta-btn">
+              <button className="side-cta-btn">
                 <PlayCircle size={20} style={{ marginRight: '8px' }} />
                 {courseContent.cta}
               </button>
 
-              <div className="video-social-proof">
+              <div className="side-social-proof">
                 <div className="rating">
                   <Star size={16} className="star-icon filled" />
                   <Star size={16} className="star-icon filled" />
@@ -410,7 +410,7 @@ export default function CourseDetail() {
                 </div>
                 <div className="students-count">
                   <Users size={16} />
-                  <span>{courseContent.students} students enrolled</span>
+                  <span>{courseContent.students} students</span>
                 </div>
               </div>
             </div>
