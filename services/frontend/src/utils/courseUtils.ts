@@ -6,9 +6,9 @@ import WhyDA from '../assets/whylearndataana.jpeg';
 import WhyAI from '../assets/whyaiml.png';
 
 // Hero Videos
-import CyberVideo from '../assets/DS (1).mp4'; // Default maps to Cyber usually, checking usage
-import DataScienceVideo from '../assets/DS (1).mp4';
-import DataAnalyticsVideo from '../assets/DAta Analytics (1).mp4';
+import CyberVideo from '../assets/CS.mp4'; // Default maps to Cyber usually, checking usage
+import DataScienceVideo from '../assets/DS.mp4';
+import DataAnalyticsVideo from '../assets/DA.mp4';
 import AIMLVideo from '../assets/AI ML.mp4';
 
 // Detail Images (Career / Gain)
@@ -28,7 +28,11 @@ import GainAI from '../assets/gainaiml.png';
 
 export const getSlug = (c: any) => {
   if (!c || !c.title) return '';
-  return c.title.toLowerCase().replace(/ \/ /g, '-').replace(/\//g, '-').replace(/ /g, '-');
+  return c.title
+    .toLowerCase()
+    .replace(/ \/ /g, '-')
+    .replace(/\//g, '-')
+    .replace(/ /g, '-');
 };
 
 export const getCatalogImage = (c: any) => {
@@ -42,7 +46,7 @@ export const getCatalogImage = (c: any) => {
     'ai-ml': WhyAI,
   };
   if (map[slug]) return map[slug];
-  return c?.thumbnail || WhyCyber; 
+  return c?.thumbnail || WhyCyber;
 };
 
 export const getHeroVideo = (c: any) => {
@@ -56,12 +60,12 @@ export const getHeroVideo = (c: any) => {
   };
   if (map[slug]) return map[slug];
   // Default fallback
-  return CyberVideo; 
+  return CyberVideo;
 };
 
 export const getDetailImages = (c: any) => {
-   const slug = getSlug(c);
-   const map: Record<string, { career: string; gain: string }> = {
+  const slug = getSlug(c);
+  const map: Record<string, { career: string; gain: string }> = {
     'cyber-security': { career: CareerCyber, gain: GainCyber },
     'data-science': { career: CareerDS, gain: GainDS },
     'data-analytics': { career: CareerDA, gain: GainDA },
