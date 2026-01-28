@@ -1,381 +1,230 @@
-// src/pages/CourseDetail.jsx
-
-import { useMemo, useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { LayoutDashboard, ArrowLeft, Send } from 'lucide-react';
-import './Courses.css';
-import { getCourseById, getAllCourses } from '../../api/courses';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  getCatalogImage,
-  getHeroVideo,
-  getDetailImages,
-} from '../../utils/courseUtils';
+  Rocket,
+  Brain,
+  Code,
+  Globe,
+  Palette,
+  Heart,
+  Briefcase,
+  Baby,
+  Sparkles,
+  Users,
+  ArrowRight,
+} from 'lucide-react';
 
-import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
-
-// --- Type Declaration for Prefetching ---
-// This should ideally be in a separate file like 'types/global.d.ts'
-declare global {
-  interface Window {
-    __PREFETCHED_COURSES__?: Record<string, any>;
-  }
+// --- Types ---
+interface CourseCategory {
+  id: number;
+  title: string;
+  learners: string;
+  icon: React.ReactNode;
+  slug?: string; // Added slug property for routing
 }
 
-// Map slugs to course titles for lookup
-const SLUG_TO_TITLE_MAP: Record<string, string> = {
-  'cyber-security': 'Cyber Security',
-  'data-science': 'Data Science',
-  'data-analytics': 'Data Analytics',
-  'ai-ml': 'AI & Machine Learning',
-  'ai-ml-engineer': 'AI & Machine Learning',
-  'exam-preparation-kit': 'Exam Preparation Kit',
-  'career-programs': 'Career Transition Programs',
-  'ai-learning-paths': 'AI-Powered Learning Paths',
-};
+interface CourseGridProps {
+  title?: string;
+  subtitle?: string;
+  categories?: CourseCategory[];
+  buttonText?: string;
+}
 
-export default function CourseDetail() {
+// --- Default Data (UPDATED TO IT COURSES) ---
+const DEFAULT_CATEGORIES: CourseCategory[] = [
+  {
+    id: 1,
+    title: 'Cyber Security',
+    learners: '12K+ learners',
+    icon: <Rocket size={24} />,
+    slug: 'cyber-security', // Added slug for routing
+  },
+  {
+    id: 2,
+    title: 'Exam Preparation Kit',
+    learners: '8K+ learners',
+    icon: <Brain size={24} />,
+    slug: 'exam-preparation-kit', // Added slug for routing
+  },
+  {
+    id: 3,
+    title: 'Data Science',
+    learners: '20K+ learners',
+    icon: <Globe size={24} />,
+    slug: 'data-science', // Added slug for routing
+  },
+  {
+    id: 4,
+    title: 'Data Analytics',
+    learners: '6K+ learners',
+    icon: <Palette size={24} />,
+    slug: 'data-analytics', // Added slug for routing
+  },
+  {
+    id: 5,
+    title: 'AI & Machine Learning',
+    learners: '4K+ learners',
+    icon: <Sparkles size={24} />,
+    slug: 'ai-ml', // Added slug for routing
+  },
+  {
+    id: 6,
+    title: 'Career Transition Programs',
+    learners: '5K+ learners',
+    icon: <Users size={24} />,
+    slug: 'career-programs', // Added slug for routing
+  },
+  {
+    id: 7,
+    title: 'AI-Powered Learning Paths',
+    learners: '11K+ learners',
+    icon: <Heart size={24} />,
+    slug: 'ai-learning-paths', // Added slug for routing
+  },
+];
+
+const CourseGrid: React.FC<CourseGridProps> = ({
+  title = 'Unlock Your Tech Potential',
+  subtitle = 'Industry-ready courses in Cyber Security, Data Science, AI/ML, and Software Development',
+  buttonText = 'Explore All Courses',
+  categories = DEFAULT_CATEGORIES,
+}) => {
   const navigate = useNavigate();
-  const { courseId } = useParams<{ courseId: string }>();
 
-  const [course, setCourse] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const [level, setLevel] = useState<'FOUNDATION' | 'ADVANCED'>('FOUNDATION');
-  const [modalImage, setModalImage] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    // Check for prefetched data first for an instant navigation experience
-    const prefetchedData = window.__PREFETCHED_COURSES__?.[courseId || ''];
-    if (prefetchedData) {
-      setCourse(prefetchedData);
-      setLoading(false);
-      return;
-    }
-
-    // If no prefetched data, fetch it
-    setLoading(true);
-    const fetchData = async () => {
-      try {
-        let fetchedCourse = null;
-
-        // First try to get the course directly by ID
-        if (courseId) {
-          fetchedCourse = await getCourseById(courseId);
-        }
-
-        // If that fails, try to find by title using the slug
-        if (!fetchedCourse && courseId && SLUG_TO_TITLE_MAP[courseId]) {
-          const allCourses = await getAllCourses();
-          fetchedCourse = allCourses.find(
-            (c) => c.title === SLUG_TO_TITLE_MAP[courseId]
-          );
-        }
-
-        if (fetchedCourse) {
-          setCourse(fetchedCourse);
-
-          // Store the fetched course in the prefetch cache for future use
-          if (!window.__PREFETCHED_COURSES__) {
-            window.__PREFETCHED_COURSES__ = {};
-          }
-          window.__PREFETCHED_COURSES__[courseId!] = fetchedCourse;
-        }
-      } catch (err) {
-        console.error('Failed to fetch course details', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [courseId]);
-
-  useEffect(() => {
-    if (course) {
-      document.title = `${course.title} | Vormirex`;
-    }
-  }, [course]);
-
-  const heroMedia = useMemo(() => {
-    return { type: 'video' as const, src: getHeroVideo(course) };
-  }, [course]);
-
-  const detailImages = useMemo(() => getDetailImages(course), [course]);
-
-  const levelBlock = useMemo(() => {
-    if (!course || !course.levels) return null;
-    return (
-      course.levels.find((l: any) => l.level === level) ?? course.levels[0]
-    );
-  }, [course, level]);
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(`Request for ${course?.title}:`, formData);
-    alert('Request submitted successfully!');
-    setFormData({ name: '', email: '', phone: '' });
+  // Function to handle course card click
+  const handleCourseClick = (slug: string) => {
+    navigate(`/course/${slug}`);
   };
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = true;
-    video.playsInline = true;
-    const play = () =>
-      video.play().catch(() => console.log('Autoplay blocked'));
-    if (video.readyState >= 3) play();
-    else video.addEventListener('canplay', play);
-    return () => video.removeEventListener('canplay', play);
-  }, [heroMedia]);
-
-  // --- SKELETON LOADER ---
-  if (loading) {
-    return (
-      <div className="course-page">
-        <div className="course-shell">
-          <div className="skeleton-loader">
-            <div className="skeleton-hero"></div>
-            <div className="skeleton-content">
-              <div className="skeleton-title"></div>
-              <div className="skeleton-subtitle"></div>
-              <div className="skeleton-button"></div>
-            </div>
-            <div className="skeleton-cards">
-              <div className="skeleton-card"></div>
-              <div className="skeleton-card"></div>
-              <div className="skeleton-card"></div>
-            </div>
-            <div className="skeleton-modules">
-              <div className="skeleton-module"></div>
-              <div className="skeleton-module"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!course) {
-    return (
-      <div className="course-page">
-        <div className="course-shell">
-          <div className="course-not-found">
-            <h2>Course not found.</h2>
-            <p>
-              The course you're looking for doesn't exist or has been moved.
-            </p>
-            <button
-              className="course-btn main-cta"
-              style={{ marginTop: '20px' }}
-              onClick={() => navigate('/courses')}
-            >
-              Browse All Courses
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const titleWords = title.split(' ');
+  const firstWord = titleWords[0];
+  const restOfTitle = titleWords.slice(1).join(' ');
 
   return (
-    <div
-      className={`course-page course-type-${courseId}`}
-      data-course={courseId}
-    >
-      <div className="course-shell">
-        <header className="course-hero">
-          <video
-            ref={videoRef}
-            key={heroMedia.src}
-            className="hero-video-bg"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src={heroMedia.src} type="video/mp4" />
-          </video>
-          <div className="course-hero-overlay" />
-          <div className="hero-content">
-            <h1 className="hero-title">
-              Unlock Your Potential with <br />
-              <span className="highlight">{course.title}</span>
-            </h1>
-            <p className="hero-subtitle">
-              {course.subtitle || 'Master the skills of tomorrow, today.'}
-            </p>
-          </div>
+    <div className="course-container">
+      <header className="course-header">
+        <h1 className="course-main-title">
+          {firstWord} <span className="course-highlight">{restOfTitle}</span>
+        </h1>
+        <p className="course-subtitle">{subtitle}</p>
+      </header>
 
-          <div className="course-hero-top">
-            <div className="hero-nav-group">
-              <button
-                className="nav-icon-btn"
-                onClick={() => navigate('/courses')}
-              >
-                <ArrowLeft size={24} />
-              </button>
-              <button
-                className="nav-icon-btn"
-                onClick={() => navigate('/dashboard')}
-              >
-                <LayoutDashboard size={24} />
-              </button>
-            </div>
-            <div className="course-level-tabs desktop-tabs">
-              <button
-                className={`tab ${level === 'FOUNDATION' ? 'active' : ''}`}
-                onClick={() => setLevel('FOUNDATION')}
-              >
-                Foundation
-              </button>
-              <button
-                className={`tab ${level === 'ADVANCED' ? 'active' : ''}`}
-                onClick={() => setLevel('ADVANCED')}
-              >
-                Advanced
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <div className="course-level-tabs below-hero">
-          <button
-            className={`tab ${level === 'FOUNDATION' ? 'active' : ''}`}
-            onClick={() => setLevel('FOUNDATION')}
-          >
-            Foundation
-          </button>
-          <button
-            className={`tab ${level === 'ADVANCED' ? 'active' : ''}`}
-            onClick={() => setLevel('ADVANCED')}
-          >
-            Advanced
-          </button>
-        </div>
-
-        <div className="hero-action-area">
-          <button
-            className="course-btn main-cta"
-            onClick={() => window.open(SyllabusPDF, '_blank')}
-          >
-            Download Full Syllabus (PDF)
-          </button>
-        </div>
-
-        <section className="course-info-cards">
+      <div className="course-grid">
+        {categories.map((category) => (
           <div
-            className="info-card"
-            onClick={() => setModalImage(getCatalogImage(course))}
+            key={category.id}
+            className="course-card"
+            tabIndex={0}
+            role="button"
+            onClick={() => category.slug && handleCourseClick(category.slug)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && category.slug) {
+                handleCourseClick(category.slug);
+              }
+            }}
           >
-            <div className="info-card-image-wrapper">
-              <img src={getCatalogImage(course)} alt="Why" />
-            </div>
-            <p className="info-card-title">Why {course.title}</p>
-          </div>
-
-          <div
-            className="info-card"
-            onClick={() => setModalImage(detailImages.career)}
-          >
-            <div className="info-card-image-wrapper">
-              <img src={detailImages.career} alt="Career" />
-            </div>
-            <p className="info-card-title">Career Path</p>
-          </div>
-
-          <div
-            className="info-card"
-            onClick={() => setModalImage(detailImages.gain)}
-          >
-            <div className="info-card-image-wrapper">
-              <img src={detailImages.gain} alt="Gain" />
-            </div>
-            <p className="info-card-title">What You'll Gain</p>
-          </div>
-        </section>
-
-        <section className="course-content">
-          <h2 className="section-title">{level} Curriculum</h2>
-          <div className="modules">
-            {levelBlock &&
-            levelBlock.modules &&
-            levelBlock.modules.length > 0 ? (
-              levelBlock.modules.map((m: any, idx: number) => (
-                <details key={idx} className="module" open={idx === 0}>
-                  <summary className="module-summary">
-                    <span className="module-title">{m.title}</span>
-                    <span className="module-meta">
-                      {m.items?.length || 0} topics
-                    </span>
-                  </summary>
-                  <ul className="module-list">
-                    {m.items?.map((it: string, i: number) => (
-                      <li key={i}>{it}</li>
-                    ))}
-                  </ul>
-                </details>
-              ))
-            ) : (
-              <p>No modules found for this level.</p>
-            )}
-          </div>
-        </section>
-
-        <section className="course-request-form">
-          <div className="form-container">
-            <div className="form-text">
-              <h2>Request Details</h2>
-              <p>
-                Interested in <strong>{course.title}</strong>? Submit your
-                request.
-              </p>
-            </div>
-            <form onSubmit={handleFormSubmit} className="details-form">
-              <input
-                type="text"
-                placeholder="Full Name"
-                required
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                required
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-              <input
-                type="tel"
-                placeholder="Phone"
-                required
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-              />
-              <button type="submit" className="form-submit-btn">
-                <Send size={18} style={{ marginRight: '8px' }} />
-                Submit Request
-              </button>
-            </form>
-          </div>
-        </section>
-
-        {modalImage && (
-          <div className="image-modal" onClick={() => setModalImage(null)}>
-            <div className="modal-content">
-              <img src={modalImage} alt="Preview" />
-              <button className="modal-close">×</button>
+            <div className="course-icon-wrapper">{category.icon}</div>
+            <h3 className="course-card-title">{category.title}</h3>
+            <p className="course-card-learners">{category.learners}</p>
+            <div className="course-dots" aria-hidden="true">
+              <span className="course-dot active"></span>
+              <span className="course-dot"></span>
+              <span className="course-dot"></span>
             </div>
           </div>
-        )}
+        ))}
       </div>
+
+      <div className="course-footer">
+        <button
+          className="course-cta-button"
+          onClick={() => navigate('/courses')}
+        >
+          {buttonText} <ArrowRight size={18} />
+        </button>
+      </div>
+
+      <style>{`
+        .course-container {
+          background-color: #0B0E14;
+          color: #ffffff;
+          padding: 80px 20px;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .course-header {
+          text-align: center;
+          margin-bottom: 60px;
+        }
+
+        .course-main-title {
+          font-size: 42px;
+          font-weight: 700;
+        }
+
+        .course-highlight {
+          color: #6aece1;
+        }
+
+        .course-subtitle {
+          color: #94a3b8;
+          font-size: 18px;
+          max-width: 700px;
+          margin: auto;
+        }
+
+        .course-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 20px;
+          width: 100%;
+          max-width: 1200px;
+          margin-bottom: 60px;
+        }
+
+        .course-card {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 16px;
+          padding: 32px 20px;
+          text-align: center;
+          transition: 0.3s;
+          cursor: pointer;
+        }
+
+        .course-card:hover {
+          border-color: #6aece1;
+          transform: translateY(-5px);
+        }
+
+        .course-icon-wrapper {
+          color: #6aece1;
+          margin-bottom: 20px;
+        }
+
+        .course-cta-button {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #ffffff;
+          padding: 14px 32px;
+          border-radius: 30px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+
+        .course-cta-button:hover {
+          background: #6aece1;
+          color: #0B0E14;
+        }
+      `}</style>
     </div>
   );
-}
+};
+
+export default CourseGrid;
