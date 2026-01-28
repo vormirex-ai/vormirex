@@ -1,7 +1,5 @@
 // src/utils/courseUtils.js
 
-// --- ASSET IMPORTS ---
-// Catalog Images
 import WhyCyber from '../assets/whylearncyber.jpg';
 import WhyDS from '../assets/whylearndatascince.jpeg';
 import WhyDA from '../assets/whylearndataana.jpeg';

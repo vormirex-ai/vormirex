@@ -25,7 +25,6 @@ import {
 import logoWithoutText from '../../assets/logo.png';
 import { getAllCourses, getCourseById, Course } from '../../api/courses'; // Import getCourseById
 
-// Extend the Window interface for our global cache
 declare global {
   interface Window {
     __PREFETCHED_COURSES__?: { [key: string]: any };
