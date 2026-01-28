@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './SidebarLeft.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,7 +19,14 @@ import {
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import logoWithoutText from '../../assets/logo.png';
-import { getAllCourses, Course } from '../../api/courses'; // Import API
+import { getAllCourses, getCourseById, Course } from '../../api/courses'; // Import getCourseById
+
+// Extend the Window interface for our global cache
+declare global {
+  interface Window {
+    __PREFETCHED_COURSES__?: { [key: string]: any };
+  }
+}
 
 interface SidebarLeftProps {
   isOpen: boolean;
@@ -33,31 +40,49 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
   showComingSoon,
 }) => {
   const navigate = useNavigate();
-  // @ts-ignore
-  const location = useLocation();
   const [isSubjectsOpen, setIsSubjectsOpen] = useState(false);
   const [isCustomCoursesOpen, setIsCustomCoursesOpen] = React.useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [coursesLoading, setCoursesLoading] = useState(true); // New loading state
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
+        setCoursesLoading(true);
         const fetchedCourses = await getAllCourses();
-        console.log("Fetched Courses:", fetchedCourses);
         setCourses(fetchedCourses);
       } catch (error) {
-        console.error("Failed to load courses", error);
+        console.error('Failed to load courses', error);
+      } finally {
+        setCoursesLoading(false);
       }
     };
     fetchCourses();
   }, []);
 
   const toggleSubjects = () => setIsSubjectsOpen(!isSubjectsOpen);
-  const toggleCustomCourses = () => setIsCustomCoursesOpen(!isCustomCoursesOpen);
+  const toggleCustomCourses = () =>
+    setIsCustomCoursesOpen(!isCustomCoursesOpen);
+
+  // Pre-fetch course data on hover for instant navigation
+  const handleCourseHover = async (courseId: string) => {
+    // Initialize global cache if it doesn't exist
+    if (!window.__PREFETCHED_COURSES__) {
+      window.__PREFETCHED_COURSES__ = {};
+    }
+    // Only fetch if we haven't already cached it
+    if (!window.__PREFETCHED_COURSES__[courseId]) {
+      try {
+        const courseData = await getCourseById(courseId);
+        window.__PREFETCHED_COURSES__[courseId] = courseData;
+      } catch (error) {
+        console.error(`Failed to pre-fetch course ${courseId}`, error);
+      }
+    }
+  };
 
   return (
     <aside className={`sidebar-left ${isOpen ? 'sidebar-open' : ''}`}>
-      {/* Close Sidebar Button */}
       <button
         className="sidebar-close-button close-left"
         onClick={toggleSidebar}
@@ -66,31 +91,27 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
         <FontAwesomeIcon icon={faTimes} />
       </button>
 
-      {/* Logo Section */}
       <div className="sidebar-header">
-        {/* ✅ Logo Click goes to /home */}
         <img
           src={logoWithoutText}
           className="sidebar-logo-img"
           alt="Vormirex Logo"
           role="button"
           tabIndex={0}
-          onClick={() => navigate('/home')} // Navigate to landing page
+          onClick={() => navigate('/home')}
           onKeyDown={(e) => e.key === 'Enter' && navigate('/home')}
         />
         <span
           className="sidebar-company-name"
           role="button"
           tabIndex={0}
-          onClick={() => navigate('/home')} // Optional: make text clickable too
+          onClick={() => navigate('/home')}
           onKeyDown={(e) => e.key === 'Enter' && navigate('/home')}
         >
           VORMIREX
         </span>
       </div>
 
-      {/* Action Buttons */}
-      {/* New Chat */}
       <Link
         to="/"
         className="new-chat-button"
@@ -102,14 +123,11 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
         <FontAwesomeIcon icon={faPlus} /> NEW CHAT
       </Link>
 
-      {/* VORMIREX Button */}
       <Link to="/home" className="vormirex-button">
         <FontAwesomeIcon icon={faGlobe} /> VORMIREX
       </Link>
 
-      {/* Navigation Sections */}
       <nav className="main-nav">
-        {/* SUBJECTS */}
         <div className="nav-section">
           <div className="nav-section-header" onClick={toggleSubjects}>
             <h3>SUBJECTS</h3>
@@ -120,10 +138,17 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
           </div>
           {isSubjectsOpen && (
             <ul>
-              {courses.length > 0 ? (
+              {coursesLoading ? (
+                <li className="loading-courses">Loading courses...</li>
+              ) : courses.length > 0 ? (
                 courses.map((course) => (
-                  <li key={course._id} onClick={() => navigate(`/course/${course._id}`)}>
-                    <FontAwesomeIcon icon={faCode} className="nav-icon" /> {course.title}
+                  <li
+                    key={course._id}
+                    onClick={() => navigate(`/course/${course._id}`)}
+                    onMouseEnter={() => handleCourseHover(course._id)} // Pre-fetch on hover
+                  >
+                    <FontAwesomeIcon icon={faCode} className="nav-icon" />{' '}
+                    {course.title}
                   </li>
                 ))
               ) : (
@@ -133,7 +158,6 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
           )}
         </div>
 
-        {/* CUSTOM COURSES */}
         <div className="nav-section">
           <div className="nav-section-header" onClick={toggleCustomCourses}>
             <h3>CUSTOM COURSES</h3>
@@ -169,7 +193,6 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
         </div>
       </nav>
 
-      {/* Footer Links */}
       <div className="sidebar-footer">
         <div className="footer-link" onClick={showComingSoon}>
           <FontAwesomeIcon icon={faCog} /> Settings
