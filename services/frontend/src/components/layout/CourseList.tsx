@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Courses.css'; 
+import './Courses.css';
 import { getAllCourses, Course } from '../../api/courses';
 import { getCatalogImage } from '../../utils/courseUtils';
 
@@ -11,21 +11,72 @@ export default function CourseList() {
 
   useEffect(() => {
     document.title = 'Explore Courses | Vormirex';
+
+    // Check if we have cached data first
+    const cachedCourses = localStorage.getItem('vormirex_courses_cache');
+    const cacheTimestamp = localStorage.getItem(
+      'vormirex_courses_cache_timestamp'
+    );
+
+    // Consider cache valid for 5 minutes (300000 ms)
+    const isCacheValid =
+      cacheTimestamp && Date.now() - parseInt(cacheTimestamp) < 300000;
+
+    if (cachedCourses && isCacheValid) {
+      try {
+        const parsedCourses = JSON.parse(cachedCourses);
+        setCoursesList(parsedCourses);
+        setLoading(false);
+        return;
+      } catch (err) {
+        console.error('Failed to parse cached courses', err);
+      }
+    }
+
+    // If no valid cache, fetch fresh data
     const fetchData = async () => {
       try {
         const list = await getAllCourses();
         setCoursesList(list);
+
+        // Cache the fetched data
+        localStorage.setItem('vormirex_courses_cache', JSON.stringify(list));
+        localStorage.setItem(
+          'vormirex_courses_cache_timestamp',
+          Date.now().toString()
+        );
       } catch (err) {
-        console.error("Failed to fetch courses", err);
+        console.error('Failed to fetch courses', err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
+  // Skeleton loader for loading state
   if (loading) {
-    return <div className="course-loading">Loading...</div>;
+    return (
+      <div className="course-list-page">
+        <div className="course-list-header">
+          <h1>Our Courses</h1>
+        </div>
+        <div className="course-grid">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="course-card skeleton-card">
+              <div className="skeleton-image"></div>
+              <div className="skeleton-content">
+                <div className="skeleton-title"></div>
+                <div className="skeleton-text"></div>
+                <div className="skeleton-text short"></div>
+                <div className="skeleton-button"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -52,7 +103,9 @@ export default function CourseList() {
             </div>
           </div>
         ))}
-        {coursesList.length === 0 && <p style={{textAlign:'center'}}>No courses found.</p>}
+        {coursesList.length === 0 && (
+          <p style={{ textAlign: 'center' }}>No courses found.</p>
+        )}
       </div>
     </div>
   );

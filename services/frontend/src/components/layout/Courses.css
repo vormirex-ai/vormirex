@@ -1041,4 +1041,85 @@ button {
   color: var(--text-secondary);
   font-style: italic;
   font-size: 0.9rem;
+}/* ================= SKELETON LOADER FOR COURSE LIST ================= */
+.skeleton-card {
+  background: var(--bg-card);
+  border-radius: 24px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  cursor: default;
+}
+
+.skeleton-image {
+  height: 200px;
+  background: linear-gradient(90deg, #161618 25%, #1a1a1c 50%, #161618 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+.skeleton-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-title {
+  height: 24px;
+  width: 70%;
+  background: linear-gradient(90deg, #161618 25%, #1a1a1c 50%, #161618 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-text {
+  height: 16px;
+  width: 100%;
+  background: linear-gradient(90deg, #161618 25%, #1a1a1c 50%, #161618 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-text.short {
+  width: 80%;
+}
+
+.skeleton-button {
+  height: 36px;
+  width: 120px;
+  background: linear-gradient(90deg, #2a7f7a 25%, #3dafa9 50%, #2a7f7a 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 20px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Optional: Add a subtle refresh button to clear cache */
+.refresh-cache {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(106, 236, 225, 0.1);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.refresh-cache:hover {
+  background: rgba(106, 236, 225, 0.2);
+  transform: translateY(-2px);
 }
