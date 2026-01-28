@@ -24,7 +24,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import logoWithoutText from '../../assets/logo.png';
 import { getAllCourses, getCourseById, Course } from '../../api/courses';
-import { getSlug } from '../../utils/courseUtils'; // Import getSlug function
 
 declare global {
   interface Window {
@@ -47,7 +46,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
   const [isSubjectsOpen, setIsSubjectsOpen] = useState(false);
   const [isCustomCoursesOpen, setIsCustomCoursesOpen] = React.useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [coursesLoading, setCoursesLoading] = useState(true);
+  const [coursesLoading, setCoursesLoading] = useState(true); // New loading state
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -171,8 +170,8 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
                 courses.map((course) => (
                   <li
                     key={course._id}
-                    onClick={() => navigate(`/course/${getSlug(course)}`)} // Use getSlug instead of course._id
-                    onMouseEnter={() => handleCourseHover(course._id)}
+                    onClick={() => navigate(`/course/${course._id}`)}
+                    onMouseEnter={() => handleCourseHover(course._id)} // Pre-fetch on hover
                   >
                     <FontAwesomeIcon
                       icon={getCourseIcon(course.title)}
