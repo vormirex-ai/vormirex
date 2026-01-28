@@ -9,7 +9,7 @@ import {
   getCatalogImage,
   getHeroVideo,
   getDetailImages,
-  getSlug,
+  getSlug, // Ensure this is imported
 } from '../../utils/courseUtils';
 
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
@@ -36,53 +36,44 @@ export default function CourseDetail() {
 
   useEffect(() => {
     const fetchCourseData = async () => {
-      try {
-        // Check for prefetched data first
-        const prefetchedData = window.__PREFETCHED_COURSES__?.[courseId || ''];
-        if (prefetchedData) {
-          setCourse(prefetchedData);
-          setLoading(false);
-          return;
-        }
+      if (!courseId) {
+        setError('Course ID is missing from URL.');
+        setLoading(false);
+        return;
+      }
 
+      try {
         setLoading(true);
 
-        if (!courseId) {
-          throw new Error('Course ID is required');
-        }
+        // --- KEY CHANGE ---
+        // The most reliable way is to fetch all courses and find the one
+        // whose slug matches the `courseId` from the URL.
+        const allCourses = await getAllCourses();
+        const fetchedCourse = allCourses.find((c) => getSlug(c) === courseId);
 
-        // Try to fetch by ID first
-        let fetchedCourse = await getCourseById(courseId);
-
-        // If not found, try to find by slug
         if (!fetchedCourse) {
-          const allCourses = await getAllCourses();
-          fetchedCourse = allCourses.find(
-            (c) => getSlug(c) === courseId || c._id === courseId
+          throw new Error(
+            'Course not found. It may have been moved or renamed.'
           );
-
-          if (!fetchedCourse) {
-            throw new Error('Course not found');
-          }
         }
 
         setCourse(fetchedCourse);
 
-        // Cache the fetched course
+        // Optional: Cache the fetched course for faster navigation if user goes back and forth
         if (!window.__PREFETCHED_COURSES__) {
           window.__PREFETCHED_COURSES__ = {};
         }
         window.__PREFETCHED_COURSES__[courseId] = fetchedCourse;
       } catch (err: any) {
         console.error('Failed to fetch course details', err);
-        setError(err.message || 'Failed to load course');
+        setError(err.message || 'An unexpected error occurred.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchCourseData();
-  }, [courseId]);
+  }, [courseId]); // Rerun effect if the courseId in the URL changes
 
   useEffect(() => {
     if (course) {

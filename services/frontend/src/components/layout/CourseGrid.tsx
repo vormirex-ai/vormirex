@@ -5,16 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import {
   Rocket,
   Brain,
-  Code,
   Globe,
   Palette,
   Heart,
-  Briefcase,
-  Baby,
   Sparkles,
   Users,
   ArrowRight,
 } from 'lucide-react';
+import { getSlug } from '../../utils/courseUtils'; // <-- IMPORT THE SLUG UTILITY
 
 // --- Types ---
 interface CourseCategory {
@@ -22,7 +20,7 @@ interface CourseCategory {
   title: string;
   learners: string;
   icon: React.ReactNode;
-  slug?: string;
+  // 'slug' property is no longer needed as we generate it dynamically
 }
 
 interface CourseGridProps {
@@ -39,49 +37,42 @@ const DEFAULT_CATEGORIES: CourseCategory[] = [
     title: 'Cyber Security',
     learners: '12K+ learners',
     icon: <Rocket size={24} />,
-    slug: 'cyber-security',
   },
   {
     id: 2,
     title: 'Exam Preparation Kit',
     learners: '8K+ learners',
     icon: <Brain size={24} />,
-    slug: 'exam-preparation-kit',
   },
   {
     id: 3,
     title: 'Data Science',
     learners: '20K+ learners',
     icon: <Globe size={24} />,
-    slug: 'data-science',
   },
   {
     id: 4,
     title: 'Data Analytics',
     learners: '6K+ learners',
     icon: <Palette size={24} />,
-    slug: 'data-analytics',
   },
   {
     id: 5,
     title: 'AI & Machine Learning',
     learners: '4K+ learners',
     icon: <Sparkles size={24} />,
-    slug: 'ai-ml-engineer',
   },
   {
     id: 6,
     title: 'Career Transition Programs',
     learners: '5K+ learners',
     icon: <Users size={24} />,
-    slug: 'career-programs',
   },
   {
     id: 7,
     title: 'AI-Powered Learning Paths',
     learners: '11K+ learners',
     icon: <Heart size={24} />,
-    slug: 'ai-learning-paths',
   },
 ];
 
@@ -93,15 +84,12 @@ const CourseGrid: React.FC<CourseGridProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const handleCourseClick = (slug: string) => {
-    // Map the grid slug to the actual course slug if needed
-    const slugMap: Record<string, string> = {
-      'ai-ml': 'ai-ml-engineer',
-      // Add other mappings as needed
-    };
-
-    const mappedSlug = slugMap[slug] || slug;
-    navigate(`/course/${mappedSlug}`);
+  // --- KEY CHANGE ---
+  // This function now uses the official `getSlug` utility to create a consistent URL.
+  const handleCourseClick = (title: string) => {
+    const mockCourse = { title }; // Create a temp object to match the utility's expected input
+    const slug = getSlug(mockCourse);
+    navigate(`/course/${slug}`);
   };
 
   const titleWords = title.split(' ');
@@ -124,10 +112,10 @@ const CourseGrid: React.FC<CourseGridProps> = ({
             className="course-card"
             tabIndex={0}
             role="button"
-            onClick={() => category.slug && handleCourseClick(category.slug)}
+            onClick={() => handleCourseClick(category.title)} // Pass the title
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && category.slug) {
-                handleCourseClick(category.slug);
+              if (e.key === 'Enter') {
+                handleCourseClick(category.title); // Pass the title
               }
             }}
           >
