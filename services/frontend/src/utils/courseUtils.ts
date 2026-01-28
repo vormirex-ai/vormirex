@@ -5,7 +5,6 @@ import WhyDS from '../assets/whylearndatascince.jpeg';
 import WhyDA from '../assets/whylearndataana.jpeg';
 import WhyAI from '../assets/whyaiml.png';
 
-// Hero Videos
 import CyberVideo from '../assets/CSFINAL.mp4';
 import DataScienceVideo from '../assets/DSFINAL.mp4';
 import DataAnalyticsVideo from '../assets/DAFINAL.mp4';

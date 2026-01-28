@@ -23,7 +23,7 @@ import {
   faFlask,
 } from '@fortawesome/free-solid-svg-icons';
 import logoWithoutText from '../../assets/logo.png';
-import { getAllCourses, getCourseById, Course } from '../../api/courses'; // Import getCourseById
+import { getAllCourses, getCourseById, Course } from '../../api/courses';
 
 declare global {
   interface Window {

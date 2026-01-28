@@ -9,7 +9,7 @@ import {
   getCatalogImage,
   getHeroVideo,
   getDetailImages,
-  getSlug, // Ensure this is imported
+  getSlug,
 } from '../../utils/courseUtils';
 
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';

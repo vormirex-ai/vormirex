@@ -12,7 +12,7 @@ import {
   Users,
   ArrowRight,
 } from 'lucide-react';
-import { getSlug } from '../../utils/courseUtils'; // <-- IMPORT THE SLUG UTILITY
+import { getSlug } from '../../utils/courseUtils';
 
 // --- Types ---
 interface CourseCategory {
