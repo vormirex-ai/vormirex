@@ -45,15 +45,6 @@ export default function CourseDetail() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Scroll to top when courseId changes
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
-  }, [courseId]);
-
   useEffect(() => {
     // Check for prefetched data first for an instant navigation experience
     const prefetchedData = window.__PREFETCHED_COURSES__?.[courseId || ''];
