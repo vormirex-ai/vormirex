@@ -1,4 +1,6 @@
-/* ================= ASSET IMPORTS ================= */
+// src/utils/courseUtils.js
+
+// --- ASSET IMPORTS ---
 // Catalog Images
 import WhyCyber from '../assets/whylearncyber.jpg';
 import WhyDS from '../assets/whylearndatascince.jpeg';
@@ -6,7 +8,7 @@ import WhyDA from '../assets/whylearndataana.jpeg';
 import WhyAI from '../assets/whyaiml.png';
 
 // Hero Videos
-import CyberVideo from '../assets/CS.mp4'; // Default maps to Cyber usually, checking usage
+import CyberVideo from '../assets/CS.mp4';
 import DataScienceVideo from '../assets/DS.mp4';
 import DataAnalyticsVideo from '../assets/DA.mp4';
 import AIMLVideo from '../assets/AI ML.mp4';
@@ -19,59 +21,61 @@ import CareerDS from '../assets/carrerindatascience.jpeg';
 import GainDS from '../assets/gainindatascience.jpeg';
 
 import CareerDA from '../assets/carrerindataana.jpeg';
-import GainDA from '../assets/gainindatascience.jpeg'; // Reusing as per original file
+import GainDA from '../assets/gainindatascience.jpeg';
 
 import CareerAI from '../assets/carrerinaiml.png';
 import GainAI from '../assets/gainaiml.png';
 
-// --- Helpers ---
+// --- HELPERS ---
 
-export const getSlug = (c: any) => {
+/**
+ * Generates a URL-friendly slug from a course title.
+ * This function MUST match the logic used in BuiltForEveryone.
+ * @param {object} c - The course object.
+ * @returns {string} The generated slug.
+ */
+export const getSlug = (c) => {
   if (!c || !c.title) return '';
   return c.title
     .toLowerCase()
-    .replace(/ \/ /g, '-')
-    .replace(/\//g, '-')
-    .replace(/ /g, '-');
+    .replace(/ \/ /g, '-') // Handles "Data Science / AI"
+    .replace(/\//g, '-') // Handles other slashes
+    .replace(/ /g, '-'); // Replaces spaces with hyphens
 };
 
-export const getCatalogImage = (c: any) => {
+export const getCatalogImage = (c) => {
   const slug = getSlug(c);
-  // Fallback map if needed, or based on logic
-  const map: Record<string, string> = {
+  const map = {
     'data-science': WhyDS,
     'data-analytics': WhyDA,
     'cyber-security': WhyCyber,
     'ai-ml-engineer': WhyAI,
     'ai-ml': WhyAI,
   };
-  if (map[slug]) return map[slug];
-  return c?.thumbnail || WhyCyber;
+  // Return mapped image or a default
+  return map[slug] || c?.thumbnail || WhyCyber;
 };
 
-export const getHeroVideo = (c: any) => {
+export const getHeroVideo = (c) => {
   const slug = getSlug(c);
-  const map: Record<string, string> = {
-    'cyber-security': CyberVideo, // Adjust if CyberVideo is distinct
+  const map = {
+    'cyber-security': CyberVideo,
     'data-science': DataScienceVideo,
     'data-analytics': DataAnalyticsVideo,
     'ai-ml-engineer': AIMLVideo,
     'ai-ml': AIMLVideo,
   };
-  if (map[slug]) return map[slug];
-  // Default fallback
-  return CyberVideo;
+  return map[slug] || CyberVideo; // Default fallback
 };
 
-export const getDetailImages = (c: any) => {
+export const getDetailImages = (c) => {
   const slug = getSlug(c);
-  const map: Record<string, { career: string; gain: string }> = {
+  const map = {
     'cyber-security': { career: CareerCyber, gain: GainCyber },
     'data-science': { career: CareerDS, gain: GainDS },
     'data-analytics': { career: CareerDA, gain: GainDA },
     'ai-ml-engineer': { career: CareerAI, gain: GainAI },
     'ai-ml': { career: CareerAI, gain: GainAI },
   };
-  if (map[slug]) return map[slug];
-  return { career: CareerCyber, gain: GainCyber };
+  return map[slug] || { career: CareerCyber, gain: GainCyber }; // Default fallback
 };
