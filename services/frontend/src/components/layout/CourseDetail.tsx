@@ -1,3 +1,5 @@
+// src/pages/CourseDetail.jsx
+
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LayoutDashboard, ArrowLeft, Send } from 'lucide-react';
@@ -10,6 +12,14 @@ import {
 } from '../../utils/courseUtils';
 
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
+
+// --- Type Declaration for Prefetching ---
+// This should ideally be in a separate file like 'types/global.d.ts'
+declare global {
+  interface Window {
+    __PREFETCHED_COURSES__?: Record<string, any>;
+  }
+}
 
 export default function CourseDetail() {
   const navigate = useNavigate();
@@ -41,6 +51,12 @@ export default function CourseDetail() {
         if (courseId) {
           const fetchedCourse = await getCourseById(courseId);
           setCourse(fetchedCourse);
+
+          // IMPORTANT: Store the fetched course in the prefetch cache for future use
+          if (!window.__PREFETCHED_COURSES__) {
+            window.__PREFETCHED_COURSES__ = {};
+          }
+          window.__PREFETCHED_COURSES__[courseId] = fetchedCourse;
         }
       } catch (err) {
         console.error('Failed to fetch course details', err);

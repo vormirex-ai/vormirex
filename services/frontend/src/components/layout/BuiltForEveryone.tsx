@@ -1,4 +1,6 @@
-import React from 'react';
+// src/components/BuiltForEveryone.jsx
+
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ShieldCheck,
@@ -11,6 +13,16 @@ import {
   Target,
   BookOpen,
 } from 'lucide-react';
+import { getAllCourses, Course } from '../../api/courses'; // Adjust path if needed
+
+// --- Type Declaration for Prefetching ---
+// This should ideally be in a separate file like 'types/global.d.ts'
+// but is included here for completeness.
+declare global {
+  interface Window {
+    __PREFETCHED_COURSES__?: Record<string, any>;
+  }
+}
 
 interface FeatureCardProps {
   icon: React.ReactNode;
@@ -35,33 +47,37 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 };
 
 const BuiltForEveryone: React.FC = () => {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Static UI data - this will be matched with dynamic course data
   const audienceData = [
     {
-      id: 'cyber-security',
+      slug: 'cyber-security',
       icon: <ShieldCheck size={24} />,
       title: 'Cyber Security',
       description: 'Protect systems and networks from cyber threats',
     },
     {
-      id: 'data-science',
+      slug: 'data-science',
       icon: <BarChart3 size={24} />,
       title: 'Data Science',
       description: 'Analyze data and build intelligent solutions',
     },
     {
-      id: 'data-analytics',
+      slug: 'data-analytics',
       icon: <PieChart size={24} />,
       title: 'Data Analytics',
       description: 'Turn raw data into meaningful insights',
     },
     {
-      id: 'ai-ml',
+      slug: 'ai-ml', // This slug should match what's generated in courseUtils
       icon: <Brain size={24} />,
       title: 'Artificial Intelligence & ML',
       description: 'Build smart models for real-world problems',
     },
     {
-      id: 'career-programs',
+      slug: 'career-programs', // This might need a specific course or could be handled differently
       icon: <Briefcase size={24} />,
       title: 'Career Programs',
       description: 'Job-ready skills with real-world projects',
@@ -99,10 +115,102 @@ const BuiltForEveryone: React.FC = () => {
     },
   ];
 
-  // Handle click on cards to scroll to top
+  // Fetch courses and prefetch them for instant navigation
+  useEffect(() => {
+    const fetchAndPrefetchCourses = async () => {
+      // Check cache first
+      const cachedCourses = localStorage.getItem('vormirex_courses_cache');
+      const cacheTimestamp = localStorage.getItem(
+        'vormirex_courses_cache_timestamp'
+      );
+      const isCacheValid =
+        cacheTimestamp && Date.now() - parseInt(cacheTimestamp) < 300000; // 5 mins
+
+      if (cachedCourses && isCacheValid) {
+        try {
+          const parsedCourses = JSON.parse(cachedCourses);
+          setCourses(parsedCourses);
+          // Prefetch into window object
+          window.__PREFETCHED_COURSES__ = {};
+          parsedCourses.forEach((course: Course) => {
+            window.__PREFETCHED_COURSES__![course._id] = course;
+          });
+          setLoading(false);
+          return;
+        } catch (err) {
+          console.error('Failed to parse cached courses', err);
+        }
+      }
+
+      // If no valid cache, fetch fresh data
+      try {
+        const coursesList = await getAllCourses();
+        setCourses(coursesList);
+
+        // Cache the fetched data in localStorage
+        localStorage.setItem(
+          'vormirex_courses_cache',
+          JSON.stringify(coursesList)
+        );
+        localStorage.setItem(
+          'vormirex_courses_cache_timestamp',
+          Date.now().toString()
+        );
+
+        // Prefetch into window object for instant navigation
+        window.__PREFETCHED_COURSES__ = {};
+        coursesList.forEach((course) => {
+          window.__PREFETCHED_COURSES__![course._id] = course;
+        });
+      } catch (err) {
+        console.error('Failed to fetch courses', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAndPrefetchCourses();
+  }, []);
+
+  // Helper function to find a course by its slug
+  const getCourseBySlug = (slug: string): Course | undefined => {
+    return courses.find((c) => {
+      const courseSlug = c.title
+        .toLowerCase()
+        .replace(/ \/ /g, '-')
+        .replace(/\//g, '-')
+        .replace(/ /g, '-');
+      return courseSlug === slug;
+    });
+  };
+
   const handleCardClick = () => {
     window.scrollTo(0, 0);
   };
+
+  if (loading) {
+    return (
+      <div className="built-everyone-shell">
+        <div className="loading">Loading courses...</div>
+        <style>{`
+          .built-everyone-shell {
+            background-color: #0a0b14;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 80px 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .loading {
+            font-size: 18px;
+            color: #8e92a4;
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   return (
     <div className="built-everyone-shell">
@@ -118,20 +226,28 @@ const BuiltForEveryone: React.FC = () => {
         </div>
 
         <div className="grid-small">
-          {audienceData.map((item) => (
-            <Link
-              to={`/course/${item.id}`}
-              key={item.id}
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-                display: 'flex',
-              }}
-              onClick={handleCardClick}
-            >
-              <FeatureCard {...item} variant="small" />
-            </Link>
-          ))}
+          {audienceData.map((item) => {
+            const course = getCourseBySlug(item.slug);
+            // Use the course's actual _id if found, otherwise fallback to the slug
+            const linkTo = course
+              ? `/course/${course._id}`
+              : `/course/${item.slug}`;
+
+            return (
+              <Link
+                to={linkTo}
+                key={item.slug}
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  display: 'flex',
+                }}
+                onClick={handleCardClick}
+              >
+                <FeatureCard {...item} variant="small" />
+              </Link>
+            );
+          })}
         </div>
       </section>
 
