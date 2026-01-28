@@ -32,12 +32,14 @@ const css = `
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #ffffff;
-    padding: 8px 16px;
+    padding: 12px 16px; /* Increased from 8px 16px */
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
     z-index: 100;
+    min-height: 44px; /* Apple's recommended minimum touch target */
+    min-width: 44px;
   }
   .nav-button-right {
     position: fixed;
@@ -49,12 +51,14 @@ const css = `
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #ffffff;
-    padding: 8px 16px;
+    padding: 12px 16px; /* Increased from 8px 16px */
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
     z-index: 100;
+    min-height: 44px; /* Apple's recommended minimum touch target */
+    min-width: 44px;
   }
   .nav-button-left:hover, .nav-button-right:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -65,6 +69,7 @@ const css = `
     max-width: 400px;
     padding: 40px 24px;
     text-align: center;
+    padding-bottom: max(40px, env(safe-area-inset-bottom) + 20px); /* Add safe area support */
   }
   .logo-section {
     display: flex;
@@ -95,12 +100,12 @@ const css = `
     display: flex;
     background-color: #1a1d24;
     border-radius: 25px;
-    padding: 4px;
+    padding: 6px; /* Increased from 4px */
     margin-bottom: 30px;
   }
   .tab {
     flex: 1;
-    padding: 12px;
+    padding: 14px 12px; /* Increased vertical padding from 12px */
     border: none;
     background: transparent;
     color: #6b7280;
@@ -108,6 +113,7 @@ const css = `
     cursor: pointer;
     border-radius: 22px;
     transition: 0.3s;
+    min-height: 44px; /* Ensure minimum touch target */
   }
   .tab.active { background-color: #2a2d35; color: #ffffff; }
   .form-group { margin-bottom: 20px; text-align: left; }
@@ -115,7 +121,7 @@ const css = `
   .input-wrapper { position: relative; display: flex; align-items: center; }
   .form-input {
     width: 100%;
-    padding: 14px 16px;
+    padding: 14px 50px 14px 16px; /* Increased right padding from 16px to 50px */
     background-color: #12141a;
     border: 1px solid #2a2d35;
     border-radius: 12px;
@@ -125,12 +131,18 @@ const css = `
   .form-input:focus { outline: none; border-color: #00d4d4; }
   .password-toggle {
     position: absolute;
-    right: 12px;
+    right: 16px; /* Increased from 12px */
     background: none;
     border: none;
     color: #00d4d4;
     cursor: pointer;
     font-size: 12px;
+    padding: 4px; /* Add padding for better touch target */
+    min-height: 32px; /* Ensure minimum touch target */
+    min-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .forgot-password {
     text-align: right;
@@ -165,6 +177,8 @@ const css = `
     align-items: center;
     justify-content: center;
     gap: 10px;
+    margin-bottom: max(20px, env(safe-area-inset-bottom) + 10px); /* Add safe area support */
+    min-height: 48px; /* Ensure minimum touch target */
   }
   .modal-overlay {
     position: fixed;
@@ -190,15 +204,51 @@ const css = `
   /* Mobile adjustments */
   @media (max-width: 480px) {
     .nav-button-left, .nav-button-right {
-      padding: 6px 12px;
+      padding: 10px 14px; /* Increased from 6px 12px */
       font-size: 12px;
       top: 10px;
+      min-height: 44px; /* Ensure minimum touch target */
     }
     .nav-button-left {
       left: 10px;
     }
     .nav-button-right {
       right: 10px;
+    }
+    
+    .login-container {
+      padding-top: 60px; /* Add more space to avoid overlap with nav buttons */
+      padding-bottom: max(30px, env(safe-area-inset-bottom) + 20px); /* Adjust for mobile */
+    }
+    
+    .logo-section {
+      margin-bottom: 24px; /* Slightly reduce margin */
+    }
+    
+    .logo {
+      width: 50px; /* Slightly smaller logo */
+      height: 50px;
+    }
+    
+    .brand-name {
+      font-size: 20px; /* Slightly smaller brand name */
+    }
+    
+    .tagline {
+      font-size: 12px; /* Slightly smaller tagline */
+    }
+    
+    .tabs {
+      margin-bottom: 24px; /* Slightly reduce margin */
+    }
+    
+    .tab {
+      padding: 12px 8px; /* Adjust padding for smaller screens */
+      font-size: 13px; /* Slightly smaller text */
+    }
+    
+    .google-btn {
+      margin-bottom: max(15px, env(safe-area-inset-bottom) + 10px); /* Adjust for mobile */
     }
   }
 `;
@@ -259,7 +309,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
+
     // Client-side strict name check
     const nameRegex = /^[a-zA-Z0-9\s.'-]+$/;
     if (activeTab === 'signup' && !nameRegex.test(name)) {
@@ -269,7 +319,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
 
     // Client-side strict email check
     // Must start with alphanumeric, no leading underscores or dots
-    const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex =
+      /^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email) && activeTab === 'signup') {
       setError('Invalid email address (cannot start with special characters)');
       return;
@@ -434,8 +485,8 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
             {loading
               ? 'Processing...'
               : activeTab === 'login'
-              ? 'Log In'
-              : 'Create Account'}
+                ? 'Log In'
+                : 'Create Account'}
           </button>
         </form>
         <div className="divider">
