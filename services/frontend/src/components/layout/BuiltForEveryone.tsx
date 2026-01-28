@@ -324,25 +324,19 @@ const BuiltForEveryone: React.FC = () => {
           margin: 0 auto;
         }
 
-        /* --- CORRECTED GRID STYLES --- */
+        /* --- DESKTOP/LAPTOP GRID STYLES (Original) --- */
         .grid-small {
           display: grid;
-          /* Use a fixed width for each column to ensure consistent sizing */
-          grid-template-columns: repeat(auto-fit, 180px);
-          /* Center the grid items if there is extra space in the row */
-          justify-content: center;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
           gap: 20px;
         }
 
         .grid-large {
           display: grid;
-          /* Use a fixed width for each column to ensure consistent sizing */
-          grid-template-columns: repeat(auto-fit, 260px);
-          /* Center the grid items if there is extra space in the row */
-          justify-content: center;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
           gap: 24px;
         }
-        /* --- END OF CORRECTED STYLES --- */
+        /* --- END OF DESKTOP STYLES --- */
 
         .card {
           background: rgba(255, 255, 255, 0.03);
@@ -354,18 +348,15 @@ const BuiltForEveryone: React.FC = () => {
           flex-direction: column;
           align-items: center;
           text-align: center;
-          height: 100%;
           cursor: pointer;
-          /* Ensure the card fills the grid cell */
-          width: 100%;
-          box-sizing: border-box;
+          box-sizing: border-box; /* Ensures padding is included in the width/height */
+          /* REMOVED: height: 100%; This was causing inconsistent heights on mobile */
         }
 
         .card.large {
           align-items: flex-start;
           text-align: left;
           padding: 40px;
-          width: 100%;
         }
 
         .card:hover {
@@ -385,6 +376,7 @@ const BuiltForEveryone: React.FC = () => {
           align-items: center;
           justify-content: center;
           margin-bottom: 20px;
+          flex-shrink: 0; /* Prevents the icon from shrinking */
         }
 
         .card-title {
@@ -403,14 +395,150 @@ const BuiltForEveryone: React.FC = () => {
           line-height: 1.6;
         }
 
-        @media (max-width: 768px) {
-          .grid-small,
-          .grid-large {
-            grid-template-columns: 1fr; /* On small screens, cards take full width */
-          }
+        /* --- RESPONSIVE MEDIA QUERIES FOR ALL DEVICES --- */
 
+        /* Mobile (small phones) - up to 480px */
+        @media (max-width: 480px) {
+          .built-everyone-shell {
+            padding: 60px 16px;
+          }
+          
           .main-title {
             font-size: 32px;
+          }
+          
+          .subtitle {
+            font-size: 16px;
+            max-width: 100%;
+          }
+          
+          /* Grid layouts for mobile */
+          .grid-small,
+          .grid-large {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          
+          /* Card styling for mobile */
+          .card {
+            width: 100%;
+            padding: 24px 20px;
+          }
+          
+          .card.large {
+            padding: 28px 22px;
+            text-align: left;
+            align-items: flex-start;
+          }
+          
+          .card-title {
+            font-size: 16px;
+          }
+          
+          .card-description {
+            font-size: 13px;
+          }
+          
+          .icon-container {
+            width: 44px;
+            height: 44px;
+          }
+        }
+
+        /* Mobile (larger phones) - 481px to 768px */
+        @media (min-width: 481px) and (max-width: 768px) {
+          .built-everyone-shell {
+            padding: 70px 20px;
+          }
+          
+          .main-title {
+            font-size: 36px;
+          }
+          
+          /* Grid layouts for larger phones */
+          .grid-small {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          }
+          
+          .grid-large {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          }
+          
+          /* Card styling for larger phones */
+          .card {
+            padding: 28px 22px;
+          }
+          
+          .card.large {
+            padding: 32px 24px;
+          }
+          
+          .card-title {
+            font-size: 17px;
+          }
+        }
+
+        /* Tablet - 769px to 1024px */
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .built-everyone-shell {
+            padding: 75px 30px;
+          }
+          
+          .main-title {
+            font-size: 40px;
+          }
+          
+          /* Grid layouts for tablets */
+          .grid-small {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          }
+          
+          .grid-large {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          }
+          
+          /* Card styling for tablets */
+          .card {
+            padding: 30px 24px;
+          }
+          
+          .card.large {
+            padding: 34px 26px;
+          }
+          
+          .card-title {
+            font-size: 18px;
+          }
+        }
+
+        /* Desktop - 1025px and above */
+        @media (min-width: 1025px) {
+          .built-everyone-shell {
+            padding: 80px 40px;
+          }
+          
+          .main-title {
+            font-size: 42px;
+          }
+          
+          /* Grid layouts for desktop */
+          .grid-small {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+          }
+          
+          .grid-large {
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+          }
+          
+          /* Card styling for desktop */
+          .card {
+            padding: 32px 24px;
+          }
+          
+          .card.large {
+            padding: 40px;
           }
         }
       `}</style>
