@@ -2,19 +2,7 @@
 
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  LayoutDashboard,
-  ArrowLeft,
-  Send,
-  Clock,
-  Users,
-  Award,
-  TrendingUp,
-  PlayCircle,
-  CheckCircle,
-  Star,
-  Target,
-} from 'lucide-react';
+import { LayoutDashboard, ArrowLeft, Send } from 'lucide-react';
 import './Courses.css';
 import { getCourseById, getAllCourses } from '../../api/courses';
 import {
@@ -137,166 +125,6 @@ export default function CourseDetail() {
     };
   }, [heroMedia]);
 
-  // Course-specific marketing content
-  const getCourseSpecificContent = () => {
-    const slug = getSlug(course);
-
-    switch (slug) {
-      case 'cyber-security':
-        return {
-          badge: '🔒 Most Popular',
-          headline: 'Become a Cyber Security Expert',
-          subtitle: 'Protect the Digital World',
-          points: [
-            'Master ethical hacking and penetration testing',
-            'Learn to defend against real-world cyber threats',
-            'Get hands-on experience with security tools',
-            'Prepare for CEH, CompTIA Security+ certifications',
-          ],
-          highlights: [
-            { icon: <TrendingUp size={20} />, text: 'Zero unemployment rate' },
-            {
-              icon: <Award size={20} />,
-              text: 'Industry-recognized certification',
-            },
-            { icon: <Users size={20} />, text: 'Join 10,000+ professionals' },
-          ],
-          stats: [
-            { value: '3.5M', label: 'Unfilled Jobs', desc: 'Global shortage' },
-            {
-              value: '$95K',
-              label: 'Average Salary',
-              desc: 'Entry to mid-level',
-            },
-            { value: '42%', label: 'Salary Growth', desc: 'In 3 years' },
-            { value: '24/7', label: 'Lab Access', desc: 'Practice anytime' },
-          ],
-          cta: 'Start Your Security Journey',
-          rating: 4.9,
-          students: '12,543',
-        };
-      case 'data-science':
-        return {
-          badge: '📊 Top Rated',
-          headline: 'Master Data Science',
-          subtitle: 'Turn Data Into Decisions',
-          points: [
-            'Learn Python, R, and advanced analytics',
-            'Build machine learning models from scratch',
-            'Work on real industry projects',
-            'Master data visualization with Tableau',
-          ],
-          highlights: [
-            { icon: <Target size={20} />, text: 'Job-ready in 6 months' },
-            { icon: <Star size={20} />, text: '4.9/5 student rating' },
-            {
-              icon: <CheckCircle size={20} />,
-              text: '100% placement assistance',
-            },
-          ],
-          stats: [
-            { value: '11.5M', label: 'Jobs by 2026', desc: 'Growing rapidly' },
-            {
-              value: '$120K',
-              label: 'Average Salary',
-              desc: 'Industry standard',
-            },
-            { value: '36%', label: 'Industry Growth', desc: 'Annual rate' },
-            { value: '50+', label: 'Projects', desc: 'Hands-on learning' },
-          ],
-          cta: 'Become a Data Scientist',
-          rating: 4.8,
-          students: '15,234',
-        };
-      case 'data-analytics':
-        return {
-          badge: '📈 Fast Track',
-          headline: 'Excel in Data Analytics',
-          subtitle: 'Drive Business With Insights',
-          points: [
-            'Master SQL, Excel, and Power BI',
-            'Learn to create stunning dashboards',
-            'Develop business intelligence skills',
-            'Work with real-world datasets',
-          ],
-          highlights: [
-            { icon: <Clock size={20} />, text: 'Complete in 3 months' },
-            { icon: <Award size={20} />, text: 'Google Analytics certified' },
-            { icon: <Users size={20} />, text: '8,000+ alumni' },
-          ],
-          stats: [
-            { value: '2.7M', label: 'New Jobs', desc: 'By 2025' },
-            { value: '$85K', label: 'Average Salary', desc: 'Competitive pay' },
-            { value: '23%', label: 'Industry Growth', desc: 'Above average' },
-            { value: '100%', label: 'Practical', desc: 'Hands-on training' },
-          ],
-          cta: 'Start Analyzing Data',
-          rating: 4.7,
-          students: '9,876',
-        };
-      case 'ai-ml-engineer':
-        return {
-          badge: '🤖 Future Ready',
-          headline: 'Build AI & ML Solutions',
-          subtitle: "Shape Tomorrow's Technology",
-          points: [
-            'Master deep learning with TensorFlow',
-            'Build and deploy neural networks',
-            'Work with computer vision and NLP',
-            'Create real AI applications',
-          ],
-          highlights: [
-            { icon: <Star size={20} />, text: 'Cutting-edge curriculum' },
-            { icon: <Target size={20} />, text: 'Build 10+ AI projects' },
-            { icon: <Award size={20} />, text: 'NVIDIA certified' },
-          ],
-          stats: [
-            {
-              value: '97M',
-              label: 'AI Jobs by 2025',
-              desc: 'Explosive growth',
-            },
-            { value: '$135K', label: 'Average Salary', desc: 'Top-tier pay' },
-            { value: '74%', label: 'Annual Growth', desc: 'Fastest growing' },
-            { value: '15+', label: 'AI Tools', desc: 'Master the stack' },
-          ],
-          cta: 'Become an AI Engineer',
-          rating: 4.9,
-          students: '11,234',
-        };
-      default:
-        return {
-          badge: '🚀 Launch Your Career',
-          headline: 'Advance Your Tech Career',
-          subtitle: 'Master In-Demand Skills',
-          points: [
-            'Learn from industry experts',
-            'Build practical skills through projects',
-            'Gain globally recognized certifications',
-            'Join a network of professionals',
-          ],
-          highlights: [
-            { icon: <CheckCircle size={20} />, text: 'Flexible learning' },
-            { icon: <Users size={20} />, text: 'Mentor support' },
-            { icon: <Award size={20} />, text: 'Certificate of completion' },
-          ],
-          stats: [
-            { value: '1M+', label: 'Opportunities', desc: 'Global jobs' },
-            {
-              value: '$90K',
-              label: 'Average Salary',
-              desc: 'Good starting point',
-            },
-            { value: '30%', label: 'Industry Growth', desc: 'Steady increase' },
-            { value: '24/7', label: 'Support', desc: 'Always here to help' },
-          ],
-          cta: 'Start Your Journey',
-          rating: 4.6,
-          students: '5,432',
-        };
-    }
-  };
-
   // --- SKELETON LOADER ---
   if (loading) {
     return (
@@ -346,8 +174,6 @@ export default function CourseDetail() {
     );
   }
 
-  const courseContent = getCourseSpecificContent();
-
   return (
     <div
       className={`course-page course-type-${courseId}`}
@@ -367,55 +193,6 @@ export default function CourseDetail() {
             <source src={heroMedia.src} type="video/mp4" />
           </video>
           <div className="course-hero-overlay" />
-
-          {/* Side Text Overlay - Not covering the video */}
-          <div className="video-side-text">
-            <div className="side-content-wrapper">
-              <div className="video-badge">{courseContent.badge}</div>
-              <h2 className="side-headline">{courseContent.headline}</h2>
-              <p className="side-subtitle">{courseContent.subtitle}</p>
-
-              <div className="side-highlights">
-                {courseContent.highlights.map((highlight, index) => (
-                  <div key={index} className="highlight-item">
-                    <span className="highlight-icon">{highlight.icon}</span>
-                    <span className="highlight-text">{highlight.text}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="side-stats">
-                {courseContent.stats.map((stat, index) => (
-                  <div key={index} className="stat-box">
-                    <div className="stat-value">{stat.value}</div>
-                    <div className="stat-label">{stat.label}</div>
-                    <div className="stat-desc">{stat.desc}</div>
-                  </div>
-                ))}
-              </div>
-
-              <button className="side-cta-btn">
-                <PlayCircle size={20} style={{ marginRight: '8px' }} />
-                {courseContent.cta}
-              </button>
-
-              <div className="side-social-proof">
-                <div className="rating">
-                  <Star size={16} className="star-icon filled" />
-                  <Star size={16} className="star-icon filled" />
-                  <Star size={16} className="star-icon filled" />
-                  <Star size={16} className="star-icon filled" />
-                  <Star size={16} className="star-icon filled" />
-                  <span className="rating-text">{courseContent.rating}</span>
-                </div>
-                <div className="students-count">
-                  <Users size={16} />
-                  <span>{courseContent.students} students</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div className="hero-content">
             <h1 className="hero-title">
               Unlock Your Potential with <br />
