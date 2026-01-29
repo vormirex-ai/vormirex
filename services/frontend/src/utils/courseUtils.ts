@@ -5,10 +5,10 @@ import WhyDS from '../assets/whylearndatascince.jpeg';
 import WhyDA from '../assets/whylearndataana.jpeg';
 import WhyAI from '../assets/whyaiml.png';
 
-import CyberVideo from '../assets/CSFINAL.mp4';
-import DataScienceVideo from '../assets/DSFINAL.mp4';
-import DataAnalyticsVideo from '../assets/DAFINAL.mp4';
-import AIMLVideo from '../assets/AI ML.mp4';
+import CyberVideo from '../assets/CS.mp4';
+import DataScienceVideo from '../assets/DS.mp4';
+import DataAnalyticsVideo from '../assets/DAta Analytics.mp4';
+import AIMLVideo from '../assets/AI ML (1).mp4';
 
 // Detail Images (Career / Gain)
 import CareerCyber from '../assets/carrerincyber.jpeg';
