@@ -19,6 +19,7 @@ import {
   CheckCircle,
   Star,
   BarChart3,
+  Download,
 } from 'lucide-react';
 import './Courses.css';
 import { getCourseById, getAllCourses } from '../../api/courses';
@@ -26,7 +27,7 @@ import {
   getCatalogImage,
   getDetailImages,
   getSlug,
-  getHeroVideo, // Add this line
+  getHeroVideo,
 } from '../../utils/courseUtils';
 
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
@@ -312,6 +313,133 @@ const COURSE_CONTENT_DATA = {
       },
     ],
   },
+  // New content for main courses
+  'cyber-security': {
+    title: 'Cyber Security',
+    subtitle: 'Protect Digital Assets and Defend Against Threats',
+    description:
+      'Master the art of securing systems, networks, and data from digital attacks with our comprehensive cybersecurity curriculum.',
+    foundation: [
+      'Networking fundamentals: OSI model, TCP/IP, Basic Protocols (HTTP, DNS, DHCP)',
+      'Operating systems: Windows & Linux basics, File Permissions, User Management',
+      'Security concepts: CIA Triad, Threat Types, Malware Overview',
+      'Basic cryptography: Symmetric vs. Asymmetric, Hashing (MD5, SHA-1), Simple Ciphers',
+      'Identity & Access: Authentication Methods, Password Policies, Basic IAM Terms',
+      'Risk & compliance: Intro to Risk assessment, Awareness of GDPR/ISO 27001 basics',
+      'Security tools: Firewalls, Antivirus, Basic VPN Concepts',
+      'Network security: Firewalls, IDS/IPS, VPN, Subnetting, Basic packet analysis',
+      'OS hardening: User Rights, Patch Management, Windows/Linux Security Configs',
+      'Identity & Access: IAM, MFA, RBAC, LDAP/Active Directory Basics',
+      'Vulnerability Management: Scanning (Nessus, OpenVAS), CVE Analysis, Patch Prioritisation',
+      'Secure Coding: OWASP Top 10, Input Validation, Secure APIs',
+      'Incident Response: detection, containment, eradication, recovery workflow',
+      'Compliance & Governance: ISO 27001 Fundamentals, GDPR basics, NIST CSF Intro',
+      'Certificate',
+    ],
+    advanced: [
+      'Threat modeling & risk analysis: Stride, ATT&CK Framework, Quantitative Risk Metrics',
+      'Advanced cryptography: PKI, Elliptic-curve Crypto, Homomorphic Encryption, Secure Protocols (TLS 1.3, IPSec)',
+      'Penetration testing & Red-team ops: Reconnaissance, Exploit Development, Privilege Escalation, Post-exploitation, Reporting & Remediation',
+      'Security architecture: Zero-trust Design, Micro-Segmentation, Secure SDLC, Hardware Security Modules (HSM)',
+      'Cloud & container security: CSPM, IAM Policies, Kubernetes RBAC, Runtime Security Server Security',
+      'DevSecOps & Automation: CI/CD pipeline Hardening, IaC Scanning (Terraform, CloudFormation), Automated Compliance (OPA, Chef InSpec)',
+      'Incident Response & Forensics: IR Playbooks, Memory & Disk Forensics, Log Correlation with SIEM, Threat Hunting',
+      'Governance, Compliance & Audit: ISO 27001, SOC 2, NIST CSF, GDPR/CCPA Deep-dive, Audit Trails & Evidence Handling',
+      'Emerging topics: AI/ML security, IoT/OT Security, Blockchain Security, Supply-Chain Risk Management',
+      'Project',
+      'Certificate',
+    ],
+  },
+  'data-science': {
+    title: 'Data Science',
+    subtitle: 'Extract Insights and Drive Decisions with Data',
+    description:
+      'Learn to transform raw data into actionable insights through statistical analysis, machine learning, and data visualization.',
+    foundation: [
+      'Data Entry, Formatting, Formulas, Pivot Tables, Charts',
+      'SQL fundamentals: Select, Where, Group By, Join, Basic Aggregation',
+      'Statistics basics: Mean, Median, Mode, Variance, Simple Probability',
+      'Data visualization: Power BI/Tableau Dashboards, Basic Storytelling',
+      'SQL deep dive – Sub-queries, Window Functions, CTEs, Performance tuning',
+      'Python/R– Pandas/dplyr for Data wrangling, Basic Scripting, Automation',
+      'Stats & Analytics – Hypothesis Testing, A/B Testing, Regression Basics, Cohort Analysis',
+      'Advanced viz– Interactive dashboards (Power BI Custom Visuals, Tableau Story), storytelling',
+      'Certificate',
+      'Project work– Real-world Datasets, Cleaning pipelines, Simple Predictive Models',
+    ],
+    advanced: [
+      'Machine Learning: Supervised/Unsupervised Algorithms, Model Evaluation, Feature Engineering',
+      'Big-data tools: Spark (PySpark/Scala), Hadoop, SQL-on-Hadoop, Large-Scale Data handling',
+      'Advanced Stats: Time-series forecasting, Survival Analysis, Bayesian Methods',
+      'Data Engineering: ETL Pipelines, Data warehousing (Snowflake, Redshift), Orchestration with Airflow',
+      'Specialized viz: Interactive Web Dashboards (Plotly, Dash), Geospatial Mapping, Tableau Extensions',
+      'Capstone & Deployment: End-to-End Project, API Integration, Cloud deployment (AWS/GCP), Stakeholder Storytelling',
+      'Project',
+      'Certificate',
+    ],
+  },
+  'data-analytics': {
+    title: 'Data Analytics',
+    subtitle: 'Transform Data into Actionable Business Insights',
+    description:
+      'Master the tools and techniques to analyze data, create visualizations, and drive business decisions through data-driven insights.',
+    foundation: [
+      'Basics: Data Entry, Formatting, Formulas, Pivot Tables, Charts',
+      'SQL fundamentals: Select, Where, Group By, Join, Basic Aggregation',
+      'Statistics basics: Mean, Median, Mode, Variance, Simple Probability',
+      'Data visualization: Power BI/Tableau Dashboards, Basic Storytelling',
+      'SQL deep dive – Sub-queries, Window Functions, CTEs, Performance tuning',
+      'Python/R– Pandas/dplyr for Data wrangling, Basic Scripting, Automation',
+      'Stats & Analytics – Hypothesis Testing, A/B Testing, Regression Basics, Cohort Analysis',
+      'Advanced viz– Interactive dashboards (Power BI Custom Visuals, Tableau Story), storytelling',
+      'Certificate',
+      'Project work– Real-world Datasets, Cleaning pipelines, Simple Predictive Models',
+    ],
+    advanced: [
+      'Machine Learning: Supervised/Unsupervised Algorithms, Model Evaluation, Feature Engineering',
+      'Big-data tools: Spark (PySpark/Scala), Hadoop, SQL-on-Hadoop, Large-Scale Data handling',
+      'Advanced Stats: Time-series forecasting, Survival Analysis, Bayesian Methods',
+      'Data Engineering: ETL Pipelines, Data warehousing (Snowflake, Redshift), Orchestration with Airflow',
+      'Specialized viz: Interactive Web Dashboards (Plotly, Dash), Geospatial Mapping, Tableau Extensions',
+      'Capstone & Deployment: End-to-End Project, API Integration, Cloud deployment (AWS/GCP), Stakeholder Storytelling',
+      'Project',
+      'Certificate',
+    ],
+  },
+  'ai-ml-engineer': {
+    title: 'AI & Machine Learning',
+    subtitle: 'Build Intelligent Systems with Advanced AI Techniques',
+    description:
+      'Learn to design, build, and deploy machine learning models and AI systems that can solve complex real-world problems.',
+    foundation: [
+      'Python Programming: Data structures, Functions, OOP, Libraries (NumPy, Pandas, Matplotlib)',
+      'Mathematics for ML: Linear Algebra, Calculus, Probability & Statistics',
+      'Machine Learning Fundamentals: Supervised vs. Unsupervised, Regression, Classification',
+      'Data Preprocessing: Cleaning, Transformation, Feature Engineering, Dimensionality Reduction',
+      'Model Evaluation: Cross-validation, Metrics (Accuracy, Precision, Recall, F1-Score), ROC Curves',
+      'Deep Learning Basics: Neural Networks, Activation Functions, Backpropagation, Gradient Descent',
+      'Computer Vision: Image Processing, Convolutional Neural Networks, Object Detection',
+      'Natural Language Processing: Text Processing, Word Embeddings, Sentiment Analysis',
+      'ML Deployment: Model Serialization, REST APIs, Containerization with Docker',
+      'Ethics in AI: Bias, Fairness, Transparency, Responsible AI Practices',
+      'Certificate',
+      'Project: Build a complete ML pipeline from data collection to deployment',
+    ],
+    advanced: [
+      'Advanced Deep Learning: CNNs, RNNs, LSTMs, Transformers, Attention Mechanisms',
+      'Reinforcement Learning: Q-Learning, Policy Gradients, Deep Q Networks, Actor-Critic Methods',
+      'Generative AI: GANs, VAEs, Diffusion Models, Large Language Models (GPT, BERT)',
+      'ML Operations (MLOps): CI/CD for ML, Model Monitoring, A/B Testing, Experiment Tracking',
+      'Distributed Training: Data Parallelism, Model Parallelism, Frameworks (TensorFlow Distributed, PyTorch Distributed)',
+      'Edge AI: Model Optimization, Quantization, Pruning, Deployment on Edge Devices',
+      'AI Product Development: Problem Framing, MVP Development, User Testing, Iteration',
+      'Advanced NLP: Transformers, BERT, GPT, Fine-tuning, Transfer Learning, Multimodal Models',
+      'AI Research: Reading Papers, Reproducing Results, Contributing to Open Source',
+      'Capstone Project: Design and implement an end-to-end AI solution for a real-world problem',
+      'Project',
+      'Certificate',
+    ],
+  },
 };
 
 export default function CourseDetail() {
@@ -330,6 +458,14 @@ export default function CourseDetail() {
     (courseId === 'exam-preparation-kit' ||
       courseId === 'career-transition-programs' ||
       courseId === 'ai-powered-learning-paths');
+
+  // Check if current course is one of the main courses with curriculum content
+  const isMainCourse =
+    courseId &&
+    (courseId === 'cyber-security' ||
+      courseId === 'data-science' ||
+      courseId === 'data-analytics' ||
+      courseId === 'ai-ml-engineer');
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -856,6 +992,89 @@ export default function CourseDetail() {
                     </div>
                   )}
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Render main courses with curriculum content
+    if (isMainCourse) {
+      return (
+        <div className="main-course-content">
+          <div className="curriculum-header">
+            <h1 className="curriculum-title">FOUNDATION Curriculum</h1>
+            <button className="download-syllabus-btn">
+              <Download size={18} style={{ marginRight: '8px' }} />
+              DOWNLOAD FULL SYLLABUS (PDF)
+            </button>
+          </div>
+
+          <div className="curriculum-cards">
+            <div className="curriculum-card">
+              <h2 className="card-title">Why AI - Powered Learning Paths</h2>
+              <div className="card-content">
+                <h3>WHY AI / ML ENGINEER?</h3>
+                <p>{courseData.subtitle}</p>
+                <h3>SHAPE THE FUTURE</h3>
+                <p>{courseData.description}</p>
+              </div>
+            </div>
+
+            <div className="curriculum-card">
+              <h2 className="card-title">Career Path</h2>
+              <div className="card-content">
+                <div className="career-path-diagram">
+                  <div className="path-node foundation">Foundation</div>
+                  <div className="path-arrow">→</div>
+                  <div className="path-node advanced">Advanced</div>
+                  <div className="path-arrow">→</div>
+                  <div className="path-node expert">Expert</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="curriculum-card">
+              <h2 className="card-title">What You'll Gain</h2>
+              <div className="card-content">
+                <ul className="gain-list">
+                  <li>Industry-recognized skills</li>
+                  <li>Hands-on project experience</li>
+                  <li>Professional portfolio</li>
+                  <li>Certification preparation</li>
+                  <li>Career support and guidance</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="curriculum-sections">
+            <div className="curriculum-section">
+              <h2 className="section-title">Foundation</h2>
+              <div className="section-content">
+                <ul className="curriculum-list">
+                  {courseData.foundation.map((item, index) => (
+                    <li key={index} className="curriculum-item">
+                      <span className="item-bullet">●</span>
+                      <span className="item-text">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="curriculum-section">
+              <h2 className="section-title">Advanced</h2>
+              <div className="section-content">
+                <ul className="curriculum-list">
+                  {courseData.advanced.map((item, index) => (
+                    <li key={index} className="curriculum-item">
+                      <span className="item-bullet">●</span>
+                      <span className="item-text">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
