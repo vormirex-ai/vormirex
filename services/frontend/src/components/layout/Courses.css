@@ -2100,4 +2100,16 @@ button {
     width: 100%;
     margin: 0 0 10px;
   }
+
+  /* Toggle Tabs Visibility */
+  .course-level-tabs.desktop-tabs {
+    display: none;
+  }
+
+  .course-level-tabs.below-hero {
+    display: inline-flex;
+    margin-top: 20px; /* Add spacing */
+    width: 100%;
+    justify-content: center;
+  }
 }

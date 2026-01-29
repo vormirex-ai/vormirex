@@ -901,20 +901,7 @@ export default function CourseDetail() {
     // Return original course content for cybersecurity, data science, data analytics, and AI/ML
     return (
       <>
-        <div className="course-level-tabs desktop-tabs">
-          <button
-            className={`tab ${level === 'FOUNDATION' ? 'active' : ''}`}
-            onClick={() => setLevel('FOUNDATION')}
-          >
-            Foundation
-          </button>
-          <button
-            className={`tab ${level === 'ADVANCED' ? 'active' : ''}`}
-            onClick={() => setLevel('ADVANCED')}
-          >
-            Advanced
-          </button>
-        </div>
+
 
         <div className="course-level-tabs below-hero">
           <button
