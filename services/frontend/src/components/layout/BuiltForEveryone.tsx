@@ -14,6 +14,7 @@ import {
   BookOpen,
 } from 'lucide-react';
 import { getAllCourses, Course } from '../../api/courses'; // Adjust path if needed
+import { getSlug } from '../../utils/courseUtils'; // Import the getSlug function
 
 // --- Type Declaration for Prefetching ---
 // This should ideally be in a separate file like 'types/global.d.ts'
@@ -71,7 +72,7 @@ const BuiltForEveryone: React.FC = () => {
       description: 'Turn raw data into meaningful insights',
     },
     {
-      slug: 'ai-ml', // This slug should match what's generated in courseUtils
+      slug: 'ai-ml-engineer', // Updated to match the slug in courseUtils.js
       icon: <Brain size={24} />,
       title: 'Artificial Intelligence & ML',
       description: 'Build smart models for real-world problems',
@@ -172,16 +173,21 @@ const BuiltForEveryone: React.FC = () => {
     fetchAndPrefetchCourses();
   }, []);
 
-  // Helper function to find a course by its slug
+  // Helper function to find a course by its slug using the getSlug utility
   const getCourseBySlug = (slug: string): Course | undefined => {
-    return courses.find((c) => {
-      const courseSlug = c.title
-        .toLowerCase()
-        .replace(/ \/ /g, '-')
-        .replace(/\//g, '-')
-        .replace(/ /g, '-');
-      return courseSlug === slug;
-    });
+    // Special case for career-programs
+    if (slug === 'career-programs') {
+      // Find a course that might be related to career programs
+      // This is a fallback since we don't have a specific career programs course
+      const careerCourse = courses.find(
+        (c) =>
+          c.title.toLowerCase().includes('career') ||
+          c.title.toLowerCase().includes('program')
+      );
+      return careerCourse || courses[0]; // Fallback to first course if no match
+    }
+
+    return courses.find((c) => getSlug(c) === slug);
   };
 
   const handleCardClick = () => {
@@ -228,9 +234,9 @@ const BuiltForEveryone: React.FC = () => {
         <div className="grid-small">
           {audienceData.map((item) => {
             const course = getCourseBySlug(item.slug);
-            // Use the course's actual _id if found, otherwise fallback to the slug
+            // Use the course's actual slug if found, otherwise fallback to the item slug
             const linkTo = course
-              ? `/course/${course._id}`
+              ? `/course/${getSlug(course)}`
               : `/course/${item.slug}`;
 
             return (
