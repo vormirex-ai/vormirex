@@ -7,14 +7,7 @@ import WhyDS from '../assets/whylearndatascince.jpeg';
 import WhyDA from '../assets/whylearndataana.jpeg';
 import WhyAI from '../assets/whyaiml.png';
 
-// Hero Videos
-import CyberVideo from '../assets/CS.mp4';
-import DataScienceVideo from '../assets/DS.mp4';
-import DataAnalyticsVideo from '../assets/DA.mp4';
-import CyberVideo from '../assets/CSFINAL.mp4';
-import DataScienceVideo from '../assets/DSFINAL.mp4';
-import DataAnalyticsVideo from '../assets/DAFINAL.mp4';
-import AIMLVideo from '../assets/AI ML.mp4';
+
 
 // Detail Images (Career / Gain)
 import CareerCyber from '../assets/carrerincyber.jpeg';
@@ -29,6 +22,12 @@ import GainDA from '../assets/gainindatascience.jpeg';
 import CareerAI from '../assets/carrerinaiml.png';
 import GainAI from '../assets/gainaiml.png';
 
+// --- VIDEO ASSETS (CLOUDINARY) ---
+const CyberVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769714997/CSFINAL_xefanb.mp4';
+const DataScienceVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769714996/DSFINAL_eea6rz.mp4';
+const DataAnalyticsVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769714988/DAFINAL_awen2j.mp4';
+const AIMLVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769714977/AI_ML_jw4zyp.mp4';
+
 // --- HELPERS ---
 
 /**
@@ -37,7 +36,7 @@ import GainAI from '../assets/gainaiml.png';
  * @param {object} c - The course object.
  * @returns {string} The generated slug.
  */
-export const getSlug = (c) => {
+export const getSlug = (c: any) => {
   if (!c || !c.title) return '';
 
   // Handle special cases first
@@ -53,7 +52,7 @@ export const getSlug = (c) => {
     .replace(/ /g, '-'); // Replaces spaces with hyphens
 };
 
-export const getCatalogImage = (c) => {
+export const getCatalogImage = (c: any) => {
   const slug = getSlug(c);
   const map = {
     'data-science': WhyDS,
@@ -66,10 +65,10 @@ export const getCatalogImage = (c) => {
     'ai-learning-paths': WhyAI, // Fallback
   };
   // Return mapped image or a default
-  return map[slug] || c?.thumbnail || WhyCyber;
+  return (map as Record<string, string>)[slug] || c?.thumbnail || WhyCyber;
 };
 
-export const getHeroVideo = (c) => {
+export const getHeroVideo = (c: any) => {
   const slug = getSlug(c);
   const map = {
     'cyber-security': CyberVideo,
@@ -81,10 +80,10 @@ export const getHeroVideo = (c) => {
     'career-programs': CyberVideo, // Fallback
     'ai-learning-paths': AIMLVideo, // Fallback
   };
-  return map[slug] || CyberVideo; // Default fallback
+  return (map as Record<string, string>)[slug] || CyberVideo; // Default fallback
 };
 
-export const getDetailImages = (c) => {
+export const getDetailImages = (c: any) => {
   const slug = getSlug(c);
   const map = {
     'cyber-security': { career: CareerCyber, gain: GainCyber },
@@ -96,5 +95,5 @@ export const getDetailImages = (c) => {
     'career-programs': { career: CareerCyber, gain: GainCyber }, // Fallback
     'ai-learning-paths': { career: CareerAI, gain: GainAI }, // Fallback
   };
-  return map[slug] || { career: CareerCyber, gain: GainCyber }; // Default fallback
+  return (map as Record<string, { career: string; gain: string }>)[slug] || { career: CareerCyber, gain: GainCyber }; // Default fallback
 };
