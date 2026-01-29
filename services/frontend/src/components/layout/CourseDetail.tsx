@@ -101,13 +101,13 @@ const COURSE_CONTENT_DATA = {
           'Tableau Desktop Specialist',
         ],
         difficulty: 'Intermediate',
-        duration: '8-10 weeks',
+        duration: '7 Months',
       },
       {
         name: 'Cybersecurity',
         certifications: ['CompTIA Security+', 'CISSP', 'CEH'],
         difficulty: 'Advanced',
-        duration: '10-12 weeks',
+        duration: '7 Months',
       },
       {
         name: 'AI/ML',
@@ -117,7 +117,7 @@ const COURSE_CONTENT_DATA = {
           'Microsoft Azure AI Engineer',
         ],
         difficulty: 'Advanced',
-        duration: '12-16 weeks',
+        duration: '7 Months',
       },
       {
         name: 'Data Science',
@@ -127,7 +127,7 @@ const COURSE_CONTENT_DATA = {
           'Data Analyst',
         ],
         difficulty: 'Advanced',
-        duration: '12-16 weeks',
+        duration: '7 Months',
       },
     ],
   },
