@@ -9,7 +9,225 @@
   --text-secondary: #a0a0a5;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+/* Add to your existing Courses.css */
 
+/* Main Course Content Styles */
+.main-course-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.curriculum-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.curriculum-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.download-syllabus-btn {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.download-syllabus-btn:hover {
+  background: rgba(0, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.curriculum-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.curriculum-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  padding: 30px;
+  transition: var(--transition);
+}
+
+.curriculum-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-primary);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+.card-content h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.card-content p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.career-path-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.path-node {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  flex: 1;
+}
+
+.path-node.foundation {
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--color-primary);
+}
+
+.path-node.advanced {
+  background: rgba(0, 255, 255, 0.2);
+  color: var(--color-primary);
+}
+
+.path-node.expert {
+  background: rgba(0, 255, 255, 0.3);
+  color: var(--color-primary);
+}
+
+.path-arrow {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin: 0 10px;
+}
+
+.gain-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.gain-list li {
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+}
+
+.gain-list li:before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.curriculum-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 40px;
+}
+
+.curriculum-section {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  padding: 30px;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.curriculum-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.curriculum-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.curriculum-item:last-child {
+  border-bottom: none;
+}
+
+.item-bullet {
+  color: var(--color-primary);
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.item-text {
+  color: var(--text-secondary);
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .curriculum-header {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .curriculum-title {
+    font-size: 2rem;
+  }
+
+  .curriculum-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .curriculum-sections {
+    grid-template-columns: 1fr;
+  }
+
+  .career-path-diagram {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .path-arrow {
+    transform: rotate(90deg);
+    margin: 10px 0;
+  }
+}
 *,
 *::before,
 *::after {
