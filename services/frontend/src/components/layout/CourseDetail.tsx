@@ -12,6 +12,13 @@ import {
   getSlug,
 } from '../../utils/courseUtils';
 
+// Import the new course content data
+import {
+  examPreparationContent,
+  careerTransitionContent,
+  aiPoweredLearningContent,
+} from '../../utils/courseContentData';
+
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
 
 // --- Type Declaration for Prefetching ---
@@ -20,6 +27,22 @@ declare global {
     __PREFETCHED_COURSES__?: Record<string, any>;
   }
 }
+
+// Helper function to get the appropriate content based on the course title
+const getCourseContent = (title) => {
+  if (!title) return null;
+
+  const lowerTitle = title.toLowerCase();
+  if (lowerTitle.includes('exam preparation')) {
+    return examPreparationContent;
+  } else if (lowerTitle.includes('career transition')) {
+    return careerTransitionContent;
+  } else if (lowerTitle.includes('ai-powered learning')) {
+    return aiPoweredLearningContent;
+  }
+
+  return null; // For other courses, use the existing API data
+};
 
 export default function CourseDetail() {
   const navigate = useNavigate();
@@ -57,13 +80,22 @@ export default function CourseDetail() {
           );
         }
 
-        setCourse(fetchedCourse);
+        // Check if we have special content for this course
+        const specialContent = getCourseContent(fetchedCourse.title);
+
+        // Merge the API data with our special content
+        const courseData = {
+          ...fetchedCourse,
+          ...(specialContent || {}),
+        };
+
+        setCourse(courseData);
 
         // Optional: Cache the fetched course for faster navigation if user goes back and forth
         if (!window.__PREFETCHED_COURSES__) {
           window.__PREFETCHED_COURSES__ = {};
         }
-        window.__PREFETCHED_COURSES__[courseId] = fetchedCourse;
+        window.__PREFETCHED_COURSES__[courseId] = courseData;
       } catch (err: any) {
         console.error('Failed to fetch course details', err);
         setError(err.message || 'An unexpected error occurred.');
