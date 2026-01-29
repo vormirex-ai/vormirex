@@ -26,6 +26,7 @@ import {
   getCatalogImage,
   getDetailImages,
   getSlug,
+  getHeroVideo, // Add this line
 } from '../../utils/courseUtils';
 
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
