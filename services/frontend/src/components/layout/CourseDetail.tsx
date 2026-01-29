@@ -79,29 +79,29 @@ const COURSE_CONTENT_DATA = {
     testimonials: [
       {
         name: 'Sarah Johnson',
-        role: 'Cloud Architect',
+        role: 'Data Analyst',
         content:
-          'The exam prep kit was a game-changer. I passed my AWS certification on the first try!',
+          'The exam prep kit was a game-changer. I passed my Data Analytics certification on the first try!',
         rating: 5,
       },
       {
         name: 'Michael Chen',
-        role: 'Security Analyst',
+        role: 'ML Engineer',
         content:
-          'The practice questions were incredibly similar to the actual exam. Highly recommended!',
+          'The practice questions were incredibly similar to the actual AI/ML exam. Highly recommended!',
         rating: 5,
       },
     ],
     certificationPaths: [
       {
-        name: 'Cloud Computing',
+        name: 'Data Analytics',
         certifications: [
-          'AWS Certified Solutions Architect',
-          'Azure Fundamentals',
-          'Google Cloud Professional',
+          'Google Data Analytics Professional',
+          'Microsoft Power BI',
+          'Tableau Desktop Specialist',
         ],
         difficulty: 'Intermediate',
-        duration: '6-8 weeks',
+        duration: '8-10 weeks',
       },
       {
         name: 'Cybersecurity',
@@ -110,10 +110,14 @@ const COURSE_CONTENT_DATA = {
         duration: '10-12 weeks',
       },
       {
-        name: 'Project Management',
-        certifications: ['PMP', 'PRINCE2', 'Agile Scrum Master'],
-        difficulty: 'Intermediate',
-        duration: '8-10 weeks',
+        name: 'AI/ML',
+        certifications: [
+          'TensorFlow Developer',
+          'AWS Machine Learning Specialty',
+          'Microsoft Azure AI Engineer',
+        ],
+        difficulty: 'Advanced',
+        duration: '12-16 weeks',
       },
       {
         name: 'Data Science',
@@ -168,42 +172,46 @@ const COURSE_CONTENT_DATA = {
       {
         name: 'Alex Rivera',
         from: 'Marketing Manager',
-        to: 'UX Designer',
+        to: 'Data Analyst',
         duration: '4 months',
         quote:
-          'I never thought I could transition from marketing to design, but this program made it possible.',
+          'I never thought I could transition from marketing to data analytics, but this program made it possible.',
       },
       {
         name: 'Jordan Taylor',
         from: 'Teacher',
-        to: 'Data Analyst',
+        to: 'ML Engineer',
         duration: '6 months',
         quote:
-          'The structured approach and mentorship helped me completely change my career trajectory.',
+          'The structured approach and mentorship helped me completely change my career trajectory into AI/ML.',
       },
     ],
     transitionPaths: [
       {
         from: 'Non-Technical',
-        to: 'Tech Industry',
+        to: 'Data Analytics',
         duration: '4-6 months',
         skills: [
-          'Programming Fundamentals',
-          'System Design',
-          'Technical Communication',
+          'Data Visualization',
+          'Statistical Analysis',
+          'SQL & Database Management',
         ],
-        roles: ['Junior Developer', 'QA Engineer', 'Technical Support'],
+        roles: [
+          'Data Analyst',
+          'Business Intelligence Analyst',
+          'Data Consultant',
+        ],
       },
       {
         from: 'Corporate',
-        to: 'Startup Environment',
-        duration: '2-3 months',
+        to: 'AI/ML Specialist',
+        duration: '6-8 months',
         skills: [
-          'Agile Methodologies',
-          'Cross-functional Collaboration',
-          'Resource Management',
+          'Machine Learning Fundamentals',
+          'Python Programming',
+          'Model Deployment',
         ],
-        roles: ['Product Manager', 'Operations Lead', 'Growth Hacker'],
+        roles: ['ML Engineer', 'AI Specialist', 'Data Scientist'],
       },
       {
         from: 'Individual Contributor',
