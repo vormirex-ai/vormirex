@@ -27,32 +27,43 @@ import GainAI from '../assets/gainaiml.png';
 
 /**
  * Generates a URL-friendly slug from a course title.
- * This function MUST match the logic used in BuiltForEveryone.
+ * This function is crucial for routing and must be consistent.
  * @param {object} c - The course object.
  * @returns {string} The generated slug.
  */
 export const getSlug = (c) => {
   if (!c || !c.title) return '';
 
-  // Handle special cases first
-  if (c.title.toLowerCase().includes('ai & machine learning')) {
+  const title = c.title.toLowerCase();
+
+  // --- KEY FIX: Handle standard courses with explicit, predictable slugs ---
+  // This ensures the URL in the browser matches what we look up.
+  if (title.includes('cyber security')) {
+    return 'cyber-security';
+  }
+  if (title.includes('data science')) {
+    return 'data-science';
+  }
+  if (title.includes('data analytics')) {
+    return 'data-analytics';
+  }
+  if (title.includes('ai & machine learning') || title.includes('ai/ml')) {
     return 'ai-ml-engineer';
   }
 
-  if (c.title.toLowerCase().includes('exam preparation kit')) {
+  // Handle special static courses
+  if (title.includes('exam preparation kit')) {
     return 'exam-preparation-kit';
   }
-
-  if (c.title.toLowerCase().includes('career transition programs')) {
+  if (title.includes('career transition programs')) {
     return 'career-transition-programs';
   }
-
-  if (c.title.toLowerCase().includes('ai-powered learning paths')) {
+  if (title.includes('ai-powered learning paths')) {
     return 'ai-powered-learning-paths';
   }
 
-  return c.title
-    .toLowerCase()
+  // Default slug generation for any other courses
+  return title
     .replace(/ \/ /g, '-') // Handles "Data Science / AI"
     .replace(/\//g, '-') // Handles other slashes
     .replace(/ & /g, '-') // Handles "AI & ML"
@@ -66,10 +77,10 @@ export const getCatalogImage = (c) => {
     'data-analytics': WhyDA,
     'cyber-security': WhyCyber,
     'ai-ml-engineer': WhyAI,
-    'ai-ml': WhyAI,
-    'exam-preparation-kit': WhyCyber,
-    'career-transition-programs': WhyCyber,
-    'ai-powered-learning-paths': WhyAI,
+    'ai-ml': WhyAI, // Fallback for slight variations
+    'exam-preparation-kit': WhyCyber, // Using a placeholder
+    'career-transition-programs': WhyCyber, // Using a placeholder
+    'ai-powered-learning-paths': WhyAI, // Using a placeholder
   };
   // Return mapped image or a default
   return map[slug] || c?.thumbnail || WhyCyber;
@@ -82,10 +93,10 @@ export const getHeroVideo = (c) => {
     'data-science': DataScienceVideo,
     'data-analytics': DataAnalyticsVideo,
     'ai-ml-engineer': AIMLVideo,
-    'ai-ml': AIMLVideo,
-    'exam-preparation-kit': CyberVideo,
-    'career-transition-programs': CyberVideo,
-    'ai-powered-learning-paths': AIMLVideo,
+    'ai-ml': AIMLVideo, // Fallback
+    'exam-preparation-kit': CyberVideo, // Using a placeholder
+    'career-transition-programs': CyberVideo, // Using a placeholder
+    'ai-powered-learning-paths': AIMLVideo, // Using a placeholder
   };
   return map[slug] || CyberVideo; // Default fallback
 };
@@ -97,10 +108,10 @@ export const getDetailImages = (c) => {
     'data-science': { career: CareerDS, gain: GainDS },
     'data-analytics': { career: CareerDA, gain: GainDA },
     'ai-ml-engineer': { career: CareerAI, gain: GainAI },
-    'ai-ml': { career: CareerAI, gain: GainAI },
-    'exam-preparation-kit': { career: CareerCyber, gain: GainCyber },
-    'career-transition-programs': { career: CareerCyber, gain: GainCyber },
-    'ai-powered-learning-paths': { career: CareerAI, gain: GainAI },
+    'ai-ml': { career: CareerAI, gain: GainAI }, // Fallback
+    'exam-preparation-kit': { career: CareerCyber, gain: GainCyber }, // Placeholder
+    'career-transition-programs': { career: CareerCyber, gain: GainCyber }, // Placeholder
+    'ai-powered-learning-paths': { career: CareerAI, gain: GainAI }, // Placeholder
   };
   return map[slug] || { career: CareerCyber, gain: GainCyber }; // Default fallback
 };
