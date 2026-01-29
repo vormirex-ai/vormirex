@@ -1041,3 +1041,24 @@ button {
     font-size: 1.8rem;
   }
 }
+/* Add to your existing Courses.css */
+
+/* Additional styles for new course types */
+.course-type-exam-preparation-kit .hero-title,
+.course-type-career-transition-programs .hero-title,
+.course-type-ai-powered-learning-paths .hero-title {
+  color: var(--color-primary);
+}
+
+/* Enhanced hover effects for course cards */
+.course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 255, 255, 0.15);
+}
+
+/* Improved button styling */
+.course-card-btn:hover {
+  background: var(--color-primary);
+  color: var(--bg-dark);
+  transform: translateX(5px);
+}

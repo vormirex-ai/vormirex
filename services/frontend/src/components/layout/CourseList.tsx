@@ -6,6 +6,43 @@ import './Courses.css';
 import { getAllCourses, Course } from '../../api/courses';
 import { getCatalogImage, getSlug } from '../../utils/courseUtils';
 
+// Static course data for the new courses
+const STATIC_COURSES = [
+  {
+    _id: 'exam-preparation-kit',
+    title: 'Exam Preparation Kit',
+    description:
+      'Prepare for industry-recognized certifications with our comprehensive study materials and practice tests.',
+    price: 0,
+    status: 'PUBLISHED' as const,
+    isHidden: false,
+    instructor: 'Vormirex',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    _id: 'career-transition-programs',
+    title: 'Career Transition Programs',
+    description:
+      'Transform your career with our guided transition programs designed for successful career changes.',
+    price: 0,
+    status: 'PUBLISHED' as const,
+    isHidden: false,
+    instructor: 'Vormirex',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    _id: 'ai-powered-learning-paths',
+    title: 'AI-Powered Learning Paths',
+    description:
+      'Experience personalized learning with AI-driven course recommendations and adaptive content.',
+    price: 0,
+    status: 'PUBLISHED' as const,
+    isHidden: false,
+    instructor: 'Vormirex',
+    createdAt: new Date().toISOString(),
+  },
+];
+
 export default function CourseList() {
   const navigate = useNavigate();
   const [coursesList, setCoursesList] = useState<Course[]>([]);
@@ -27,7 +64,8 @@ export default function CourseList() {
     if (cachedCourses && isCacheValid) {
       try {
         const parsedCourses = JSON.parse(cachedCourses);
-        setCoursesList(parsedCourses);
+        // Combine with static courses
+        setCoursesList([...parsedCourses, ...STATIC_COURSES]);
         setLoading(false);
         return;
       } catch (err) {
@@ -39,9 +77,11 @@ export default function CourseList() {
     const fetchData = async () => {
       try {
         const list = await getAllCourses();
-        setCoursesList(list);
+        // Combine with static courses
+        const allCourses = [...list, ...STATIC_COURSES];
+        setCoursesList(allCourses);
 
-        // Cache the fetched data
+        // Cache the fetched data (excluding static courses)
         localStorage.setItem('vormirex_courses_cache', JSON.stringify(list));
         localStorage.setItem(
           'vormirex_courses_cache_timestamp',
@@ -49,6 +89,8 @@ export default function CourseList() {
         );
       } catch (err) {
         console.error('Failed to fetch courses', err);
+        // If API fails, at least show static courses
+        setCoursesList(STATIC_COURSES);
       } finally {
         setLoading(false);
       }

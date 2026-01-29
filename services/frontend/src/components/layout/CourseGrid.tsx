@@ -11,6 +11,9 @@ import {
   Sparkles,
   Users,
   ArrowRight,
+  BookOpen,
+  TrendingUp,
+  Zap,
 } from 'lucide-react';
 import { getSlug } from '../../utils/courseUtils';
 
@@ -42,7 +45,7 @@ const DEFAULT_CATEGORIES: CourseCategory[] = [
     id: 2,
     title: 'Exam Preparation Kit',
     learners: '8K+ learners',
-    icon: <Brain size={24} />,
+    icon: <BookOpen size={24} />,
   },
   {
     id: 3,
@@ -66,13 +69,13 @@ const DEFAULT_CATEGORIES: CourseCategory[] = [
     id: 6,
     title: 'Career Transition Programs',
     learners: '5K+ learners',
-    icon: <Users size={24} />,
+    icon: <TrendingUp size={24} />,
   },
   {
     id: 7,
     title: 'AI-Powered Learning Paths',
     learners: '11K+ learners',
-    icon: <Heart size={24} />,
+    icon: <Zap size={24} />,
   },
 ];
 
