@@ -18,6 +18,10 @@ export interface IUser extends Document {
     longest: number;
     lastActivityDate: Date;
   };
+  learningPreferences: {
+    dailyGoal: number;
+    focusAreas: string[];
+  };
 }
 
 const userSchema = new Schema<IUser>(
@@ -38,6 +42,10 @@ const userSchema = new Schema<IUser>(
       current: { type: Number, default: 0 },
       longest: { type: Number, default: 0 },
       lastActivityDate: { type: Date, default: null },
+    },
+    learningPreferences: {
+      dailyGoal: { type: Number, default: 30 },
+      focusAreas: { type: [String], default: [] },
     },
   },
   {
