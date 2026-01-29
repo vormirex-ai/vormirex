@@ -2,11 +2,21 @@ import { Router } from 'express';
 import userController from './user.controller.js';
 import { requireAuth } from '../../middleware/auth.middleware.js';
 import { checkRole } from '../../middleware/rbac.middleware.js';
+import { validate } from '../../middleware/validate.middleware.js';
+import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema } from './user.validation.js';
 
 const router = Router();
 
 // middleware to protect all user routes
 router.use(requireAuth);
+
+// --- User Settings Routes (Accessible by all authenticated users) ---
+router.patch('/me/profile', validate(updateProfileSchema), userController.updateProfile);
+router.patch('/me/password', validate(changePasswordSchema), userController.changePassword);
+router.patch('/me/preferences', validate(updatePreferencesSchema), userController.updatePreferences);
+router.delete('/me', userController.deleteAccount);
+
+// --- Admin Routes ---
 router.use(checkRole(['admin']));
 
 // GET /api/users - Get all users

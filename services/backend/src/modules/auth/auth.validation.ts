@@ -14,7 +14,7 @@ const emailSchema = z
   .regex(emailRegex, { message: 'Invalid email address (cannot start with special characters)' })
   .transform((val) => val.toLowerCase());
 
-const passwordSchema = z
+export const passwordSchema = z
   .string()
   .nonempty('Password is required')
   .min(6, { message: 'Password must be at least 6 characters long' });
@@ -22,7 +22,7 @@ const passwordSchema = z
 /**
  * A reusable name schema that trims, sanitizes against XSS, and validates length/characters.
  */
-const nameSchema = z
+export const nameSchema = z
   .string()
   .trim()
   .transform((val) => val.replace(/<[^>]*>?/gm, '')) // Strip HTML tags for XSS prevention

@@ -1,5 +1,7 @@
 // src/utils/courseUtils.js
 
+// --- ASSET IMPORTS ---
+// Catalog Images
 import WhyCyber from '../assets/whylearncyber.jpg';
 import WhyDS from '../assets/whylearndatascince.jpeg';
 import WhyDA from '../assets/whylearndataana.jpeg';
@@ -42,18 +44,6 @@ export const getSlug = (c: any) => {
     return 'ai-ml-engineer';
   }
 
-  if (c.title.toLowerCase().includes('exam preparation kit')) {
-    return 'exam-preparation-kit';
-  }
-
-  if (c.title.toLowerCase().includes('career transition programs')) {
-    return 'career-transition-programs';
-  }
-
-  if (c.title.toLowerCase().includes('ai-powered learning paths')) {
-    return 'ai-powered-learning-paths';
-  }
-
   return c.title
     .toLowerCase()
     .replace(/ \/ /g, '-') // Handles "Data Science / AI"
@@ -70,9 +60,9 @@ export const getCatalogImage = (c: any) => {
     'cyber-security': WhyCyber,
     'ai-ml-engineer': WhyAI,
     'ai-ml': WhyAI,
-    'exam-preparation-kit': WhyCyber,
-    'career-transition-programs': WhyCyber,
-    'ai-powered-learning-paths': WhyAI,
+    'exam-preparation-kit': WhyCyber, // Fallback
+    'career-programs': WhyCyber, // Fallback
+    'ai-learning-paths': WhyAI, // Fallback
   };
   // Return mapped image or a default
   return (map as Record<string, string>)[slug] || c?.thumbnail || WhyCyber;
@@ -86,9 +76,9 @@ export const getHeroVideo = (c: any) => {
     'data-analytics': DataAnalyticsVideo,
     'ai-ml-engineer': AIMLVideo,
     'ai-ml': AIMLVideo,
-    'exam-preparation-kit': CyberVideo,
-    'career-transition-programs': CyberVideo,
-    'ai-powered-learning-paths': AIMLVideo,
+    'exam-preparation-kit': CyberVideo, // Fallback
+    'career-programs': CyberVideo, // Fallback
+    'ai-learning-paths': AIMLVideo, // Fallback
   };
   return (map as Record<string, string>)[slug] || CyberVideo; // Default fallback
 };
@@ -101,9 +91,9 @@ export const getDetailImages = (c: any) => {
     'data-analytics': { career: CareerDA, gain: GainDA },
     'ai-ml-engineer': { career: CareerAI, gain: GainAI },
     'ai-ml': { career: CareerAI, gain: GainAI },
-    'exam-preparation-kit': { career: CareerCyber, gain: GainCyber },
-    'career-transition-programs': { career: CareerCyber, gain: GainCyber },
-    'ai-powered-learning-paths': { career: CareerAI, gain: GainAI },
+    'exam-preparation-kit': { career: CareerCyber, gain: GainCyber }, // Fallback
+    'career-programs': { career: CareerCyber, gain: GainCyber }, // Fallback
+    'ai-learning-paths': { career: CareerAI, gain: GainAI }, // Fallback
   };
   return (map as Record<string, { career: string; gain: string }>)[slug] || { career: CareerCyber, gain: GainCyber }; // Default fallback
 };

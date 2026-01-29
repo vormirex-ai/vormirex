@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import User from './user.model.js';
+import bcrypt from 'bcrypt';
 import { NotFoundError, BadRequestError } from '../../utils/errors.js';
 
 export const getAllUsers = async (req: Request, res: Response) => {
@@ -110,10 +111,82 @@ export const toggleUserStatus = async (req: Request, res: Response) => {
   });
 };
 
+export const updateProfile = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.user._id;
+  const { name, timezone } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) throw new NotFoundError('User not found');
+
+  if (name) user.name = name;
+  if (timezone) user.timezone = timezone;
+
+  await user.save();
+
+  res.json({ message: 'Profile updated successfully', user });
+};
+
+export const changePassword = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.user._id;
+  const { currentPassword, newPassword } = req.body;
+
+  const user = await User.findById(userId).select('+password');
+  if (!user) throw new NotFoundError('User not found');
+
+  if (user.provider === 'google') {
+    throw new BadRequestError('Google-authenticated users cannot change password.');
+  }
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password!);
+  if (!isMatch) throw new BadRequestError('Incorrect current password.');
+
+  user.password = await bcrypt.hash(newPassword, 10);
+  await user.save();
+
+  res.json({ message: 'Password changed successfully' });
+};
+
+export const deleteAccount = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.user._id;
+
+  const user = await User.findByIdAndDelete(userId);
+  if (!user) throw new NotFoundError('User not found');
+
+  res.json({ message: 'Account deleted successfully' });
+
+};
+
+export const updatePreferences = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.user._id;
+  const { dailyGoal, focusAreas } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) throw new NotFoundError('User not found');
+
+  // Initialize if missing (for legacy docs)
+  if (!user.learningPreferences) {
+    user.learningPreferences = { dailyGoal: 30, focusAreas: [] };
+  }
+
+  if (dailyGoal !== undefined) user.learningPreferences.dailyGoal = dailyGoal;
+  if (focusAreas !== undefined) user.learningPreferences.focusAreas = focusAreas;
+
+  await user.save();
+
+  res.json({ message: 'Preferences updated', preferences: user.learningPreferences });
+};
 export default {
   getAllUsers,
   updateUserRole,
   deleteUser,
   getAdmins,
   toggleUserStatus,
+  updateProfile,
+  changePassword,
+  deleteAccount,
+  updatePreferences,
 };
