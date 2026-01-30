@@ -1003,83 +1003,84 @@ export default function CourseDetail() {
       className={`course-page course-type-${courseId}`}
       data-course={courseId}
     >
-      <div className="course-shell">
-        {/* Conditional hero section - with video for original courses, without for new ones */}
-        {isSpecialCourse ? (
-          <header className="course-hero-simple">
-            <div className="course-hero-top">
-              <div className="hero-nav-group">
-                <button
-                  className="nav-icon-btn"
-                  onClick={() => navigate('/courses')}
-                >
-                  <ArrowLeft size={24} />
-                </button>
-                <button
-                  className="nav-icon-btn"
-                  onClick={() => navigate('/dashboard')}
-                >
-                  <LayoutDashboard size={24} />
-                </button>
-              </div>
+      {/* Conditional hero section - with video for original courses, without for new ones */}
+      {isSpecialCourse ? (
+        <header className="course-hero-simple">
+          <div className="course-hero-top">
+            <div className="hero-nav-group">
+              <button
+                className="nav-icon-btn"
+                onClick={() => navigate('/courses')}
+              >
+                <ArrowLeft size={24} />
+              </button>
+              <button
+                className="nav-icon-btn"
+                onClick={() => navigate('/dashboard')}
+              >
+                <LayoutDashboard size={24} />
+              </button>
             </div>
-          </header>
-        ) : (
-          <header className="course-hero">
-            <video
-              ref={videoRef}
-              key={heroMedia.src}
-              className="hero-video-bg"
-              autoPlay
-              muted
-              loop
-              playsInline
-            >
-              <source src={heroMedia.src} type="video/mp4" />
-            </video>
-            <div className="course-hero-overlay" />
-            <div className="hero-content">
-              <h1 className="hero-title">
-                Unlock Your Potential with <br />
-                <span className="highlight">{course.title}</span>
-              </h1>
-              <p className="hero-subtitle">
-                {course.subtitle || 'Master the skills of tomorrow, today.'}
-              </p>
-            </div>
+          </div>
+        </header>
+      ) : (
+        <header className="course-hero">
+          <video
+            ref={videoRef}
+            key={heroMedia.src}
+            className="hero-video-bg"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src={heroMedia.src} type="video/mp4" />
+          </video>
+          <div className="course-hero-overlay" />
+          <div className="hero-content">
+            <h1 className="hero-title">
+              Unlock Your Potential with <br />
+              <span className="highlight">{course.title}</span>
+            </h1>
+            <p className="hero-subtitle">
+              {course.subtitle || 'Master the skills of tomorrow, today.'}
+            </p>
+          </div>
 
-            <div className="course-hero-top">
-              <div className="hero-nav-group">
-                <button
-                  className="nav-icon-btn"
-                  onClick={() => navigate('/courses')}
-                >
-                  <ArrowLeft size={24} />
-                </button>
-                <button
-                  className="nav-icon-btn"
-                  onClick={() => navigate('/dashboard')}
-                >
-                  <LayoutDashboard size={24} />
-                </button>
-              </div>
-              <div className="course-level-tabs desktop-tabs">
-                <button
-                  className={`tab ${level === 'FOUNDATION' ? 'active' : ''}`}
-                  onClick={() => setLevel('FOUNDATION')}
-                >
-                  Foundation
-                </button>
-                <button
-                  className={`tab ${level === 'ADVANCED' ? 'active' : ''}`}
-                  onClick={() => setLevel('ADVANCED')}
-                >
-                  Advanced
-                </button>
-              </div>
+          <div className="course-hero-top">
+            <div className="hero-nav-group">
+              <button
+                className="nav-icon-btn"
+                onClick={() => navigate('/courses')}
+              >
+                <ArrowLeft size={24} />
+              </button>
+              <button
+                className="nav-icon-btn"
+                onClick={() => navigate('/dashboard')}
+              >
+                <LayoutDashboard size={24} />
+              </button>
             </div>
-          </header>
-        )}
+            <div className="course-level-tabs desktop-tabs">
+              <button
+                className={`tab ${level === 'FOUNDATION' ? 'active' : ''}`}
+                onClick={() => setLevel('FOUNDATION')}
+              >
+                Foundation
+              </button>
+              <button
+                className={`tab ${level === 'ADVANCED' ? 'active' : ''}`}
+                onClick={() => setLevel('ADVANCED')}
+              >
+                Advanced
+              </button>
+            </div>
+          </div>
+        </header>
+      )}
+
+      <div className="course-shell">
 
         {renderCourseContent()}
 
