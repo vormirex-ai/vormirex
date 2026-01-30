@@ -1,5 +1,3 @@
-// src/utils/courseUtils.js
-
 // --- ASSET IMPORTS ---
 // Catalog Images
 import WhyCyber from '../assets/whylearncyber.jpg';
@@ -11,8 +9,7 @@ import WhyAI from '../assets/whyaiml.png';
 import CyberVideo from '../assets/CS.mp4';
 import DataScienceVideo from '../assets/DS.mp4';
 import DataAnalyticsVideo from '../assets/DA.mp4';
-import CyberVideo from '../assets/CS.mp4';
-import DataScienceVideo from '../assets/AI ML (1).mp4';
+import AIMLVideo from '../assets/AI ML.mp4';
 
 // Detail Images (Career / Gain)
 import CareerCyber from '../assets/carrerincyber.jpeg';
