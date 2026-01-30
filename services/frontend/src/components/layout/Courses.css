@@ -76,32 +76,7 @@ button {
   background-color: #000; /* Add black background to fill any empty space */
 }
 
-/* Aspect ratio handling for different screens */
-@media (max-aspect-ratio: 16/9) {
-  .course-hero {
-    height: auto;
-    min-height: 100vh;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
-  }
 
-  .hero-video-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-/* For very wide screens */
-@media (min-aspect-ratio: 16/9) {
-  .hero-video-bg {
-    width: 177.78vh; /* 16 * 100 / 9 */
-    height: 100vh;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
 
 .course-hero-overlay {
   position: absolute;
@@ -1625,7 +1600,9 @@ button {
 /* Tablet and Below */
 @media (max-width: 1024px) {
   .course-hero {
-    height: 70vh;
+    height: auto;
+    aspect-ratio: 16/9;
+    min-height: unset;
   }
 
   .video-headline {
@@ -1897,11 +1874,16 @@ button {
     font-size: 1.8rem;
   }
 
+
+}
+
+/* ================= RESTORED MOBILE FIXES ================= */
+@media (max-width: 768px) {
   /* Main Hero Responsive Fixes */
   .course-hero {
-    height: auto; /* Let aspect ratio impose height */
-    aspect-ratio: 16/9; /* Force 16:9 match */
-    min-height: unset; /* Remove minimum height constraint */
+    height: auto !important; /* Let aspect ratio impose height */
+    aspect-ratio: 16/9 !important; /* Force 16:9 match */
+    min-height: unset !important; /* Remove minimum height constraint */
   }
 
   .course-hero-top {
