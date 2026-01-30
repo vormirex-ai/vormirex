@@ -1945,3 +1945,10 @@ button {
     transition: var(--transition) !important;
   }
 }
+/* Add this to your CSS file to move buttons to the left only for 350-480px screens */
+
+@media (min-width: 350px) and (max-width: 480px) {
+  .course-hero-top {
+    justify-content: flex-start !important;
+  }
+}
