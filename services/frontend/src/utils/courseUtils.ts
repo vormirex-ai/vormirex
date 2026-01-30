@@ -7,8 +7,6 @@ import WhyDS from '../assets/whylearndatascince.jpeg';
 import WhyDA from '../assets/whylearndataana.jpeg';
 import WhyAI from '../assets/whyaiml.png';
 
-
-
 // Detail Images (Career / Gain)
 import CareerCyber from '../assets/carrerincyber.jpeg';
 import GainCyber from '../assets/gainincyber.jpeg';
@@ -23,10 +21,14 @@ import CareerAI from '../assets/carrerinaiml.png';
 import GainAI from '../assets/gainaiml.png';
 
 // --- VIDEO ASSETS (CLOUDINARY) ---
-const CyberVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769757258/C_S_yyglnw.mp4';
-const DataScienceVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769761429/DS_1_ba7nlt.mp4';
-const DataAnalyticsVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769761051/DA_bhkotm.mp4';
-const AIMLVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769753171/Blue_Futuristic_Artificial_Intelligence_Video_1_ubonrm.mp4';
+const CyberVideo =
+  'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769757258/C_S_yyglnw.mp4';
+const DataScienceVideo =
+  'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769761429/DS_1_ba7nlt.mp4';
+const DataAnalyticsVideo =
+  'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769761051/DA_bhkotm.mp4';
+const AIMLVideo =
+  'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769753171/Blue_Futuristic_Artificial_Intelligence_Video_1_ubonrm.mp4';
 
 // --- HELPERS ---
 
@@ -95,5 +97,10 @@ export const getDetailImages = (c: any) => {
     'career-programs': { career: CareerCyber, gain: GainCyber }, // Fallback
     'ai-learning-paths': { career: CareerAI, gain: GainAI }, // Fallback
   };
-  return (map as Record<string, { career: string; gain: string }>)[slug] || { career: CareerCyber, gain: GainCyber }; // Default fallback
+  return (
+    (map as Record<string, { career: string; gain: string }>)[slug] || {
+      career: CareerCyber,
+      gain: GainCyber,
+    }
+  ); // Default fallback
 };
