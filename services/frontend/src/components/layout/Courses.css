@@ -48,6 +48,131 @@ button {
   padding: 0 20px;
 }
 
+/* ================= HERO SECTION FOR SPECIAL COURSES (UPDATED) ================= */
+
+/* NEW: Full-width wrapper that breaks out of the container */
+.hero-full-width-wrapper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.course-hero-simple {
+  position: relative;
+  /* Use a fixed aspect ratio that matches your images for consistency */
+  /* For example, if your images are 1920x1080, the ratio is 16/9 */
+  /* Adjust this value if your images have a different ratio */
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  min-height: 100vh; /* Ensures it's at least full screen height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-dark); /* Fallback color */
+  overflow: hidden;
+}
+
+.hero-image-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Fills the container without distortion */
+  object-position: center; /* Centers the image */
+  z-index: 1;
+  /* Improve image rendering for crispness */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Add a subtle overlay to ensure navigation buttons are always visible */
+.course-hero-simple::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.course-hero-top {
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  max-width: 1200px; /* Matches your .course-shell max-width */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 15; /* Above the overlay */
+}
+
+.hero-nav-group {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-icon-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: var(--transition);
+  z-index: 16; /* Ensure buttons stay on top */
+}
+
+.nav-icon-btn:hover {
+  background: var(--color-primary);
+  color: #000;
+  box-shadow: 0 0 30px var(--color-primary-glow);
+}
+
+/* --- IMPORTANT: Responsive Adjustments for Special Hero --- */
+
+/* For tablets and smaller, adjust the aspect ratio or height */
+@media (max-width: 1024px) {
+  .course-hero-simple {
+    aspect-ratio: 4 / 3; /* A more square-friendly ratio for tablets */
+    min-height: 80vh;
+  }
+}
+
+/* For mobile, switch to a more flexible height */
+@media (max-width: 768px) {
+  .course-hero-simple {
+    aspect-ratio: unset; /* Remove aspect ratio */
+    min-height: 60vh; /* Use a fixed height instead */
+    height: 60vh;
+  }
+
+  .course-hero-top {
+    top: 20px;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-hero-simple {
+    height: 50vh; /* Even smaller height for small phones */
+    min-height: 400px;
+  }
+}
+
 /* ================= HERO ================= */
 .course-hero {
   position: relative;
@@ -75,8 +200,6 @@ button {
   image-rendering: -webkit-optimize-contrast;
   background-color: #000; /* Add black background to fill any empty space */
 }
-
-
 
 .course-hero-overlay {
   position: absolute;
@@ -275,46 +398,6 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.course-hero-top {
-  position: absolute;
-  top: 40px;
-  width: 100%;
-  max-width: 1200px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 15;
-}
-
-.hero-nav-group {
-  display: flex;
-  gap: 12px;
-}
-
-.nav-icon-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
-  background: rgba(0, 0, 0, 0.65);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.nav-icon-btn:hover {
-  background: var(--color-primary);
-  color: #000;
-  box-shadow: 0 0 30px var(--color-primary-glow);
 }
 
 .course-level-tabs {
@@ -850,25 +933,6 @@ button {
 }
 
 /* Unique styles for the new course pages */
-.course-hero-simple {
-  position: relative;
-  padding: 40px 0;
-  min-height: 400px; /* Ensure minimum height */
-  background: linear-gradient(135deg, #0a0a0b 0%, #1a1a1c 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.course-hero-top {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .unique-course-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -1873,8 +1937,6 @@ button {
   .video-subtitle {
     font-size: 1.8rem;
   }
-
-
 }
 
 /* ================= RESTORED MOBILE FIXES ================= */
@@ -1903,12 +1965,61 @@ button {
   .hero-title {
     font-size: 1.5rem; /* Smaller title to fit */
     margin-bottom: 8px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.8); /* Enhance contrast against video text */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); /* Enhance contrast against video text */
   }
 
   .hero-subtitle {
     font-size: 0.9rem; /* Smaller subtitle */
     margin-bottom: 12px;
     display: none; /* Hide subtitle on mobile to reduce clutter over video text */
+  }
+}
+
+/* Add this to your CSS file to fix the button visibility issue */
+@media (max-width: 768px) {
+  .course-hero-top {
+    position: absolute !important;
+    top: 20px !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    padding: 0 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    z-index: 20 !important; /* Increased z-index to ensure visibility */
+  }
+
+  .hero-nav-group {
+    display: flex !important;
+    gap: 12px !important;
+  }
+
+  .nav-icon-btn {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--color-border) !important;
+    background: rgba(0, 0, 0, 0.65) !important;
+    color: #fff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    backdrop-filter: blur(10px) !important;
+    cursor: pointer !important;
+    transition: var(--transition) !important;
+  }
+}
+
+@media (min-width: 350px) and (max-width: 480px) {
+  .course-hero-top {
+    left: 20px !important;
+    transform: none !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding: 0 !important;
+    padding-right: 20px !important;
   }
 }

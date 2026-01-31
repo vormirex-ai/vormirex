@@ -31,6 +31,11 @@ import {
 
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
 
+// Import hero images for special courses
+import examPrepHero from '../../assets/exmprepkit.jpeg';
+import careerTransitionHero from '../../assets/carrertran.jpeg';
+import aiLearningHero from '../../assets/carrertran.jpeg';
+
 // --- Type Declaration for Prefetching ---
 declare global {
   interface Window {
@@ -326,6 +331,14 @@ export default function CourseDetail() {
       courseId === 'career-transition-programs' ||
       courseId === 'ai-powered-learning-paths');
 
+  // Get the appropriate hero image for special courses
+  const getHeroImage = () => {
+    if (courseId === 'exam-preparation-kit') return examPrepHero;
+    if (courseId === 'career-transition-programs') return careerTransitionHero;
+    if (courseId === 'ai-powered-learning-paths') return aiLearningHero;
+    return null;
+  };
+
   useEffect(() => {
     const fetchCourseData = async () => {
       if (!courseId) {
@@ -549,48 +562,54 @@ export default function CourseDetail() {
             <div className="certification-paths">
               <h2>Certification Paths</h2>
               <div className="paths-container">
-                {courseData.certificationPaths.map((path: any, index: number) => (
-                  <div key={index} className="path-card">
-                    <h3>{path.name}</h3>
-                    <div className="path-meta">
-                      <span className="difficulty">{path.difficulty}</span>
-                      <span className="duration">
-                        <Clock size={16} /> {path.duration}
-                      </span>
+                {courseData.certificationPaths.map(
+                  (path: any, index: number) => (
+                    <div key={index} className="path-card">
+                      <h3>{path.name}</h3>
+                      <div className="path-meta">
+                        <span className="difficulty">{path.difficulty}</span>
+                        <span className="duration">
+                          <Clock size={16} /> {path.duration}
+                        </span>
+                      </div>
+                      <div className="certifications">
+                        {path.certifications.map(
+                          (cert: any, certIndex: number) => (
+                            <div key={certIndex} className="cert-badge">
+                              {cert}
+                            </div>
+                          )
+                        )}
+                      </div>
                     </div>
-                    <div className="certifications">
-                      {path.certifications.map((cert: any, certIndex: number) => (
-                        <div key={certIndex} className="cert-badge">
-                          {cert}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                  )
+                )}
               </div>
             </div>
 
             <div className="testimonials-section">
               <h2>Success Stories</h2>
               <div className="testimonials-grid">
-                {courseData.testimonials.map((testimonial: any, index: number) => (
-                  <div key={index} className="testimonial-card">
-                    <div className="testimonial-content">
-                      <p>"{testimonial.content}"</p>
-                    </div>
-                    <div className="testimonial-author">
-                      <div className="author-info">
-                        <div className="author-name">{testimonial.name}</div>
-                        <div className="author-role">{testimonial.role}</div>
+                {courseData.testimonials.map(
+                  (testimonial: any, index: number) => (
+                    <div key={index} className="testimonial-card">
+                      <div className="testimonial-content">
+                        <p>"{testimonial.content}"</p>
                       </div>
-                      <div className="rating">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star key={i} size={16} className="star-filled" />
-                        ))}
+                      <div className="testimonial-author">
+                        <div className="author-info">
+                          <div className="author-name">{testimonial.name}</div>
+                          <div className="author-role">{testimonial.role}</div>
+                        </div>
+                        <div className="rating">
+                          {[...Array(testimonial.rating)].map((_, i) => (
+                            <Star key={i} size={16} className="star-filled" />
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -901,8 +920,6 @@ export default function CourseDetail() {
     // Return original course content for cybersecurity, data science, data analytics, and AI/ML
     return (
       <>
-
-
         <div className="course-level-tabs below-hero">
           <button
             className={`tab ${level === 'FOUNDATION' ? 'active' : ''}`}
@@ -1003,26 +1020,32 @@ export default function CourseDetail() {
       className={`course-page course-type-${courseId}`}
       data-course={courseId}
     >
-      {/* Conditional hero section - with video for original courses, without for new ones */}
       {isSpecialCourse ? (
-        <header className="course-hero-simple">
-          <div className="course-hero-top">
-            <div className="hero-nav-group">
-              <button
-                className="nav-icon-btn"
-                onClick={() => navigate('/courses')}
-              >
-                <ArrowLeft size={24} />
-              </button>
-              <button
-                className="nav-icon-btn"
-                onClick={() => navigate('/dashboard')}
-              >
-                <LayoutDashboard size={24} />
-              </button>
+        <div className="hero-full-width-wrapper">
+          <header className="course-hero-simple">
+            <img
+              src={getHeroImage()}
+              alt={`${course.title} Hero`}
+              className="hero-image-bg"
+            />
+            <div className="course-hero-top">
+              <div className="hero-nav-group">
+                <button
+                  className="nav-icon-btn"
+                  onClick={() => navigate('/courses')}
+                >
+                  <ArrowLeft size={24} />
+                </button>
+                <button
+                  className="nav-icon-btn"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  <LayoutDashboard size={24} />
+                </button>
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
+        </div>
       ) : (
         <header className="course-hero">
           <video
@@ -1081,7 +1104,6 @@ export default function CourseDetail() {
       )}
 
       <div className="course-shell">
-
         {renderCourseContent()}
 
         <section className="course-request-form">
