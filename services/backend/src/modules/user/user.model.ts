@@ -22,6 +22,11 @@ export interface IUser extends Document {
     dailyGoal: number;
     focusAreas: string[];
   };
+  notificationPreferences: {
+    streakReminders: boolean;
+    newCourseAlerts: boolean;
+    securityAlerts: boolean;
+  };
 }
 
 const userSchema = new Schema<IUser>(
@@ -46,6 +51,11 @@ const userSchema = new Schema<IUser>(
     learningPreferences: {
       dailyGoal: { type: Number, default: 30 },
       focusAreas: { type: [String], default: [] },
+    },
+    notificationPreferences: {
+      streakReminders: { type: Boolean, default: true },
+      newCourseAlerts: { type: Boolean, default: true },
+      securityAlerts: { type: Boolean, default: true },
     },
   },
   {

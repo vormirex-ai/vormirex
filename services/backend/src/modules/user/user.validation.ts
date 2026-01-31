@@ -29,3 +29,13 @@ export const updatePreferencesSchema = z.object({
 });
 
 export type UpdatePreferencesBody = z.infer<typeof updatePreferencesSchema>['body'];
+
+export const updateNotificationPreferencesSchema = z.object({
+  body: z.object({
+    streakReminders: z.boolean().optional(),
+    newCourseAlerts: z.boolean().optional(),
+    securityAlerts: z.boolean().optional(),
+  }),
+});
+
+export type UpdateNotificationPreferencesBody = z.infer<typeof updateNotificationPreferencesSchema>['body'];
