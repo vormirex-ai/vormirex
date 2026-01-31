@@ -1,5 +1,4 @@
-// src/pages/CourseDetail.jsx
-
+// src/pages/CourseDetail.tsx
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -28,20 +27,47 @@ import {
   getHeroVideo,
   getSlug,
 } from '../../utils/courseUtils';
-
 import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
 
-// Import hero images for special courses
-import examPrepHero from '../../assets/exmprepkit.jpeg';
-import careerTransitionHero from '../../assets/carrertran.jpeg';
-import aiLearningHero from '../../assets/carrertran.jpeg';
-
-// --- Type Declaration for Prefetching ---
-declare global {
-  interface Window {
-    __PREFETCHED_COURSES__?: Record<string, any>;
-  }
-}
+// --- CONFIGURATION FOR TOP PAGE TEXT (REPLACES IMAGES) ---
+const HERO_CONTENT_CONFIG = {
+  'exam-preparation-kit': {
+    headline: 'Exam Preparation Kit',
+    subtitle: 'Your Pathway to Certification Success',
+    description:
+      'Unlock your potential with our comprehensive exam preparation resources designed to boost confidence and ensure first-attempt success.',
+    stats: [
+      { icon: '👥', label: '11K+ Learners' },
+      { icon: '🏆', label: '92% Pass Rate' },
+      { icon: '⏱️', label: '24/7 Access' },
+    ],
+    ctaText: 'Start Prep Now',
+  },
+  'career-transition-programs': {
+    headline: 'Career Transition Programs',
+    subtitle: 'Transform Your Career Journey',
+    description:
+      'Navigate your career transition with confidence through our structured programs designed for professionals seeking new paths.',
+    stats: [
+      { icon: '🚀', label: '85% Success Rate' },
+      { icon: '💼', label: 'New Career' },
+      { icon: '🤝', label: '1000+ Mentors' },
+    ],
+    ctaText: 'Explore Paths',
+  },
+  'ai-powered-learning-paths': {
+    headline: 'AI-Powered Learning Paths',
+    subtitle: 'Personalized Education for Maximum Impact',
+    description:
+      'Experience the future of learning with our AI-driven platform that adapts to your unique learning style, pace, and goals.',
+    stats: [
+      { icon: '⚡', label: '3x Faster' },
+      { icon: '🧠', label: '94% Retention' },
+      { icon: '🤖', label: 'AI Assistant' },
+    ],
+    ctaText: 'Try AI Demo',
+  },
+};
 
 // Unique course content data for the three special courses
 const COURSE_CONTENT_DATA = {
@@ -314,7 +340,6 @@ const COURSE_CONTENT_DATA = {
 export default function CourseDetail() {
   const navigate = useNavigate();
   const { courseId } = useParams<{ courseId: string }>();
-
   const [course, setCourse] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -324,20 +349,14 @@ export default function CourseDetail() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Check if current course is one of the new courses without video
   const isSpecialCourse =
     courseId &&
     (courseId === 'exam-preparation-kit' ||
       courseId === 'career-transition-programs' ||
       courseId === 'ai-powered-learning-paths');
 
-  // Get the appropriate hero image for special courses
-  const getHeroImage = () => {
-    if (courseId === 'exam-preparation-kit') return examPrepHero;
-    if (courseId === 'career-transition-programs') return careerTransitionHero;
-    if (courseId === 'ai-powered-learning-paths') return aiLearningHero;
-    return null;
-  };
+  const heroConfig =
+    isSpecialCourse && courseId ? HERO_CONTENT_CONFIG[courseId] : null;
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -346,13 +365,9 @@ export default function CourseDetail() {
         setLoading(false);
         return;
       }
-
       try {
         setLoading(true);
-
-        // Check if this is one of our new courses with static content
         if (COURSE_CONTENT_DATA[courseId as keyof typeof COURSE_CONTENT_DATA]) {
-          // Create a mock course object with the static content
           const staticCourse = {
             _id: courseId,
             title:
@@ -364,13 +379,11 @@ export default function CourseDetail() {
             description:
               COURSE_CONTENT_DATA[courseId as keyof typeof COURSE_CONTENT_DATA]
                 .description,
-            // Add other required properties
             price: 0,
             status: 'PUBLISHED',
             isHidden: false,
             instructor: 'Vormirex',
             createdAt: new Date().toISOString(),
-            // Add levels for compatibility
             levels: [
               {
                 level: 'FOUNDATION',
@@ -385,23 +398,10 @@ export default function CourseDetail() {
           };
           setCourse(staticCourse);
         } else {
-          // --- Fetch original courses ---
           const allCourses = await getAllCourses();
           const fetchedCourse = allCourses.find((c) => getSlug(c) === courseId);
-
-          if (!fetchedCourse) {
-            throw new Error(
-              'Course not found. It may have been moved or renamed.'
-            );
-          }
-
+          if (!fetchedCourse) throw new Error('Course not found.');
           setCourse(fetchedCourse);
-
-          // Optional: Cache the fetched course for faster navigation
-          if (!window.__PREFETCHED_COURSES__) {
-            window.__PREFETCHED_COURSES__ = {};
-          }
-          window.__PREFETCHED_COURSES__[courseId] = fetchedCourse;
         }
       } catch (err: any) {
         console.error('Failed to fetch course details', err);
@@ -410,14 +410,11 @@ export default function CourseDetail() {
         setLoading(false);
       }
     };
-
     fetchCourseData();
   }, [courseId]);
 
   useEffect(() => {
-    if (course) {
-      document.title = `${course.title} | Vormirex`;
-    }
+    if (course) document.title = `${course.title} | Vormirex`;
   }, [course]);
 
   const heroMedia = useMemo(() => {
@@ -447,24 +444,15 @@ export default function CourseDetail() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !heroMedia.src || isSpecialCourse) return;
-
     video.muted = true;
     video.playsInline = true;
     const play = () =>
       video.play().catch(() => console.log('Autoplay blocked'));
-
-    if (video.readyState >= 3) {
-      play();
-    } else {
-      video.addEventListener('canplay', play, { once: true });
-    }
-
-    return () => {
-      video.removeEventListener('canplay', play);
-    };
+    if (video.readyState >= 3) play();
+    else video.addEventListener('canplay', play, { once: true });
+    return () => video.removeEventListener('canplay', play);
   }, [heroMedia, isSpecialCourse]);
 
-  // --- SKELETON LOADER ---
   if (loading) {
     return (
       <div className="course-page">
@@ -480,10 +468,6 @@ export default function CourseDetail() {
               <div className="skeleton-card"></div>
               <div className="skeleton-card"></div>
               <div className="skeleton-card"></div>
-            </div>
-            <div className="skeleton-modules">
-              <div className="skeleton-module"></div>
-              <div className="skeleton-module"></div>
             </div>
           </div>
         </div>
@@ -513,43 +497,25 @@ export default function CourseDetail() {
     );
   }
 
-  // Render unique content based on course type
   const renderCourseContent = () => {
-    const courseData: any =
+    const courseData =
       COURSE_CONTENT_DATA[courseId as keyof typeof COURSE_CONTENT_DATA];
-
-    // Render special content for the three new courses
     if (courseData) {
-      // Render Exam Preparation Kit
       if (courseId === 'exam-preparation-kit') {
         return (
           <div className="unique-course-content exam-prep-content">
-            <div className="course-hero-section">
-              <div className="hero-text">
-                <h1>{courseData.title}</h1>
-                <p>{courseData.subtitle}</p>
-                <p className="hero-description">{courseData.description}</p>
-              </div>
-              <div className="hero-visual">
-                <div className="exam-icon-container">
-                  <BookOpen size={80} />
-                </div>
-              </div>
-            </div>
-
             <div className="stats-grid">
-              {courseData.stats.map((stat: any, index: number) => (
+              {courseData.stats.map((stat, index) => (
                 <div key={index} className="stat-card">
                   <div className="stat-value">{stat.value}</div>
                   <div className="stat-label">{stat.label}</div>
                 </div>
               ))}
             </div>
-
             <div className="features-section">
               <h2>Why Choose Our Exam Prep Kit?</h2>
               <div className="features-grid">
-                {courseData.features.map((feature: any, index: number) => (
+                {courseData.features.map((feature, index) => (
                   <div key={index} className="feature-card">
                     <div className="feature-icon">{feature.icon}</div>
                     <h3>{feature.title}</h3>
@@ -558,94 +524,70 @@ export default function CourseDetail() {
                 ))}
               </div>
             </div>
-
             <div className="certification-paths">
               <h2>Certification Paths</h2>
               <div className="paths-container">
-                {courseData.certificationPaths.map(
-                  (path: any, index: number) => (
-                    <div key={index} className="path-card">
-                      <h3>{path.name}</h3>
-                      <div className="path-meta">
-                        <span className="difficulty">{path.difficulty}</span>
-                        <span className="duration">
-                          <Clock size={16} /> {path.duration}
-                        </span>
-                      </div>
-                      <div className="certifications">
-                        {path.certifications.map(
-                          (cert: any, certIndex: number) => (
-                            <div key={certIndex} className="cert-badge">
-                              {cert}
-                            </div>
-                          )
-                        )}
-                      </div>
+                {courseData.certificationPaths.map((path, index) => (
+                  <div key={index} className="path-card">
+                    <h3>{path.name}</h3>
+                    <div className="path-meta">
+                      <span className="difficulty">{path.difficulty}</span>
+                      <span className="duration">
+                        <Clock size={16} /> {path.duration}
+                      </span>
                     </div>
-                  )
-                )}
+                    <div className="certifications">
+                      {path.certifications.map((cert, certIndex) => (
+                        <div key={certIndex} className="cert-badge">
+                          {cert}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-
             <div className="testimonials-section">
               <h2>Success Stories</h2>
               <div className="testimonials-grid">
-                {courseData.testimonials.map(
-                  (testimonial: any, index: number) => (
-                    <div key={index} className="testimonial-card">
-                      <div className="testimonial-content">
-                        <p>"{testimonial.content}"</p>
+                {courseData.testimonials.map((testimonial, index) => (
+                  <div key={index} className="testimonial-card">
+                    <div className="testimonial-content">
+                      <p>"{testimonial.content}"</p>
+                    </div>
+                    <div className="testimonial-author">
+                      <div className="author-info">
+                        <div className="author-name">{testimonial.name}</div>
+                        <div className="author-role">{testimonial.role}</div>
                       </div>
-                      <div className="testimonial-author">
-                        <div className="author-info">
-                          <div className="author-name">{testimonial.name}</div>
-                          <div className="author-role">{testimonial.role}</div>
-                        </div>
-                        <div className="rating">
-                          {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} size={16} className="star-filled" />
-                          ))}
-                        </div>
+                      <div className="rating">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} size={16} className="star-filled" />
+                        ))}
                       </div>
                     </div>
-                  )
-                )}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         );
       }
-
-      // Render Career Transition Programs
       if (courseId === 'career-transition-programs') {
         return (
           <div className="unique-course-content career-transition-content">
-            <div className="course-hero-section">
-              <div className="hero-text">
-                <h1>{courseData.title}</h1>
-                <p>{courseData.subtitle}</p>
-                <p className="hero-description">{courseData.description}</p>
-              </div>
-              <div className="hero-visual">
-                <div className="career-icon-container">
-                  <TrendingUp size={80} />
-                </div>
-              </div>
-            </div>
-
             <div className="stats-grid">
-              {courseData.stats.map((stat: any, index: number) => (
+              {courseData.stats.map((stat, index) => (
                 <div key={index} className="stat-card">
                   <div className="stat-value">{stat.value}</div>
                   <div className="stat-label">{stat.label}</div>
                 </div>
               ))}
             </div>
-
             <div className="features-section">
               <h2>Our Transition Approach</h2>
               <div className="features-grid">
-                {courseData.features.map((feature: any, index: number) => (
+                {courseData.features.map((feature, index) => (
                   <div key={index} className="feature-card">
                     <div className="feature-icon">{feature.icon}</div>
                     <h3>{feature.title}</h3>
@@ -654,11 +596,10 @@ export default function CourseDetail() {
                 ))}
               </div>
             </div>
-
             <div className="transition-paths">
               <h2>Popular Transition Paths</h2>
               <div className="paths-container">
-                {courseData.transitionPaths.map((path: any, index: number) => (
+                {courseData.transitionPaths.map((path, index) => (
                   <div key={index} className="transition-path-card">
                     <div className="path-header">
                       <div className="path-from">{path.from}</div>
@@ -671,7 +612,7 @@ export default function CourseDetail() {
                     <div className="path-skills">
                       <h4>Key Skills You'll Develop:</h4>
                       <div className="skills-list">
-                        {path.skills.map((skill: any, skillIndex: number) => (
+                        {path.skills.map((skill, skillIndex) => (
                           <div key={skillIndex} className="skill-tag">
                             {skill}
                           </div>
@@ -681,7 +622,7 @@ export default function CourseDetail() {
                     <div className="path-roles">
                       <h4>Potential Roles:</h4>
                       <ul>
-                        {path.roles.map((role: any, roleIndex: number) => (
+                        {path.roles.map((role, roleIndex) => (
                           <li key={roleIndex}>{role}</li>
                         ))}
                       </ul>
@@ -690,11 +631,10 @@ export default function CourseDetail() {
                 ))}
               </div>
             </div>
-
             <div className="success-stories">
               <h2>Success Stories</h2>
               <div className="stories-container">
-                {courseData.successStories.map((story: any, index: number) => (
+                {courseData.successStories.map((story, index) => (
                   <div key={index} className="story-card">
                     <div className="story-transition">
                       <div className="role-from">{story.from}</div>
@@ -713,37 +653,21 @@ export default function CourseDetail() {
           </div>
         );
       }
-
-      // Render AI-Powered Learning Paths
       if (courseId === 'ai-powered-learning-paths') {
         return (
           <div className="unique-course-content ai-learning-content">
-            <div className="course-hero-section">
-              <div className="hero-text">
-                <h1>{courseData.title}</h1>
-                <p>{courseData.subtitle}</p>
-                <p className="hero-description">{courseData.description}</p>
-              </div>
-              <div className="hero-visual">
-                <div className="ai-icon-container">
-                  <Brain size={80} />
-                </div>
-              </div>
-            </div>
-
             <div className="stats-grid">
-              {courseData.stats.map((stat: any, index: number) => (
+              {courseData.stats.map((stat, index) => (
                 <div key={index} className="stat-card">
                   <div className="stat-value">{stat.value}</div>
                   <div className="stat-label">{stat.label}</div>
                 </div>
               ))}
             </div>
-
             <div className="features-section">
               <h2>The AI Learning Advantage</h2>
               <div className="features-grid">
-                {courseData.features.map((feature: any, index: number) => (
+                {courseData.features.map((feature, index) => (
                   <div key={index} className="feature-card">
                     <div className="feature-icon">{feature.icon}</div>
                     <h3>{feature.title}</h3>
@@ -752,11 +676,10 @@ export default function CourseDetail() {
                 ))}
               </div>
             </div>
-
             <div className="ai-technologies">
               <h2>Powered by Cutting-Edge AI</h2>
               <div className="tech-container">
-                {courseData.technologies.map((tech: any, index: number) => (
+                {courseData.technologies.map((tech, index) => (
                   <div key={index} className="tech-card">
                     <h3>{tech.name}</h3>
                     <p>{tech.description}</p>
@@ -764,11 +687,10 @@ export default function CourseDetail() {
                 ))}
               </div>
             </div>
-
             <div className="learning-modes">
               <h2>Adapted to Your Learning Style</h2>
               <div className="modes-container">
-                {courseData.learningModes.map((mode: any, index: number) => (
+                {courseData.learningModes.map((mode, index) => (
                   <div
                     key={index}
                     className={`mode-card ${activeTab === index ? 'active' : ''}`}
@@ -781,7 +703,6 @@ export default function CourseDetail() {
                 ))}
               </div>
             </div>
-
             <div className="ai-demo">
               <h2>Experience AI-Powered Learning</h2>
               <div className="demo-container">
@@ -916,8 +837,6 @@ export default function CourseDetail() {
         );
       }
     }
-
-    // Return original course content for cybersecurity, data science, data analytics, and AI/ML
     return (
       <>
         <div className="course-level-tabs below-hero">
@@ -934,7 +853,6 @@ export default function CourseDetail() {
             Advanced
           </button>
         </div>
-
         <div className="hero-action-area">
           <button
             className="course-btn main-cta"
@@ -943,7 +861,6 @@ export default function CourseDetail() {
             Download Full Syllabus (PDF)
           </button>
         </div>
-
         <section className="course-info-cards">
           <div
             className="info-card"
@@ -954,7 +871,6 @@ export default function CourseDetail() {
             </div>
             <p className="info-card-title">Why {course.title}</p>
           </div>
-
           <div
             className="info-card"
             onClick={() => setModalImage(detailImages.career)}
@@ -964,7 +880,6 @@ export default function CourseDetail() {
             </div>
             <p className="info-card-title">Career Path</p>
           </div>
-
           <div
             className="info-card"
             onClick={() => setModalImage(detailImages.gain)}
@@ -975,7 +890,6 @@ export default function CourseDetail() {
             <p className="info-card-title">What You'll Gain</p>
           </div>
         </section>
-
         <section className="course-content">
           <h2 className="section-title">{level} Curriculum</h2>
           <div className="modules">
@@ -1002,7 +916,6 @@ export default function CourseDetail() {
             )}
           </div>
         </section>
-
         {modalImage && (
           <div className="image-modal" onClick={() => setModalImage(null)}>
             <div className="modal-content">
@@ -1020,14 +933,12 @@ export default function CourseDetail() {
       className={`course-page course-type-${courseId}`}
       data-course={courseId}
     >
-      {isSpecialCourse ? (
+      {isSpecialCourse && heroConfig ? (
         <div className="hero-full-width-wrapper">
           <header className="course-hero-simple">
-            <img
-              src={getHeroImage()}
-              alt={`${course.title} Hero`}
-              className="hero-image-bg"
-            />
+            <div className="hero-gradient-bg">
+              <div className="gradient-overlay"></div>
+            </div>
             <div className="course-hero-top">
               <div className="hero-nav-group">
                 <button
@@ -1043,6 +954,25 @@ export default function CourseDetail() {
                   <LayoutDashboard size={24} />
                 </button>
               </div>
+            </div>
+            <div className="special-hero-content">
+              <div className="special-hero-text">
+                <h1>{heroConfig.headline}</h1>
+                <p className="hero-subtitle">{heroConfig.subtitle}</p>
+                <p className="hero-description">{heroConfig.description}</p>
+              </div>
+              <div className="hero-trust-bar">
+                {heroConfig.stats.map((stat, index) => (
+                  <div key={index} className="trust-pill">
+                    <span className="trust-icon">{stat.icon}</span>
+                    <span className="trust-text">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+              <button className="special-hero-cta">
+                {heroConfig.ctaText}{' '}
+                <ArrowLeft className="reverse-arrow" size={20} />
+              </button>
             </div>
           </header>
         </div>
@@ -1069,7 +999,6 @@ export default function CourseDetail() {
               {course.subtitle || 'Master the skills of tomorrow, today.'}
             </p>
           </div>
-
           <div className="course-hero-top">
             <div className="hero-nav-group">
               <button
@@ -1102,10 +1031,8 @@ export default function CourseDetail() {
           </div>
         </header>
       )}
-
       <div className="course-shell">
         {renderCourseContent()}
-
         <section className="course-request-form">
           <div className="form-container">
             <div className="form-text">
