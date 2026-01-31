@@ -48,8 +48,9 @@ button {
   padding: 0 20px;
 }
 
-/* ================= HERO SECTION FOR SPECIAL COURSES ================= */
-/* ================= FULL-WIDTH HERO WRAPPER ================= */
+/* ================= HERO SECTION FOR SPECIAL COURSES (UPDATED) ================= */
+
+/* NEW: Full-width wrapper that breaks out of the container */
 .hero-full-width-wrapper {
   width: 100vw;
   position: relative;
@@ -59,18 +60,18 @@ button {
   margin-right: -50vw;
 }
 
-/* Now, we can reset the hero's own styles since the wrapper handles positioning */
-
-/* The rest of the styles for .hero-image-bg, .course-hero-top, etc., can remain the same */
 .course-hero-simple {
   position: relative;
+  /* Use a fixed aspect ratio that matches your images for consistency */
+  /* For example, if your images are 1920x1080, the ratio is 16/9 */
+  /* Adjust this value if your images have a different ratio */
+  aspect-ratio: 16 / 9;
   width: 100%;
-  height: 85vh;
-  min-height: 550px;
+  min-height: 100vh; /* Ensures it's at least full screen height */
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-dark);
+  background-color: var(--bg-dark); /* Fallback color */
   overflow: hidden;
 }
 
@@ -80,12 +81,15 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Changed from 'contain' to 'cover' */
-  object-position: center;
+  object-fit: cover; /* Fills the container without distortion */
+  object-position: center; /* Centers the image */
   z-index: 1;
+  /* Improve image rendering for crispness */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
-/* Add overlay for better navigation button visibility */
+/* Add a subtle overlay to ensure navigation buttons are always visible */
 .course-hero-simple::before {
   content: '';
   position: absolute;
@@ -93,10 +97,6 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    rgba(10, 10, 11, 0.3) 0%,
-    rgba(10, 10, 11, 0.5) 100%
-  );
   z-index: 2;
   pointer-events: none;
 }
@@ -105,7 +105,7 @@ button {
   position: absolute;
   top: 40px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1200px; /* Matches your .course-shell max-width */
   left: 50%;
   transform: translateX(-50%);
   padding: 0 40px;
@@ -142,7 +142,36 @@ button {
   box-shadow: 0 0 30px var(--color-primary-glow);
 }
 
-/* Text overlay styles removed - no text will appear on hero images */
+/* --- IMPORTANT: Responsive Adjustments for Special Hero --- */
+
+/* For tablets and smaller, adjust the aspect ratio or height */
+@media (max-width: 1024px) {
+  .course-hero-simple {
+    aspect-ratio: 4 / 3; /* A more square-friendly ratio for tablets */
+    min-height: 80vh;
+  }
+}
+
+/* For mobile, switch to a more flexible height */
+@media (max-width: 768px) {
+  .course-hero-simple {
+    aspect-ratio: unset; /* Remove aspect ratio */
+    min-height: 60vh; /* Use a fixed height instead */
+    height: 60vh;
+  }
+
+  .course-hero-top {
+    top: 20px;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-hero-simple {
+    height: 50vh; /* Even smaller height for small phones */
+    min-height: 400px;
+  }
+}
 
 /* ================= HERO ================= */
 .course-hero {
@@ -1647,12 +1676,6 @@ button {
   .video-stats {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  /* Responsive adjustments for special course hero */
-  .course-hero-simple {
-    height: 70vh;
-    min-height: 500px;
-  }
 }
 
 /* Mobile Landscape and Portrait */
@@ -1789,18 +1812,6 @@ button {
     width: 100%;
     margin: 0 0 10px;
   }
-
-  /* Special course hero mobile adjustments */
-  .course-hero-simple {
-    height: 60vh;
-    min-height: 450px;
-    background-attachment: scroll; /* Disable parallax on mobile */
-  }
-
-  .course-hero-top {
-    top: 20px;
-    padding: 0 20px;
-  }
 }
 
 /* Standard Mobile Phones */
@@ -1869,12 +1880,6 @@ button {
 
   .video-cta-btn {
     width: 100%;
-  }
-
-  /* Special course hero small mobile adjustments */
-  .course-hero-simple {
-    height: 50vh;
-    min-height: 400px;
   }
 }
 

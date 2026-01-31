@@ -34,7 +34,7 @@ import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
 // Import hero images for special courses
 import examPrepHero from '../../assets/exmprepkit.jpeg';
 import careerTransitionHero from '../../assets/carrertran.jpeg';
-import aiLearningHero from '../../assets/aipowered.jpeg';
+import aiLearningHero from '../../assets/carrertran.jpeg';
 
 // --- Type Declaration for Prefetching ---
 declare global {
@@ -1021,32 +1021,31 @@ export default function CourseDetail() {
       data-course={courseId}
     >
       {isSpecialCourse ? (
-        <header className="course-hero-simple">
-          {/* NEW: Use an <img> tag for the hero background */}
-          <img
-            src={getHeroImage()}
-            alt={`${course.title} Hero`}
-            className="hero-image-bg"
-          />
-          <div className="course-hero-top">
-            <div className="hero-nav-group">
-              <button
-                className="nav-icon-btn"
-                onClick={() => navigate('/courses')}
-              >
-                <ArrowLeft size={24} />
-              </button>
-              <button
-                className="nav-icon-btn"
-                onClick={() => navigate('/dashboard')}
-              >
-                <LayoutDashboard size={24} />
-              </button>
+        <div className="hero-full-width-wrapper">
+          <header className="course-hero-simple">
+            <img
+              src={getHeroImage()}
+              alt={`${course.title} Hero`}
+              className="hero-image-bg"
+            />
+            <div className="course-hero-top">
+              <div className="hero-nav-group">
+                <button
+                  className="nav-icon-btn"
+                  onClick={() => navigate('/courses')}
+                >
+                  <ArrowLeft size={24} />
+                </button>
+                <button
+                  className="nav-icon-btn"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  <LayoutDashboard size={24} />
+                </button>
+              </div>
             </div>
-          </div>
-
-          {/* Text overlay completely removed */}
-        </header>
+          </header>
+        </div>
       ) : (
         <header className="course-hero">
           <video
