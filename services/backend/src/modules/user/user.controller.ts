@@ -179,6 +179,32 @@ export const updatePreferences = async (req: Request, res: Response) => {
 
   res.json({ message: 'Preferences updated', preferences: user.learningPreferences });
 };
+
+export const updateNotificationPreferences = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.user._id;
+  const { streakReminders, newCourseAlerts, securityAlerts } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) throw new NotFoundError('User not found');
+
+  // Initialize if missing
+  if (!user.notificationPreferences) {
+    user.notificationPreferences = { 
+      streakReminders: true, 
+      newCourseAlerts: true, 
+      securityAlerts: true 
+    };
+  }
+
+  if (streakReminders !== undefined) user.notificationPreferences.streakReminders = streakReminders;
+  if (newCourseAlerts !== undefined) user.notificationPreferences.newCourseAlerts = newCourseAlerts;
+  if (securityAlerts !== undefined) user.notificationPreferences.securityAlerts = securityAlerts;
+
+  await user.save();
+
+  res.json({ message: 'Notification preferences updated', preferences: user.notificationPreferences });
+};
 export default {
   getAllUsers,
   updateUserRole,
@@ -189,4 +215,5 @@ export default {
   changePassword,
   deleteAccount,
   updatePreferences,
+  updateNotificationPreferences,
 };

@@ -24,8 +24,8 @@ import GainAI from '../assets/gainaiml.png';
 
 // --- VIDEO ASSETS (CLOUDINARY) ---
 const CyberVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769757258/C_S_yyglnw.mp4';
-const DataScienceVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769761429/DS_1_ba7nlt.mp4';
-const DataAnalyticsVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769761051/DA_bhkotm.mp4';
+const DataScienceVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769845052/DSs_zose9w.mp4';
+const DataAnalyticsVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769844972/DA_zw9avx.mp4';
 const AIMLVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769753171/Blue_Futuristic_Artificial_Intelligence_Video_1_ubonrm.mp4';
 
 // --- HELPERS ---
