@@ -53,7 +53,7 @@ const Navbar: React.FC<{ brandName?: string }> = ({
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = () => setIsOpen(false); //close menu after navigation
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
