@@ -53,7 +53,7 @@ const Navbar: React.FC<{ brandName?: string }> = ({
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = () => setIsOpen(false); //close menu after navigation
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -166,7 +166,8 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                 <div className="profile-dropdown-container" ref={dropdownRef}>
                   <div className="profile-trigger" onClick={toggleProfileMenu}>
                     <div className="profile-avatar">
-                      {user.name.charAt(0).toUpperCase()}
+                      {/* {user.name.charAt(0).toUpperCase()} */}
+                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                     </div>
                     <ChevronDown
                       size={14}
