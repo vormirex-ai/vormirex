@@ -27,6 +27,13 @@ export interface IUser extends Document {
     newCourseAlerts: boolean;
     securityAlerts: boolean;
   };
+  privacySettings: {
+    isProfilePublic: boolean;
+    showProgress: boolean;
+    showCourses: boolean;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const userSchema = new Schema<IUser>(
@@ -56,6 +63,11 @@ const userSchema = new Schema<IUser>(
       streakReminders: { type: Boolean, default: true },
       newCourseAlerts: { type: Boolean, default: true },
       securityAlerts: { type: Boolean, default: true },
+    },
+    privacySettings: {
+      isProfilePublic: { type: Boolean, default: true },
+      showProgress: { type: Boolean, default: true },
+      showCourses: { type: Boolean, default: true },
     },
   },
   {
