@@ -1,6 +1,10 @@
 // src/pages/CourseDetail.tsx
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import ModalWhy from '../common/Modals/ModalWhy'
+import ModalCareer from '../common/Modals/ModalCareer';
+import ModalGain from '../common/Modals/ModalGain';
+
 import {
   LayoutDashboard,
   ArrowLeft,
@@ -344,8 +348,18 @@ export default function CourseDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [level, setLevel] = useState<'FOUNDATION' | 'ADVANCED'>('FOUNDATION');
-  // const [modalImage, setModalImage] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  type ModalType = 'why' | 'career' | 'gain' | null;
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
+
+
+  useEffect(() => {
+    setActiveModal(null);
+  }, [courseId]);
+
+  useEffect(() => {
+    console.log('Active Modal changed to:', activeModal);
+  }, [activeModal]);
+
   const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -838,6 +852,9 @@ export default function CourseDetail() {
         );
       }
     }
+
+
+
     return (
       <>
         <div className="course-level-tabs below-hero">
@@ -866,17 +883,30 @@ export default function CourseDetail() {
         <section className="course-info-cards">
           <div
             className="info-card"
-            onClick={() => setIsModalOpen(true)}
+
+            onClick={() => {
+              console.log('WHY MODAL CLICKED');
+
+              setActiveModal('why')
+            }}
           >
             <div className="info-card-image-wrapper">
               <img src={getCatalogImage(course)} alt="Why" />
             </div>
             <p className="info-card-title">Why {course.title}</p>
           </div>
+          {/* <div
+            className="info-card"
+            onClick={() => {
+              console.log('WHY MODAL CLICKED');
+              setActiveModal('why');
+            }}
+          >
 
+          </div> */}
           <div
             className="info-card"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setActiveModal('career')}
           >
             <div className="info-card-image-wrapper">
               <img src={detailImages.career} alt="Career" />
@@ -885,7 +915,7 @@ export default function CourseDetail() {
           </div>
           <div
             className="info-card"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setActiveModal('gain')}
           >
             <div className="info-card-image-wrapper">
               <img src={detailImages.gain} alt="Gain" />
@@ -920,146 +950,15 @@ export default function CourseDetail() {
             )}
           </div>
         </section>
+        // Update the modal JSX to use the new handler
         {/* {modalImage && (
           <div className="image-modal" onClick={() => setModalImage(null)}>
-            <div className="modal-content">
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <img src={modalImage} alt="Preview" />
-              <button className="modal-close">×</button>
+              <button className="modal-close" onClick={handleModalClose}>×</button>
             </div>
           </div>
         )} */}
-
-        {isModalOpen && (
-          <div className="image-modal" onClick={() => setIsModalOpen(false)}>
-            <div
-              className="modal-content modal-scroll aiml-modal"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button className="modal-close" onClick={() => setIsModalOpen(false)}>
-                ×
-              </button>
-
-              {/* ================= HERO ================= */}
-              <section className="modal-section hero-section">
-                <h1>Master AIML & Shape the Future</h1>
-                <p className="hero-desc">
-                  Unlock the power of Artificial Intelligence Markup Language – the key
-                  to building intelligent chatbots and conversational AI that transform
-                  businesses and careers.
-                </p>
-              </section>
-
-              {/* ================= WHAT IS AIML ================= */}
-              <section className="modal-section">
-                <h2>What is AIML?</h2>
-                <p className="section-subtitle">
-                  The Foundation of Conversational AI
-                </p>
-
-                <div className="aiml-two-col">
-                  {/* LEFT */}
-                  <div className="aiml-text">
-                    <p>
-                      Artificial Intelligence Markup Language (AIML) is an XML-based
-                      language for creating artificial intelligence applications,
-                      particularly chatbots. It is the perfect starting point for
-                      anyone interested in AI and natural language processing.
-                    </p>
-
-                    <p>
-                      AIML enables developers to create rule-based chatbots that can
-                      understand and respond to user inputs in a natural,
-                      conversational manner.
-                    </p>
-
-                    <ul>
-                      <li>Customer service automation</li>
-                      <li>Educational tutoring systems</li>
-                      <li>Personal assistants</li>
-                      <li>Entertainment and gaming</li>
-                    </ul>
-                  </div>
-
-                  {/* RIGHT */}
-                  <div className="aiml-cards">
-                    <div className="info-box">
-                      <h4>Easy to Learn</h4>
-                      <p>XML-based syntax makes it accessible for beginners.</p>
-                    </div>
-                    <div className="info-box">
-                      <h4>Natural Conversations</h4>
-                      <p>Create human-like interactions with minimal code.</p>
-                    </div>
-                    <div className="info-box">
-                      <h4>Quick Deployment</h4>
-                      <p>Go from concept to production in days, not months.</p>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* ================= WHY CHOOSE AIML ================= */}
-              <section className="modal-section">
-                <h2>Why Choose AIML?</h2>
-                <p className="section-subtitle">
-                  Transform Your Business & Career
-                </p>
-
-                <div className="aiml-grid">
-                  <div className="info-box">
-                    <h4>For Businesses</h4>
-                    <p>
-                      Reduce operational costs with 24/7 automated customer support and
-                      scalable chatbot solutions.
-                    </p>
-                  </div>
-
-                  <div className="info-box">
-                    <h4>For Students</h4>
-                    <p>
-                      Learn AI fundamentals, pattern matching, and NLP concepts essential
-                      for future job roles.
-                    </p>
-                  </div>
-
-                  <div className="info-box">
-                    <h4>Scalable Growth</h4>
-                    <p>
-                      From simple FAQ bots to advanced AI assistants as your needs grow.
-                    </p>
-                  </div>
-
-                  <div className="info-box">
-                    <h4>Community Support</h4>
-                    <p>
-                      Access global developer communities, tutorials, and open-source
-                      projects.
-                    </p>
-                  </div>
-
-                  <div className="info-box">
-                    <h4>Secure & Reliable</h4>
-                    <p>
-                      Structured and predictable chatbot behavior suitable for
-                      enterprise use.
-                    </p>
-                  </div>
-
-                  <div className="info-box">
-                    <h4>Multi-Language Support</h4>
-                    <p>
-                      Build chatbots that communicate with users in their native
-                      language.
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-            </div>
-          </div>
-        )}
-
-
       </>
     );
   };
@@ -1214,6 +1113,56 @@ export default function CourseDetail() {
           </div>
         </section>
       </div>
-    </div>
+
+
+      {activeModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.65)',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              background: 'var(--bg-medium)',
+              color: 'var(--color-text-main)',
+
+              padding: '32px',
+              borderRadius: '16px',
+              width: '90%',
+              maxWidth: '680px',
+              maxHeight: '85vh',
+              overflowY: 'auto',     // scroll if more content 
+              position: 'relative',
+            }}
+          >
+            <button onClick={() => setActiveModal(null)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'transparent',
+                color: 'var(--color-text-main)',
+                fontSize: '20px',
+                border: 'none',
+                cursor: 'pointer',
+              }}>X</button>
+
+            {activeModal === 'why' && <ModalWhy courseId={courseId} />}
+            {activeModal === 'career' && <ModalCareer courseId={courseId} />}
+            {activeModal === 'gain' && <ModalGain courseId={courseId} />}
+          </div>
+        </div>
+      )
+      }
+
+
+    </div >
   );
 }
+

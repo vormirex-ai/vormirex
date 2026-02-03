@@ -2122,111 +2122,128 @@ button {
 
 /* ============CONTENT MODAL=====*/
 
-.image-modal{
-  cursor: default;
-}
 
-.modal-content.modal-scroll{
-  background: var(--bg-card);
-  color: var(--text-main);
-  width: 90%;
-  max-width: 900px;
-  max-height: 85vh;
-  padding:32px;
-  border-radius: 20px;
-  overflow-y: auto;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8);
-}
 
-.modal-content .modal-close{
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  font-size: 2rem;
-  color: var(--text-main);
-  cursor: pointer;
-}
-
-/* ================= AIML MODAL CONTENT ================= */
-
-.aiml-modal h1 {
-  font-size: 2.4rem;
-  margin-bottom: 16px;
-  text-align: center;
-}
-.modal-section > h2 {
-  text-align: center;
-}
-
-.hero-desc {
-  max-width: 800px;
-  opacity: 0.85;
-  line-height: 1.7;
-}
-
-.modal-section {
-  margin-bottom: 70px;
-}
-
-.section-subtitle {
-  text-align: center;
-  color: var(--text-secondary);
-  margin-bottom: 40px;
-}
-
-.aiml-two-col {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 40px;
-}
-
-.aiml-text ul {
-  margin-top: 20px;
-  padding-left: 20px;
-}
-
-.aiml-text li {
-  margin-bottom: 8px;
-}
-
-.aiml-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.info-box {
-  background: var(--bg-card);
-  border: 1px solid var(--color-border);
+/* .modal-wrapper {
+  background: var(--bg-medium);
+  color: var(--color-text-main);
   border-radius: 16px;
-  padding: 24px;
+  padding: 32px;
 }
 
-.aiml-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+.modal-title {
+  color: var(--color-teal);
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
 }
 
-.chatbot-box {
-  max-width: 700px;
-  margin: 0 auto;
-  background: var(--bg-card);
-  border-radius: 18px;
-  padding: 30px;
+.modal-subtitle {
+  color: #cccccc;
+  text-align: center;
+}
+
+.modal-card {
+  background: var(--card-bg);
   border: 1px solid var(--color-border);
-}
-
-.chat-msg {
-  margin-top: 15px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 14px 18px;
   border-radius: 12px;
+  padding: 16px;
+} */
+
+/* ===== MODAL BASE ===== */
+
+.modal-wrapper {
+  color: var(--color-text-main);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .aiml-two-col {
-    grid-template-columns: 1fr;
+.modal-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-teal);
+  margin-bottom: 12px;
+}
+
+.modal-subtitle {
+  text-align: center;
+  color: #cfcfcf;
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+/* ===== WHY MODAL ===== */
+
+.modal-grid {
+  display: flex;
+  flex-direction: column;   /*vertical stacking*/
+  gap: 16px;
+}
+.modal-box {
+  background: var(--card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 15px;
+  color: #e5e5e5;
+}
+
+
+
+.modal-card {
+  background: var(--card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.modal-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--color-teal);
+}
+
+.modal-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #d6d6d6;
+}
+
+/* ===== CAREER & GAIN ===== */
+
+.modal-list {
+  margin-top: 20px;
+  padding-left: 18px;
+}
+
+.modal-list li {
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #e5e5e5;
+}
+
+/* Career note text */
+.modal-note {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #cfcfcf;
+  opacity: 0.85;
+  text-align: center;
+}
+
+/* ===== EMPTY STATE ===== */
+
+.modal-empty {
+  text-align: center;
+  color: #aaa;
+  margin-top: 40px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (min-width: 768px) {
+  .modal-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
