@@ -18,25 +18,34 @@ export const signup = async (
 
 export const login = async (
   req: Request<object, object, LoginBody>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
-  const { accessToken, refreshToken, user } = await authService.login(req.body);
+  console.log('[DEBUG] Login request received:', req.body.email);
+  try {
+    console.log('[DEBUG] Calling authService.login...');
+    const { accessToken, refreshToken, user } = await authService.login(req.body);
+    console.log('[DEBUG] authService.login successful');
 
-  res.cookie('refresh_token', refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
-  const userResponse = {
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-  };
+    const userResponse = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
 
-  return res.json({ success: true, accessToken, user: userResponse });
+    return res.json({ success: true, accessToken, user: userResponse });
+  } catch (error) {
+    console.error('[DEBUG] Login error caught in controller:', error);
+    next(error);
+  }
 };
 
 export const verifyEmail = async (req: Request, res: Response) => {
