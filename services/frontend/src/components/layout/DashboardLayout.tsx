@@ -22,7 +22,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   toggleRightSidebar,
   showComingSoon,
 }) => {
-  const navigate = useNavigate(); // ✅ Used for navigation
+  const navigate = useNavigate();
+
+  // Check if user is logged in
+  const isAuthenticated = () => {
+    return localStorage.getItem('accessToken') !== null;
+  };
 
   return (
     <main className="main-content">
@@ -34,7 +39,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <FontAwesomeIcon icon={faBars} />
         </button>
 
-        {/* SEO FIX: Use an H1 for the mobile brand name or a hidden one if necessary */}
         <h1 className="logo-mobile">VORMIREX</h1>
 
         <div className="search-box">
@@ -70,15 +74,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             alt="Vormirex - AI-Powered Learning Platform Logo"
             role="button"
             tabIndex={0}
-            onClick={() => navigate('/home')} // ✅ Logo click goes to home
+            onClick={() => navigate('/home')}
             onKeyDown={(e) => e.key === 'Enter' && navigate('/home')}
           />
-
-          {/* SEO FIX: Changed from span to h1 for primary keyword ranking */}
           <h1 className="company-name">VORMIREX</h1>
         </div>
 
-        {/* SEO FIX: Added a hidden descriptive sub-heading for context */}
         <p style={{ display: 'none' }}>
           Vormirex is an AI-powered learning platform designed to help students
           master coding, data science, and more.
