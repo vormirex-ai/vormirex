@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CustomCoursePage.css';
+import { LayoutDashboard } from 'lucide-react';
 
 // ==================== IMPORT IMAGES ====================
 import robotBooster from './assets/robotbooster.png';
@@ -19,6 +20,9 @@ const CustomCoursesList: React.FC = () => {
       description: 'Accelerate your progress with intense, focused modules',
       image: robotBooster,
       path: '/custom/booster-pack',
+      heroTextOverlay: 'Accelerate Your Learning',
+      heroTextSubtitle:
+        'Break through plateaus with focused, intensive modules',
     },
     {
       id: 'coding-mastery',
@@ -26,6 +30,8 @@ const CustomCoursesList: React.FC = () => {
       description: 'Transform from beginner to job-ready developer',
       image: codingMastery,
       path: '/custom/coding-mastery',
+      heroTextOverlay: 'Master the Code',
+      heroTextSubtitle: 'From beginner to job-ready developer',
     },
     {
       id: 'exam-prep',
@@ -33,6 +39,8 @@ const CustomCoursesList: React.FC = () => {
       description: 'Score higher with realistic mock exams',
       image: examprep,
       path: '/custom/exam-prep',
+      heroTextOverlay: 'Ace Your Exams',
+      heroTextSubtitle: 'Realistic practice tests that prepare you for success',
     },
     {
       id: 'saved-chats',
@@ -40,6 +48,8 @@ const CustomCoursesList: React.FC = () => {
       description: 'Your personal knowledge vault',
       image: savedchats,
       path: '/custom/saved-chats',
+      heroTextOverlay: 'Your Knowledge Vault',
+      heroTextSubtitle: 'Never lose a valuable insight again',
     },
     {
       id: 'your-progress',
@@ -47,6 +57,8 @@ const CustomCoursesList: React.FC = () => {
       description: "See exactly how far you've come",
       image: yourprogress,
       path: '/custom/your-progress',
+      heroTextOverlay: 'Track Your Journey',
+      heroTextSubtitle: 'Visualize your growth and stay motivated',
     },
   ];
 
@@ -54,24 +66,10 @@ const CustomCoursesList: React.FC = () => {
     <div className="custom-courses-list">
       <div className="courses-header">
         <button
-          className="nav-button dashboard-button"
+          className="nav-button dashboard-btn" // Changed from dashboard-button-header to dashboard-btn
           onClick={() => navigate('/')}
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            style={{ marginRight: '8px' }}
-          >
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-          </svg>
-          Dashboard
+          <LayoutDashboard size={22} />
         </button>
 
         <h1 className="courses-title">Custom Courses</h1>
@@ -85,10 +83,13 @@ const CustomCoursesList: React.FC = () => {
             className="course-card"
             onClick={() => navigate(course.path)}
           >
-            <div
-              className="course-card-image"
-              style={{ backgroundImage: `url(${course.image})` }}
-            />
+            <div className="course-card-image">
+              <img src={course.image} alt={course.title} />
+              <div className="course-card-overlay">
+                <h3>{course.heroTextOverlay}</h3>
+                <p>{course.heroTextSubtitle}</p>
+              </div>
+            </div>
             <div className="course-card-content">
               <h3>{course.title}</h3>
               <p>{course.description}</p>
