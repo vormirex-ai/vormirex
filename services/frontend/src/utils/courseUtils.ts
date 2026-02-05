@@ -20,16 +20,20 @@ import GainDA from '../assets/gainindatascience.jpeg';
 import CareerAI from '../assets/carrerinaiml.png';
 import GainAI from '../assets/gainaiml.png';
 
-// --- NEW: Import hero images for the special courses ---
+//  NEW:Import hero images for the special courses
 import examPrepHero from '../assets/exmprepkit.jpeg';
 import careerTransitionHero from '../assets/carrertran.jpeg';
 import aiLearningHero from '../assets/aipowered.jpeg';
 
 // --- VIDEO ASSETS (CLOUDINARY) ---
-const CyberVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769757258/C_S_yyglnw.mp4';
-const DataScienceVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769845052/DSs_zose9w.mp4';
-const DataAnalyticsVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769844972/DA_zw9avx.mp4';
-const AIMLVideo = 'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769753171/Blue_Futuristic_Artificial_Intelligence_Video_1_ubonrm.mp4';
+const CyberVideo =
+  'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769757258/C_S_yyglnw.mp4';
+const DataScienceVideo =
+  'https://res.cloudinary.com/dsgbhkzpg/video/upload/v1770297988/DSs_e8qobp.mp4';
+const DataAnalyticsVideo =
+  'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769844972/DA_zw9avx.mp4';
+const AIMLVideo =
+  'https://res.cloudinary.com/dsgbhkzpg/video/upload/v1770297945/DA_1_ci8qd9.mp4';
 
 // --- HELPERS ---
 
