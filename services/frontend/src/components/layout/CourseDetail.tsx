@@ -950,7 +950,7 @@ export default function CourseDetail() {
             )}
           </div>
         </section>
-        // Update the modal JSX to use the new handler
+        {/* // Update the modal JSX to use the new handler */}
         {/* {modalImage && (
           <div className="image-modal" onClick={() => setModalImage(null)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
