@@ -12,7 +12,7 @@
   --card-border-radius: 24px;
   --card-padding: 32px;
   --section-padding: 80px 24px;
-  --hero-height: 80vh;
+  --hero-height: 60vh; /* Reduced from 80vh */
 }
 
 /* ==================== CUSTOM COURSE MAIN ==================== */
@@ -49,6 +49,7 @@
   backface-visibility: hidden;
   transform: translateZ(0);
   height: var(--hero-height);
+  margin-bottom: 40px; /* Added margin to create space between hero and next section */
 }
 
 /* Parallax effect for desktop */
@@ -311,6 +312,7 @@
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
+  margin-bottom: 60px; /* Added margin to create space between sections */
 }
 
 .benefits-section::before {
@@ -338,6 +340,7 @@
   position: relative;
   display: inline-block;
   width: 100%;
+  z-index: 10; /* Added z-index to prevent clipping */
 }
 
 .section-title::after {
@@ -425,6 +428,7 @@
   background-color: var(--bg-dark);
   position: relative;
   overflow: hidden;
+  margin-bottom: 60px; /* Added margin to create space between sections */
 }
 
 .testimonials-section::before {
@@ -1049,7 +1053,7 @@
 /* Extra Large Desktops (1600px and up) */
 @media (min-width: 1600px) {
   .custom-hero {
-    height: 90vh;
+    height: 70vh; /* Reduced from 90vh */
   }
 
   .hero-content {
@@ -1109,7 +1113,7 @@
 /* Large Desktops (1200px to 1599px) */
 @media (min-width: 1200px) and (max-width: 1599px) {
   .custom-hero {
-    height: 85vh;
+    height: 65vh; /* Reduced from 85vh */
   }
 
   .benefits-grid {
@@ -1147,7 +1151,7 @@
 /* Desktops (1024px to 1199px) */
 @media (min-width: 1024px) and (max-width: 1199px) {
   .custom-hero {
-    height: 80vh;
+    height: 60vh; /* Reduced from 80vh */
   }
 
   .hero-content {
@@ -1204,7 +1208,7 @@
 /* Tablets (768px to 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
   .custom-hero {
-    height: 70vh;
+    height: 55vh; /* Reduced from 70vh */
     background-attachment: scroll;
   }
 
@@ -1295,7 +1299,7 @@
 /* Large Mobile Devices (600px to 767px) */
 @media (min-width: 600px) and (max-width: 767px) {
   .custom-hero {
-    height: 60vh;
+    height: 50vh; /* Reduced from 60vh */
   }
 
   .hero-content {
@@ -1383,7 +1387,7 @@
 /* Mobile Devices (480px to 599px) */
 @media (min-width: 480px) and (max-width: 599px) {
   .custom-hero {
-    height: 50vh;
+    height: 45vh; /* Reduced from 50vh */
   }
 
   .hero-content {
@@ -1470,7 +1474,7 @@
 /* Small Mobile Devices (320px to 479px) */
 @media (max-width: 479px) {
   .custom-hero {
-    height: 50vh;
+    height: 40vh; /* Reduced from 50vh */
   }
 
   .hero-content {
@@ -1582,7 +1586,7 @@
 /* Landscape Orientation for Mobile Devices */
 @media (max-width: 767px) and (orientation: landscape) {
   .custom-hero {
-    height: 100vh;
+    height: 80vh; /* Increased for landscape */
   }
 
   .hero-content {
@@ -1663,7 +1667,7 @@
 /* Ultra-wide screens (2560px and up) */
 @media (min-width: 2560px) {
   .custom-hero {
-    height: 100vh;
+    height: 60vh; /* Reduced from 100vh */
   }
 
   .hero-content {
