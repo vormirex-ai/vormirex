@@ -12,7 +12,10 @@
   --card-border-radius: 24px;
   --card-padding: 32px;
   --section-padding: 80px 24px;
-  --hero-height: 60vh; /* Reduced from 80vh */
+  --hero-height: 45vh; /* Reduced from 60vh to 45vh */
+  /* Add max-width constraints for large screens */
+  --content-max-width: 1400px;
+  --content-max-width-xl: 1600px;
 }
 
 /* ==================== CUSTOM COURSE MAIN ==================== */
@@ -49,7 +52,10 @@
   backface-visibility: hidden;
   transform: translateZ(0);
   height: var(--hero-height);
-  margin-bottom: 40px; /* Added margin to create space between hero and next section */
+  min-height: 400px; /* Set a minimum height to ensure content is visible */
+  max-height: 600px; /* Set a maximum height to prevent excessive space */
+  margin-bottom: 0; /* Removed margin to create seamless transition with divider */
+  position: relative;
 }
 
 /* Parallax effect for desktop */
@@ -75,7 +81,26 @@
   z-index: 1;
 }
 
-/* ==================== NAVIGATION CONTAINER - COMPLETE REWORK ==================== */
+/* Add a gradient overlay at the bottom of the hero for better separation */
+.custom-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(18, 18, 18, 0.3),
+    rgba(18, 18, 18, 0.7),
+    var(--bg-medium)
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ==================== NAVIGATION CONTAINER ==================== */
 .navigation-container {
   position: fixed;
   top: 20px;
@@ -103,21 +128,17 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* --- START: ADDED/UPDATED STYLES FOR NAVIGATION --- */
-
 /* Style for icon-only buttons within the navigation container */
 .nav-button.back-btn,
 .nav-button.dashboard-btn {
-  width: 48px; /* Ensure buttons are square */
+  width: 48px;
   height: 48px;
-  padding: 0; /* Remove default padding */
+  padding: 0;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-/* --- END: ADDED/UPDATED STYLES --- */
 
 /* Add a visible border for debugging */
 .nav-button {
@@ -141,64 +162,79 @@
   .navigation-container {
     position: absolute;
     top: 30px;
-    left: 15px; /* Moved more to the left for tablets */
+    left: 15px;
   }
 }
 
 @media (min-width: 1200px) {
   .navigation-container {
     top: 40px;
-    left: 20px; /* Moved more to the left for laptops */
+    left: 20px;
   }
 }
 
 @media (min-width: 1600px) {
   .navigation-container {
     top: 50px;
-    left: 25px; /* Moved more to the left for large desktops */
+    left: 25px;
   }
 }
 
-/* Hero Content */
+/* Hero Content - Fixed for large screens */
 .hero-content {
   position: absolute;
-  bottom: 40px;
-  left: 30px;
-  right: 24px;
-  max-width: 900px;
+  bottom: 30px; /* Moved up from 40px to reduce space */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 900px; /* Constrain max width */
   z-index: 5;
-  text-align: left;
+  text-align: center;
   padding: 0 24px;
 }
 
-/* Hero Text Enhancement */
+/* Hero Text Enhancement - Fixed for large screens */
 .hero-text-wrapper {
   position: relative;
   z-index: 10;
   background: rgba(0, 0, 0, 0.5);
-  padding: 30px;
+  padding: 25px; /* Reduced from 30px */
   border-radius: 16px;
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   max-width: 90%;
+  margin: 0 auto;
+  text-align: left;
 }
 
+/* Fixed text scaling for large screens */
 .custom-title {
-  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-size: clamp(
+    2.2rem,
+    4vw,
+    3.5rem
+  ); /* Reduced max size from 4rem to 3.5rem */
   color: var(--color-teal);
-  margin-bottom: 24px;
+  margin-bottom: 20px; /* Reduced from 24px */
   font-weight: 900;
   letter-spacing: -1px;
   text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+  max-width: 100%; /* Ensure text doesn't overflow */
 }
 
 .custom-desc {
-  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-size: clamp(
+    1rem,
+    2vw,
+    1.3rem
+  ); /* Reduced max size from 1.5rem to 1.3rem */
   color: #f0f0f0;
-  margin-bottom: 48px;
+  margin-bottom: 30px; /* Reduced from 48px */
   line-height: 1.5;
-  max-width: 800px;
+  max-width: 800px; /* Constrain max width */
   text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Button Styles */
@@ -206,8 +242,12 @@
   background-color: var(--color-teal);
   color: #000;
   font-weight: 800;
-  padding: 18px 40px;
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  padding: 15px 35px; /* Reduced padding from 18px 40px */
+  font-size: clamp(
+    1rem,
+    1.5vw,
+    1.1rem
+  ); /* Reduced max size from 1.2rem to 1.1rem */
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -245,28 +285,33 @@
 }
 
 /* ==================== HERO IMAGE TEXT OVERLAY ==================== */
+/* ==================== HERO IMAGE TEXT OVERLAY ==================== */
 .hero-image-text-overlay {
   position: absolute;
   top: 50%;
-  left: 5%;
-  transform: translateY(-50%);
-  text-align: left;
+  left: 5%; /* Changed from 50% to 5% to move to the left */
+  transform: translateY(-50%); /* Removed translateX to keep on the left */
+  text-align: left; /* Changed from center to left */
   z-index: 2;
-  width: 25%;
-  max-width: 320px;
-  padding: 18px;
+  width: 60%; /* Kept the same width */
+  max-width: 500px;
+  padding: 15px;
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
   border-radius: 16px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  animation: fadeInLeft 1s ease-out;
+  animation: fadeIn 1s ease-out;
 }
 
 .hero-image-title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(
+    1.3rem,
+    3vw,
+    1.8rem
+  ); /* Reduced max size from 2rem to 1.8rem */
   color: #ffffff;
-  margin-bottom: 12px;
+  margin-bottom: 10px; /* Reduced from 12px */
   font-weight: 900;
   text-shadow:
     0 4px 20px rgba(0, 0, 0, 0.8),
@@ -284,8 +329,8 @@
   content: '';
   position: absolute;
   bottom: -6px;
-  left: 0;
-  transform: none;
+  left: 50%;
+  transform: translateX(-50%);
   width: 40px;
   height: 3px;
   background: linear-gradient(90deg, var(--color-teal), transparent);
@@ -294,7 +339,11 @@
 }
 
 .hero-image-subtitle {
-  font-size: clamp(0.8rem, 2vw, 1rem);
+  font-size: clamp(
+    0.75rem,
+    1.5vw,
+    0.85rem
+  ); /* Reduced max size from 0.9rem to 0.85rem */
   color: #e0e0e0;
   text-shadow:
     0 2px 10px rgba(0, 0, 0, 0.8),
@@ -302,17 +351,99 @@
   line-height: 1.4;
   font-weight: 400;
   letter-spacing: 0.5px;
-  margin-top: 12px;
+  margin-top: 10px; /* Reduced from 12px */
   opacity: 0.9;
+}
+
+/* ==================== SECTION DIVIDER ==================== */
+.section-divider {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(135deg, var(--bg-medium) 0%, var(--bg-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 40px;
+  max-width: var(--content-max-width); /* Constrain max width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-teal) 20%,
+    var(--color-teal) 80%,
+    transparent
+  );
+  animation: shimmer 3s infinite;
+}
+
+.section-divider::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary) 20%,
+    var(--color-primary) 80%,
+    transparent
+  );
+  animation: shimmer 3s infinite 1.5s;
+}
+
+.section-divider-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.section-divider-icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 206, 209, 0.1);
+  border: 2px solid var(--color-teal);
+  border-radius: 50%;
+  position: relative;
+  animation: pulse 2s infinite;
+}
+
+.section-divider-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: var(--color-teal);
+  border-radius: 50%;
 }
 
 /* ==================== BENEFITS SECTION ==================== */
 .benefits-section {
   padding: var(--section-padding);
-  max-width: 1200px;
+  max-width: var(--content-max-width); /* Constrain max width */
   margin: 0 auto;
   position: relative;
-  margin-bottom: 60px; /* Added margin to create space between sections */
+  margin-bottom: 40px; /* Reduced from 60px */
+  border-top: 1px solid rgba(106, 236, 225, 0.1);
+  padding-top: 100px; /* Increased top padding to account for divider */
 }
 
 .benefits-section::before {
@@ -331,16 +462,44 @@
   opacity: 0.3;
 }
 
+/* Add a subtle background pattern to the benefits section */
+.benefits-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(
+      circle at 20% 50%,
+      rgba(0, 206, 209, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 50%,
+      rgba(106, 236, 225, 0.03) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
 .section-title {
   text-align: center;
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(
+    2rem,
+    3vw,
+    2.5rem
+  ); /* Reduced max size from 3rem to 2.5rem */
   color: var(--color-teal);
-  margin-bottom: 60px;
+  margin-bottom: 50px; /* Reduced from 60px */
   font-weight: 800;
   position: relative;
   display: inline-block;
   width: 100%;
-  z-index: 10; /* Added z-index to prevent clipping */
+  z-index: 10;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 .section-title::after {
@@ -355,10 +514,13 @@
   border-radius: 2px;
 }
 
+/* Fixed grid layout for large screens */
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
+  max-width: 1000px; /* Constrain max width */
+  margin: 0 auto;
 }
 
 .benefit-card {
@@ -369,6 +531,7 @@
   text-align: center;
   transition: all 0.4s ease;
   opacity: 0;
+  max-width: 100%; /* Ensure cards don't overflow */
 }
 
 /* Card Hover Effects */
@@ -424,11 +587,14 @@
 
 /* ==================== TESTIMONIALS SECTION ==================== */
 .testimonials-section {
-  padding: 100px 24px;
+  padding: 80px 24px; /* Reduced from 100px */
   background-color: var(--bg-dark);
   position: relative;
   overflow: hidden;
-  margin-bottom: 60px; /* Added margin to create space between sections */
+  margin-bottom: 40px; /* Reduced from 60px */
+  max-width: var(--content-max-width); /* Constrain max width */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .testimonials-section::before {
@@ -442,12 +608,12 @@
   z-index: 0;
 }
 
+/* Fixed grid layout for large screens */
 .testimonials-grid {
   display: grid;
-  /* Increased min-width for wider cards */
   grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   gap: 30px;
-  max-width: 1200px;
+  max-width: 1000px; /* Constrain max width */
   margin: 0 auto;
 }
 
@@ -459,6 +625,7 @@
   opacity: 0;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  max-width: 100%; /* Ensure cards don't overflow */
 }
 
 .testimonial-card:hover {
@@ -491,9 +658,12 @@
 /* ==================== FINAL CTA SECTION ==================== */
 .final-cta-section {
   text-align: center;
-  padding: 120px 24px;
+  padding: 100px 24px; /* Reduced from 120px */
   background: linear-gradient(180deg, var(--bg-medium) 0%, var(--bg-dark) 100%);
   position: relative;
+  max-width: var(--content-max-width); /* Constrain max width */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .final-cta-section::after {
@@ -513,32 +683,44 @@
 }
 
 .final-cta-container {
-  max-width: 800px;
+  max-width: 800px; /* Constrain max width */
   margin: 0 auto;
   background: linear-gradient(135deg, rgba(0, 206, 209, 0.1), transparent);
-  padding: 60px 40px;
+  padding: 50px 35px; /* Reduced from 60px 40px */
   border-radius: 40px;
   border: 1px solid rgba(0, 206, 209, 0.2);
 }
 
 .final-cta-section h2 {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(
+    2rem,
+    3vw,
+    2.5rem
+  ); /* Reduced max size from 3rem to 2.5rem */
   color: var(--color-teal);
   margin-bottom: 20px;
   font-weight: 800;
 }
 
 .final-cta-section p {
-  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  font-size: clamp(
+    1.1rem,
+    2vw,
+    1.3rem
+  ); /* Reduced max size from 1.4rem to 1.3rem */
   color: #aaa;
-  margin-bottom: 48px;
+  margin-bottom: 40px; /* Reduced from 48px */
 }
 
 .final-cta-button {
   background-color: var(--color-teal);
   color: #000;
-  padding: 20px 50px;
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  padding: 18px 45px; /* Reduced from 20px 50px */
+  font-size: clamp(
+    1.2rem,
+    2vw,
+    1.3rem
+  ); /* Reduced max size from 1.5rem to 1.3rem */
   font-weight: 800;
   border: none;
   border-radius: 50px;
@@ -579,23 +761,26 @@
   min-height: 100vh;
   background-color: var(--bg-medium);
   color: var(--color-text-main);
-  padding: 60px 24px;
+  padding: 50px 24px; /* Reduced from 60px */
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
     sans-serif;
+  max-width: var(--content-max-width-xl); /* Slightly wider for course list */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .courses-header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 50px; /* Reduced from 60px */
   position: relative;
-  max-width: 1400px;
+  max-width: 1000px; /* Constrain max width */
   margin-left: auto;
   margin-right: auto;
 }
 
 .courses-title {
-  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-size: clamp(2rem, 4vw, 3rem); /* Reduced max size from 3.5rem to 3rem */
   color: var(--color-teal);
   margin-bottom: 12px;
   font-weight: 900;
@@ -603,7 +788,11 @@
 }
 
 .courses-subtitle {
-  font-size: clamp(1rem, 3vw, 1.25rem);
+  font-size: clamp(
+    1rem,
+    2vw,
+    1.2rem
+  ); /* Reduced max size from 1.25rem to 1.2rem */
   color: #aaaaaa;
   margin-bottom: 20px;
 }
@@ -636,11 +825,12 @@
   border-color: var(--color-teal);
 }
 
+/* Fixed grid layout for large screens */
 .courses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 32px;
-  max-width: 1400px;
+  max-width: 1200px; /* Constrain max width */
   margin: 0 auto;
 }
 
@@ -655,6 +845,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  max-width: 100%; /* Ensure cards don't overflow */
 }
 
 .course-card::before {
@@ -756,7 +947,11 @@
 }
 
 .course-card-overlay h3 {
-  font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+  font-size: clamp(
+    1.3rem,
+    2.5vw,
+    1.6rem
+  ); /* Reduced max size from 1.8rem to 1.6rem */
   margin-bottom: 12px;
   color: var(--color-teal);
   font-weight: 800;
@@ -791,7 +986,11 @@
 }
 
 .course-card-overlay p {
-  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+  font-size: clamp(
+    0.9rem,
+    1.5vw,
+    1rem
+  ); /* Reduced max size from 1.1rem to 1rem */
   color: #e0e0e0;
   line-height: 1.5;
   font-weight: 400;
@@ -978,11 +1177,11 @@
 @keyframes fadeInLeft {
   from {
     opacity: 0;
-    transform: translateY(-50%) translateX(-20px);
+    transform: translate(-20px, -50%);
   }
   to {
     opacity: 1;
-    transform: translateY(-50%) translateX(0);
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -1007,6 +1206,31 @@
   }
   100% {
     box-shadow: 0 0 0 0 rgba(0, 206, 209, 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0.3;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -1053,48 +1277,52 @@
 /* Extra Large Desktops (1600px and up) */
 @media (min-width: 1600px) {
   .custom-hero {
-    height: 70vh; /* Reduced from 90vh */
+    height: 50vh; /* Further reduced from 70vh */
+    min-height: 450px;
+    max-height: 650px;
   }
 
   .hero-content {
-    max-width: 1000px;
-    bottom: 60px;
+    max-width: 900px; /* Fixed max width */
+    bottom: 40px;
   }
 
   .custom-title {
-    font-size: 4.5rem;
+    font-size: 3.5rem; /* Fixed size instead of viewport-based */
   }
 
   .custom-desc {
-    font-size: 1.8rem;
+    font-size: 1.3rem; /* Fixed size instead of viewport-based */
   }
 
   .benefits-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: 40px;
+    gap: 30px;
+    max-width: 1200px; /* Fixed max width */
   }
 
   .testimonials-grid {
     grid-template-columns: repeat(3, 1fr);
+    max-width: 1200px; /* Fixed max width */
   }
 
   .courses-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1400px; /* Fixed max width */
   }
 
   .hero-image-text-overlay {
-    left: 8%;
-    width: 20%;
-    padding: 20px;
-    max-width: 380px;
+    width: 50%;
+    max-width: 500px; /* Fixed max width */
+    padding: 18px;
   }
 
   .hero-image-title {
-    font-size: 2.5rem;
+    font-size: 1.8rem; /* Fixed size instead of viewport-based */
   }
 
   .hero-image-subtitle {
-    font-size: 1.1rem;
+    font-size: 0.85rem; /* Fixed size instead of viewport-based */
   }
 
   .course-card-overlay {
@@ -1102,56 +1330,61 @@
   }
 
   .course-card-overlay h3 {
-    font-size: 1.5rem;
+    font-size: 1.6rem; /* Fixed size instead of viewport-based */
   }
 
   .course-card-overlay p {
-    font-size: 1rem;
+    font-size: 1rem; /* Fixed size instead of viewport-based */
   }
 }
 
 /* Large Desktops (1200px to 1599px) */
 @media (min-width: 1200px) and (max-width: 1599px) {
   .custom-hero {
-    height: 65vh; /* Reduced from 85vh */
+    height: 45vh; /* Further reduced from 65vh */
+    min-height: 400px;
+    max-height: 600px;
   }
 
   .benefits-grid {
     grid-template-columns: repeat(3, 1fr);
+    max-width: 1000px; /* Fixed max width */
   }
 
   .testimonials-grid {
-    grid-template-columns: repeat(2, 1fr); /* Adjusted for wider cards */
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1000px; /* Fixed max width */
   }
 
   .hero-image-text-overlay {
-    left: 6%;
-    width: 22%;
-    padding: 18px;
-    max-width: 350px;
+    width: 55%;
+    max-width: 450px; /* Fixed max width */
+    padding: 16px;
   }
 
   .hero-image-title {
-    font-size: 2.2rem;
+    font-size: 1.6rem; /* Fixed size instead of viewport-based */
   }
 
   .hero-image-subtitle {
-    font-size: 1rem;
+    font-size: 0.8rem; /* Fixed size instead of viewport-based */
   }
 
   .course-card-overlay h3 {
-    font-size: 1.4rem;
+    font-size: 1.4rem; /* Fixed size instead of viewport-based */
   }
 
   .course-card-overlay p {
-    font-size: 0.95rem;
+    font-size: 0.95rem; /* Fixed size instead of viewport-based */
   }
 }
 
 /* Desktops (1024px to 1199px) */
 @media (min-width: 1024px) and (max-width: 1199px) {
   .custom-hero {
-    height: 60vh; /* Reduced from 80vh */
+    height: 45vh; /* Kept at 45vh */
+    min-height: 380px;
+    max-height: 550px;
   }
 
   .hero-content {
@@ -1161,78 +1394,12 @@
   .benefits-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+    max-width: 900px; /* Fixed max width */
   }
 
   .testimonials-grid {
-    grid-template-columns: repeat(2, 1fr); /* Adjusted for wider cards */
-  }
-
-  .benefits-section,
-  .testimonials-section {
-    padding: 60px 20px;
-  }
-
-  .courses-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-  .hero-image-text-overlay {
-    left: 5%;
-    width: 25%;
-    padding: 16px;
-    max-width: 320px;
-  }
-
-  .hero-image-title {
-    font-size: 2rem;
-  }
-
-  .hero-image-subtitle {
-    font-size: 0.95rem;
-  }
-
-  .course-card-overlay {
-    padding: 20px;
-  }
-
-  .course-card-overlay h3 {
-    font-size: 1.3rem;
-  }
-
-  .course-card-overlay p {
-    font-size: 0.9rem;
-  }
-}
-
-/* Tablets (768px to 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .custom-hero {
-    height: 55vh; /* Reduced from 70vh */
-    background-attachment: scroll;
-  }
-
-  .hero-content {
-    max-width: 700px;
-    bottom: 30px;
-    padding: 0 20px;
-  }
-
-  .custom-title {
-    font-size: 3rem;
-  }
-
-  .custom-desc {
-    font-size: 1.4rem;
-  }
-
-  .benefits-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-
-  .testimonials-grid {
-    grid-template-columns: repeat(2, 1fr); /* Adjusted for wider cards */
+    max-width: 900px; /* Fixed max width */
   }
 
   .benefits-section,
@@ -1240,24 +1407,97 @@
     padding: 50px 20px;
   }
 
+  .courses-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1000px; /* Fixed max width */
+  }
+
+  .hero-image-text-overlay {
+    width: 60%;
+    max-width: 400px; /* Fixed max width */
+    padding: 14px;
+  }
+
+  .hero-image-title {
+    font-size: 1.5rem; /* Fixed size instead of viewport-based */
+  }
+
+  .hero-image-subtitle {
+    font-size: 0.75rem; /* Fixed size instead of viewport-based */
+  }
+
+  .course-card-overlay {
+    padding: 20px;
+  }
+
+  .course-card-overlay h3 {
+    font-size: 1.3rem; /* Fixed size instead of viewport-based */
+  }
+
+  .course-card-overlay p {
+    font-size: 0.9rem; /* Fixed size instead of viewport-based */
+  }
+}
+
+/* Tablets (768px to 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .custom-hero {
+    height: 40vh; /* Reduced from 55vh */
+    min-height: 350px;
+    max-height: 500px;
+    background-attachment: scroll;
+  }
+
+  .hero-content {
+    max-width: 700px;
+    bottom: 25px; /* Adjusted from 30px */
+    padding: 0 20px;
+  }
+
+  .custom-title {
+    font-size: 2.8rem;
+  }
+
+  .custom-desc {
+    font-size: 1.3rem;
+  }
+
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 700px; /* Fixed max width */
+  }
+
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 700px; /* Fixed max width */
+  }
+
+  .benefits-section,
+  .testimonials-section {
+    padding: 40px 20px;
+  }
+
   .final-cta-section {
-    padding: 80px 20px;
+    padding: 60px 20px;
   }
 
   .final-cta-container {
-    padding: 40px 30px;
+    padding: 35px 25px;
   }
 
   /* Courses List Specific */
   .courses-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
+    max-width: 800px; /* Fixed max width */
   }
 
   .courses-header .nav-button.dashboard-btn {
     position: static;
     transform: none;
-    margin: 0 auto 24px auto;
+    margin: 0 auto 20px auto;
     width: 48px;
     height: 48px;
     z-index: 10;
@@ -1268,19 +1508,17 @@
   }
 
   .hero-image-text-overlay {
-    left: 4%;
-    width: 30%;
-    padding: 14px;
-    border-radius: 12px;
-    max-width: 300px;
+    width: 70%;
+    max-width: 350px; /* Fixed max width */
+    padding: 12px;
   }
 
   .hero-image-title {
-    font-size: 1.7rem;
+    font-size: 1.4rem;
   }
 
   .hero-image-subtitle {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
   }
 
   .course-card-overlay {
@@ -1299,7 +1537,9 @@
 /* Large Mobile Devices (600px to 767px) */
 @media (min-width: 600px) and (max-width: 767px) {
   .custom-hero {
-    height: 50vh; /* Reduced from 60vh */
+    height: 35vh; /* Reduced from 50vh */
+    min-height: 300px;
+    max-height: 450px;
   }
 
   .hero-content {
@@ -1308,39 +1548,42 @@
   }
 
   .custom-title {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
   }
 
   .custom-desc {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .benefits-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+    max-width: 500px; /* Fixed max width */
   }
 
   .testimonials-grid {
-    grid-template-columns: 1fr; /* Single column on mobile */
+    grid-template-columns: 1fr;
+    max-width: 500px; /* Fixed max width */
   }
 
   .benefits-section,
   .testimonials-section {
-    padding: 40px 16px;
+    padding: 30px 16px;
   }
 
   .final-cta-section {
-    padding: 60px 16px;
+    padding: 50px 16px;
   }
 
   .final-cta-container {
-    padding: 30px 20px;
+    padding: 25px 20px;
   }
 
   /* Courses List Specific */
   .courses-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+    max-width: 500px; /* Fixed max width */
   }
 
   .course-card-image {
@@ -1356,19 +1599,17 @@
   }
 
   .hero-image-text-overlay {
-    left: 3%;
-    width: 40%;
-    padding: 12px;
-    border-radius: 10px;
-    max-width: 280px;
+    width: 80%;
+    max-width: 300px; /* Fixed max width */
+    padding: 10px;
   }
 
   .hero-image-title {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   .hero-image-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
   .course-card-overlay {
@@ -1387,38 +1628,40 @@
 /* Mobile Devices (480px to 599px) */
 @media (min-width: 480px) and (max-width: 599px) {
   .custom-hero {
-    height: 45vh; /* Reduced from 50vh */
+    height: 30vh; /* Reduced from 45vh */
+    min-height: 250px;
+    max-height: 400px;
   }
 
   .hero-content {
-    bottom: 20px;
+    bottom: 15px;
     padding: 0 16px;
   }
 
   .custom-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
 
   .custom-desc {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .hero-cta {
-    padding: 14px 30px;
-    font-size: 1rem;
+    padding: 12px 25px;
+    font-size: 0.9rem;
   }
 
   .benefits-section,
   .testimonials-section {
-    padding: 30px 16px;
+    padding: 25px 16px;
   }
 
   .final-cta-section {
-    padding: 50px 16px;
+    padding: 40px 16px;
   }
 
   .final-cta-container {
-    padding: 30px 16px;
+    padding: 25px 15px;
   }
 
   .benefit-card {
@@ -1431,7 +1674,7 @@
 
   /* Courses List Specific */
   .custom-courses-list {
-    padding: 30px 16px;
+    padding: 25px 16px;
   }
 
   .course-card-image {
@@ -1443,19 +1686,17 @@
   }
 
   .hero-image-text-overlay {
-    left: 2%;
-    width: 45%;
-    padding: 10px;
-    border-radius: 8px;
-    max-width: 260px;
+    width: 85%;
+    max-width: 280px; /* Fixed max width */
+    padding: 8px;
   }
 
   .hero-image-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .hero-image-subtitle {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
   }
 
   .course-card-overlay {
@@ -1474,41 +1715,43 @@
 /* Small Mobile Devices (320px to 479px) */
 @media (max-width: 479px) {
   .custom-hero {
-    height: 40vh; /* Reduced from 50vh */
+    height: 25vh; /* Reduced from 40vh */
+    min-height: 200px;
+    max-height: 350px;
   }
 
   .hero-content {
-    bottom: 15px;
+    bottom: 10px;
     padding: 0 16px;
   }
 
   .custom-title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     line-height: 1.2;
   }
 
   .custom-desc {
-    font-size: 1rem;
-    margin-bottom: 30px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
   }
 
   .hero-cta {
-    padding: 12px 24px;
-    font-size: 0.9rem;
+    padding: 10px 20px;
+    font-size: 0.8rem;
     width: 100%;
   }
 
   .benefits-section,
   .testimonials-section {
-    padding: 30px 12px;
+    padding: 25px 12px;
   }
 
   .final-cta-section {
-    padding: 40px 12px;
+    padding: 30px 12px;
   }
 
   .final-cta-container {
-    padding: 25px 15px;
+    padding: 20px 15px;
   }
 
   .benefit-card {
@@ -1529,7 +1772,7 @@
   }
 
   .courses-header {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
 
   .course-card-image {
@@ -1554,20 +1797,17 @@
   }
 
   .hero-image-text-overlay {
-    left: 2%;
-    width: 50%;
-    padding: 8px;
-    border-radius: 6px;
-    max-width: 240px;
+    width: 90%;
+    max-width: 250px; /* Fixed max width */
+    padding: 6px;
   }
 
   .hero-image-title {
-    font-size: 1rem;
-    line-height: 1.2;
+    font-size: 0.9rem;
   }
 
   .hero-image-subtitle {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
   }
 
   .course-card-overlay {
@@ -1586,35 +1826,36 @@
 /* Landscape Orientation for Mobile Devices */
 @media (max-width: 767px) and (orientation: landscape) {
   .custom-hero {
-    height: 80vh; /* Increased for landscape */
+    height: 50vh; /* Increased for landscape but still less than before */
+    min-height: 300px;
+    max-height: 450px;
   }
 
   .hero-content {
-    bottom: 20px;
+    bottom: 15px;
   }
 
   .custom-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .custom-desc {
-    font-size: 1rem;
-    margin-bottom: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
   }
 
   .hero-image-text-overlay {
-    left: 3%;
-    width: 35%;
-    padding: 10px;
-    max-width: 300px;
+    width: 60%;
+    max-width: 400px;
+    padding: 8px;
   }
 
   .hero-image-title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .hero-image-subtitle {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -1652,14 +1893,14 @@
 /* Responsive text adjustments */
 @media (max-width: 768px) {
   .hero-text-wrapper {
-    padding: 20px;
+    padding: 15px;
     max-width: 95%;
   }
 }
 
 @media (max-width: 480px) {
   .hero-text-wrapper {
-    padding: 15px;
+    padding: 12px;
     max-width: 100%;
   }
 }
@@ -1667,49 +1908,53 @@
 /* Ultra-wide screens (2560px and up) */
 @media (min-width: 2560px) {
   .custom-hero {
-    height: 60vh; /* Reduced from 100vh */
+    height: 40vh; /* Reduced from 60vh */
+    min-height: 500px;
+    max-height: 700px;
   }
 
   .hero-content {
-    max-width: 1200px;
-    bottom: 80px;
+    max-width: 1000px; /* Fixed max width */
+    bottom: 50px;
   }
 
   .custom-title {
-    font-size: 5rem;
+    font-size: 3.5rem; /* Fixed size instead of viewport-based */
   }
 
   .custom-desc {
-    font-size: 2rem;
+    font-size: 1.3rem; /* Fixed size instead of viewport-based */
   }
 
   .benefits-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: 50px;
+    gap: 40px;
+    max-width: 1400px; /* Fixed max width */
   }
 
   .testimonials-grid {
-    grid-template-columns: repeat(3, 1fr); /* Adjusted for wider cards */
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1400px; /* Fixed max width */
   }
 
   .courses-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 40px;
+    max-width: 1600px; /* Fixed max width */
   }
 
   .hero-image-text-overlay {
-    left: 10%;
-    width: 18%;
-    padding: 22px;
-    max-width: 420px;
+    width: 45%;
+    max-width: 600px; /* Fixed max width */
+    padding: 20px;
   }
 
   .hero-image-title {
-    font-size: 3rem;
+    font-size: 2rem; /* Fixed size instead of viewport-based */
   }
 
   .hero-image-subtitle {
-    font-size: 1.3rem;
+    font-size: 0.9rem; /* Fixed size instead of viewport-based */
   }
 
   .course-card-overlay {
@@ -1717,27 +1962,27 @@
   }
 
   .course-card-overlay h3 {
-    font-size: 1.8rem;
+    font-size: 1.6rem; /* Fixed size instead of viewport-based */
   }
 
   .course-card-overlay p {
-    font-size: 1.1rem;
+    font-size: 1rem; /* Fixed size instead of viewport-based */
   }
 }
 
 /* Foldable phones with small screens */
 @media (max-width: 300px) {
   .custom-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .custom-desc {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .hero-cta {
-    padding: 10px 20px;
-    font-size: 0.8rem;
+    padding: 8px 16px;
+    font-size: 0.7rem;
   }
 
   .benefit-card {
@@ -1753,19 +1998,17 @@
   }
 
   .hero-image-text-overlay {
-    left: 1%;
-    width: 55%;
-    padding: 6px;
-    border-radius: 4px;
-    max-width: 200px;
+    width: 95%;
+    max-width: 220px;
+    padding: 5px;
   }
 
   .hero-image-title {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .hero-image-subtitle {
-    font-size: 0.65rem;
+    font-size: 0.55rem;
   }
 
   .course-card-overlay {
@@ -1892,7 +2135,7 @@
   .navigation-container {
     position: absolute;
     top: 15px;
-    left: 8px; /* Moved more to the left for mobile */
+    left: 8px;
   }
 
   .nav-button {
@@ -1904,7 +2147,7 @@
 @media (max-width: 479px) {
   .navigation-container {
     top: 10px;
-    left: 5px; /* Moved more to the left for small mobile */
+    left: 5px;
   }
 
   .nav-button {
