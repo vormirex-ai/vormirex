@@ -1,6 +1,10 @@
 // src/pages/CourseDetail.tsx
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import ModalWhy from '../common/Modals/ModalWhy'
+import ModalCareer from '../common/Modals/ModalCareer';
+import ModalGain from '../common/Modals/ModalGain';
+
 import {
   LayoutDashboard,
   ArrowLeft,
@@ -344,7 +348,18 @@ export default function CourseDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [level, setLevel] = useState<'FOUNDATION' | 'ADVANCED'>('FOUNDATION');
-  const [modalImage, setModalImage] = useState<string | null>(null);
+  type ModalType = 'why' | 'career' | 'gain' | null;
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
+
+
+  useEffect(() => {
+    setActiveModal(null);
+  }, [courseId]);
+
+  useEffect(() => {
+    console.log('Active Modal changed to:', activeModal);
+  }, [activeModal]);
+
   const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -837,6 +852,9 @@ export default function CourseDetail() {
         );
       }
     }
+
+
+
     return (
       <>
         <div className="course-level-tabs below-hero">
@@ -861,19 +879,34 @@ export default function CourseDetail() {
             Download Full Syllabus (PDF)
           </button>
         </div>
+
         <section className="course-info-cards">
           <div
             className="info-card"
-            onClick={() => setModalImage(getCatalogImage(course))}
+
+            onClick={() => {
+              console.log('WHY MODAL CLICKED');
+
+              setActiveModal('why')
+            }}
           >
             <div className="info-card-image-wrapper">
               <img src={getCatalogImage(course)} alt="Why" />
             </div>
             <p className="info-card-title">Why {course.title}</p>
           </div>
+          {/* <div
+            className="info-card"
+            onClick={() => {
+              console.log('WHY MODAL CLICKED');
+              setActiveModal('why');
+            }}
+          >
+
+          </div> */}
           <div
             className="info-card"
-            onClick={() => setModalImage(detailImages.career)}
+            onClick={() => setActiveModal('career')}
           >
             <div className="info-card-image-wrapper">
               <img src={detailImages.career} alt="Career" />
@@ -882,7 +915,7 @@ export default function CourseDetail() {
           </div>
           <div
             className="info-card"
-            onClick={() => setModalImage(detailImages.gain)}
+            onClick={() => setActiveModal('gain')}
           >
             <div className="info-card-image-wrapper">
               <img src={detailImages.gain} alt="Gain" />
@@ -890,12 +923,13 @@ export default function CourseDetail() {
             <p className="info-card-title">What You'll Gain</p>
           </div>
         </section>
+
         <section className="course-content">
           <h2 className="section-title">{level} Curriculum</h2>
           <div className="modules">
             {levelBlock &&
-            levelBlock.modules &&
-            levelBlock.modules.length > 0 ? (
+              levelBlock.modules &&
+              levelBlock.modules.length > 0 ? (
               levelBlock.modules.map((m: any, idx: number) => (
                 <details key={idx} className="module" open={idx === 0}>
                   <summary className="module-summary">
@@ -916,14 +950,15 @@ export default function CourseDetail() {
             )}
           </div>
         </section>
-        {modalImage && (
+        {/* // Update the modal JSX to use the new handler */}
+        {/* {modalImage && (
           <div className="image-modal" onClick={() => setModalImage(null)}>
-            <div className="modal-content">
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <img src={modalImage} alt="Preview" />
-              <button className="modal-close">×</button>
+              <button className="modal-close" onClick={handleModalClose}>×</button>
             </div>
           </div>
-        )}
+        )} */}
       </>
     );
   };
@@ -1078,6 +1113,56 @@ export default function CourseDetail() {
           </div>
         </section>
       </div>
-    </div>
+
+
+      {activeModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.65)',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              background: 'var(--bg-medium)',
+              color: 'var(--color-text-main)',
+
+              padding: '32px',
+              borderRadius: '16px',
+              width: '90%',
+              maxWidth: '680px',
+              maxHeight: '85vh',
+              overflowY: 'auto',     // scroll if more content 
+              position: 'relative',
+            }}
+          >
+            <button onClick={() => setActiveModal(null)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'transparent',
+                color: 'var(--color-text-main)',
+                fontSize: '20px',
+                border: 'none',
+                cursor: 'pointer',
+              }}>X</button>
+
+            {activeModal === 'why' && <ModalWhy courseId={courseId} />}
+            {activeModal === 'career' && <ModalCareer courseId={courseId} />}
+            {activeModal === 'gain' && <ModalGain courseId={courseId} />}
+          </div>
+        </div>
+      )
+      }
+
+
+    </div >
   );
 }
+

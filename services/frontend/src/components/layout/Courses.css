@@ -2119,3 +2119,131 @@ button {
     height: 38px !important;
   }
 }
+
+/* ============CONTENT MODAL=====*/
+
+
+
+/* .modal-wrapper {
+  background: var(--bg-medium);
+  color: var(--color-text-main);
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.modal-title {
+  color: var(--color-teal);
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.modal-subtitle {
+  color: #cccccc;
+  text-align: center;
+}
+
+.modal-card {
+  background: var(--card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+} */
+
+/* ===== MODAL BASE ===== */
+
+.modal-wrapper {
+  color: var(--color-text-main);
+}
+
+.modal-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-teal);
+  margin-bottom: 12px;
+}
+
+.modal-subtitle {
+  text-align: center;
+  color: #cfcfcf;
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+/* ===== WHY MODAL ===== */
+
+.modal-grid {
+  display: flex;
+  flex-direction: column;   /*vertical stacking*/
+  gap: 16px;
+}
+.modal-box {
+  background: var(--card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 15px;
+  color: #e5e5e5;
+}
+
+
+
+.modal-card {
+  background: var(--card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.modal-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--color-teal);
+}
+
+.modal-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #d6d6d6;
+}
+
+/* ===== CAREER & GAIN ===== */
+
+.modal-list {
+  margin-top: 20px;
+  padding-left: 18px;
+}
+
+.modal-list li {
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #e5e5e5;
+}
+
+/* Career note text */
+.modal-note {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #cfcfcf;
+  opacity: 0.85;
+  text-align: center;
+}
+
+/* ===== EMPTY STATE ===== */
+
+.modal-empty {
+  text-align: center;
+  color: #aaa;
+  margin-top: 40px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (min-width: 768px) {
+  .modal-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
