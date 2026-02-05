@@ -20,7 +20,7 @@ import GainDA from '../assets/gainindatascience.jpeg';
 import CareerAI from '../assets/carrerinaiml.png';
 import GainAI from '../assets/gainaiml.png';
 
-// --- NEW: Import hero images for the special courses ---
+// --- NEW: Import hero images for the special courses
 import examPrepHero from '../assets/exmprepkit.jpeg';
 import careerTransitionHero from '../assets/carrertran.jpeg';
 import aiLearningHero from '../assets/aipowered.jpeg';
