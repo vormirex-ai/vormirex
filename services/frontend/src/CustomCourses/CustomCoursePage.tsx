@@ -91,8 +91,8 @@ const CustomCoursePage: React.FC<CustomCoursePageProps> = ({
   pdfUrl = '',
   heroTextOverlay = '',
   heroTextSubtitle = '',
-  // Default values for additional props
-  heroHeight = '80vh',
+  // Default values for additional props - reduced hero height
+  heroHeight = '60vh',
   bgDark = '#0a0a0a',
   bgMedium = '#121212',
   colorTeal = '#00ced1',
