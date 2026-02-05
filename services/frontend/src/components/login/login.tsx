@@ -311,9 +311,9 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
     setError('');
 
     // Client-side strict name check
-    const nameRegex = /^[a-zA-Z0-9\s.'-]+$/;
+    const nameRegex = /^[a-zA-Z\s]+$/;
     if (activeTab === 'signup' && !nameRegex.test(name)) {
-      setError('Name contains invalid characters');
+      setError('Name can only contain letters and spaces');
       return;
     }
 
