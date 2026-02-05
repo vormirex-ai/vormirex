@@ -39,3 +39,13 @@ export const updateNotificationPreferencesSchema = z.object({
 });
 
 export type UpdateNotificationPreferencesBody = z.infer<typeof updateNotificationPreferencesSchema>['body'];
+
+export const updatePrivacySettingsSchema = z.object({
+  body: z.object({
+    isProfilePublic: z.boolean().optional(),
+    showProgress: z.boolean().optional(),
+    showCourses: z.boolean().optional(),
+  }),
+});
+
+export type UpdatePrivacySettingsBody = z.infer<typeof updatePrivacySettingsSchema>['body'];

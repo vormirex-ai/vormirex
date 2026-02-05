@@ -12,6 +12,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log('[DEBUG] ErrorHandler received error:', err.message);
   // Log the error using our new structured logger.
   // This will create a detailed, searchable log entry.
   logger.error(err.message, {

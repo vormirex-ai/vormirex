@@ -3,7 +3,7 @@ import userController from './user.controller.js';
 import { requireAuth } from '../../middleware/auth.middleware.js';
 import { checkRole } from '../../middleware/rbac.middleware.js';
 import { validate } from '../../middleware/validate.middleware.js';
-import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema, updateNotificationPreferencesSchema } from './user.validation.js';
+import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema, updateNotificationPreferencesSchema, updatePrivacySettingsSchema } from './user.validation.js';
 
 const router = Router();
 
@@ -15,7 +15,11 @@ router.patch('/me/profile', validate(updateProfileSchema), userController.update
 router.patch('/me/password', validate(changePasswordSchema), userController.changePassword);
 router.patch('/me/preferences', validate(updatePreferencesSchema), userController.updatePreferences);
 router.patch('/me/notifications', validate(updateNotificationPreferencesSchema), userController.updateNotificationPreferences);
+router.patch('/me/privacy', validate(updatePrivacySettingsSchema), userController.updatePrivacySettings);
 router.delete('/me', userController.deleteAccount);
+
+// --- Public Profile Route (Respects Privacy) ---
+router.get('/:id/profile', userController.getPublicProfile);
 
 // --- Admin Routes ---
 router.use(checkRole(['admin']));

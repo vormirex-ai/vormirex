@@ -205,6 +205,68 @@ export const updateNotificationPreferences = async (req: Request, res: Response)
 
   res.json({ message: 'Notification preferences updated', preferences: user.notificationPreferences });
 };
+
+export const updatePrivacySettings = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.user._id;
+  const { isProfilePublic, showProgress, showCourses } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) throw new NotFoundError('User not found');
+
+  if (!user.privacySettings) {
+    user.privacySettings = { isProfilePublic: true, showProgress: true, showCourses: true };
+  }
+
+  if (isProfilePublic !== undefined) user.privacySettings.isProfilePublic = isProfilePublic;
+  if (showProgress !== undefined) user.privacySettings.showProgress = showProgress;
+  if (showCourses !== undefined) user.privacySettings.showCourses = showCourses;
+
+  await user.save();
+  res.json({ message: 'Privacy settings updated', privacySettings: user.privacySettings });
+};
+
+export const getPublicProfile = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await User.findById(id).select('name role createdAt streak learningPreferences privacySettings');
+
+  if (!user) throw new NotFoundError('User not found');
+
+  // Default to public if settings missing
+  const isPublic = user.privacySettings?.isProfilePublic ?? true;
+
+  if (!isPublic) {
+    // If private, only admins or yourself can see (simplified: just block for now)
+    // @ts-ignore
+    const currentUserId = req.user?._id?.toString();
+    // @ts-ignore
+    const isAdmin = req.user?.role === 'admin' || req.user?.role === 'super-admin';
+    
+    if (currentUserId !== id && !isAdmin) {
+      throw new NotFoundError('User profile is private'); // Generic error to avoid leaking existence
+    }
+  }
+
+  // Filter data based on privacy flags
+  const responseData: any = {
+    _id: user._id,
+    name: user.name,
+    role: user.role,
+    createdAt: user.createdAt,
+    privacySettings: user.privacySettings,
+  };
+
+  if (user.privacySettings?.showProgress) {
+    responseData.streak = user.streak;
+  }
+
+  if (user.privacySettings?.showCourses) {
+    // Logic to fetch course progress/enrollments would go here
+    // responseData.enrolledCourses = ...
+  }
+
+  res.json({ profile: responseData });
+};
 export default {
   getAllUsers,
   updateUserRole,
@@ -216,4 +278,6 @@ export default {
   deleteAccount,
   updatePreferences,
   updateNotificationPreferences,
+  updatePrivacySettings,
+  getPublicProfile,
 };

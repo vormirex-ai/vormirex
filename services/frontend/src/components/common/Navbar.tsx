@@ -53,7 +53,7 @@ const Navbar: React.FC<{ brandName?: string }> = ({
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false); //close menu after navigation
+  const closeMenu = () => setIsOpen(false);
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -137,7 +137,8 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                 <div className="mobile-profile-section">
                   <div className="mobile-user-info">
                     <User size={18} />
-                    <span>{user.name}</span>
+                    {/* FIX: Added safety check for user.name */}
+                    <span>{user?.name || 'User'}</span>
                   </div>
                   <button className="btn-logout-mobile" onClick={handleLogout}>
                     <LogOut size={16} /> Logout
@@ -166,8 +167,8 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                 <div className="profile-dropdown-container" ref={dropdownRef}>
                   <div className="profile-trigger" onClick={toggleProfileMenu}>
                     <div className="profile-avatar">
-                      {/* {user.name.charAt(0).toUpperCase()} */}
-                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                      {/* FIX: Added safety check for user.name and provided a fallback */}
+                      {user?.name?.charAt(0)?.toUpperCase() || 'U'}
                     </div>
                     <ChevronDown
                       size={14}
@@ -178,8 +179,13 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                   {showProfileMenu && (
                     <div className="profile-dropdown-menu">
                       <div className="dropdown-header">
-                        <span className="user-name">{user.name}</span>
-                        <span className="user-email">{user.email}</span>
+                        {/* FIX: Added safety check for user.name and user.email */}
+                        <span className="user-name">
+                          {user?.name || 'User'}
+                        </span>
+                        <span className="user-email">
+                          {user?.email || 'No email provided'}
+                        </span>
                       </div>
                       <div className="dropdown-divider"></div>
                       <button className="dropdown-item" onClick={handleLogout}>

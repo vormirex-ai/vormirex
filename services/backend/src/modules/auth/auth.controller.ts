@@ -10,77 +10,110 @@ import {
 
 export const signup = async (
   req: Request<object, object, SignupBody>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
-  const result = await authService.signup(req.body);
-  return res.status(201).json({ success: true, ...result });
+  try {
+    const result = await authService.signup(req.body);
+    return res.status(201).json({ success: true, ...result });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const login = async (
   req: Request<object, object, LoginBody>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
-  const { accessToken, refreshToken, user } = await authService.login(req.body);
+  console.log('[DEBUG] Login request received:', req.body.email);
+  try {
+    console.log('[DEBUG] Calling authService.login...');
+    const { accessToken, refreshToken, user } = await authService.login(req.body);
+    console.log('[DEBUG] authService.login successful');
 
-  res.cookie('refresh_token', refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
-  const userResponse = {
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-  };
+    const userResponse = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
 
-  return res.json({ success: true, accessToken, user: userResponse });
+    return res.json({ success: true, accessToken, user: userResponse });
+  } catch (error) {
+    console.error('[DEBUG] Login error caught in controller:', error);
+    next(error);
+  }
 };
 
-export const verifyEmail = async (req: Request, res: Response) => {
-  const { token } = req.query;
-  if (typeof token !== 'string') {
-    throw new BadRequestError('A valid verification token must be provided.');
+export const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { token } = req.query;
+    if (typeof token !== 'string') {
+      throw new BadRequestError('A valid verification token must be provided.');
+    }
+    const result = await authService.verifyEmail(token);
+    return res.status(200).json({ success: true, message: result.message });
+  } catch (error) {
+    next(error);
   }
-  const result = await authService.verifyEmail(token);
-  return res.status(200).json({ success: true, message: result.message });
 };
 
 export const resendVerificationEmail = async (
   req: Request<object, object, ForgotPasswordBody>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
-  await authService.resendVerificationEmail(req.body.email);
-  return res.status(200).json({
-    success: true,
-    message:
-      'If an account with that email exists and is not yet verified, a new verification link has been sent.',
-  });
+  try {
+    await authService.resendVerificationEmail(req.body.email);
+    return res.status(200).json({
+      success: true,
+      message:
+        'If an account with that email exists and is not yet verified, a new verification link has been sent.',
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const forgotPassword = async (
   req: Request<object, object, ForgotPasswordBody>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
-  await authService.handleForgotPassword(req.body.email);
-  return res.status(200).json({
-    success: true,
-    message:
-      'If an account with that email exists, a password reset link has been sent.',
-  });
+  try {
+    await authService.handleForgotPassword(req.body.email);
+    return res.status(200).json({
+      success: true,
+      message:
+        'If an account with that email exists, a password reset link has been sent.',
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const resetPassword = async (
   req: Request<object, object, ResetPasswordBody>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
-  const { token, password } = req.body;
-  await authService.resetPassword(token, password);
-  return res
-    .status(200)
-    .json({ success: true, message: 'Password has been reset successfully.' });
+  try {
+    const { token, password } = req.body;
+    await authService.resetPassword(token, password);
+    return res
+      .status(200)
+      .json({ success: true, message: 'Password has been reset successfully.' });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const refreshToken = async (req: Request, res: Response) => {

@@ -32,11 +32,13 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 }
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 body,
 html {
   margin: 0;
@@ -147,7 +149,6 @@ html {
   justify-content: center;
   gap: 10px;
 }
-/* End of Modal/Toast styles */
 
 /* Left Sidebar - Desktop Styles */
 .sidebar-left {
@@ -258,11 +259,6 @@ html {
   color: var(--color-text-main);
 }
 
-/* Sidebar Close Button (Hidden on Desktop by default) */
-.sidebar-close-button {
-  display: none;
-}
-
 /* Main Content Styles */
 .main-content {
   background-color: var(--bg-medium);
@@ -273,18 +269,15 @@ html {
   font-family: var(--font-family);
 }
 
-/* 🔥 NEW WATERMARK CSS 🔥 */
-/* 🔥 NEW WATERMARK CSS - PERFECTLY CENTERED & SMALLER 🔥 */
-/* 🔥 WATERMARK LOGO - MOVED UPWARDS & CENTERED 🔥 */
+/* Watermark Logo */
 .watermark-logo {
   background-image: url("./assets/logo.png");
   background-repeat: no-repeat;
-  background-position: center 35%; /* Moves the logo upwards (smaller % = higher up) */
-  background-size: 30vmax; /* Keeps your current size */
+  background-position: center 35%;
+  background-size: 30vmax;
   opacity: 0.05;
   filter: grayscale(100%);
   pointer-events: none;
-
   position: absolute;
   top: 0;
   left: 0;
@@ -292,39 +285,14 @@ html {
   height: 100%;
   z-index: 1;
 }
-/* -------------------------------------- */
-/* 📱 Custom Watermark Position for Mobile/Tablet (375px <= width <= 600px) */
-/* -------------------------------------- */
-@media (min-width: 375px) and (max-width: 600px) {
-  .watermark-logo {
-    /*
-         * By changing the vertical position from the default 'center 35%' (upwards)
-         * to a higher value like 'center 75%', the logo is pushed downwards,
-         * centering it closer to the input field on smaller screens.
-         */
-    background-position: center 45% !important;
-    background-repeat: no-repeat;
-    background-size: 30vmax; /* Keeps your current size */
-    opacity: 0.05;
-    filter: grayscale(100%);
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
 
-    /* Optional: You might want to adjust the size slightly for this range */
-  }
-}
 .top-bar {
   display: flex;
   align-items: center;
   padding: 15px 30px;
   border-bottom: 1px solid var(--color-border);
   gap: 20px;
-  position: relative; /* Ensure header is above watermark */
+  position: relative;
   z-index: 3;
 }
 
@@ -335,7 +303,7 @@ html {
 }
 
 .mobile-menu-toggle {
-  display: none; /* Hidden by default on desktop */
+  display: none;
 }
 
 .search-box {
@@ -378,7 +346,7 @@ html {
   padding: 50px;
   padding-top: 100px;
   text-align: center;
-  position: relative; /* Ensure content is above the watermark */
+  position: relative;
   z-index: 2;
 }
 
@@ -407,7 +375,7 @@ html {
   gap: 12px;
   justify-content: center;
   margin-bottom: 25px;
-  flex-wrap: wrap; /* Default behavior for larger screens */
+  flex-wrap: wrap;
 }
 
 .quick-pill-actions button {
@@ -441,7 +409,7 @@ html {
   border-radius: 25px;
   padding: 10px 20px;
   margin-top: 10px;
-  position: relative; /* Ensure ask-box is above watermark */
+  position: relative;
   z-index: 2;
 }
 
@@ -470,7 +438,7 @@ html {
   text-align: center;
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
-  z-index: 3; /* Ensure footer is above everything else */
+  z-index: 3;
 }
 
 /* Right Sidebar - Desktop Styles */
@@ -479,6 +447,9 @@ html {
   border-left: 1px solid var(--color-border);
   padding: 20px;
   font-family: var(--font-family);
+  position: relative;
+  overflow-y: auto;
+  height: 100vh;
 }
 
 .sidebar-right h2 {
@@ -497,6 +468,111 @@ html {
   letter-spacing: 0.5px;
 }
 
+/* Login Prompt Card */
+.login-prompt-card {
+  background: linear-gradient(135deg, #1e1e1e, #282828);
+  border-radius: 12px;
+  padding: 30px 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.lock-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  background: rgba(138, 43, 226, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.lock-icon {
+  font-size: 28px;
+  color: var(--color-primary);
+}
+
+.login-prompt-content h3 {
+  color: var(--color-teal);
+  font-size: var(--font-size-xl);
+  margin-bottom: 15px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.login-prompt-content p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  margin-bottom: 25px;
+  max-width: 280px;
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.feature-icon {
+  color: var(--color-primary);
+  font-size: 16px;
+  width: 20px;
+}
+
+.continue-to-login-button {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+  box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
+}
+
+.continue-to-login-button:hover {
+  background-color: #9c45e8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(138, 43, 226, 0.6);
+}
+
+.arrow-icon {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.continue-to-login-button:hover .arrow-icon {
+  transform: translateX(3px);
+}
+
+/* Progress Card */
 .progress-card,
 .recent-questions,
 .recommended-card {
@@ -537,6 +613,7 @@ html {
   font-family: "Consolas", monospace;
 }
 
+/* Recent Questions */
 .recent-questions ul {
   list-style: none;
 }
@@ -565,6 +642,7 @@ html {
   color: var(--color-text-main);
 }
 
+/* QA Grid */
 .qa-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -604,6 +682,7 @@ html {
   font-weight: var(--font-weight-medium);
 }
 
+/* Recommended Card */
 .recommended-card {
   background: linear-gradient(135deg, #1e1e1e, #282828);
   border: 1px solid var(--color-primary);
@@ -653,9 +732,33 @@ html {
   box-shadow: 0 8px 20px rgba(138, 43, 226, 0.6);
 }
 
-/* -------------------------------------- */
-/* 📱 Responsive Mobile/Tablet Layout (< 900px) */
-/* -------------------------------------- */
+/* Close Button */
+.sidebar-close-button {
+  display: none;
+  position: absolute;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  z-index: 1001;
+  transition: color 0.2s;
+}
+
+.sidebar-close-button.close-left {
+  right: 15px;
+}
+
+.sidebar-close-button.close-right {
+  left: 15px;
+}
+
+.sidebar-close-button:hover {
+  color: var(--color-text-main);
+}
+
+/* Responsive Mobile/Tablet Layout */
 @media (max-width: 900px) {
   .dashboard-container {
     grid-template-columns: 1fr;
@@ -698,23 +801,6 @@ html {
 
   .sidebar-close-button {
     display: block;
-    position: absolute;
-    top: 10px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    z-index: 1001;
-    transition: color 0.2s;
-  }
-
-  .sidebar-close-button.close-left {
-    right: 15px;
-  }
-
-  .sidebar-close-button.close-right {
-    left: 15px;
   }
 
   .top-bar {
@@ -758,6 +844,22 @@ html {
   .main-content {
     padding-bottom: 40px;
   }
+
+  .login-prompt-card {
+    min-height: 400px;
+    padding: 20px 15px;
+  }
+
+  .feature-list {
+    margin-bottom: 20px;
+  }
+}
+
+/* Custom Watermark Position for Mobile/Tablet */
+@media (min-width: 375px) and (max-width: 600px) {
+  .watermark-logo {
+    background-position: center 45% !important;
+  }
 }
 
 @media (max-width: 500px) {
@@ -766,25 +868,23 @@ html {
     padding-top: 50px;
   }
 
-  /* --- MODIFIED CODE FOR 2x2 GRID BELOW 500PX --- */
   .quick-pill-actions {
-    display: grid; /* Use Grid for controlled 2x2 layout */
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
-    gap: 10px; /* Spacing between the grid items */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     justify-content: center;
-    margin: 0 auto 25px auto; /* Center the grid, maintain bottom margin */
-    max-width: 400px; /* Optional: Adjust max-width if needed */
-    padding: 0 20px; /* Add horizontal padding instead of margin to the list itself */
+    margin: 0 auto 25px auto;
+    max-width: 400px;
+    padding: 0 20px;
   }
 
   .quick-pill-actions button {
-    flex-shrink: 1; /* Allow buttons to shrink/grow in the grid */
-    width: 100%; /* Ensure button fills the grid cell */
-    white-space: normal; /* Allow button text to wrap */
-    padding: 10px 10px; /* Adjust padding for smaller buttons */
+    flex-shrink: 1;
+    width: 100%;
+    white-space: normal;
+    padding: 10px 10px;
     font-size: var(--font-size-sm);
   }
-  /* ------------------------------------------- */
 
   .logo-with-text {
     flex-direction: column;
@@ -802,5 +902,38 @@ html {
 
   .ask-box {
     padding: 8px 15px;
+  }
+
+  .sidebar-right {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .login-prompt-card {
+    min-height: 350px;
+    padding: 15px;
+  }
+
+  .lock-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
+  }
+
+  .lock-icon {
+    font-size: 24px;
+  }
+
+  .login-prompt-content h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  .feature-item {
+    font-size: 12px;
+  }
+
+  .continue-to-login-button {
+    padding: 12px 20px;
+    font-size: 13px;
   }
 }
