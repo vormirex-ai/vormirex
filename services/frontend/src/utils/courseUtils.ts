@@ -27,9 +27,9 @@ import aiLearningHero from '../assets/aipowered.jpeg';
 
 // --- VIDEO ASSETS (CLOUDINARY) ---
 const CyberVideo =
-  'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769757258/C_S_yyglnw.mp4';
+  'https://res.cloudinary.com/dsgbhkzpg/video/upload/v1770353841/Cyber_Security_Video_gkixm3.mp4';
 const DataScienceVideo =
-  'https://res.cloudinary.com/dsgbhkzpg/video/upload/v1770297988/DSs_e8qobp.mp4';
+  'https://res.cloudinary.com/dsgbhkzpg/video/upload/v1770353870/Data_Science_V_2_tweph4.mp4';
 const DataAnalyticsVideo =
   'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769844972/DA_zw9avx.mp4';
 const AIMLVideo =
