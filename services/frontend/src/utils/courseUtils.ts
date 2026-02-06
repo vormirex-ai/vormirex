@@ -33,12 +33,10 @@ const DataScienceVideo =
 const DataAnalyticsVideo =
   'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769844972/DA_zw9avx.mp4';
 const AIMLVideo =
-  'https://res.cloudinary.com/dsgbhkzpg/video/upload/v1770297945/DA_1_ci8qd9.mp4';
+  'https://res.cloudinary.com/dhtxeigzx/video/upload/v1769753171/Blue_Futuristic_Artificial_Intelligence_Video_1_ubonrm.mp4';
 
-// --- HELPERS ---
-
-/**
- * Generates a URL-friendly slug from a course title.
+/*
+ * s a URL-friendly slug from a course title.
  * This function MUST match the logic used in BuiltForEveryone.
  * @param {object} c - The course object.
  * @returns {string} The generated slug.
