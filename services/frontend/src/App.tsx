@@ -49,6 +49,9 @@ import {
   YourProgress,
 } from './CustomCourses/CustomCoursePage';
 import CustomCoursesList from './CustomCourses/CustomCoursesList';
+import Settings from './components/settings/SettingsPage';
+import SettingsPage from './components/settings/SettingsPage';
+
 
 /* ============================================================
    PUBLIC LAYOUT (Navbar + Footer)
@@ -143,6 +146,8 @@ const App: React.FC = () => {
         <Route element={<DashboardWrapper />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/dashboard" element={<Navigate to="/" replace />} />
+
+
         </Route>
 
         {/* ================= COURSES ================= */}
@@ -164,7 +169,11 @@ const App: React.FC = () => {
 
         {/* ================= CATCH ALL ================= */}
         <Route path="*" element={<Navigate to="/home" replace />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        
+
       </Routes>
+
     </Router>
   );
 };
