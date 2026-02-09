@@ -21,7 +21,7 @@ interface SettingsHubProps {
 const SettingsHub: React.FC<SettingsHubProps> = ({ onSectionSelect }) => {
   return (
     <div className="settings-hub">
-      <h1>Settings</h1>
+
 
       <div className="settings-grid">
         <div

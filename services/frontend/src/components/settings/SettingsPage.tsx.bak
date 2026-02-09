@@ -115,7 +115,7 @@ export default function SettingsPage() {
           <FontAwesomeIcon icon={faThumbTack} />
         </button>
         <button
-          className="dashboard-btn mobile-only"
+          className="nav-button mobile-only"
           onClick={handleDashboard}
           aria-label="Go to dashboard"
         >

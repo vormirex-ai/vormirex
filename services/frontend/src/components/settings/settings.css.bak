@@ -21,7 +21,7 @@ body {
 .settings-hub h1 {
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
-  color: #6aece1;
+  color: #e0e0ff;
 }
 
 .settings-grid {
@@ -84,7 +84,7 @@ body {
 .back-button {
   background: none;
   border: 1px solid #555;
-  color: #6aece1;
+  color: #aaa;
   padding: 8px 16px;
   border-radius: 8px;
 }
@@ -96,17 +96,7 @@ body {
   border: 1px solid #2a2a2a;
 }
 .dashboard-btn {
-  display: flex;
-  background: #1e1e1e;
-  border: 1px solid #2a2a2a;
-  color: #6aece1;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.dashboard-btn:hover {
-  border-color: #8a2be2;
+  display: flex;  
 }
 
 /*====== SETTINGS TOP BAR =======*/
@@ -145,67 +135,6 @@ body {
 .mobile-only,
 .desktop-only {
   display: none;
-}
-
-/*account-security page*/
-.account-security-page {
-  max-width: 640px;
-}
-
-.account-card {
-  margin-bottom: 24px;
-}
-
-.account-card h4 {
-  margin-bottom: 4px;
-}
-
-.account-card p {
-  font-size: 0.85rem;
-  color: #aaaaaa;
-  margin-bottom: 16px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  font-size: 0.8rem;
-  margin-bottom: 6px;
-  color: #ccc;
-}
-
-.form-group input {
-  background: #111;
-  border: 1px solid #8a2be2;
-  border-radius: 8px;
-  padding: 10px 12px;
-  color: #fff;
-}
-
-.password-field {
-  position: relative;
-}
-
-.password-field span {
-  position: absolute;
-  right: 12px;
-  top: 36px;
-  cursor: pointer;
-  opacity: 0.7;
-}
-
-.primary-btn {
-  background: #05bcc2;
-  color: #000;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
 }
 
 /* ===== MOBILE ===== */
@@ -285,6 +214,7 @@ body {
   }
 }
 
+
 /*show only on small screens*/
 
 @media (max-width: 900px) {
@@ -315,7 +245,6 @@ body {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 24px;
-    padding: 0 16px;
   }
 
   .settings-title-desktop {
@@ -323,5 +252,18 @@ body {
     font-weight: 600;
     color: #e0e0ff;
     margin: 0;
+  }
+
+  .dashboard-btn {
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    color: #00ffff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .dashboard-btn:hover {
+    border-color: #8a2be2;
   }
 }
