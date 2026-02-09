@@ -186,10 +186,10 @@ export const resendVerificationEmail = async (email: string) => {
 export const handleForgotPassword = async (email: string) => {
   const user = await User.findOne({ email });
 
-  // If no user is found or they haven't verified their email, we return silently.
+  // If no user is found, they haven't verified their email, or they use Google Auth, we return silently.
   // The controller sends a generic response, preventing attackers from discovering
   // which emails are registered or active.
-  if (!user || !user.isVerified) {
+  if (!user || !user.isVerified || user.provider === 'google') {
     return;
   }
 

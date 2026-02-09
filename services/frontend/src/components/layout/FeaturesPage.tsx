@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../common/SEO';
@@ -20,11 +20,8 @@ const PageWrapper = styled.div`
 const Hero = styled.section`
   padding: 120px 20px;
   text-align: center;
-  background: radial-gradient(
-      circle at top,
-      rgba(106, 236, 225, 0.12),
-      transparent 60%
-    ),
+  background:
+    radial-gradient(circle at top, rgba(106, 236, 225, 0.12), transparent 60%),
     linear-gradient(180deg, #0a0b14, #06070c);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 `;
@@ -68,7 +65,7 @@ const CTAButton = styled.button`
 `;
 
 /* =============================
-   FEATURES (POINT WISE)
+   FEATURES SECTION
 ============================= */
 const FeaturesSection = styled.section`
   padding: 90px 20px;
@@ -161,10 +158,41 @@ const LargeCTAButton = styled(CTAButton)`
 `;
 
 /* =============================
-   COMPONENT
+   AUTH CHECK
+============================= */
+const isAuthenticated = (): boolean => {
+  const token = localStorage.getItem('accessToken');
+  const user = localStorage.getItem('user');
+  return !!(token && user && token.trim() !== '' && user.trim() !== '');
+};
+
+/* =============================
+   MAIN COMPONENT
 ============================= */
 const FeaturesPage: React.FC = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
+
+  // Listen for auth changes (especially useful after login from another tab/window)
+  useEffect(() => {
+    const checkAuth = () => {
+      setIsLoggedIn(isAuthenticated());
+    };
+
+    // Check initially
+    checkAuth();
+
+    // Listen for storage changes (happens when login happens in another tab)
+    window.addEventListener('storage', checkAuth);
+
+    // Also poll every few seconds in case localStorage was updated without event
+    const interval = setInterval(checkAuth, 2000);
+
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <PageWrapper>
@@ -181,9 +209,16 @@ const FeaturesPage: React.FC = () => {
             Vormirex is designed to help learners build real-world coding skills
             through smart tools, AI guidance, and structured learning paths.
           </HeroSubtitle>
-          <CTAButton onClick={() => navigate('/auth/signup')}>
-            Start Free Today
-          </CTAButton>
+
+          {!isLoggedIn ? (
+            <CTAButton onClick={() => navigate('/auth/signup')}>
+              Start Free Today
+            </CTAButton>
+          ) : (
+            <CTAButton onClick={() => navigate('/dashboard')}>
+              Go to Dashboard →
+            </CTAButton>
+          )}
         </HeroContent>
       </Hero>
 
@@ -232,13 +267,27 @@ const FeaturesPage: React.FC = () => {
       </FeaturesSection>
 
       <FinalCTA>
-        <FinalCTATitle>Start Your Learning Journey Today</FinalCTATitle>
+        <FinalCTATitle>
+          {isLoggedIn
+            ? 'Continue Your Learning Journey'
+            : 'Start Your Learning Journey Today'}
+        </FinalCTATitle>
+
         <FinalCTASubtitle>
-          Join thousands of learners building strong tech careers with Vormirex.
+          {isLoggedIn
+            ? 'You’re already part of Vormirex — jump back in and keep building!'
+            : 'Join thousands of learners building strong tech careers with Vormirex.'}
         </FinalCTASubtitle>
-        <LargeCTAButton onClick={() => navigate('/auth/signup')}>
-          Get Started Free
-        </LargeCTAButton>
+
+        {!isLoggedIn ? (
+          <LargeCTAButton onClick={() => navigate('/auth/signup')}>
+            Get Started Free
+          </LargeCTAButton>
+        ) : (
+          <LargeCTAButton onClick={() => navigate('/dashboard')}>
+            Open Dashboard
+          </LargeCTAButton>
+        )}
       </FinalCTA>
     </PageWrapper>
   );
