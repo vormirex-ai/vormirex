@@ -11,6 +11,8 @@ export interface IUser extends Document {
   emailVerificationToken?: string;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
+  twoFactorCode?: string;
+  twoFactorExpires?: Date;
   timezone?: string;
   isFrozen: boolean;
   streak: {
@@ -49,6 +51,8 @@ const userSchema = new Schema<IUser>(
     emailVerificationToken: { type: String, select: false },
     passwordResetToken: { type: String, select: false },
     passwordResetExpires: { type: Date, select: false },
+    twoFactorCode: { type: String, select: false },
+    twoFactorExpires: { type: Date, select: false },
     timezone: { type: String, default: 'UTC' },
     streak: {
       current: { type: Number, default: 0 },
