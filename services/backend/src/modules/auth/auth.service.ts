@@ -20,6 +20,7 @@ import { updateUserStreak } from '../../utils/streak.js';
 import type { SignupDTO, LoginDTO, CustomJWTPayload } from './auth.types.js';
 
 import { hasValidMxRecord } from '../../utils/dns.js';
+import { validateEmail } from '../../utils/zerobounce.js';
 
 export const signup = async (data: SignupDTO) => {
   // 1. Verify Domain MX Records (prevents typos like gmial.com)
@@ -27,6 +28,10 @@ export const signup = async (data: SignupDTO) => {
   if (!isDomainValid) {
     throw new BadRequestError('Invalid email domain. Please check your email address.');
   }
+
+  // 1b. Verify Email Existence (ZeroBounce)
+  // This will throw a BadRequestError if the email is invalid/non-existent
+  await validateEmail(data.email);
 
   const existingUser = await User.findOne({ email: data.email });
   if (existingUser) {
