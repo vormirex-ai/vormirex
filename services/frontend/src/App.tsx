@@ -49,9 +49,7 @@ import {
   YourProgress,
 } from './CustomCourses/CustomCoursePage';
 import CustomCoursesList from './CustomCourses/CustomCoursesList';
-import Settings from './components/settings/SettingsPage';
 import SettingsPage from './components/settings/SettingsPage';
-
 
 /* ============================================================
    PUBLIC LAYOUT (Navbar + Footer)
@@ -86,15 +84,21 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* ================= PUBLIC ROUTES ================= */}
+        {/* ================= PUBLIC ROUTES (MOVED TO TOP) ================= */}
+       
+        {/* Root route '/' now loads the Landing Page/Homepage */}
         <Route
-          path="/home"
+          path="/"
           element={
             <PublicLayout>
               <LandingPage />
             </PublicLayout>
           }
         />
+       
+        {/* Optional: Redirect /home to / if users have the old link bookmarked */}
+        <Route path="/home" element={<Navigate to="/" replace />} />
+
         <Route
           path="/features"
           element={
@@ -142,12 +146,10 @@ const App: React.FC = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
 
-        {/* ================= DASHBOARD ================= */}
+        {/* ================= DASHBOARD (MOVED TO /DASHBOARD) ================= */}
         <Route element={<DashboardWrapper />}>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/dashboard" element={<Navigate to="/" replace />} />
-
-
+          {/* Dashboard is now explicitly at /dashboard */}
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
 
         {/* ================= COURSES ================= */}
@@ -168,12 +170,10 @@ const App: React.FC = () => {
         </Route>
 
         {/* ================= CATCH ALL ================= */}
-        <Route path="*" element={<Navigate to="/home" replace />} />
+        {/* Any unknown route redirects to Home (/) */}
+        <Route path="*" element={<Navigate to="/" replace />} />
         <Route path="/settings" element={<SettingsPage />} />
-        
-
       </Routes>
-
     </Router>
   );
 };

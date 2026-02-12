@@ -56,6 +56,8 @@ body {
   padding: 32px 24px 48px;
   width: 100%;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   flex: 1;
   overflow-y: auto;
   padding-bottom: 72px;
@@ -149,7 +151,7 @@ body {
 
 /*account-security page*/
 .account-security-page {
-  max-width: 640px;
+  width: 100%;
 }
 
 .account-card {
@@ -195,18 +197,57 @@ body {
   right: 12px;
   top: 36px;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .primary-btn {
-  background: #05bcc2;
+  background: #1be5ec;
   color: #000;
   border: none;
   padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  width: fit-content;
 }
+.account-security-wrapper {
+  max-width: 640px;
+  margin: 37px auto;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.form-group input:focus,
+.form-group input:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border-color: #8a2be2;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #111 inset;
+  -webkit-text-fill-color: #fff;
+  border: 1px solid #8a2be2;
+}
+
+.primary-btn:focus,
+.primary-btn:focus-visible{
+  outline: none;
+  box-shadow: none;
+}
+.primary-btn:hover,
+.primary-btn:active {
+  background: #1be5ec;   
+  color: #000;
+  border: none;
+  box-shadow: none;
+  transform: none;
+}
+
+.help-support-page { width: 100%; }
+
 
 /* ===== MOBILE ===== */
 @media (max-width: 900px) {
@@ -325,3 +366,108 @@ body {
     margin: 0;
   }
 }
+
+@media (min-width: 1400px) {
+  .account-security-wrapper {
+    max-width: 700px;
+  }
+}
+@media (max-width: 768px) {
+  .account-card {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .primary-btn {
+    width: 100%;    
+    text-align: center;
+  }
+}
+@media (max-width: 480px) {
+  .account-card h4 {
+    font-size: 1rem;
+  }
+
+  .account-card p {
+    font-size: 0.8rem;
+  }
+
+  .form-group label {
+    font-size: 0.75rem;
+  }
+}
+
+/* LEGAL PAGE */
+
+.legal-page {
+  width: 100%;
+}
+
+.legal-page .account-security-wrapper {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.legal-page .settings-card {
+  margin-bottom: 24px;
+}
+
+.legal-page h4 {
+  margin-bottom: 6px;
+}
+
+.legal-page p {
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  margin-bottom: 16px;
+}
+
+.privacy-select {
+  width: 100%;
+  background: #111;
+  border: 1px solid #8a2be2;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.toggle-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toggle-group label {
+  font-size: 0.85rem;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+/* .visibility-status {
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  color: #aaa;
+}
+
+.visibility-status span {
+  color: #1be5ec;
+  font-weight: 600;
+} */
+
+.visibility-badge {
+  display: inline-block;
+  background: rgba(27, 229, 236, 0.15);
+  color: #1be5ec;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  margin-bottom: 14px;
+}
+
+

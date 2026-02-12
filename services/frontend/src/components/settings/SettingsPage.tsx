@@ -17,6 +17,7 @@ import { faBars, faThumbTack } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom';
 import { LayoutDashboard } from "lucide-react";
+import BaseModal from "../common/Modals/BaseModal";
 
 
 
@@ -37,6 +38,12 @@ export default function SettingsPage() {
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<SettingsSection>("hub");
+  const [isContentModalOpen, setIsContentModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+
+  const [modalTitle, setModalTitle] = useState<string>("");
+
+
 
   const showComingSoon = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -57,7 +64,21 @@ export default function SettingsPage() {
 
   const navigate = useNavigate();
   const handleDashboard = () => {
-    navigate('/');
+    navigate('/dashboard');
+  };
+
+
+  const openContentModal = (title: string, content: React.ReactNode) => {
+    setModalTitle(title);
+    setModalContent(content);
+    setIsContentModalOpen(true);
+  };
+
+
+  const closeContentModal = () => {
+    setIsContentModalOpen(false);
+    setModalContent("");
+    setModalTitle("");
   };
 
   const renderContent = () => {
@@ -75,19 +96,42 @@ export default function SettingsPage() {
       case "chat-ai":
         return <ChatAI onBack={() => setActiveSection("hub")} />;
       case "privacy-data":
-        return <PrivacyData onBack={() => setActiveSection("hub")} />;
+        return <PrivacyData onBack={() => setActiveSection("hub")}
+          onAction={openContentModal} />;
       case "help-support":
-        return <HelpSupport onBack={() => setActiveSection("hub")} />;
+        return <HelpSupport onBack={() => setActiveSection("hub")}
+          onAction={openContentModal} />;
       case "legal":
-        return <Legal onBack={() => setActiveSection("hub")} />;
+        return (
+          <Legal
+            onBack={() => setActiveSection("hub")}
+            onAction={(content) => openContentModal("Legal Information", content)}
+          />
+        );
+
       case "danger-zone":
         return <DangerZone onBack={() => setActiveSection("hub")} />;
       default:
         return <SettingsHub onSectionSelect={handleSectionChange} />;
     }
   };
+  const sectionTitles: Record<SettingsSection, string> = {
+    "hub": "Settings",
+    "account-security": "Account & Security",
+    "appearance": "Appearance",
+    "notifications": "Notifications",
+    "learning-preferences": "Learning Preferences",
+    "chat-ai": "Chat AI",
+    "privacy-data": "Privacy & Data",
+    "help-support": "Help & Support",
+    "legal": "Legal",
+    "danger-zone": "Danger Zone",
+  };
+
+
 
   return (
+
 
     <div className="dashboard-container">
       <SEO
@@ -95,6 +139,15 @@ export default function SettingsPage() {
         description="Manage your account, appearance, notifications, and more."
       />
       <ComingSoonModal isOpen={isModalOpen} onClose={closeModal} />
+      <BaseModal
+        isOpen={isContentModalOpen}
+        onClose={closeContentModal}
+      >
+        <h3>{modalTitle}</h3>
+        <p>{modalContent}</p>
+      </BaseModal>
+
+
 
       <header className="settings-top-bar">
         <button
@@ -104,7 +157,7 @@ export default function SettingsPage() {
           <FontAwesomeIcon icon={faBars} />
         </button>
 
-        <h1 className="settings-title-mobile">Settings</h1>
+        <h1 className="settings-title-mobile">{sectionTitles[activeSection]}</h1>
 
 
 
@@ -114,13 +167,23 @@ export default function SettingsPage() {
         >
           <FontAwesomeIcon icon={faThumbTack} />
         </button>
-        <button
-          className="dashboard-btn mobile-only"
-          onClick={handleDashboard}
-          aria-label="Go to dashboard"
-        >
-          <LayoutDashboard size={22} />
-        </button>
+        {activeSection === "hub" ? (
+
+          <button
+            className="dashboard-btn mobile-only"
+            onClick={handleDashboard}
+            aria-label="Go to dashboard"
+          >
+            <LayoutDashboard size={22} />
+          </button>
+        ) : (
+          <button className="dashboard-btn mobile-only"
+            onClick={() => setActiveSection("hub")}
+            aria-label="Back to settings">
+            ←
+
+          </button>
+        )}
       </header>
 
 
@@ -133,15 +196,30 @@ export default function SettingsPage() {
       />
 
       <main className="main-content settings-main-content">
+
         <div className="settings-header-row">
-          <h1 className="settings-title-desktop">Settings</h1>
+          <h1 className="settings-title-desktop">{sectionTitles[activeSection]}
 
-          <button className="dashboard-btn desktop-only" onClick={handleDashboard}
-            aria-label="Go to dashboard"
-          >
+          </h1>
 
-            <LayoutDashboard size={22} />
-          </button>
+          {activeSection === "hub" ? (
+
+            <button className="dashboard-btn desktop-only"
+              onClick={handleDashboard}
+              aria-label="Go to dashboard"
+            >
+
+              <LayoutDashboard size={22} />
+            </button>
+          ) : (
+            <button className="dashboard-btn desktop-only"
+              onClick={() => setActiveSection("hub")}
+              aria-label="Back to settings">
+              ← Back
+
+            </button>
+          )}
+
         </div>
         {renderContent()}
       </main>
