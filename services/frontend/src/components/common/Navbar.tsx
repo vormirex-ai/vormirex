@@ -52,6 +52,19 @@ const Navbar: React.FC<{ brandName?: string }> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Effect to disable body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
@@ -79,7 +92,7 @@ const Navbar: React.FC<{ brandName?: string }> = ({
   };
 
   const handleSignIn = () => {
-    navigate('/auth/login'); // FIXED: Now goes to /auth/login instead of /auth
+    navigate('/auth/login');
     closeMenu();
   };
 
@@ -109,7 +122,12 @@ const Navbar: React.FC<{ brandName?: string }> = ({
 
   return (
     <>
-      <header className="nav-wrapper">
+      {/* Mobile Menu Overlay */}
+      {isOpen && (
+        <div className="mobile-menu-overlay" onClick={closeMenu}></div>
+      )}
+
+      <header className={`nav-wrapper ${isOpen ? 'menu-open' : ''}`}>
         <nav className="navbar">
           <div className="logo" onClick={() => navigate('/landing')}>
             <div className="logo-glow-container">
@@ -137,7 +155,6 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                 <div className="mobile-profile-section">
                   <div className="mobile-user-info">
                     <User size={18} />
-                    {/* FIX: Added safety check for user.name */}
                     <span>{user?.name || 'User'}</span>
                   </div>
                   <button className="btn-logout-mobile" onClick={handleLogout}>
@@ -167,7 +184,6 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                 <div className="profile-dropdown-container" ref={dropdownRef}>
                   <div className="profile-trigger" onClick={toggleProfileMenu}>
                     <div className="profile-avatar">
-                      {/* FIX: Added safety check for user.name and provided a fallback */}
                       {user?.name?.charAt(0)?.toUpperCase() || 'U'}
                     </div>
                     <ChevronDown
@@ -179,7 +195,6 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                   {showProfileMenu && (
                     <div className="profile-dropdown-menu">
                       <div className="dropdown-header">
-                        {/* FIX: Added safety check for user.name and user.email */}
                         <span className="user-name">
                           {user?.name || 'User'}
                         </span>
@@ -228,6 +243,184 @@ const Navbar: React.FC<{ brandName?: string }> = ({
       />
 
       <style>{`
+        .mobile-menu-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          background: rgba(0, 0, 0, 0.7);
+          z-index: 999;
+          display: none;
+        }
+        
+        .nav-wrapper {
+          width: 100%;
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          background: rgba(10, 11, 20, 0.95);
+          backdrop-filter: blur(12px);
+          padding: 12px 0;
+        }
+        
+        .nav-wrapper.menu-open {
+          background: rgba(10, 11, 20, 1);
+        }
+        
+        .navbar {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 24px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        
+        .logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+        }
+        
+        .logo-image {
+          width: 32px;
+          height: 32px;
+        }
+        
+        .logo-text {
+          color: white;
+          font-weight: 700;
+          font-size: 1.2rem;
+        }
+        
+        /* Desktop Navigation */
+        .nav-links {
+          display: flex;
+          list-style: none;
+          gap: 30px;
+        }
+        
+        .nav-links a {
+          color: #cbd5f5;
+          text-decoration: none;
+          font-size: 14px;
+        }
+        
+        /* Desktop Buttons Group */
+        .nav-right-group {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+        
+        .nav-buttons {
+          display: flex;
+          gap: 15px;
+        }
+        
+        .btn-signin {
+          background: none;
+          border: none;
+          color: white;
+          cursor: pointer;
+          font-weight: 600;
+        }
+        
+        .btn-start {
+          background: #6aece1;
+          color: #0a0b14;
+          padding: 8px 18px;
+          border-radius: 20px;
+          border: none;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        
+        /* Mobile Setup */
+        .hamburger {
+          display: none;
+        }
+        
+        .mobile-buttons {
+          display: none;
+        }
+        
+        @media (max-width: 960px) {
+          /* Show overlay on mobile when menu is open */
+          .mobile-menu-overlay {
+            display: block;
+          }
+          
+          /* 1. HIDE THE DESKTOP BUTTONS COMPLETELY */
+          .nav-buttons {
+            display: none !important;
+          }
+        
+          /* 2. SHOW HAMBURGER */
+          .hamburger {
+            display: block;
+            padding: 8px;
+            margin-right: -8px; /* Compensate for padding to keep alignment */
+          }
+        
+          /* 3. MOBILE MENU DROPDOWN */
+          .nav-links {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            flex-direction: column;
+            background: #0f1123;
+            padding: 80px 20px 20px;
+            gap: 24px; /* Consistent spacing between items */
+            z-index: 1001;
+            overflow-y: auto;
+            align-items: flex-start;
+          }
+        
+          .nav-links.active {
+            display: flex;
+          }
+        
+          /* 4. SHOW BUTTONS INSIDE THE DROPDOWN INSTEAD */
+          .mobile-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px; /* Consistent spacing */
+            width: 100%;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+          }
+          
+          /* Mobile menu items styling */
+          .nav-links li {
+            width: 100%;
+          }
+          
+          .nav-links a {
+            display: block;
+            padding: 12px 0;
+            font-size: 16px;
+            color: #e2e8f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          }
+          
+          /* Close button positioning */
+          .nav-wrapper.menu-open .hamburger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1002;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+          }
+        }
+        
         .profile-dropdown-container { position: relative; }
         .profile-trigger { display: flex; align-items: center; gap: 8px; cursor: pointer; color: white; padding: 4px; border-radius: 8px; transition: background 0.2s; }
         .profile-trigger:hover { background: rgba(255, 255, 255, 0.1); }
@@ -241,28 +434,47 @@ const Navbar: React.FC<{ brandName?: string }> = ({
         .dropdown-divider { height: 1px; background: #2a2d35; width: 100%; }
         .dropdown-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 16px; background: none; border: none; color: #ff4d4d; font-size: 14px; cursor: pointer; transition: background 0.2s; text-align: left; }
         .dropdown-item:hover { background: rgba(255, 77, 77, 0.1); }
-        .mobile-profile-section { padding: 10px 0; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .mobile-profile-section { padding: 10px 0; display: flex; flex-direction: column; gap: 15px; align-items: flex-start; }
         .mobile-user-info { display: flex; align-items: center; gap: 10px; color: #00d4d4; font-weight: 600; }
-        .btn-logout-mobile { display: flex; align-items: center; gap: 8px; background: #1f222a; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; }
-        
-        .btn-back-dashboard, .btn-back-dashboard-mobile { 
-          display: flex; 
-          align-items: center; 
-          gap: 8px; 
-          background: rgba(255, 255, 255, 0.05); 
-          border: 1px solid rgba(255, 255, 255, 0.2); 
-          color: #ffffff; 
-          padding: 10px 16px; 
-          border-radius: 8px; 
-          font-size: 14px; 
-          cursor: pointer; 
+        .btn-logout-mobile { display: flex; align-items: center; gap: 8px; background: #1f222a; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 12px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; width: 100%; justify-content: center; }
+       
+        .btn-back-dashboard, .btn-back-dashboard-mobile {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #ffffff;
+          padding: 12px 16px;
+          border-radius: 8px;
+          font-size: 14px;
+          cursor: pointer;
           transition: all 0.2s ease;
+          width: 100%;
+          justify-content: center;
         }
-        .btn-back-dashboard:hover, .btn-back-dashboard-mobile:hover { 
+        .btn-back-dashboard:hover, .btn-back-dashboard-mobile:hover {
           background: rgba(255, 255, 255, 0.1);
           border-color: rgba(255, 255, 255, 0.4);
         }
         
+        @media (max-width: 480px) {
+          .nav-links {
+            padding: 80px 16px 20px;
+          }
+          
+          .hamburger {
+            padding: 12px;
+            margin-right: -12px;
+          }
+          
+          .nav-wrapper.menu-open .hamburger {
+            top: 16px;
+            right: 16px;
+            padding: 12px;
+          }
+        }
+       
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </>
