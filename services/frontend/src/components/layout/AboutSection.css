@@ -8,6 +8,40 @@
   color: var(--text-main);
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
+  position: relative; /* Needed for positioning the back button if you use absolute */
+}
+
+/* =========================================
+   BACK BUTTON STYLES (Integrated here)
+   ========================================= */
+.pricing-page__back-btn {
+  background: none;
+  border: none;
+  color: #6aece1;
+  cursor: pointer;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+  /* Optional: Position the button absolutely in the top-left corner */
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
+.pricing-page__back-btn:hover {
+  color: #ffffff;
+  background-color: rgba(106, 236, 225, 0.1);
+}
+
+.pricing-page__back-btn svg {
+  width: 24px;
+  height: 24px;
 }
 
 /* =========================================

@@ -162,24 +162,25 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                   </button>
                 </div>
               ) : (
-                <>
-                  <button className="btn-signin" onClick={handleSignIn}>
-                    Sign In
-                  </button>
-                  <button
-                    className="btn-back-dashboard-mobile"
-                    onClick={handleBackToDashboard}
-                  >
-                    <LayoutDashboard size={16} />
-                    Back to Dashboard
-                  </button>
-                </>
+                <button className="btn-signin" onClick={handleSignIn}>
+                  Sign In
+                </button>
               )}
             </li>
           </ul>
 
           <div className="nav-right-group">
             <div className="nav-buttons">
+              {/* Always show Back to Dashboard button */}
+              <button
+                className="btn-back-dashboard"
+                onClick={handleBackToDashboard}
+              >
+                <LayoutDashboard size={16} />
+                Back to Dashboard
+              </button>
+
+              {/* Show Sign In or Profile based on login status */}
               {user ? (
                 <div className="profile-dropdown-container" ref={dropdownRef}>
                   <div className="profile-trigger" onClick={toggleProfileMenu}>
@@ -211,18 +212,9 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                   )}
                 </div>
               ) : (
-                <>
-                  <button className="btn-signin" onClick={handleSignIn}>
-                    Sign In
-                  </button>
-                  <button
-                    className="btn-back-dashboard"
-                    onClick={handleBackToDashboard}
-                  >
-                    <LayoutDashboard size={16} />
-                    Back to Dashboard
-                  </button>
-                </>
+                <button className="btn-signin" onClick={handleSignIn}>
+                  Sign In
+                </button>
               )}
             </div>
 

@@ -1,7 +1,6 @@
-// src/pages/CourseDetail.tsx
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ModalWhy from '../common/Modals/ModalWhy'
+import ModalWhy from '../common/Modals/ModalWhy';
 import ModalCareer from '../common/Modals/ModalCareer';
 import ModalGain from '../common/Modals/ModalGain';
 
@@ -31,7 +30,16 @@ import {
   getHeroVideo,
   getSlug,
 } from '../../utils/courseUtils';
-import SyllabusPDF from '../../assets/CoursesPdf (2).pdf';
+
+// Import all PDFs for different courses
+import CyberSecurityPDF from '../../assets/Cyber security weekly.pdf.pdf';
+import DataSciencePDF from '../../assets/Data analysis weekly.pdf.pdf';
+import DataAnalyticsPDF from '../../assets/Data analysis weekly.pdf.pdf';
+import AIMLPDF from '../../assets/AI _ ML_Course– Complete Syllabus.pdf';
+import ExamPrepPDF from '../../assets/Cyber security weekly.pdf.pdf';
+import CareerTransitionPDF from '../../assets/AI _ ML_Course– Complete Syllabus.pdf';
+import AILearningPathsPDF from '../../assets/Data analysis weekly.pdf.pdf';
+import DefaultSyllabusPDF from '../../assets/CoursesPdf (2).pdf';
 
 // --- CONFIGURATION FOR TOP PAGE TEXT (REPLACES IMAGES) ---
 const HERO_CONTENT_CONFIG = {
@@ -41,7 +49,7 @@ const HERO_CONTENT_CONFIG = {
     description:
       'Unlock your potential with our comprehensive exam preparation resources designed to boost confidence and ensure first-attempt success.',
     stats: [
-      { icon: '👥', label: '11K+ Learners' },
+      { icon: '🎯', label: 'Focused, High-Impact Learning' },
       { icon: '🏆', label: '92% Pass Rate' },
       { icon: '⏱️', label: '24/7 Access' },
     ],
@@ -55,7 +63,7 @@ const HERO_CONTENT_CONFIG = {
     stats: [
       { icon: '🚀', label: '85% Success Rate' },
       { icon: '💼', label: 'New Career' },
-      { icon: '🤝', label: '1000+ Mentors' },
+      { icon: '🎓', label: 'Expert-Guided Sessions' },
     ],
     ctaText: 'Explore Paths',
   },
@@ -81,11 +89,10 @@ const COURSE_CONTENT_DATA = {
     description:
       'Unlock your potential with our comprehensive exam preparation resources designed to boost confidence and ensure first-attempt success.',
     stats: [
-      { value: '92%', label: 'First-Attempt Pass Rate' },
-      { value: '15K+', label: 'Practice Questions' },
-      { value: '24/7', label: 'Expert Support' },
-      { value: '50+', label: 'Certification Paths' },
+      { value: 'AI-Driven', label: 'Exam Success' },
+      { value: '24/7', label: 'AI Support' },
     ],
+
     features: [
       {
         icon: <Target size={24} />,
@@ -341,6 +348,36 @@ const COURSE_CONTENT_DATA = {
   },
 };
 
+// Function to get the appropriate PDF for each course
+const getCoursePDF = (courseId: string | undefined) => {
+  if (!courseId) return DefaultSyllabusPDF;
+
+  const pdfMap: Record<string, string> = {
+    // Existing courses
+    'cyber-security': CyberSecurityPDF,
+    'data-science': DataSciencePDF,
+    'data-analytics': DataAnalyticsPDF,
+    'ai-ml-engineer': AIMLPDF,
+    'ai-ml': AIMLPDF,
+
+    // New special courses
+    'exam-preparation-kit': ExamPrepPDF,
+    'career-transition-programs': CareerTransitionPDF,
+    'ai-powered-learning-paths': AILearningPathsPDF,
+
+    // Aliases or alternative slugs
+    cybersecurity: CyberSecurityPDF,
+    datascience: DataSciencePDF,
+    dataanalytics: DataAnalyticsPDF,
+    'ai-ml-engineer-course': AIMLPDF,
+    'exam-prep': ExamPrepPDF,
+    'career-transition': CareerTransitionPDF,
+    'ai-learning-paths': AILearningPathsPDF,
+  };
+
+  return pdfMap[courseId] || DefaultSyllabusPDF;
+};
+
 export default function CourseDetail() {
   const navigate = useNavigate();
   const { courseId } = useParams<{ courseId: string }>();
@@ -351,6 +388,8 @@ export default function CourseDetail() {
   type ModalType = 'why' | 'career' | 'gain' | null;
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
+  // Get the appropriate PDF for the current course
+  const coursePDF = getCoursePDF(courseId);
 
   useEffect(() => {
     setActiveModal(null);
@@ -853,8 +892,7 @@ export default function CourseDetail() {
       }
     }
 
-
-
+    // Regular course content (non-special courses)
     return (
       <>
         <div className="course-level-tabs below-hero">
@@ -874,20 +912,18 @@ export default function CourseDetail() {
         <div className="hero-action-area">
           <button
             className="course-btn main-cta"
-            onClick={() => window.open(SyllabusPDF, '_blank')}
+            onClick={() => window.open(coursePDF, '_blank')}
           >
-            Download Full Syllabus (PDF)
+            Download {course.title} Syllabus (PDF)
           </button>
         </div>
 
         <section className="course-info-cards">
           <div
             className="info-card"
-
             onClick={() => {
               console.log('WHY MODAL CLICKED');
-
-              setActiveModal('why')
+              setActiveModal('why');
             }}
           >
             <div className="info-card-image-wrapper">
@@ -895,28 +931,13 @@ export default function CourseDetail() {
             </div>
             <p className="info-card-title">Why {course.title}</p>
           </div>
-          {/* <div
-            className="info-card"
-            onClick={() => {
-              console.log('WHY MODAL CLICKED');
-              setActiveModal('why');
-            }}
-          >
-
-          </div> */}
-          <div
-            className="info-card"
-            onClick={() => setActiveModal('career')}
-          >
+          <div className="info-card" onClick={() => setActiveModal('career')}>
             <div className="info-card-image-wrapper">
               <img src={detailImages.career} alt="Career" />
             </div>
             <p className="info-card-title">Career Path</p>
           </div>
-          <div
-            className="info-card"
-            onClick={() => setActiveModal('gain')}
-          >
+          <div className="info-card" onClick={() => setActiveModal('gain')}>
             <div className="info-card-image-wrapper">
               <img src={detailImages.gain} alt="Gain" />
             </div>
@@ -928,8 +949,8 @@ export default function CourseDetail() {
           <h2 className="section-title">{level} Curriculum</h2>
           <div className="modules">
             {levelBlock &&
-              levelBlock.modules &&
-              levelBlock.modules.length > 0 ? (
+            levelBlock.modules &&
+            levelBlock.modules.length > 0 ? (
               levelBlock.modules.map((m: any, idx: number) => (
                 <details key={idx} className="module" open={idx === 0}>
                   <summary className="module-summary">
@@ -950,15 +971,6 @@ export default function CourseDetail() {
             )}
           </div>
         </section>
-        {/* // Update the modal JSX to use the new handler */}
-        {/* {modalImage && (
-          <div className="image-modal" onClick={() => setModalImage(null)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <img src={modalImage} alt="Preview" />
-              <button className="modal-close" onClick={handleModalClose}>×</button>
-            </div>
-          </div>
-        )} */}
       </>
     );
   };
@@ -1114,7 +1126,6 @@ export default function CourseDetail() {
         </section>
       </div>
 
-
       {activeModal && (
         <div
           style={{
@@ -1131,17 +1142,17 @@ export default function CourseDetail() {
             style={{
               background: 'var(--bg-medium)',
               color: 'var(--color-text-main)',
-
               padding: '32px',
               borderRadius: '16px',
               width: '90%',
               maxWidth: '680px',
               maxHeight: '85vh',
-              overflowY: 'auto',     // scroll if more content 
+              overflowY: 'auto',
               position: 'relative',
             }}
           >
-            <button onClick={() => setActiveModal(null)}
+            <button
+              onClick={() => setActiveModal(null)}
               style={{
                 position: 'absolute',
                 top: '16px',
@@ -1151,18 +1162,16 @@ export default function CourseDetail() {
                 fontSize: '20px',
                 border: 'none',
                 cursor: 'pointer',
-              }}>X</button>
-
+              }}
+            >
+              X
+            </button>
             {activeModal === 'why' && <ModalWhy courseId={courseId} />}
             {activeModal === 'career' && <ModalCareer courseId={courseId} />}
             {activeModal === 'gain' && <ModalGain courseId={courseId} />}
           </div>
         </div>
-      )
-      }
-
-
-    </div >
+      )}
+    </div>
   );
 }
-
