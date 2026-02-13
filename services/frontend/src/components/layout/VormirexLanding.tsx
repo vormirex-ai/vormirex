@@ -78,15 +78,6 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
           )}
 
           {/* If logged in → Show Back to Dashboard */}
-          {isLoggedIn && (
-            <button
-              className="btn-dashboard large"
-              onClick={() => navigate('/dashboard')}
-            >
-              <LayoutDashboard size={18} />
-              Back to Dashboard
-            </button>
-          )}
 
           {/* Always show Try AI Demo */}
           <button className="btn-secondary large">
