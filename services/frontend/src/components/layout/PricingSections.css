@@ -38,7 +38,9 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .pricing-card:hover {
@@ -129,4 +131,48 @@
 .featured-btn {
   background: #6aece1;
   color: #0a0b14;
+}
+/* Unique styling for the pricing page back button */
+.pricing-page__back-btn {
+  background: none;
+  border: none;
+  color: #6aece1; /* Using the accent color from your design */
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  align-self: flex-start; /* Aligns the button to the left */
+}
+
+.pricing-page__back-btn:hover {
+  color: #ffffff; /* Changes to white on hover for better visibility */
+  text-decoration: underline;
+}
+/* Unique styling for the pricing page back button */
+.pricing-page__back-btn {
+  background: none;
+  border: none;
+  color: #ffffff; /* Using the accent color from your design */
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  align-self: flex-start; /* Aligns the button to the left */
+}
+
+.pricing-page__back-btn:hover {
+  color: #ffffff; /* Changes to white on hover for better visibility */
+  background-color: rgba(106, 236, 225, 0.1); /* Adds a subtle background on hover */
+}
+
+.pricing-page__back-btn svg {
+  width: 24px;
+  height: 24px;
 }
