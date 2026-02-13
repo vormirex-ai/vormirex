@@ -229,6 +229,45 @@
 			]
 		},
 		{
+			"name": "User Settings",
+			"item": [
+				{
+					"name": "Update Preferences (Primary Focus)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"primaryFocus\": \"Master a skill\",\n    \"curiosity\": [\"Coding\", \"Business\"],\n    \"learningPace\": \"Fast track\",\n    \"learningFormat\": [\"Reading\", \"AI Experience\"],\n    \"dailyGoal\": 45,\n    \"challengeLevel\": \"Progressive growth\",\n    \"learningGoals\": [\"Job ready\", \"Real Project\"],\n    \"currentSkillLevel\": \"Intermediate\",\n    \"focusAreas\": [\"Roadmap\", \"Mini Projects\"],\n    \"timeline\": \"3 months\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/me/preferences",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"preferences"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
 			"name": "Admin - User Mgmt",
 			"item": [
 				{
