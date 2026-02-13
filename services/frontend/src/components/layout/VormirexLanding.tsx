@@ -66,11 +66,7 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
 
         {/* CTA Group */}
         <div className="cta-group">
-          {/* 
-            Start Free button:
-            - Visible when NOT logged in (no user in localStorage)
-            - Hidden after user logs in
-          */}
+          {/* If NOT logged in → Show Start Free */}
           {!isLoggedIn && (
             <button
               className="btn-primary-hero large"
@@ -81,6 +77,18 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
             </button>
           )}
 
+          {/* If logged in → Show Back to Dashboard */}
+          {isLoggedIn && (
+            <button
+              className="btn-dashboard large"
+              onClick={() => navigate('/dashboard')}
+            >
+              <LayoutDashboard size={18} />
+              Back to Dashboard
+            </button>
+          )}
+
+          {/* Always show Try AI Demo */}
           <button className="btn-secondary large">
             <Play size={18} fill="currentColor" />
             Try AI Demo
@@ -93,16 +101,18 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         {/* Stats */}
         <div className="stats-container">
           <div className="stat-item">
-            <h3>50K+</h3>
-            <p>Active Learners</p>
+            <h3>∞</h3>
+            <p>Unlimited Curiosity</p>
           </div>
+
           <div className="stat-item">
-            <h3>100+</h3>
-            <p>Courses</p>
+            <h3>24/7</h3>
+            <p>AI Learning Support</p>
           </div>
+
           <div className="stat-item">
-            <h3>4.9</h3>
-            <p>User Rating</p>
+            <h3>100%</h3>
+            <p>Personalized Guidance</p>
           </div>
         </div>
 

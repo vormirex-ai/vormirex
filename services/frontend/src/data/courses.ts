@@ -14,8 +14,8 @@ export interface CourseModule {
 export interface CourseLevelBlock {
   level: CourseLevel;
   modules: CourseModule[];
-  highlights?: string[]; // e.g., Certificate / Project lines
-  duration?: string; // e.g., "6 months"
+  highlights?: string[];
+  duration?: string;
 }
 
 export interface Course {
@@ -278,137 +278,300 @@ export const COURSES: Record<CourseId, Course> = {
   /* -------------------------------------------------------------------------- */
   'data-analytics': {
     id: 'data-analytics',
-    title: 'Data Analytics',
-    subtitle: 'Foundation → Advanced',
+    title: 'Data Analysis',
+    subtitle: 'Beginner to Job-Ready',
     description:
-      'Build strong analytics fundamentals, then move into ML, data engineering, and real-world deployment.',
+      '7-Month comprehensive program covering Excel, Statistics, SQL, Python, Data Visualization, and BI Tools to become a job-ready Data Analyst.',
     levels: [
+      /* ---------- FOUNDATION ---------- */
       {
         level: 'Foundation',
         duration: '4 months',
         modules: [
+          /* Month 1: Introduction to Data Analysis & Excel */
           {
-            title: 'Basics',
+            title: 'Introduction to Data Analysis',
             items: [
-              'Data Entry',
-              'Formatting',
-              'Formulas',
-              'Pivot Tables',
-              'Charts',
+              'Excel interface & navigation',
+              'What is Data Analysis?',
+              'Types of data (structured & unstructured)',
+              'Data analysis lifecycle',
+              'Role & responsibilities of a Data Analyst',
+              'Real-world business use cases',
+              'Tools used in data analysis',
             ],
           },
           {
-            title: 'SQL Fundamentals',
-            items: ['SELECT', 'WHERE', 'GROUP BY', 'JOIN', 'Basic Aggregation'],
-          },
-          {
-            title: 'Statistics Basics',
-            items: ['Mean', 'Median', 'Mode', 'Variance', 'Simple Probability'],
-          },
-          {
-            title: 'Data Visualization',
-            items: ['Power BI/Tableau Dashboards', 'Basic Storytelling'],
-          },
-          {
-            title: 'SQL Deep Dive',
+            title: 'Excel Basics for Data Analysis',
             items: [
-              'Sub-queries',
-              'Window Functions',
-              'CTEs',
-              'Performance tuning',
+              'Basic data visualization',
+              'Excel shortcuts & productivity tips',
+              'Data types in Excel',
+              'Importing data',
+              'Basic formulas',
             ],
           },
           {
-            title: 'Python/R',
+            title: 'Excel Data Cleaning & Functions',
             items: [
-              'Pandas/dplyr for data wrangling',
-              'Basic scripting',
-              'Automation',
+              'Data cleaning techniques',
+              'Handling missing & duplicate data',
+              'Conditional formatting',
+              'Pivot tables',
+              'Pivot charts',
+              'Common Excel functions (SUM, IF, VLOOKUP/XLOOKUP)',
+              'Text & date functions',
+              'Data validation',
             ],
           },
           {
-            title: 'Stats & Analytics',
+            title: 'Excel Analysis & Visualization',
             items: [
-              'Hypothesis Testing',
-              'A/B Testing',
-              'Regression Basics',
-              'Cohort Analysis',
+              'Common Excel functions',
+              'Basic data visualization',
+              'Excel-based mini project',
+              'Excel shortcuts & productivity tips',
+            ],
+          },
+          /* Month 2: Statistics for Data Analysis */
+          {
+            title: 'Descriptive Statistics',
+            items: [
+              'What is statistics?',
+              'Descriptive vs inferential statistics',
+              'Mean, median, mode',
+              'Range & percentiles',
+              'Real-world examples',
             ],
           },
           {
-            title: 'Advanced Visualization',
+            title: 'Probability & Data Distribution',
             items: [
-              'Interactive dashboards (Power BI Custom Visuals, Tableau Story)',
-              'Storytelling',
+              'Probability basics',
+              'Data distributions',
+              'Variance & standard deviation',
+              'Normal distribution',
+              'Outliers & data spread',
             ],
           },
           {
-            title: 'Project Work',
+            title: 'Correlation, Regression & Sampling',
             items: [
-              'Real-world datasets',
-              'Cleaning pipelines',
-              'Simple predictive models',
+              'Correlation concepts',
+              'Linear regression basics',
+              'Sampling techniques',
+              'Bias & data accuracy',
+              'Business examples',
+              'Statistics using Excel',
+            ],
+          },
+          {
+            title: 'Statistics Practical Applications',
+            items: [
+              'Business problem-solving',
+              'Case studies',
+              'Foundation-level assessment',
             ],
           },
         ],
         highlights: ['Certificate'],
       },
+      /* ---------- ADVANCED ---------- */
       {
         level: 'Advanced',
-        duration: '6 months',
+        duration: '3 months',
         modules: [
+          /* Month 3: SQL for Data Analysis */
           {
-            title: 'Machine Learning',
+            title: 'Database Fundamentals & SQL Basics',
             items: [
-              'Supervised/Unsupervised algorithms',
-              'Model evaluation',
-              'Feature engineering',
+              'What is a database?',
+              'Tables, rows & columns',
+              'SQL syntax basics',
+              'SELECT & WHERE clauses',
+              'Filtering data',
             ],
           },
           {
-            title: 'Big-data Tools',
+            title: 'SQL Aggregation & Grouping',
             items: [
-              'Spark (PySpark/Scala)',
-              'Hadoop',
-              'SQL-on-Hadoop',
-              'Large-scale data handling',
+              'GROUP BY & HAVING',
+              'Aggregate functions (SUM, AVG, COUNT)',
+              'Sorting & limiting results',
             ],
           },
           {
-            title: 'Advanced Stats',
+            title: 'SQL Joins & Subqueries',
             items: [
-              'Time-series forecasting',
-              'Survival Analysis',
-              'Bayesian Methods',
+              'Types of joins',
+              'Subqueries',
+              'Nested queries',
+              'Real-world use cases',
             ],
           },
           {
-            title: 'Data Engineering',
+            title: 'Advanced SQL Concepts',
             items: [
-              'ETL pipelines',
-              'Data warehousing (Snowflake, Redshift)',
-              'Orchestration with Airflow',
+              'Window functions',
+              'Performance optimization basics',
+              'SQL project',
+              'Assessment',
+            ],
+          },
+          /* Month 4: Python for Data Analysis */
+          {
+            title: 'Python Basics',
+            items: [
+              'Python for data analysis overview',
+              'Introduction to Python',
+              'Variables & data types',
+              'Loops & conditions',
+              'Functions',
             ],
           },
           {
-            title: 'Specialized Visualization',
+            title: 'NumPy & Pandas',
             items: [
-              'Interactive web dashboards (Plotly, Dash)',
-              'Geospatial mapping',
-              'Tableau extensions',
+              'NumPy arrays',
+              'Pandas Series & DataFrames',
+              'Reading datasets',
+              'Data selection & filtering',
             ],
           },
           {
-            title: 'Capstone & Deployment',
+            title: 'Data Cleaning & EDA',
             items: [
-              'End-to-end project',
-              'API integration',
-              'Cloud deployment (AWS/GCP)',
-              'Stakeholder storytelling',
+              'Handling missing values',
+              'Data transformation',
+              'Exploratory Data Analysis (EDA)',
+              'Descriptive statistics with Pandas',
+            ],
+          },
+          {
+            title: 'Data Visualization with Python',
+            items: [
+              'Matplotlib basics',
+              'Seaborn basics',
+              'Charts & plots',
+              'Real dataset visualization project',
+            ],
+          },
+          /* Month 5: Data Visualization & BI Tools */
+          {
+            title: 'Visualization Principles',
+            items: [
+              'Data visualization fundamentals',
+              'Choosing the right chart',
+              'Color & design principles',
+              'Dashboard planning',
+            ],
+          },
+          {
+            title: 'Power BI / Tableau Basics',
+            items: [
+              'BI tool interface',
+              'Business reporting',
+              'Data import',
+              'Data modeling basics',
+              'Simple visual creation',
+            ],
+          },
+          {
+            title: 'Dashboards & KPI Reporting',
+            items: [
+              'KPI creation',
+              'Interactive dashboards',
+              'Filters & slicers',
+            ],
+          },
+          {
+            title: 'Storytelling with Data',
+            items: [
+              'Data storytelling concepts',
+              'Business insights',
+              'Report presentation',
+            ],
+          },
+          /* Month 6: Advanced Analytics & Data Ethics */
+          {
+            title: 'Hypothesis Testing',
+            items: [
+              'Hypothesis concepts',
+              'Null & alternative hypothesis',
+              'Statistical testing basics',
+              'Business examples',
+            ],
+          },
+          {
+            title: 'A/B Testing & Time Series',
+            items: [
+              'A/B testing concepts',
+              'Metrics & analysis',
+              'Time series data',
+              'Trend & seasonality',
+              'Forecasting basics',
+              'Predictive analysis overview',
+              'Business analytics use cases',
+            ],
+          },
+          {
+            title: 'Forecasting & Business Analytics',
+            items: [
+              'Predictive analysis overview',
+              'Business analytics use cases',
+            ],
+          },
+          {
+            title: 'Data Management & Ethics',
+            items: [
+              'Data quality management',
+              'Data governance',
+              'Data privacy & security',
+              'GDPR basics',
+              'Ethical data usage',
+              'Case studies',
+            ],
+          },
+          /* Month 7: Projects & Career Preparation */
+          {
+            title: 'Real-World Data Project – Phase 1',
+            items: [
+              'Problem statement',
+              'Data collection',
+              'Data cleaning',
+              'Analysis planning',
+            ],
+          },
+          {
+            title: 'Real-World Data Project – Phase 2',
+            items: [
+              'Analysis execution',
+              'Visualization',
+              'Insight generation',
+              'Final reporting',
+            ],
+          },
+          {
+            title: 'Case Studies & Portfolio',
+            items: ['Industry case studies', 'Portfolio building'],
+          },
+          {
+            title: 'Career Preparation',
+            items: [
+              'GitHub / dashboard showcase',
+              'Best practices',
+              'Resume building',
+              'Interview questions (SQL, Python, Stats)',
+              'Mock interviews',
+              'Industry roadmap',
             ],
           },
         ],
-        highlights: ['Project', 'Certificate'],
+        highlights: [
+          'Certificate',
+          'Real-World Project',
+          'Job-Ready Portfolio',
+        ],
       },
     ],
   },
@@ -419,216 +582,315 @@ export const COURSES: Record<CourseId, Course> = {
   'cyber-security': {
     id: 'cyber-security',
     title: 'Cyber Security',
-    subtitle: 'Foundation → Advanced',
+    subtitle: 'Beginner to Job-Ready',
     description:
-      'Learn security fundamentals, then progress into red teaming, cloud security, forensics, governance, and emerging threats.',
+      '7-Month comprehensive program covering networking, OS security, ethical hacking, penetration testing, cloud security, and incident response to become a job-ready Cyber Security professional.',
     levels: [
+      /* ---------- FOUNDATION ---------- */
       {
         level: 'Foundation',
-        duration: '6 months',
+        duration: '2 months',
         modules: [
+          /* Month 1: Cyber Security & Networking Basics */
+          {
+            title: 'Introduction to Cyber Security',
+            items: [
+              'What is Cyber Security?',
+              'Importance of Cyber Security',
+              'Types of cyber threats',
+              'Attack surfaces',
+              'Cyber Security domains & roles',
+              'Industry overview',
+              'Basics of computer networks',
+              'Network types (LAN, WAN, MAN)',
+              'OSI model (7 layers)',
+            ],
+          },
           {
             title: 'Networking Fundamentals',
-            items: ['OSI model', 'TCP/IP', 'Basic protocols (HTTP, DNS, DHCP)'],
-          },
-          {
-            title: 'Operating Systems',
             items: [
-              'Windows & Linux basics',
-              'File permissions',
-              'User management',
+              'TCP/IP model',
+              'Data transmission concepts',
+              'IPv4 & IPv6',
+              'Subnetting basics',
+              'DNS & DHCP',
+              'Common ports',
+              'Protocols: HTTP, HTTPS, FTP, SMTP',
             ],
           },
           {
-            title: 'Security Concepts',
-            items: ['CIA Triad', 'Threat types', 'Malware overview'],
-          },
-          {
-            title: 'Basic Cryptography',
+            title: 'IP Addressing & Protocols',
             items: [
-              'Symmetric vs. Asymmetric',
-              'Hashing (MD5, SHA-1)',
-              'Simple ciphers',
+              'IPv4 & IPv6',
+              'Subnetting basics',
+              'DNS & DHCP',
+              'Common ports',
+              'Protocols: HTTP, HTTPS, FTP, SMTP',
             ],
           },
           {
-            title: 'Identity & Access',
+            title: 'Network Security Basics',
             items: [
-              'Authentication methods',
+              'Firewalls (types & working)',
+              'VPN concepts',
+              'Network security best practices',
+              'Introduction to Network monitoring',
+              'Cyber Security career paths',
+            ],
+          },
+          /* Month 2: Operating Systems & Security Fundamentals */
+          {
+            title: 'Windows Security',
+            items: [
+              'Windows OS architecture',
+              'User accounts & permissions',
+              'NTFS permissions',
+              'Windows Firewall',
+              'Basic security settings',
+            ],
+          },
+          {
+            title: 'Linux Fundamentals for Security',
+            items: [
+              'Linux architecture',
+              'Basic Linux commands',
+              'File & directory permissions',
+              'Users & groups',
+              'Linux security basics',
+            ],
+          },
+          {
+            title: 'System Hardening & Authentication',
+            items: [
+              'System hardening techniques',
+              'Access control models',
               'Password policies',
-              'Basic IAM terms',
+              'Multi-Factor Authentication (MFA)',
+              'Authentication vs Authorization',
             ],
           },
           {
-            title: 'Risk & Compliance',
+            title: 'Cryptography & Security Best Practices',
             items: [
-              'Intro to risk assessment',
-              'Awareness of GDPR/ISO 27001 basics',
+              'Cryptography basics',
+              'Symmetric & asymmetric encryption',
+              'Hashing concepts',
+              'Digital certificates',
+              'Security best practices',
             ],
-          },
-          {
-            title: 'Security Tools',
-            items: ['Firewalls', 'Antivirus', 'Basic VPN concepts'],
-          },
-          {
-            title: 'Network Security',
-            items: [
-              'Firewalls',
-              'IDS/IPS',
-              'VPN',
-              'Subnetting',
-              'Basic packet analysis',
-            ],
-          },
-          {
-            title: 'OS Hardening',
-            items: [
-              'User rights',
-              'Patch management',
-              'Windows/Linux security configs',
-            ],
-          },
-          {
-            title: 'IAM (Deeper)',
-            items: ['IAM', 'MFA', 'RBAC', 'LDAP/Active Directory basics'],
-          },
-          {
-            title: 'Vulnerability Management',
-            items: [
-              'Scanning (Nessus, OpenVAS)',
-              'CVE analysis',
-              'Patch prioritisation',
-            ],
-          },
-          {
-            title: 'Secure Coding',
-            items: ['OWASP Top 10', 'Input validation', 'Secure APIs'],
-          },
-          {
-            title: 'Incident Response',
-            items: [
-              'Detection',
-              'Containment',
-              'Eradication',
-              'Recovery workflow',
-            ],
-          },
-          {
-            title: 'Compliance & Governance',
-            items: ['ISO 27001 fundamentals', 'GDPR basics', 'NIST CSF intro'],
           },
         ],
         highlights: ['Certificate'],
       },
+      /* ---------- ADVANCED ---------- */
       {
         level: 'Advanced',
-        duration: '8 months',
+        duration: '5 months',
         modules: [
+          /* Month 3: Cyber Threats, Attacks & Defense */
           {
-            title: 'Threat Modeling & Risk Analysis',
+            title: 'Malware & Threat Landscape',
             items: [
-              'STRIDE',
-              'MITRE ATT&CK framework',
-              'Quantitative risk metrics',
+              'Types of malware',
+              'Malware infection methods',
+              'Basic malware analysis',
+              'Threat actors',
             ],
           },
           {
-            title: 'Advanced Cryptography',
+            title: 'Social Engineering & Network Attacks',
             items: [
-              'PKI',
-              'Elliptic-curve crypto',
-              'Homomorphic encryption',
-              'Secure protocols',
+              'Phishing attacks',
+              'Email spoofing',
+              'Social engineering techniques',
+              'Man-in-the-Middle attacks',
+              'DoS & DDoS attacks',
+              'Attack tools overview',
             ],
           },
           {
-            title: 'Penetration Testing & Red-team Ops',
+            title: 'Vulnerability Assessment',
             items: [
-              'Reconnaissance',
-              'Exploit development',
-              'Privilege escalation',
-              'Post-exploitation',
-              'Reporting & remediation',
+              'Vulnerability assessment concepts',
+              'Vulnerability scanning tools',
             ],
           },
           {
-            title: 'Security Architecture',
+            title: 'Security Monitoring & Threat Intelligence',
             items: [
-              'Zero-trust design',
-              'Micro-segmentation',
-              'Secure SDLC',
-              'Hardware Security Modules (HSM)',
+              'Security monitoring basics',
+              'Logs & alerts',
+              'Threat intelligence concepts',
+              'Incident detection basics',
+            ],
+          },
+          /* Month 4: Web & Network Security */
+          {
+            title: 'Web Application Fundamentals',
+            items: [
+              'Web architecture',
+              'Client-server model',
+              'HTTP request/response',
+              'Web servers & databases',
             ],
           },
           {
-            title: 'Cloud & Container Security',
+            title: 'OWASP Top 10',
             items: [
-              'CSPM',
-              'IAM policies',
-              'Kubernetes RBAC',
-              'Runtime security',
+              'OWASP overview',
+              'SQL Injection',
+              'XSS',
+              'CSRF attacks',
+              'Security misconfigurations',
             ],
           },
           {
-            title: 'Server Security',
+            title: 'Advanced Web Attacks',
             items: [
-              'Hardening practices',
-              'Secure configs',
-              'Monitoring & logging basics',
+              'Authentication flaws',
+              'Session hijacking',
+              'Secure coding basics',
             ],
           },
           {
-            title: 'DevSecOps & Automation',
+            title: 'Network & Wireless Security',
             items: [
-              'CI/CD pipeline hardening',
-              'IaC scanning (Terraform)',
-              'Automated compliance',
+              'Network security tools',
+              'IDS & IPS',
+              'Wi-Fi security',
+              'Wireless attacks',
+              'Traffic analysis',
+            ],
+          },
+          /* Month 5: Ethical Hacking & Penetration Testing */
+          {
+            title: 'Ethical Hacking Methodology',
+            items: [
+              'Ethical hacking lifecycle',
+              'Legal & ethical guidelines',
+              'Lab setup',
+              'Reconnaissance techniques',
             ],
           },
           {
-            title: 'Incident Response & Forensics',
+            title: 'Scanning & Enumeration',
             items: [
-              'IR playbooks',
-              'Memory & disk forensics',
-              'Log correlation with SIEM',
-              'Threat hunting',
+              'Network scanning',
+              'Service enumeration',
+              'Vulnerability discovery',
+              'Tool usage (Nmap etc.)',
             ],
           },
           {
-            title: 'Governance, Compliance & Audit',
+            title: 'Exploitation & Password Attacks',
             items: [
-              'ISO 27001',
-              'SOC 2',
-              'NIST CSF',
-              'GDPR/CCPA deep-dive',
-              'Audit trails',
+              'Exploitation basics',
+              'Password cracking methods',
+              'Brute-force & dictionary attacks',
+              'Defense strategies',
+              'Privilege escalation concepts',
+              'Maintaining access',
+              'Clearing tracks',
             ],
           },
           {
-            title: 'Emerging Topics',
+            title: 'Post-Exploitation & Reporting',
+            items: ['Penetration testing reports', 'IAM concepts'],
+          },
+          /* Month 6: Cloud, IoT & Advanced Security */
+          {
+            title: 'Cloud Computing & Security',
             items: [
-              'AI/ML security',
-              'IoT/OT security',
-              'Blockchain security',
-              'Supply-chain risk',
+              'Cloud service models',
+              'Shared responsibility model',
+              'Cloud security risks',
+              'Cloud security controls',
+            ],
+          },
+          {
+            title: 'AWS / Azure Security Basics',
+            items: [
+              'Cloud access control',
+              'Storage security',
+              'Monitoring & logging',
+            ],
+          },
+          {
+            title: 'API, IoT & Container Security',
+            items: [
+              'API security risks',
+              'IoT vulnerabilities',
+              'Container security basics',
+              'DevSecOps overview',
+            ],
+          },
+          {
+            title: 'Zero Trust & Advanced Models',
+            items: [
+              'Zero Trust architecture',
+              'Network segmentation',
+              'Identity-based security',
+              'Modern enterprise security',
+            ],
+          },
+          /* Month 7: Incident Response, Forensics & Career */
+          {
+            title: 'Incident Response',
+            items: [
+              'Incident response lifecycle',
+              'Detection & analysis',
+              'Containment & recovery',
+              'Case studies',
+            ],
+          },
+          {
+            title: 'Digital Forensics & SIEM',
+            items: [
+              'Digital forensics basics',
+              'Evidence collection',
+              'Log analysis',
+              'SIEM tools basics',
+            ],
+          },
+          {
+            title: 'Cyber Laws & Risk Management',
+            items: [
+              'Data protection laws',
+              'Cyber laws (global overview)',
+              'Risk assessment',
+              'Compliance frameworks',
+            ],
+          },
+          {
+            title: 'Capstone Project & Career Prep',
+            items: [
+              'Real-world capstone project',
+              'Resume building',
+              'Interview preparation',
+              'Certification roadmap (CEH, Security+, CISSP)',
             ],
           },
         ],
-        highlights: ['Certificate'],
+        highlights: [
+          'Certificate',
+          'Capstone Project',
+          'Certification Roadmap',
+        ],
       },
     ],
   },
 
   /* -------------------------------------------------------------------------- */
-  /* AI / ML ENGINEER – NEW COURSE */
+  /* AI / ML ENGINEER */
   /* -------------------------------------------------------------------------- */
   'ai-ml': {
     id: 'ai-ml',
     title: 'AI / ML Engineer',
-    subtitle: 'Foundation → Advanced',
+    subtitle: 'Beginner to Job-Ready',
     description:
-      'Complete roadmap to become a production-ready AI/ML Engineer – from mathematical foundations and core ML to deep learning, LLMs, MLOps, and end-to-end deployment.',
+      'Complete 7-month roadmap to become a production-ready AI/ML Engineer – from mathematical foundations and core ML to deep learning, LLMs, MLOps, and end-to-end deployment.',
     levels: [
+      /* ---------- FOUNDATION ---------- */
       {
         level: 'Foundation',
         duration: '2 months',
@@ -715,10 +977,12 @@ export const COURSES: Record<CourseId, Course> = {
         ],
         highlights: ['Certificate', 'Foundation Project'],
       },
+      /* ---------- ADVANCED ---------- */
       {
         level: 'Advanced',
         duration: '5 months',
         modules: [
+          /* Month 1: Advanced Math & ML */
           {
             title: 'Advanced Mathematics',
             items: [
@@ -752,6 +1016,7 @@ export const COURSES: Record<CourseId, Course> = {
               'Feature importance & tuning',
             ],
           },
+          /* Month 2: Deep Learning Specialization */
           {
             title: 'CNN Deep Dive',
             items: [
@@ -786,6 +1051,7 @@ export const COURSES: Record<CourseId, Course> = {
               'Image & text generation projects',
             ],
           },
+          /* Month 3: NLP & LLMs */
           {
             title: 'NLP Fundamentals',
             items: [
@@ -821,6 +1087,7 @@ export const COURSES: Record<CourseId, Course> = {
               'LLM deployment basics',
             ],
           },
+          /* Month 4: MLOps & Production */
           {
             title: 'MLOps Fundamentals',
             items: [
@@ -855,6 +1122,7 @@ export const COURSES: Record<CourseId, Course> = {
               'Production best practices',
             ],
           },
+          /* Month 5: Special Topics & Capstone */
           {
             title: 'Advanced Topics',
             items: [
@@ -873,12 +1141,20 @@ export const COURSES: Record<CourseId, Course> = {
             ],
           },
           {
-            title: 'Capstone Project',
+            title: 'Capstone Project (Build Phase)',
             items: [
-              'Problem definition & data pipeline',
-              'Model development & evaluation',
+              'Problem definition',
+              'Data pipeline',
+              'Model development',
+              'Evaluation',
+            ],
+          },
+          {
+            title: 'Capstone Project (Deploy & Present)',
+            items: [
               'End-to-end deployment',
-              'Documentation, presentation & demo',
+              'Documentation',
+              'Presentation & demo',
             ],
           },
         ],

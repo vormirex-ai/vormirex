@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Courses.css';
+import { LayoutDashboard } from 'lucide-react';
 import { getAllCourses, Course } from '../../api/courses';
 import { getCatalogImage, getSlug } from '../../utils/courseUtils';
 
@@ -131,6 +132,13 @@ export default function CourseList() {
   return (
     <div className="course-list-page">
       <div className="course-list-header">
+        <button
+          className="back-to-dashboard-btn"
+          onClick={() => navigate('/')}
+          title="Back to Dashboard"
+        >
+          <LayoutDashboard size={24} />
+        </button>
         <h1>Our Courses</h1>
       </div>
       <div className="course-grid">

@@ -1,8 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { LayoutDashboard } from 'lucide-react';
 import SEO from '../common/SEO';
 import './PricingSections.css';
 
 const PricingPage: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="pricing-section">
       <SEO
@@ -11,6 +15,15 @@ const PricingPage: React.FC = () => {
         url="https://vormirex.com/pricing"
       />
       <div className="pricing-container">
+        {/* Back to Dashboard button with icon */}
+        <button
+          className="pricing-page__back-btn"
+          onClick={() => navigate('/dashboard')}
+          aria-label="Back to Dashboard"
+        >
+          <LayoutDashboard size={24} />
+        </button>
+
         <h1 className="pricing-headline">Plans and Pricing</h1>
         <p className="pricing-subheadline">
           Choose a plan that fits your learning and growth journey.
