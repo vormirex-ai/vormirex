@@ -16,7 +16,7 @@ interface UserData {
   name: string;
   email: string;
 }
-/* =======================*/
+
 const Navbar: React.FC<{ brandName?: string }> = ({
   brandName = 'VORMIREX',
 }) => {
@@ -282,6 +282,7 @@ const Navbar: React.FC<{ brandName?: string }> = ({
           align-items: center;
           gap: 10px;
           flex-shrink: 0;
+          cursor: pointer;
         }
         
         .logo-image {
@@ -326,6 +327,8 @@ const Navbar: React.FC<{ brandName?: string }> = ({
           color: white;
           cursor: pointer;
           font-weight: 600;
+          white-space: nowrap; /* Prevents text from wrapping */
+          display: inline-block; /* Ensures proper layout */
         }
         
         .btn-start {
