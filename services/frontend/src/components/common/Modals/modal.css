@@ -21,15 +21,24 @@
   max-height: 80vh;
   overflow-y: auto;
 }
+.modal-container {
+  position: relative; /* VERY IMPORTANT */
+}
 
-.modal-close-btn {
-  margin-top: 20px;
-  background: #1be5ec;
+.modal-close-icon {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: transparent;
   border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
+  font-size: 20px;
+  color: #888;
   cursor: pointer;
-  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.modal-close-icon:hover {
+  color: #fff;
 }
 
 .modal-container strong {

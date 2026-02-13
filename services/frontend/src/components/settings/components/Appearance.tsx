@@ -5,7 +5,6 @@ const Appearance: React.FC = () => {
     <div>
       {/* Help and Support content goes here */}
       <h2>Help & Support</h2>
-      <p>If you need assistance, please contact support@example.com.</p>
     </div>
   );
 };

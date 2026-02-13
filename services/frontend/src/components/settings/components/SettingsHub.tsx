@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserShield,
@@ -9,9 +9,10 @@ import {
   faShieldAlt,
   faQuestionCircle,
   faGavel,
-  faSkullCrossbones,
+  faTriangleExclamation
 } from "@fortawesome/free-solid-svg-icons";
 import '../settings.css';
+import BaseModal from "../../common/Modals/BaseModal";
 
 
 interface SettingsHubProps {
@@ -19,6 +20,15 @@ interface SettingsHubProps {
 }
 
 const SettingsHub: React.FC<SettingsHubProps> = ({ onSectionSelect }) => {
+  const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
+  const [comingSoonTitle, setComingSoonTitle] = useState("");
+
+  const handleComingSoon = (title: string) => {
+    setComingSoonTitle(title);
+    setIsComingSoonOpen(true);
+  };
+
+
   return (
     <div className="settings-hub">
 
@@ -35,7 +45,9 @@ const SettingsHub: React.FC<SettingsHubProps> = ({ onSectionSelect }) => {
 
         <div
           className="settings-card"
-          onClick={() => onSectionSelect("appearance")}
+          // onClick={() => onSectionSelect("appearance")}
+          onClick={() => handleComingSoon("Appearance")}
+
         >
           <FontAwesomeIcon icon={faMoon} className="card-icon" />
           <h3>Appearance</h3>
@@ -62,7 +74,8 @@ const SettingsHub: React.FC<SettingsHubProps> = ({ onSectionSelect }) => {
 
         <div
           className="settings-card"
-          onClick={() => onSectionSelect("chat-ai")}
+          // onClick={() => onSectionSelect("chat-ai")}
+          onClick={() => handleComingSoon("Chat & AI")}
         >
           <FontAwesomeIcon icon={faCommentDots} className="card-icon" />
           <h3>Chat & AI</h3>
@@ -97,14 +110,23 @@ const SettingsHub: React.FC<SettingsHubProps> = ({ onSectionSelect }) => {
         </div>
 
         <div
-          className="settings-card danger-zone"
+          className="settings-card danger"
           onClick={() => onSectionSelect("danger-zone")}
         >
-          <FontAwesomeIcon icon={faSkullCrossbones} className="card-icon" />
+          <FontAwesomeIcon icon={faTriangleExclamation} className="danger-icon" />
           <h3>Danger Zone</h3>
           <p>Permanently delete your account and all associated data</p>
         </div>
       </div>
+      <BaseModal
+        isOpen={isComingSoonOpen}
+        onClose={() => setIsComingSoonOpen(false)}
+      >
+        <h3>{comingSoonTitle}</h3>
+        <p>This feature is currently under development.</p>
+        <p>Stay tuned for upcoming updates 🚀</p>
+      </BaseModal>
+
     </div>
   );
 };

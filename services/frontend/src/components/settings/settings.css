@@ -44,10 +44,28 @@ body {
   border-color: #8a2be2;
   transform: translateY(-2px);
 }
-
-.settings-card.danger {
+.settings-card.danger-card:hover {
   border-color: #ff4444;
   background: rgba(255, 68, 68, 0.08);
+  transform: translateY(-2px);
+}
+
+.settings-card.danger h3,
+.settings-card.danger h4 {
+  color: #ff4d4d;
+}
+
+.settings-card.danger p {
+  color: #ff9999;
+}
+
+.settings-card.danger {
+  border: 1px solid #ff4444;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 68, 68, 0.08),
+    rgba(255, 0, 0, 0.03)
+  );
 }
 
 .settings-main-content {
@@ -68,6 +86,9 @@ body {
   font-size: 2rem;
   margin-bottom: 1rem;
   color: #00ffff;
+}
+.danger-icon {
+  color: #ff4444;
 }
 
 .sidebar-left,
@@ -233,21 +254,22 @@ input:-webkit-autofill:focus {
 }
 
 .primary-btn:focus,
-.primary-btn:focus-visible{
+.primary-btn:focus-visible {
   outline: none;
   box-shadow: none;
 }
 .primary-btn:hover,
 .primary-btn:active {
-  background: #1be5ec;   
+  background: #1be5ec;
   color: #000;
   border: none;
   box-shadow: none;
   transform: none;
 }
 
-.help-support-page { width: 100%; }
-
+.help-support-page {
+  width: 100%;
+}
 
 /* ===== MOBILE ===== */
 @media (max-width: 900px) {
@@ -380,7 +402,7 @@ input:-webkit-autofill:focus {
 }
 @media (max-width: 480px) {
   .primary-btn {
-    width: 100%;    
+    width: 100%;
     text-align: center;
   }
 }
@@ -448,7 +470,6 @@ input:-webkit-autofill:focus {
   gap: 8px;
 }
 
-
 /* .visibility-status {
   font-size: 0.85rem;
   margin-bottom: 12px;
@@ -470,4 +491,179 @@ input:-webkit-autofill:focus {
   margin-bottom: 14px;
 }
 
+.danger-card {
+  border: 1px solid #ff4444;
+  background: rgba(255, 68, 68, 0.05);
+}
+.danger-text {
+  color: #ff7777;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
 
+.danger-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.danger-btn:hover {
+  background: #e63939;
+}
+
+.danger-input {
+  width: 100%;
+  background: #111;
+  border: 1px solid #ff4444;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  margin: 12px 0;
+}
+
+.danger-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.danger-reason-item {
+  padding: 14px 0;
+  border-bottom: 1px solid #2a2a2a;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.danger-reason-item:hover {
+  background: rgba(255, 68, 68, 0.08);
+}
+
+.danger-reason-item:last-child {
+  border-bottom: none;
+}
+
+.secondary-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.secondary-btn:hover {
+  background: #e63a3a;
+}
+
+@media (max-width: 480px) {
+  .modal-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .danger-actions {
+    flex-direction: column;
+  }
+
+  .danger-actions button {
+    width: 100%;
+  }
+}
+
+/*===== notifications=====*/
+.notifications-page .settings-card h4 {
+  color: #1be5ec;
+}
+.notifications-page .settings-card {
+  margin-bottom: 24px;
+}
+
+.account-security-page .settings-card h4 {
+  color: #1be5ec;
+}
+.privacy-page .settings-card h4 {
+  color: #1be5ec;
+}
+.help-support-page .settings-card h4 {
+  color: #1be5ec;
+}
+.legal-page .settings-card h4 {
+  color: #1be5ec;
+}
+.toggle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ccc;
+}
+
+/* Toggle Track */
+.toggle-switch {
+  width: 46px;
+  height: 24px;
+  background: #333;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Active State */
+.toggle-switch.active {
+  background: #1be5ec;
+}
+
+/* Toggle Knob */
+.toggle-knob {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  transition: transform 0.3s ease;
+}
+
+/* Move knob when active */
+.toggle-switch.active .toggle-knob {
+  transform: translateX(22px);
+}
+.learning-pref-page {
+  width: 100%;
+}
+
+.learning-pref-page .settings-card {
+  margin-bottom: 24px;
+}
+
+.learning-pref-page h4 {
+  color: #1be5ec;
+}
+
+@media (max-width: 480px) {
+  .toggle-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .toggle-switch {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .notifications-page .primary-btn {
+    width: 100%;
+  }
+}
