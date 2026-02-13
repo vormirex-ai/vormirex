@@ -42,7 +42,7 @@ const Footer = (props: Props) => {
       {
         title: 'Get in touch',
         links: [
-          // { label: '+91 8123831056', href: 'tel:+918123831056' },
+          { label: '+91 8967838500', href: 'tel:+918967838500' },
           { label: 'info@vormirex.com', href: 'mailto:info@vormirex.com' },
         ],
       },
