@@ -101,8 +101,8 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         {/* Stats */}
         <div className="stats-container">
           <div className="stat-item">
-            <h3>∞</h3>
-            <p>Unlimited Curiosity</p>
+            <h3>10X</h3>
+            <p>Smarter Learning Speed</p>
           </div>
 
           <div className="stat-item">
