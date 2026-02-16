@@ -150,7 +150,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
 export const deleteAccount = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
 
   const user = await User.findByIdAndDelete(userId);
   if (!user) throw new NotFoundError('User not found');
@@ -161,7 +161,7 @@ export const deleteAccount = async (req: Request, res: Response) => {
 
 export const updatePreferences = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
   const { dailyGoal, focusAreas } = req.body;
 
   const user = await User.findById(userId);

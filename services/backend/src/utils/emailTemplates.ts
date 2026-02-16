@@ -53,3 +53,32 @@ export const getResetPasswordEmailHTML = (
     </div>
   `;
 };
+
+/**
+ * Generates a professional HTML email template for Admin 2FA.
+ * @param name - The user's name.
+ * @param otp - The 6-digit verification code.
+ * @returns A string containing the HTML for the email.
+ */
+export const getAdminVerificationEmailHTML = (
+  name: string,
+  otp: string
+): string => {
+  return `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
+      <h2 style="color: #4F46E5;">Admin Verification Required</h2>
+      <p>Hi ${name},</p>
+      <p>We detected a login attempt to your Vormirex Admin account. To complete the login process, please use the verification code below:</p>
+      <div style="text-align: center; margin: 30px 0;">
+        <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #4F46E5; background: #f0f0ff; padding: 10px 20px; border-radius: 8px; border: 1px dashed #4F46E5;">${otp}</span>
+      </div>
+      <p>This code will expire in 10 minutes.</p>
+      <p>If you did not attempt to log in, please change your password immediately and contact support.</p>
+      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+      <p style="font-size: 0.9em; color: #777;">
+        Vormirex Security Team<br>
+        <a href="https://www.vormirex.com" style="color: #4F46E5;">www.vormirex.com</a>
+      </p>
+    </div>
+  `;
+};
