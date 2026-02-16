@@ -62,6 +62,33 @@
 							]
 						}
 					}
+				},
+				{
+					"name": "Verify 2FA",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@example.com\",\n    \"code\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/verify-2fa",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify-2fa"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -109,7 +136,25 @@
 					}
 				},
 				{
-					"name": "Create Course (Base)",
+					"name": "Get Course By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/{{courseId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"{{courseId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Course (Full)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -121,7 +166,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Advanced React Patterns\",\n    \"description\": \"Deep dive into React 19 features.\",\n    \"price\": 4999,\n    \"thumbnail\": \"https://example.com/img.png\",\n    \"instructorId\": \"{{userId}}\"\n}",
+							"raw": "{\n    \"title\": \"Advanced React Patterns\",\n    \"subtitle\": \"Master React 19\",\n    \"description\": \"Deep dive into React 19 features.\",\n    \"price\": 4999,\n    \"thumbnail\": \"https://example.com/img.png\",\n    \"instructorId\": \"{{userId}}\",\n    \"level\": \"ADVANCED\",\n    \"tags\": [\"react\", \"frontend\"],\n    \"levels\": [\n        {\n            \"level\": \"FOUNDATION\",\n            \"duration\": \"1 month\",\n            \"highlights\": [\"Hooks Deep Dive\"],\n            \"modules\": [\n                {\n                    \"title\": \"Hooks\",\n                    \"items\": [\"useState\", \"useEffect\", \"useContext\"]\n                }\n            ]\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -195,6 +240,45 @@
 								"courses",
 								"{{courseId}}",
 								"modules"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "User Settings",
+			"item": [
+				{
+					"name": "Update Preferences (Primary Focus)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"primaryFocus\": \"Master a skill\",\n    \"curiosity\": [\"Coding\", \"Business\"],\n    \"learningPace\": \"Fast track\",\n    \"learningFormat\": [\"Reading\", \"AI Experience\"],\n    \"dailyGoal\": 45,\n    \"challengeLevel\": \"Progressive growth\",\n    \"learningGoals\": [\"Job ready\", \"Real Project\"],\n    \"currentSkillLevel\": \"Intermediate\",\n    \"focusAreas\": [\"Roadmap\", \"Mini Projects\"],\n    \"timeline\": \"3 months\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/me/preferences",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"preferences"
 							]
 						}
 					}

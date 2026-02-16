@@ -10,6 +10,7 @@ import { sendEmail } from '../../utils/mailer.js';
 import {
   getResetPasswordEmailHTML,
   getVerificationEmailHTML,
+  getAdminVerificationEmailHTML,
 } from '../../utils/emailTemplates.js';
 import {
   BadRequestError,
@@ -20,6 +21,7 @@ import { updateUserStreak } from '../../utils/streak.js';
 import type { SignupDTO, LoginDTO, CustomJWTPayload } from './auth.types.js';
 
 import { hasValidMxRecord } from '../../utils/dns.js';
+import { validateEmail } from '../../utils/zerobounce.js';
 
 export const signup = async (data: SignupDTO) => {
   // 1. Verify Domain MX Records (prevents typos like gmial.com)
@@ -27,6 +29,10 @@ export const signup = async (data: SignupDTO) => {
   if (!isDomainValid) {
     throw new BadRequestError('Invalid email domain. Please check your email address.');
   }
+
+  // 1b. Verify Email Existence (ZeroBounce)
+  // This will throw a BadRequestError if the email is invalid/non-existent
+  await validateEmail(data.email);
 
   const existingUser = await User.findOne({ email: data.email });
   if (existingUser) {
@@ -110,6 +116,12 @@ export const login = async (data: LoginDTO) => {
   const match = await bcrypt.compare(data.password, user.password);
   if (!match) throw new UnauthorizedError('Invalid email or password.');
 
+  // CHECK FOR ADMIN MFA
+  if (user.role === 'admin' || user.role === 'super-admin') {
+    await sendTwoFactorCode(user);
+    return { requireTwoFactor: true, email: user.email };
+  }
+
   const payload = { userId: user._id, role: user.role };
 
   const accessToken = generateAccess(payload);
@@ -117,7 +129,7 @@ export const login = async (data: LoginDTO) => {
 
   await updateUserStreak(user);
 
-  return { user, accessToken, refreshToken };
+  return { requireTwoFactor: false, user, accessToken, refreshToken };
 };
 
 export const refreshToken = async (token: string) => {
@@ -267,4 +279,55 @@ export const getUserProfile = async (userId: string) => {
     throw new BadRequestError('User not found');
   }
   return { id: user._id, name: user.name, email: user.email, role: user.role, isVerified: user.isVerified };
+};
+
+export const sendTwoFactorCode = async (user: any) => {
+  // 1. Generate a 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  // 2. Hash it for security
+  const hashedOTP = crypto.createHash('sha256').update(otp).digest('hex');
+
+  // 3. Save to DB with expiry (10 mins)
+  user.twoFactorCode = hashedOTP;
+  user.twoFactorExpires = new Date(Date.now() + 10 * 60 * 1000);
+  await user.save();
+
+  const emailHtml = getAdminVerificationEmailHTML(user.name, otp);
+
+  // 4. Send Email
+  await sendEmail({
+    to: user.email,
+    subject: 'Vormirex Admin Login - Verification Code',
+    text: `Your verification code is: ${otp}`,
+    html: emailHtml,
+  });
+};
+
+export const verifyTwoFactorCode = async (email: string, code: string) => {
+  const hashedOTP = crypto.createHash('sha256').update(code).digest('hex');
+
+  const user = await User.findOne({
+    email,
+    twoFactorCode: hashedOTP,
+    twoFactorExpires: { $gt: new Date() },
+  });
+
+  if (!user) {
+    throw new BadRequestError('Invalid or expired verification code');
+  }
+
+  // Clear OTP fields
+  user.twoFactorCode = undefined;
+  user.twoFactorExpires = undefined;
+  await user.save();
+
+  // Generate Tokens
+  const payload = { userId: user._id, role: user.role };
+  const accessToken = generateAccess(payload);
+  const refreshToken = generateRefresh(payload);
+
+  await updateUserStreak(user);
+
+  return { user, accessToken, refreshToken };
 };

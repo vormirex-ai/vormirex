@@ -11,6 +11,8 @@ export interface IUser extends Document {
   emailVerificationToken?: string;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
+  twoFactorCode?: string;
+  twoFactorExpires?: Date;
   timezone?: string;
   isFrozen: boolean;
   streak: {
@@ -21,6 +23,14 @@ export interface IUser extends Document {
   learningPreferences: {
     dailyGoal: number;
     focusAreas: string[];
+    primaryFocus?: 'Master a skill' | 'Ace an exam' | 'Expand knowledge';
+    curiosity?: string[];
+    learningPace?: 'Fast track' | 'Balanced' | 'Deep focus';
+    learningFormat?: ('Reading' | 'Short videos' | 'Practice and exercise' | 'AI Experience')[];
+    challengeLevel?: 'Beginner friendly' | 'Progressive growth' | 'Advanced challenging';
+    learningGoals?: ('Job ready' | 'Real Project' | 'Ace Exam' | 'Daily Habit')[];
+    currentSkillLevel?: 'Beginner' | 'Intermediate' | 'Advanced';
+    timeline?: string;
   };
   notificationPreferences: {
     streakReminders: boolean;
@@ -49,6 +59,8 @@ const userSchema = new Schema<IUser>(
     emailVerificationToken: { type: String, select: false },
     passwordResetToken: { type: String, select: false },
     passwordResetExpires: { type: Date, select: false },
+    twoFactorCode: { type: String, select: false },
+    twoFactorExpires: { type: Date, select: false },
     timezone: { type: String, default: 'UTC' },
     streak: {
       current: { type: Number, default: 0 },
@@ -58,6 +70,34 @@ const userSchema = new Schema<IUser>(
     learningPreferences: {
       dailyGoal: { type: Number, default: 30 },
       focusAreas: { type: [String], default: [] },
+      primaryFocus: {
+        type: String,
+        enum: ['Master a skill', 'Ace an exam', 'Expand knowledge'],
+      },
+      curiosity: { type: [String], default: [] },
+      learningPace: {
+        type: String,
+        enum: ['Fast track', 'Balanced', 'Deep focus'],
+      },
+      learningFormat: {
+        type: [String],
+        enum: ['Reading', 'Short videos', 'Practice and exercise', 'AI Experience'],
+        default: [],
+      },
+      challengeLevel: {
+        type: String,
+        enum: ['Beginner friendly', 'Progressive growth', 'Advanced challenging'],
+      },
+      learningGoals: {
+        type: [String],
+        enum: ['Job ready', 'Real Project', 'Ace Exam', 'Daily Habit'],
+        default: [],
+      },
+      currentSkillLevel: {
+        type: String,
+        enum: ['Beginner', 'Intermediate', 'Advanced'],
+      },
+      timeline: { type: String },
     },
     notificationPreferences: {
       streakReminders: { type: Boolean, default: true },

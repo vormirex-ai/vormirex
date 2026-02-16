@@ -150,7 +150,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
 export const deleteAccount = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
 
   const user = await User.findByIdAndDelete(userId);
   if (!user) throw new NotFoundError('User not found');
@@ -161,7 +161,7 @@ export const deleteAccount = async (req: Request, res: Response) => {
 
 export const updatePreferences = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
   const { dailyGoal, focusAreas } = req.body;
 
   const user = await User.findById(userId);
@@ -174,6 +174,22 @@ export const updatePreferences = async (req: Request, res: Response) => {
 
   if (dailyGoal !== undefined) user.learningPreferences.dailyGoal = dailyGoal;
   if (focusAreas !== undefined) user.learningPreferences.focusAreas = focusAreas;
+  // @ts-ignore
+  if (req.body.primaryFocus !== undefined) user.learningPreferences.primaryFocus = req.body.primaryFocus;
+  // @ts-ignore
+  if (req.body.curiosity !== undefined) user.learningPreferences.curiosity = req.body.curiosity;
+  // @ts-ignore
+  if (req.body.learningPace !== undefined) user.learningPreferences.learningPace = req.body.learningPace;
+  // @ts-ignore
+  if (req.body.learningFormat !== undefined) user.learningPreferences.learningFormat = req.body.learningFormat;
+  // @ts-ignore
+  if (req.body.challengeLevel !== undefined) user.learningPreferences.challengeLevel = req.body.challengeLevel;
+  // @ts-ignore
+  if (req.body.learningGoals !== undefined) user.learningPreferences.learningGoals = req.body.learningGoals;
+  // @ts-ignore
+  if (req.body.currentSkillLevel !== undefined) user.learningPreferences.currentSkillLevel = req.body.currentSkillLevel;
+  // @ts-ignore
+  if (req.body.timeline !== undefined) user.learningPreferences.timeline = req.body.timeline;
 
   await user.save();
 
@@ -267,6 +283,7 @@ export const getPublicProfile = async (req: Request, res: Response) => {
 
   res.json({ profile: responseData });
 };
+
 export default {
   getAllUsers,
   updateUserRole,

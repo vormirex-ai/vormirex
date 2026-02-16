@@ -84,9 +84,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* ================= PUBLIC ROUTES (MOVED TO TOP) ================= */}
-       
-        {/* Root route '/' now loads the Landing Page/Homepage */}
+        {/* ================= PUBLIC ROUTES ================= */}
         <Route
           path="/"
           element={
@@ -95,10 +93,6 @@ const App: React.FC = () => {
             </PublicLayout>
           }
         />
-       
-        {/* Optional: Redirect /home to / if users have the old link bookmarked */}
-        <Route path="/home" element={<Navigate to="/" replace />} />
-
         <Route
           path="/features"
           element={

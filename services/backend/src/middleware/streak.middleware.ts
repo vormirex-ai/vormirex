@@ -13,11 +13,11 @@ export const streakMiddleware = async (
 ) => {
   try {
     // Only run if user is authenticated
-    if (!req.user || !req.user._id) {
+    if (!req.user || !req.user.userId) {
       return next();
     }
 
-    const userId = req.user._id;
+    const userId = req.user.userId;
     const user = await User.findById(userId);
 
     if (user) {

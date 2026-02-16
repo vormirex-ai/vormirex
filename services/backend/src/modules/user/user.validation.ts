@@ -25,6 +25,14 @@ export const updatePreferencesSchema = z.object({
   body: z.object({
     dailyGoal: z.number().min(5).max(300).optional(),
     focusAreas: z.array(z.string()).optional(),
+    primaryFocus: z.enum(['Master a skill', 'Ace an exam', 'Expand knowledge']).optional(),
+    curiosity: z.array(z.string()).optional(),
+    learningPace: z.enum(['Fast track', 'Balanced', 'Deep focus']).optional(),
+    learningFormat: z.array(z.enum(['Reading', 'Short videos', 'Practice and exercise', 'AI Experience'])).optional(),
+    challengeLevel: z.enum(['Beginner friendly', 'Progressive growth', 'Advanced challenging']).optional(),
+    learningGoals: z.array(z.enum(['Job ready', 'Real Project', 'Ace Exam', 'Daily Habit'])).optional(),
+    currentSkillLevel: z.enum(['Beginner', 'Intermediate', 'Advanced']).optional(),
+    timeline: z.string().optional(),
   }),
 });
 

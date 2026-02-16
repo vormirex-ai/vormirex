@@ -26,11 +26,46 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('[DEBUG] Login request received:', req.body.email);
   try {
-    console.log('[DEBUG] Calling authService.login...');
-    const { accessToken, refreshToken, user } = await authService.login(req.body);
-    console.log('[DEBUG] authService.login successful');
+    const result = await authService.login(req.body);
+    if (result.requireTwoFactor) {
+      return res.status(200).json({
+        success: true,
+        requireTwoFactor: true,
+        message: 'Verification code sent to your email.',
+        email: result.email,
+      });
+    }
+
+    // Standard Login Success
+    res.cookie('refresh_token', result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    const userResponse = {
+      id: result.user!._id,
+      name: result.user!.name,
+      email: result.user!.email,
+      role: result.user!.role,
+    };
+
+    return res.json({ success: true, accessToken: result.accessToken, user: userResponse });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const verifyTwoFactor = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, code } = req.body;
+    if (!email || !code) {
+      throw new BadRequestError('Email and code are required');
+    }
+
+    const { accessToken, refreshToken, user } = await authService.verifyTwoFactorCode(email, code);
 
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
@@ -48,10 +83,10 @@ export const login = async (
 
     return res.json({ success: true, accessToken, user: userResponse });
   } catch (error) {
-    console.error('[DEBUG] Login error caught in controller:', error);
     next(error);
   }
 };
+
 
 export const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {

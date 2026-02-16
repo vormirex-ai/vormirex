@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LayoutDashboard } from 'lucide-react'; // Import the icon
 import SEO from '../common/SEO';
 import './AboutSection.css';
 
 const AboutVormirex: React.FC = () => {
-  const navigate = useNavigate(); // Hook to handle page navigation
+  const navigate = useNavigate();
 
   return (
     <div className="about-wrapper">
@@ -13,6 +14,15 @@ const AboutVormirex: React.FC = () => {
         description="Learn about Vormirex, the AI-powered learning platform bridging the gap between traditional education and industry demands."
         url="https://vormirex.com/about"
       />
+      {/* Added Back to Dashboard button */}
+      <button
+        className="pricing-page__back-btn" // Using the same class for consistent styling
+        onClick={() => navigate('/dashboard')}
+        aria-label="Back to Dashboard"
+      >
+        <LayoutDashboard size={24} />
+      </button>
+
       {/* ================= HERO SECTION ================= */}
       <section className="about-hero">
         <h1>About Us</h1>

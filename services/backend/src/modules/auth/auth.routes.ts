@@ -33,6 +33,9 @@ authRouter.post(
   authController.login
 );
 
+// @route   POST /api/auth/verify-2fa
+authRouter.post('/verify-2fa', authRateLimiter, authController.verifyTwoFactor);
+
 // @route   GET /api/auth/verify-email
 // No rate limit needed here as it requires a unique, single-use token.
 authRouter.get('/verify-email', authController.verifyEmail);
