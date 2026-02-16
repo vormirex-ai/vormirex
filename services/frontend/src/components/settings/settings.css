@@ -1,0 +1,691 @@
+/* .settings-page .settings-main {
+  padding: 0 24px;
+} */
+/* .settings-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 0;
+} */
+
+html,
+body {
+  height: 100%;
+  /* overflow-x: hidden; */
+  overflow: auto;
+}
+
+@media (min-width: 901px) {
+  html, body {
+    overflow:auto;
+  }
+}
+
+.settings-hub {
+  padding-top: 16px;
+  padding: 16px 16px;
+}
+.settings-hub h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #6aece1;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding-bottom: 32px;
+}
+
+.settings-card {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.settings-card:hover {
+  border-color: #8a2be2;
+  transform: translateY(-2px);
+}
+.settings-card.danger-card:hover {
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.08);
+  transform: translateY(-2px);
+}
+
+.settings-card.danger h3,
+.settings-card.danger h4 {
+  color: #ff4d4d;
+}
+
+.settings-card.danger p {
+  color: #ff9999;
+}
+
+.settings-card.danger {
+  border: 1px solid #ff4444;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 68, 68, 0.08),
+    rgba(255, 0, 0, 0.03)
+  );
+}
+
+.settings-main-content {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 80px 24px 48px;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex: 1; 
+  padding-bottom: 72px;
+  overflow: visible;
+}
+
+@media (min-width: 901px) {
+  .settings-main-content {
+    height: 100vh;
+    overflow-y: auto;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    scrollbar-gutter: stable;
+  }
+}
+
+.card-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #00ffff;
+}
+.danger-icon {
+  color: #ff4444;
+}
+
+.sidebar-left,
+.sidebar-right {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 2rem;
+}settings-top
+
+.back-button {
+  background: none;
+  border: 1px solid #555;
+  color: #6aece1;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.detail-content {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 28px;
+  border: 1px solid #2a2a2a;
+}
+.dashboard-btn {
+  display: flex;
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  color: #6aece1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dashboard-btn:hover {
+  border-color: #8a2be2;
+}
+
+/*====== SETTINGS TOP BAR =======*/
+.settings-top-bar {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #1e1e1e;
+  border-bottom: 1px solid #2a2a2a;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  z-index: 100;
+  margin-top: 60px;
+}
+
+.settings-title-mobile {
+  flex: 1;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.mobile-menu-toggle,
+.tools-button-mobile {
+  background: none;
+  border: none;
+  color: #fff;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mobile-only,
+.desktop-only {
+  display: none;
+}
+
+/*account-security page*/
+.account-security-page {
+  width: 100%;
+}
+
+.account-card {
+  margin-bottom: 24px;
+}
+
+.account-card h4 {
+  margin-bottom: 4px;
+}
+
+.account-card p {
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  margin-bottom: 6px;
+  color: #ccc;
+}
+
+.form-group input {
+  background: #111;
+  border: 1px solid #8a2be2;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field span {
+  position: absolute;
+  right: 12px;
+  top: 36px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.primary-btn {
+  background: #1be5ec;
+  color: #000;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  width: fit-content;
+}
+.account-security-wrapper {
+  max-width: 640px;
+  margin: 37px auto;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.form-group input:focus,
+.form-group input:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border-color: #8a2be2;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #111 inset;
+  -webkit-text-fill-color: #fff;
+  border: 1px solid #8a2be2;
+}
+
+.primary-btn:focus,
+.primary-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.primary-btn:hover,
+.primary-btn:active {
+  background: #1be5ec;
+  color: #000;
+  border: none;
+  box-shadow: none;
+  transform: none;
+}
+
+.help-support-page {
+  width: 100%;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 900px) {
+  .mobile-only {
+    display: flex;
+  }
+}
+
+/* ===== DESKTOP ===== */
+@media (min-width: 901px) {
+  .desktop-only {
+    display: flex;
+    /* position: fixed; */
+    top: 16px;
+    right: 24px;
+    z-index: 20;
+  }
+}
+/*Tablet view*/
+@media (max-width: 1024px) {
+  .settings-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .settings-card {
+    padding: 20px;
+  }
+  .card-icon {
+    font-size: 1.7rem;
+  }
+  .settings-hub h1 {
+    font-size: 1.6rem;
+  }
+}
+
+/*Mobile view*/
+@media (max-width: 768px) {
+  .settings-main-content {
+    padding: 80px 16px;
+    padding-bottom: 98px;
+  }
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .settings-card {
+    padding: 16px;
+  }
+  .card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .settings-hub h1 {
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+}
+
+/*Very small screens*/
+@media (max-width: 480px) {
+  .settings-main-content {
+    padding: 80px 8px 16px;
+  }
+  .settings-hub h1 {
+    font-size: 1.2rem;
+  }
+  .settings-card h3 {
+    font-size: 0.95rem;
+  }
+  .settings-card p {
+    font-size: 0.8rem;
+  }
+  .back-button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+/*show only on small screens*/
+
+@media (max-width: 900px) {
+  .settings-top-bar {
+    display: flex;
+  }
+}
+
+@media (min-width: 1100px) {
+  .settings-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* Dashboard button — desktop */
+@media (min-width: 901px) {
+  .dashboard-btn {
+    display: flex;
+  }
+}
+/* Desktop settings header row */
+.settings-header-row {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  .settings-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 16px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #0a0b14;
+  }
+
+  .settings-title-desktop {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #e0e0ff;
+    margin: 0;
+  }
+}
+
+@media (min-width: 1400px) {
+  .account-security-wrapper {
+    max-width: 700px;
+  }
+}
+@media (max-width: 768px) {
+  .account-card {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .primary-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+@media (max-width: 480px) {
+  .account-card h4 {
+    font-size: 1rem;
+  }
+
+  .account-card p {
+    font-size: 0.8rem;
+  }
+
+  .form-group label {
+    font-size: 0.75rem;
+  }
+}
+
+/* LEGAL PAGE */
+
+.legal-page {
+  width: 100%;
+}
+
+.legal-page .account-security-wrapper {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.legal-page .settings-card {
+  margin-bottom: 24px;
+}
+
+.legal-page h4 {
+  margin-bottom: 6px;
+}
+
+.legal-page p {
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  margin-bottom: 16px;
+}
+
+.privacy-select {
+  width: 100%;
+  background: #111;
+  border: 1px solid #8a2be2;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.toggle-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toggle-group label {
+  font-size: 0.85rem;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* .visibility-status {
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  color: #aaa;
+}
+
+.visibility-status span {
+  color: #1be5ec;
+  font-weight: 600;
+} */
+
+.visibility-badge {
+  display: inline-block;
+  background: rgba(27, 229, 236, 0.15);
+  color: #1be5ec;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  margin-bottom: 14px;
+}
+
+.danger-card {
+  border: 1px solid #ff4444;
+  background: rgba(255, 68, 68, 0.05);
+}
+.danger-text {
+  color: #ff7777;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+.danger-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.danger-btn:hover {
+  background: #e63939;
+}
+
+.danger-input {
+  width: 100%;
+  background: #111;
+  border: 1px solid #ff4444;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  margin: 12px 0;
+}
+
+.danger-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.danger-reason-item {
+  padding: 14px 0;
+  border-bottom: 1px solid #2a2a2a;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.danger-reason-item:hover {
+  background: rgba(255, 68, 68, 0.08);
+}
+
+.danger-reason-item:last-child {
+  border-bottom: none;
+}
+
+.secondary-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.secondary-btn:hover {
+  background: #e63a3a;
+}
+
+@media (max-width: 480px) {
+  .modal-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .danger-actions {
+    flex-direction: column;
+  }
+
+  .danger-actions button {
+    width: 100%;
+  }
+}
+
+/*===== notifications=====*/
+.notifications-page .settings-card h4 {
+  color: #1be5ec;
+}
+.notifications-page .settings-card {
+  margin-bottom: 24px;
+}
+
+.account-security-page .settings-card h4 {
+  color: #1be5ec;
+}
+.privacy-page .settings-card h4 {
+  color: #1be5ec;
+}
+.help-support-page .settings-card h4 {
+  color: #1be5ec;
+}
+.legal-page .settings-card h4 {
+  color: #1be5ec;
+}
+.toggle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ccc;
+}
+
+/* Toggle Track */
+.toggle-switch {
+  width: 46px;
+  height: 24px;
+  background: #333;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Active State */
+.toggle-switch.active {
+  background: #1be5ec;
+}
+
+/* Toggle Knob */
+.toggle-knob {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  transition: transform 0.3s ease;
+}
+
+/* Move knob when active */
+.toggle-switch.active .toggle-knob {
+  transform: translateX(22px);
+}
+.learning-pref-page {
+  width: 100%;
+}
+
+.learning-pref-page .settings-card {
+  margin-bottom: 24px;
+}
+
+.learning-pref-page h4 {
+  color: #1be5ec;
+}
+
+@media (max-width: 480px) {
+  .toggle-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .toggle-switch {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .notifications-page .primary-btn {
+    width: 100%;
+  }
+}

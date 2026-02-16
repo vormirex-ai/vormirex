@@ -5,6 +5,7 @@ import SidebarLeft from "../components/layout/SidebarLeft";
 import SidebarRight from "../components/layout/SidebarRight";
 import DashboardLayout from "../components/layout/DashboardLayout";
 
+
 export default function DashboardPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState<boolean>(false);

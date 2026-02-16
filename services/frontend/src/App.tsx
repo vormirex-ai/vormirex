@@ -49,6 +49,7 @@ import {
   YourProgress,
 } from './CustomCourses/CustomCoursePage';
 import CustomCoursesList from './CustomCourses/CustomCoursesList';
+import SettingsPage from './components/settings/SettingsPage';
 
 /* ============================================================
    PUBLIC LAYOUT (Navbar + Footer)
@@ -83,9 +84,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* ================= PUBLIC ROUTES (MOVED TO TOP) ================= */}
-
-        {/* Root route '/' now loads the Landing Page/Homepage */}
+        {/* ================= PUBLIC ROUTES ================= */}
         <Route
           path="/"
           element={
@@ -94,10 +93,6 @@ const App: React.FC = () => {
             </PublicLayout>
           }
         />
-
-        {/* Optional: Redirect /home to / if users have the old link bookmarked */}
-        <Route path="/home" element={<Navigate to="/" replace />} />
-
         <Route
           path="/features"
           element={
@@ -171,6 +166,7 @@ const App: React.FC = () => {
         {/* ================= CATCH ALL ================= */}
         {/* Any unknown route redirects to Home (/) */}
         <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </Router>
   );

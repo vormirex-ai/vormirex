@@ -224,7 +224,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
       </nav>
 
       <div className="sidebar-footer">
-        <div className="footer-link" onClick={showComingSoon}>
+        <div className="footer-link" onClick={() => navigate('/settings')}>
           <FontAwesomeIcon icon={faCog} /> Settings
         </div>
         <div className="footer-link" onClick={showComingSoon}>
