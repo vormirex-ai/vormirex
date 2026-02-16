@@ -10,6 +10,7 @@ import { sendEmail } from '../../utils/mailer.js';
 import {
   getResetPasswordEmailHTML,
   getVerificationEmailHTML,
+  getAdminVerificationEmailHTML,
 } from '../../utils/emailTemplates.js';
 import {
   BadRequestError,
@@ -292,12 +293,14 @@ export const sendTwoFactorCode = async (user: any) => {
   user.twoFactorExpires = new Date(Date.now() + 10 * 60 * 1000);
   await user.save();
 
+  const emailHtml = getAdminVerificationEmailHTML(user.name, otp);
+
   // 4. Send Email
   await sendEmail({
     to: user.email,
     subject: 'Vormirex Admin Login - Verification Code',
     text: `Your verification code is: ${otp}`,
-    html: `<p>Your verification code is: <strong>${otp}</strong></p><p>This code expires in 10 minutes.</p>`,
+    html: emailHtml,
   });
 };
 

@@ -4,7 +4,7 @@ import { NotFoundError } from '../../utils/errors.js';
 
 export const getNotifications = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 50;
   const skip = (page - 1) * limit;
@@ -28,7 +28,7 @@ export const getNotifications = async (req: Request, res: Response) => {
 
 export const markAsRead = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
   const { id } = req.params;
 
   const notification = await Notification.findOneAndUpdate(
@@ -46,7 +46,7 @@ export const markAsRead = async (req: Request, res: Response) => {
 
 export const markAllAsRead = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
 
   await Notification.updateMany(
     { userId, isRead: false },
