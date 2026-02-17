@@ -198,7 +198,7 @@ export const updatePreferences = async (req: Request, res: Response) => {
 
 export const updateNotificationPreferences = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
   const { streakReminders, newCourseAlerts, securityAlerts } = req.body;
 
   const user = await User.findById(userId);
