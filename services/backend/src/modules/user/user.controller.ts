@@ -47,7 +47,7 @@ export const updateUserRole = async (req: Request, res: Response) => {
 
   // Prevent self-demotion/role change
   // @ts-ignore
-  if (req.user?._id.toString() === id) {
+  if (req.user?.userId === id) {
      throw new BadRequestError('You cannot change your own role.');
   }
 
@@ -78,7 +78,7 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const getAdmins = async (req: Request, res: Response) => {
   // @ts-ignore
-  const currentUserId = req.user?._id;
+  const currentUserId = req.user?.userId;
 
   const admins = await User.find({
     role: 'admin',
@@ -93,7 +93,7 @@ export const toggleUserStatus = async (req: Request, res: Response) => {
 
   // Prevent self-freezing
   // @ts-ignore
-  if (req.user?._id.toString() === id) {
+  if (req.user?.userId === id) {
      throw new BadRequestError('You cannot freeze your own account.');
   }
 
@@ -113,7 +113,7 @@ export const toggleUserStatus = async (req: Request, res: Response) => {
 
 export const updateProfile = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
   const { name, timezone } = req.body;
 
   const user = await User.findById(userId);
@@ -129,7 +129,7 @@ export const updateProfile = async (req: Request, res: Response) => {
 
 export const changePassword = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
   const { currentPassword, newPassword } = req.body;
 
   const user = await User.findById(userId).select('+password');
@@ -224,7 +224,7 @@ export const updateNotificationPreferences = async (req: Request, res: Response)
 
 export const updatePrivacySettings = async (req: Request, res: Response) => {
   // @ts-ignore
-  const userId = req.user._id;
+  const userId = req.user.userId;
   const { isProfilePublic, showProgress, showCourses } = req.body;
 
   const user = await User.findById(userId);
@@ -254,7 +254,7 @@ export const getPublicProfile = async (req: Request, res: Response) => {
   if (!isPublic) {
     // If private, only admins or yourself can see (simplified: just block for now)
     // @ts-ignore
-    const currentUserId = req.user?._id?.toString();
+    const currentUserId = req.user?.userId;
     // @ts-ignore
     const isAdmin = req.user?.role === 'admin' || req.user?.role === 'super-admin';
     
