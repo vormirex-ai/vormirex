@@ -1,105 +1,121 @@
 import React, { useState } from "react";
+import { updatePrivacySettings } from "../../../api/user";
+
 interface PrivacyProps {
   onAction: (title: string, content: React.ReactNode) => void;
 }
-const PrivacyData: React.FC<PrivacyProps> = ({ onAction }) => {
-  const [visibility, setVisibility] = useState("Public");
-  const [requestSent, setRequestSent] = useState(false);
-  const [preferences, setPreferences] = useState({
-    recommendations: true,
-    analytics: true,
-    emails: false,
-  })
 
-  const handlePreferenceChange = (key: string) => {
+const PrivacyData: React.FC<PrivacyProps> = ({ onAction }) => {
+  const [visibility, setVisibility] = useState<"Public" | "Private">("Public");
+  const [loading, setLoading] = useState(false);
+
+  const [preferences, setPreferences] = useState({
+    showProgress: true,
+    showCourses: true,
+  });
+
+  const handlePreferenceChange = (key: "showProgress" | "showCourses") => {
     setPreferences((prev) => ({
       ...prev,
-      [key]: !prev[key as keyof typeof prev],
+      [key]: !prev[key],
     }));
+  };
+
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) throw new Error("Not authenticated");
+
+      setLoading(true);
+
+      await updatePrivacySettings(token, {
+        isProfilePublic: visibility === "Public",
+        showProgress: preferences.showProgress,
+        showCourses: preferences.showCourses,
+      });
+
+      alert("Privacy settings updated successfully!");
+    } catch (error: any) {
+      alert(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="privacy-page">
       <div className="account-security-wrapper">
-        <div className="settings-card account-card">
 
-          <h4>Profile Visibility </h4>
+        {/* Profile Visibility */}
+        <div className="settings-card account-card">
+          <h4>Profile Visibility</h4>
+
           <div className="visibility-badge">
             {visibility}
           </div>
 
-          <p>Control who can view your profile Information</p>
-          <button className="primary-btn"
+          <p>Control who can view your profile information</p>
+
+          <button
+            className="primary-btn"
             onClick={() =>
               onAction(
                 "Profile Visibility",
                 <div>
-                  <p>
-                    Control who can view your profile information.
-                  </p>
-                  <select className="privacy-select"
+                  <p>Select who can view your profile:</p>
+                  <select
+                    className="privacy-select"
                     value={visibility}
-                    onChange={(e) => setVisibility(e.target.value)}>
-                    <option>Public</option>
-                    <option>Private</option>
-
+                    onChange={(e) =>
+                      setVisibility(e.target.value as "Public" | "Private")
+                    }
+                  >
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
                   </select>
-                  {/* <button className="primary-btn">Save Visibility</button> */}
                 </div>
               )
             }
-          >Update Visibility</button>
-        </div>
-
-        <div className="settings-card account-card">
-
-          <h4>Download Your Data</h4>
-          <p>Request a copy of your account data.</p>
-          <button
-            className="primary-btn"
-            disabled={requestSent}
-            onClick={() => setRequestSent(true)}
           >
-            {requestSent ? "Request Sent ✔" : "Request Data"}
+            Update Visibility
           </button>
         </div>
 
-
+        {/* Data Usage Preferences */}
         <div className="settings-card account-card">
-
           <h4>Data Usage Preferences</h4>
-          <p>Manage how your data is used to improve your experience.</p>
+          <p>Manage how your data is used.</p>
 
           <div className="toggle-group">
             <label>
-              <input type="checkbox"
-                checked={preferences.recommendations}
-                onChange={() => handlePreferenceChange("recommendations")} />
-              Personalized Recommendations
-            </label>
-            <label>
               <input
                 type="checkbox"
-                checked={preferences.analytics}
-                onChange={() => handlePreferenceChange("analytics")}
+                checked={preferences.showProgress}
+                onChange={() => handlePreferenceChange("showProgress")}
               />
-              Analytics Tracking
+              Show Learning Progress
             </label>
 
             <label>
               <input
                 type="checkbox"
-                checked={preferences.emails}
-                onChange={() => handlePreferenceChange("emails")}
+                checked={preferences.showCourses}
+                onChange={() => handlePreferenceChange("showCourses")}
               />
-              Email Usage Insights
+              Show Enrolled Courses
             </label>
           </div>
-          <button className="primary-btn">Save Preferences</button>
+
+          <button
+            className="primary-btn"
+            disabled={loading}
+            onClick={handleSave}
+          >
+            {loading ? "Saving..." : "Save Preferences"}
+          </button>
         </div>
 
       </div>
-
     </div>
   );
 };

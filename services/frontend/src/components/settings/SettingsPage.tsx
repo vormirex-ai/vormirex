@@ -3,7 +3,7 @@ import ComingSoonModal from "../common/ComingSoonModal";
 import SEO from "../common/SEO";
 import SidebarLeft from "../layout/SidebarLeft";
 import SidebarRight from "../layout/SidebarRight";
-import AccountSecurity from "./components/AccountSecurity";
+// import AccountSecurity from "./components/AccountSecurity";
 import Appearance from "./components/Appearance";
 import Notifications from "./components/Notifications";
 import LearningPreferences from "./components/LearningPreferences";
@@ -23,7 +23,6 @@ import BaseModal from "../common/Modals/BaseModal";
 
 type SettingsSection =
   | "hub"
-  | "account-security"
   | "appearance"
   | "notifications"
   | "learning-preferences"
@@ -85,8 +84,6 @@ export default function SettingsPage() {
     switch (activeSection) {
       case "hub":
         return <SettingsHub onSectionSelect={handleSectionChange} />;
-      case "account-security":
-        return <AccountSecurity onBack={() => setActiveSection("hub")} />;
       case "appearance":
         return <Appearance onBack={() => setActiveSection("hub")} />;
       case "notifications":
@@ -117,7 +114,6 @@ export default function SettingsPage() {
   };
   const sectionTitles: Record<SettingsSection, string> = {
     "hub": "Settings",
-    "account-security": "Account & Security",
     "appearance": "Appearance",
     "notifications": "Notifications",
     "learning-preferences": "Learning Preferences",
@@ -127,7 +123,6 @@ export default function SettingsPage() {
     "legal": "Legal",
     "danger-zone": "Danger Zone",
   };
-
 
 
   return (

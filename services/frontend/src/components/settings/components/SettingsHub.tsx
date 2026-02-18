@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faUserShield,
   faMoon,
   faBell,
   faBook,
@@ -34,14 +33,6 @@ const SettingsHub: React.FC<SettingsHubProps> = ({ onSectionSelect }) => {
 
 
       <div className="settings-grid">
-        <div
-          className="settings-card"
-          onClick={() => onSectionSelect("account-security")}
-        >
-          <FontAwesomeIcon icon={faUserShield} className="card-icon" />
-          <h3>Account & Security</h3>
-          <p>Profile, password, security settings</p>
-        </div>
 
         <div
           className="settings-card"
