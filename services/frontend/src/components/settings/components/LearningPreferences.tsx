@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { updateLearningPreferences } from "../../../api/user";
 
 const LearningPreferences: React.FC = () => {
   const [difficulty, setDifficulty] = useState("Intermediate");
   const [topics, setTopics] = useState<string[]>([]);
   const [studyGoal, setStudyGoal] = useState("1 hour/day");
+  const [loading, setLoading] = useState(false);
 
   const allTopics = [
     "DSA",
@@ -14,6 +16,13 @@ const LearningPreferences: React.FC = () => {
     "Operating Systems",
   ];
 
+  const goalMap: Record<string, number> = {
+    "30 mins/day": 30,
+    "1 hour/day": 60,
+    "2 hours/day": 120,
+  };
+
+
   const toggleTopic = (topic: string) => {
     setTopics((prev) =>
       prev.includes(topic)
@@ -22,12 +31,75 @@ const LearningPreferences: React.FC = () => {
     );
   };
 
+  const handleSaveLevel = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) throw new Error("Not authenticated");
+
+      setLoading(true);
+
+      await updateLearningPreferences(token, {
+        currentSkillLevel: difficulty,
+      });
+
+      alert("Learning level updated!");
+    } catch (error: any) {
+      alert(error.message);
+
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveTopics = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) throw new Error("Not authenticated");
+
+      setLoading(true);
+
+
+      const result = await updateLearningPreferences(token, {
+        focusAreas: topics,
+      });
+      // 🔥 Sync UI with backend response
+      if (result?.preferences) {
+        setTopics(result.preferences.focusAreas || []);
+
+      }
+      alert("Topics Updated!");
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleSaveGoal = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) throw new Error("Not authenticated");
+
+      setLoading(true);
+
+      await updateLearningPreferences(token, {
+        dailyGoal: goalMap[studyGoal],
+      });
+
+      alert("Daily goal updated!");
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="learning-pref-page">
       <div className="account-security-wrapper">
 
         {/* Card 1 — Difficulty Level */}
-        <div className="settings-card account-card">
+        {/* <div className="settings-card account-card">
           <h4>Learning Level</h4>
           <p>Select your current skill level</p>
 
@@ -43,11 +115,12 @@ const LearningPreferences: React.FC = () => {
 
           <button
             className="primary-btn"
-            onClick={() => console.log("Saved Difficulty:", difficulty)}
+            onClick={handleSaveLevel}
+            disabled={loading}
           >
-            Save Level
+            {loading ? "Saving..." : "Save Level"}
           </button>
-        </div>
+        </div> */}
 
         {/* Card 2 — Preferred Topics */}
         <div className="settings-card account-card">
@@ -69,9 +142,10 @@ const LearningPreferences: React.FC = () => {
 
           <button
             className="primary-btn"
-            onClick={() => console.log("Saved Topics:", topics)}
+            onClick={handleSaveTopics}
+            disabled={loading}
           >
-            Save Topics
+            {loading ? "Saving..." : "Save Topics"}
           </button>
         </div>
 
@@ -93,9 +167,10 @@ const LearningPreferences: React.FC = () => {
 
           <button
             className="primary-btn"
-            onClick={() => console.log("Saved Goal:", studyGoal)}
+            onClick={handleSaveGoal}
+            disabled={loading}
           >
-            Save Goal
+            {loading ? "Saving..." : "Save Goal"}
           </button>
         </div>
 

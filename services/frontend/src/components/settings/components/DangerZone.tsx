@@ -36,13 +36,19 @@ const DangerZone: React.FC = () => {
       await deleteAccount(token);
 
       //clear token after deletion
+      // localStorage.removeItem("accessToken");
+
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
+
 
       //close modal
       handleClose();
 
       //redirect to homepage
       navigate("/");
+      // window.location.href = "/";
 
     } catch (error: any) {
       alert(error.message || "Failed to delete account");
@@ -116,12 +122,12 @@ const DangerZone: React.FC = () => {
               <div className="danger-actions">
                 <button
                   className="danger-btn"
-                  disabled={confirmText !== "DELETE" || loading}
+                  disabled={confirmText.trim() !== "DELETE" || loading}
                   onClick={handlePermanentDelete}
                 >
                   {loading ? "Deleting..." : "Permanently Delete"}
                 </button>
-                
+
                 <button
                   className="secondary-btn"
                   onClick={() => setSelectedReason("")}
