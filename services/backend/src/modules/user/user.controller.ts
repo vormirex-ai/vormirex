@@ -191,6 +191,7 @@ export const updatePreferences = async (req: Request, res: Response) => {
   // @ts-ignore
   if (req.body.timeline !== undefined) user.learningPreferences.timeline = req.body.timeline;
 
+  user.markModified('learningPreferences');
   await user.save();
 
   res.json({ message: 'Preferences updated', preferences: user.learningPreferences });

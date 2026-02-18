@@ -5,6 +5,12 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  learningPreferences?: {
+    dailyGoal: number;
+    focusAreas: string[];
+    currentSkillLevel?: string;
+    // Add other fields as needed
+  };
 }
 
 export interface AuthResponse {

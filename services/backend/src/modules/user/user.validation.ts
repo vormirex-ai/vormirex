@@ -23,7 +23,7 @@ export type ChangePasswordBody = z.infer<typeof changePasswordSchema>['body'];
 
 export const updatePreferencesSchema = z.object({
   body: z.object({
-    dailyGoal: z.number().min(5).max(300).optional(),
+    dailyGoal: z.number().min(0).max(300).optional(),
     focusAreas: z.array(z.string()).optional(),
     primaryFocus: z.enum(['Master a skill', 'Ace an exam', 'Expand knowledge']).optional(),
     curiosity: z.array(z.string()).optional(),
