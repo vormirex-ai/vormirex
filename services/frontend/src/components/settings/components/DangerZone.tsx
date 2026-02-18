@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import BaseModal from "../../common/Modals/BaseModal";
+import { deleteAccount } from "../../../api/user";
+import { useNavigate } from "react-router-dom";
 
 const DangerZone: React.FC = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [selectedReason, setSelectedReason] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleClose = () => {
-    setIsDeleteOpen(false);
-    setConfirmText("");
-  };
-
-  const handleDelete = () => {
-    console.log("Account Deleted!");
-    alert("Account deleted successfully!");
-    handleClose();
-  };
+  const navigate = useNavigate();
 
   const reasons = [
     "I don’t want to use Vormirex anymore",
@@ -25,6 +19,38 @@ const DangerZone: React.FC = () => {
     "The app is not working properly",
     "Other",
   ];
+
+  const handleClose = () => {
+    setIsDeleteOpen(false);
+    setConfirmText("");
+    setSelectedReason("");
+  };
+
+  const handlePermanentDelete = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) throw new Error("Not authenticated");
+
+      setLoading(true);
+
+      await deleteAccount(token);
+
+      //clear token after deletion
+      localStorage.removeItem("accessToken");
+
+      //close modal
+      handleClose();
+
+      //redirect to homepage
+      navigate("/");
+
+    } catch (error: any) {
+      alert(error.message || "Failed to delete account");
+
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="danger-zone-page">
@@ -50,16 +76,13 @@ const DangerZone: React.FC = () => {
         {/* Confirmation Modal */}
         <BaseModal
           isOpen={isDeleteOpen}
-          onClose={() => {
-            setIsDeleteOpen(false);
-            setConfirmText("");
-            setSelectedReason("");
-          }}
+          onClose={handleClose}
         >
           {!selectedReason ? (
             <>
               <h3>Delete Account</h3>
               <p>Why would you like to delete your account?</p>
+
               <div className="danger-reasons-list">
                 {reasons.map((reason) => (
                   <div
@@ -93,20 +116,16 @@ const DangerZone: React.FC = () => {
               <div className="danger-actions">
                 <button
                   className="danger-btn"
-                  disabled={confirmText !== "DELETE"}
-                  onClick={() => {
-                    console.log("Reason:", selectedReason);
-                    console.log("Account Deleted");
-                    setIsDeleteOpen(false);
-                    setConfirmText("");
-                    setSelectedReason("");
-                  }}
+                  disabled={confirmText !== "DELETE" || loading}
+                  onClick={handlePermanentDelete}
                 >
-                  Permanently Delete
+                  {loading ? "Deleting..." : "Permanently Delete"}
                 </button>
+                
                 <button
                   className="secondary-btn"
                   onClick={() => setSelectedReason("")}
+                  disabled={loading}
                 >
                   Back
                 </button>
