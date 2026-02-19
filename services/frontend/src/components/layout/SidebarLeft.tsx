@@ -91,7 +91,6 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
     }
   };
 
-  // Pre-fetch course data on hover for instant navigation
   const handleCourseHover = async (courseId: string) => {
     // Initialize global cache if it doesn't exist
     if (!window.__PREFETCHED_COURSES__) {
@@ -227,7 +226,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
         <div className="footer-link" onClick={() => navigate('/settings')}>
           <FontAwesomeIcon icon={faCog} /> Settings
         </div>
-        <div className="footer-link" onClick={() => navigate('/profilepage')}>
+        <div className="footer-link" onClick={() => navigate('/profile')}>
           <FontAwesomeIcon icon={faUserCircle} /> Profile
         </div>
       </div>

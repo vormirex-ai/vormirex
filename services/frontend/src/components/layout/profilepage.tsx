@@ -165,7 +165,7 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Scrollable Content Area */}
+        {/* Scrollable Content  */}
         <div className="profile-content">
           {/* Top Card */}
           <div className="profile-card">

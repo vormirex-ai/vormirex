@@ -28,7 +28,6 @@ const Navbar: React.FC<{ brandName?: string }> = ({
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Load user from localStorage & handle outside click
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
