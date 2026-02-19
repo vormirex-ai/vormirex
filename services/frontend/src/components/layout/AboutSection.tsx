@@ -111,7 +111,7 @@ const AboutVormirex: React.FC = () => {
           {/* Navigates to the Contact page */}
           <button
             className="secondary-btn"
-            onClick={() => navigate('/contact')}
+            onClick={() => navigate('/contacts')}
           >
             Contact Us
           </button>
