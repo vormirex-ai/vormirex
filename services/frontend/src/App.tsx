@@ -64,9 +64,6 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({
   </div>
 );
 
-/* ============================================================
-   COURSE LAYOUT (Navbar + Outlet + Footer)
-============================================================ */
 const CourseLayout: React.FC = () => (
   <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
     <Navbar />
