@@ -21,6 +21,7 @@ import AboutPage from './components/layout/AboutSection';
 import PricingsPage from './components/layout/PricingSections';
 import FeaturesPage from './components/layout/FeaturesPage';
 import FeatureDetail from './components/layout/FeatureDetail';
+import ProfilePage from './components/layout/profilepage';
 
 /* =======================
    AUTH & DASHBOARD
@@ -136,6 +137,10 @@ const App: React.FC = () => {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
+        <Route
+          path="/profilepage"
+          element={<ProfilePage onClose={() => {}} />}
+        />
 
         {/* ================= DASHBOARD (MOVED TO /DASHBOARD) ================= */}
         <Route element={<DashboardWrapper />}>

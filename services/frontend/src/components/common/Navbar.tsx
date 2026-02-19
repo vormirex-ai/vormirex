@@ -151,6 +151,15 @@ const Navbar: React.FC<{ brandName?: string }> = ({
 
             {/* Mobile Auth Buttons / Profile */}
             <li className="mobile-buttons">
+              {/* Back to Dashboard button for mobile */}
+              <button
+                className="btn-back-dashboard-mobile"
+                onClick={handleBackToDashboard}
+              >
+                <LayoutDashboard size={16} />
+                Back to Dashboard
+              </button>
+
               {user ? (
                 <div className="mobile-profile-section">
                   <div className="mobile-user-info">
