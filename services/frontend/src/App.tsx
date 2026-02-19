@@ -7,9 +7,6 @@ import {
   Outlet,
 } from 'react-router-dom';
 
-/* =======================
-   COMMON LAYOUT COMPONENTS
-======================= */
 import Navbar from './components/common/Navbar';
 import Footer from './components/layout/Footer';
 
@@ -21,6 +18,7 @@ import AboutPage from './components/layout/AboutSection';
 import PricingsPage from './components/layout/PricingSections';
 import FeaturesPage from './components/layout/FeaturesPage';
 import FeatureDetail from './components/layout/FeatureDetail';
+import ProfilePage from './components/layout/ProfilePage';
 
 /* =======================
    AUTH & DASHBOARD
@@ -64,9 +62,6 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({
   </div>
 );
 
-/* ============================================================
-   COURSE LAYOUT (Navbar + Outlet + Footer)
-============================================================ */
 const CourseLayout: React.FC = () => (
   <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
     <Navbar />
@@ -139,6 +134,10 @@ const App: React.FC = () => {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
+        <Route
+          path="/profilepage"
+          element={<ProfilePage />}
+        />
 
         {/* ================= DASHBOARD (MOVED TO /DASHBOARD) ================= */}
         <Route element={<DashboardWrapper />}>
