@@ -180,7 +180,6 @@ const Navbar: React.FC<{ brandName?: string }> = ({
 
           <div className="nav-right-group">
             <div className="nav-buttons">
-              {/* Always show Back to Dashboard button */}
               <button
                 className="btn-back-dashboard"
                 onClick={handleBackToDashboard}
