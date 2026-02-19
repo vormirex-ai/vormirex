@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { updateLearningPreferences } from "../../../api/user";
+import { fetchCurrentUser } from "../../../api/auth";
 
 const LearningPreferences: React.FC = () => {
   const [difficulty, setDifficulty] = useState("Intermediate");
@@ -21,6 +22,39 @@ const LearningPreferences: React.FC = () => {
     "1 hour/day": 60,
     "2 hours/day": 120,
   };
+
+  const reverseGoalMap: Record<number, string> = {
+    30: "30 mins/day",
+    60: "1 hour/day",
+    120: "2 hours/day",
+  };
+
+  useEffect(() => {
+    const loadPreferences = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) return;
+
+        const response = await fetchCurrentUser(token);
+        const prefs = response.user.learningPreferences;
+
+        if (prefs) {
+          if (prefs.currentSkillLevel) setDifficulty(prefs.currentSkillLevel);
+          if (prefs.focusAreas) setTopics(prefs.focusAreas);
+          if (prefs.dailyGoal !== undefined) {
+             const goalValue = prefs.dailyGoal;
+             // If goal is 0 (old flexible setting) or undefined, default to 30 or 60
+             const goalString = (goalValue && reverseGoalMap[goalValue]) ? reverseGoalMap[goalValue] : "1 hour/day";
+             setStudyGoal(goalString);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load learning preferences:", error);
+      }
+    };
+
+    loadPreferences();
+  }, []);
 
 
   const toggleTopic = (topic: string) => {
@@ -82,8 +116,9 @@ const LearningPreferences: React.FC = () => {
 
       setLoading(true);
 
+      const goalValue = goalMap[studyGoal];
       await updateLearningPreferences(token, {
-        dailyGoal: goalMap[studyGoal],
+        dailyGoal: goalValue !== undefined ? goalValue : 30,
       });
 
       alert("Daily goal updated!");
@@ -99,7 +134,7 @@ const LearningPreferences: React.FC = () => {
       <div className="account-security-wrapper">
 
         {/* Card 1 — Difficulty Level */}
-        {/* <div className="settings-card account-card">
+        <div className="settings-card account-card">
           <h4>Learning Level</h4>
           <p>Select your current skill level</p>
 
@@ -120,7 +155,7 @@ const LearningPreferences: React.FC = () => {
           >
             {loading ? "Saving..." : "Save Level"}
           </button>
-        </div> */}
+        </div>
 
         {/* Card 2 — Preferred Topics */}
         <div className="settings-card account-card">
@@ -162,7 +197,6 @@ const LearningPreferences: React.FC = () => {
             <option>30 mins/day</option>
             <option>1 hour/day</option>
             <option>2 hours/day</option>
-            <option>Flexible</option>
           </select>
 
           <button

@@ -81,7 +81,8 @@ export const updateLearningPreferences = async (
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update preferences');
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to update preferences');
   }
 
   return response.json();
@@ -103,7 +104,8 @@ export const updatePrivacySettings = async (
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update privacy settings');
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to update privacy settings');
   }
 
   return response.json();
