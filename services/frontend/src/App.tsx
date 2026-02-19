@@ -48,6 +48,7 @@ import {
 } from './CustomCourses/CustomCoursePage';
 import CustomCoursesList from './CustomCourses/CustomCoursesList';
 import SettingsPage from './components/settings/SettingsPage';
+import Contacts from './components/layout/Contacts';
 
 /* ============================================================
    PUBLIC LAYOUT (Navbar + Footer)
@@ -164,8 +165,10 @@ const App: React.FC = () => {
 
         {/* ================= CATCH ALL ================= */}
         {/* Any unknown route redirects to Home (/) */}
-        <Route path="*" element={<Navigate to="/" replace />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/contacts" element={<Contacts />} />
+        
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
