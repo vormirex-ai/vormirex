@@ -7,9 +7,6 @@ import {
   Outlet,
 } from 'react-router-dom';
 
-/* =======================
-   COMMON LAYOUT COMPONENTS
-======================= */
 import Navbar from './components/common/Navbar';
 import Footer from './components/layout/Footer';
 
@@ -21,7 +18,7 @@ import AboutPage from './components/layout/AboutSection';
 import PricingsPage from './components/layout/PricingSections';
 import FeaturesPage from './components/layout/FeaturesPage';
 import FeatureDetail from './components/layout/FeatureDetail';
-import ProfilePage from './components/layout/profilepage';
+import ProfilePage from './components/layout/ProfilePage';
 
 /* =======================
    AUTH & DASHBOARD
@@ -139,7 +136,7 @@ const App: React.FC = () => {
         <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route
           path="/profilepage"
-          element={<ProfilePage onClose={() => {}} />}
+          element={<ProfilePage />}
         />
 
         {/* ================= DASHBOARD (MOVED TO /DASHBOARD) ================= */}
