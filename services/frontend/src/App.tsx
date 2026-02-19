@@ -7,9 +7,6 @@ import {
   Outlet,
 } from 'react-router-dom';
 
-/* =======================
-   COMMON LAYOUT COMPONENTS
-======================= */
 import Navbar from './components/common/Navbar';
 import Footer from './components/layout/Footer';
 

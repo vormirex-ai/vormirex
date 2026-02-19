@@ -171,7 +171,7 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
                 courses.map((course) => (
                   <li
                     key={course._id}
-                    onClick={() => navigate(`/course/${getSlug(course)}`)} // Use slug instead of course._id
+                    onClick={() => navigate(`/course/${getSlug(course)}`)}
                     onMouseEnter={() => handleCourseHover(course._id)}
                   >
                     <FontAwesomeIcon

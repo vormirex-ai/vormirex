@@ -691,8 +691,6 @@
   background: var(--glass);
 }
 
-/* ========================= RESPONSIVE DESIGN ========================= */
-
 /* Large Desktop (1201px and up) */
 @media (min-width: 1201px) {
   .profile-container {

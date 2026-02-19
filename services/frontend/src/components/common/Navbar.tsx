@@ -189,7 +189,6 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                 Back to Dashboard
               </button>
 
-              {/* Show Sign In or Profile based on login status */}
               {user ? (
                 <div className="profile-dropdown-container" ref={dropdownRef}>
                   <div className="profile-trigger" onClick={toggleProfileMenu}>
