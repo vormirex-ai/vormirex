@@ -49,7 +49,7 @@ const SidebarRight: React.FC<SidebarRightProps> = ({
       >
         <FontAwesomeIcon icon={faTimes} />
       </button>
-      <h2>Learning Tools</h2>
+      <h2></h2>
 
       {isAuthenticated() ? (
         <>

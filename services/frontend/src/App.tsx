@@ -50,6 +50,7 @@ import {
 } from './CustomCourses/CustomCoursePage';
 import CustomCoursesList from './CustomCourses/CustomCoursesList';
 import SettingsPage from './components/settings/SettingsPage';
+import ProfileDashboard from './components/layout/Profilepage';
 
 /* ============================================================
    PUBLIC LAYOUT (Navbar + Footer)
@@ -61,6 +62,18 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({
     <Navbar />
     <main style={{ flex: 1 }}>{children}</main>
     <Footer />
+  </div>
+);
+
+/* ============================================================
+   NAVBAR ONLY LAYOUT (Navbar + NO Footer)
+============================================================ */
+const NavbarOnlyLayout: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
+  <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Navbar />
+    <main style={{ flex: 1 }}>{children}</main>
   </div>
 );
 
@@ -146,6 +159,16 @@ const App: React.FC = () => {
           <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
 
+        {/* ================= PROFILE (NO FOOTER) ================= */}
+        <Route
+          path="/profile"
+          element={
+            <NavbarOnlyLayout>
+              <ProfileDashboard />
+            </NavbarOnlyLayout>
+          }
+        />
+
         {/* ================= COURSES ================= */}
         <Route element={<CourseLayout />}>
           {/* General Courses */}
@@ -163,10 +186,19 @@ const App: React.FC = () => {
           <Route path="/custom/saved-chats" element={<SavedChats />} />
         </Route>
 
+        {/* ================= SETTINGS (NO FOOTER) ================= */}
+        <Route
+          path="/settings"
+          element={
+            <NavbarOnlyLayout>
+              <SettingsPage />
+            </NavbarOnlyLayout>
+          }
+        />
+
         {/* ================= CATCH ALL ================= */}
         {/* Any unknown route redirects to Home (/) */}
         <Route path="*" element={<Navigate to="/" replace />} />
-        <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </Router>
   );
