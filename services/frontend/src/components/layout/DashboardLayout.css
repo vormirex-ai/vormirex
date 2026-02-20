@@ -135,7 +135,7 @@ body {
 
 /* Tools button (desktop) */
 .tools-button {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 8px;
   background: transparent;
@@ -314,6 +314,7 @@ body {
   }
 
   .tools-button {
+    display: flex;
     font-size: 0;
     padding: 0;
     min-width: 44px;

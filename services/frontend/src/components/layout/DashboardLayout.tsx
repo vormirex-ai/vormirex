@@ -61,7 +61,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
 
         <div className="tools-button" onClick={toggleRightSidebar}>
-          Learning Tools
+          {/* Learning Tools */}
           <FontAwesomeIcon icon={faThumbtack} />
         </div>
       </header>
