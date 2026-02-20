@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./Contacts.css";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { MapPin, Phone, Mail, ArrowLeft } from "lucide-react";
 
 const Contacts: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -48,7 +50,16 @@ const Contacts: React.FC = () => {
   };
 
   return (
-    <div className="contact-container">
+    <div className="contact-container" style={{ position: "relative" }}>
+      {/* Back Button */}
+      <button
+        className="contact-back-btn"
+        onClick={() => navigate("/about")}
+        aria-label="Back to About Us"
+      >
+        <ArrowLeft />
+      </button>
+
       <div className="contact-main">
         {/* ===== CONTACT CARDS ===== */}
         <div className="contact-grid">
@@ -57,7 +68,8 @@ const Contacts: React.FC = () => {
               <MapPin size={28} strokeWidth={1.8} />
             </div>
             <h3>Visit Us</h3>
-            <p>Somewhere in Bangalore</p>
+            <p>Remote-First Team</p>
+            <p>Building from India</p>
           </div>
 
           <div className="contact-card">

@@ -16,18 +16,51 @@
   font-weight: 700;
   margin-bottom: 40px;
   text-align: center;
+  text-align: center;
+}
+
+/* ===== BACK BUTTON ===== */
+.contact-back-btn {
+  background: none;
+  border: none;
+  color: #6aece1;
+  cursor: pointer;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+.contact-back-btn:hover {
+  color: #ffffff;
+  background-color: rgba(106, 236, 225, 0.1);
+}
+
+.contact-back-btn svg {
+  width: 28px;
+  height: 28px;
 }
 
 /* ===== GRID ===== */
 .contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 24px;
   margin-bottom: 50px;
 }
 
 /* ===== CARDS (same glass effect as settings) ===== */
 .contact-card {
+  flex: 1 1 300px;
+  max-width: 400px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
@@ -142,5 +175,16 @@
 
   .contact-container {
     padding: 40px 15px;
+  }
+
+  .contact-back-btn {
+    top: 10px;
+    left: 10px;
+    margin: 0;
+  }
+  
+  .contact-back-btn svg {
+    width: 24px;
+    height: 24px;
   }
 }
