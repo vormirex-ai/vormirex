@@ -69,7 +69,7 @@ body {
 .watermark-logo {
   position: absolute;
   inset: 0;
-  background: url('../../assets/logo.png') no-repeat center 35%;
+  background: url('../../assets/logo.png') no-repeat center center;
   background-size: 30vmax;
   opacity: 0.05;
   filter: grayscale(100%);
@@ -178,7 +178,6 @@ body {
 .logo-img {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
 }
 
 .company-name {

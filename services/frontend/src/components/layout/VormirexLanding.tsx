@@ -140,7 +140,7 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         * { margin: 0; padding: 0; box-sizing: border-box; }
         .container { min-height: 100vh; background-color: #0a0b14; color: #ffffff; font-family: 'Inter', sans-serif; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; position: relative; }
         .watermark-logo { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 420px; height: 420px; opacity: 0; z-index: 0; pointer-events: none; transition: opacity 0.6s ease; }
-        .watermark-logo.visible { opacity: 0.02; }
+        .watermark-logo.visible { opacity: 0.05; }
         .watermark-logo img { width: 100%; height: 100%; object-fit: contain; filter: blur(1.2px); }
         .hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 92px 0 60px 0; position: relative; width: 100%; z-index: 2; }
         .glow-bg { position: absolute; top: 20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(106, 236, 225, 0.15) 0%, transparent 70%); pointer-events: none; z-index: 1; left: 50%; transform: translateX(-50%); }
