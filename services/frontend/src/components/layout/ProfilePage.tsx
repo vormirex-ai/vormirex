@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfilePage.css';
 import {
@@ -15,6 +15,8 @@ import {
   LayoutDashboard,
   LogOut
 } from 'lucide-react';
+import { fetchCurrentUser } from '../../api/auth';
+import { updateProfile, changePassword } from '../../api/user';
 
 interface ProfileData {
   name: string;
@@ -39,14 +41,45 @@ const ProfilePage: React.FC = () => {
     level: '',
     bio: '',
     profileImage: '',
-    coursesEnrolled: 12,
-    completed: 8,
-    streak: 15,
+    coursesEnrolled: 0,
+    completed: 0,
+    streak: 0,
   });
 
   const [editedProfile, setEditedProfile] = useState<ProfileData>({
     ...profile,
   });
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) return;
+
+        const response = await fetchCurrentUser(token);
+        const user = response.user;
+
+        const newProfile = {
+          name: user.name || '',
+          email: user.email || '',
+          phone: '', // Not in User model yet
+          level: user.learningPreferences?.currentSkillLevel || 'Beginner',
+          bio: '', // Not in User model yet
+          profileImage: '', // Not in User model yet
+          coursesEnrolled: 12, // Placeholder until detailed stats API
+          completed: 8, // Placeholder until detailed stats API
+          streak: (user as any).streak?.current || 0,
+        };
+
+        setProfile(newProfile);
+        setEditedProfile(newProfile);
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+      }
+    };
+
+    loadProfile();
+  }, []);
   const [isEditing, setIsEditing] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
@@ -77,10 +110,29 @@ const ProfilePage: React.FC = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleSaveChanges = () => {
-    setProfile({ ...editedProfile });
-    setIsEditing(false);
-    alert('Profile updated successfully');
+
+  const handleSaveChanges = async () => {
+    try {
+      if (!editedProfile.name.trim()) {
+        alert("Name cannot be empty");
+        return;
+      }
+      
+      const token = localStorage.getItem('accessToken');
+      if (!token) return;
+
+      await updateProfile(token, {
+        name: editedProfile.name,
+        // email: editedProfile.email, // Email change usually requires verification, skip for now
+        level: editedProfile.level,
+      });
+
+      setProfile({ ...editedProfile });
+      setIsEditing(false);
+      alert('Profile updated successfully');
+    } catch (error: any) {
+      alert(error.message || 'Failed to update profile');
+    }
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +141,7 @@ const ProfilePage: React.FC = () => {
     setPasswordError('');
   };
 
-  const handlePasswordSubmit = () => {
+  const handlePasswordSubmit = async () => {
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       setPasswordError('Passwords do not match');
       return;
@@ -100,13 +152,25 @@ const ProfilePage: React.FC = () => {
       return;
     }
 
-    alert('Password changed successfully');
-    setShowPasswordModal(false);
-    setPasswordData({
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    });
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) throw new Error("Not authenticated");
+
+      await changePassword(token, {
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword
+      });
+
+      alert('Password changed successfully');
+      setShowPasswordModal(false);
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+    } catch (error: any) {
+      setPasswordError(error.message || 'Failed to change password');
+    }
   };
 
   const handleLogout = () => {
@@ -148,12 +212,13 @@ const ProfilePage: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const displayValue = (field: keyof ProfileData) =>
-    isEditing ? editedProfile[field] : profile[field];
-
-  const displayText = (value: string) => value || '';
-
-  const displayEmail = isEditing ? editedProfile.email : profile.email;
+  // Helper to safely get display values
+  const getName = () => isEditing ? editedProfile.name : profile.name;
+  const getEmail = () => isEditing ? editedProfile.email : profile.email;
+  const getPhone = () => isEditing ? editedProfile.phone : profile.phone;
+  const getLevel = () => isEditing ? editedProfile.level : profile.level;
+  const getBio = () => isEditing ? editedProfile.bio : profile.bio;
+  const getImage = () => isEditing ? editedProfile.profileImage : profile.profileImage;
 
   const learningLevels = ['Beginner', 'Intermediate', 'Advanced'];
 
@@ -182,11 +247,11 @@ const ProfilePage: React.FC = () => {
           <div className="profile-card">
             <div className="profile-info">
               <div className="avatar">
-                {displayValue('profileImage') ? (
-                  <img src={displayValue('profileImage')} alt="Profile" />
+                {getImage() ? (
+                  <img src={getImage()} alt="Profile" />
                 ) : (
                   <div className="avatar-fallback">
-                    {((displayValue('name') as string) || '')
+                    {(getName() || '')
                       .slice(0, 2)
                       .toUpperCase()}
                   </div>
@@ -199,9 +264,9 @@ const ProfilePage: React.FC = () => {
                 )}
               </div>
               <div className="profile-text">
-                <h3>{displayText(displayValue('name') as string)}</h3>
-                <p>{displayText(displayValue('bio') as string)}</p>
-                {displayEmail && <small>{displayEmail}</small>}
+                <h3>{getName()}</h3>
+                <p>{getBio()}</p>
+                {getEmail() && <small>{getEmail()}</small>}
               </div>
             </div>
             <div className='profile-actions'>
@@ -229,7 +294,7 @@ const ProfilePage: React.FC = () => {
                 <label>Full Name</label>
                 <input
                   name="name"
-                  value={displayValue('name')}
+                  value={getName()}
                   onChange={handleInputChange}
                   readOnly={!isEditing}
                   className={isEditing ? 'editable' : ''}
@@ -240,18 +305,19 @@ const ProfilePage: React.FC = () => {
                 <label>Email</label>
                 <input
                   name="email"
-                  value={displayValue('email')}
+                  value={getEmail()}
                   onChange={handleInputChange}
-                  readOnly={!isEditing}
+                  readOnly={!isEditing} // Email usually readonly or needs separate flow
                   className={isEditing ? 'editable' : ''}
                   placeholder="Enter your email"
+                  disabled // Disable email editing for now
                 />
               </div>
               <div className="input-group">
                 <label>Phone</label>
                 <input
                   name="phone"
-                  value={displayValue('phone')}
+                  value={getPhone()}
                   onChange={handleInputChange}
                   readOnly={!isEditing}
                   className={isEditing ? 'editable' : ''}
@@ -264,7 +330,7 @@ const ProfilePage: React.FC = () => {
                   <div className="select-wrapper">
                     <select
                       name="level"
-                      value={displayValue('level')}
+                      value={getLevel()}
                       onChange={handleLevelChange}
                       className="editable select-input"
                     >
@@ -297,7 +363,7 @@ const ProfilePage: React.FC = () => {
                 ) : (
                   <input
                     name="level"
-                    value={displayValue('level')}
+                    value={getLevel()}
                     readOnly
                     className="readonly-input"
                     placeholder="Select learning level"

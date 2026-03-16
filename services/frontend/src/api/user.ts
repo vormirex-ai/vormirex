@@ -109,5 +109,48 @@ export const updatePrivacySettings = async (
   }
 
   return response.json();
+}
 
+export const updateProfile = async (
+  token: string,
+  data: { name?: string; level?: string }
+) => {
+  const response = await fetch(`${BASE_URL}/me/profile`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to update profile');
+  }
+
+  return response.json();
+}
+
+export const changePassword = async (
+  token: string,
+  data: { currentPassword: string; newPassword: string }
+) => {
+  const response = await fetch(`${BASE_URL}/me/password`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to change password');
+  }
+
+  return response.json();
 }
