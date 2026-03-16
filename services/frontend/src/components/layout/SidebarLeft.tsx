@@ -108,6 +108,12 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
     }
   };
 
+  const isAuthenticated = () => {
+    return localStorage.getItem('accessToken') !== null;
+  };
+
+
+
   return (
     <aside className={`sidebar-left ${isOpen ? 'sidebar-open' : ''}`}>
       <button
@@ -223,14 +229,16 @@ const SidebarLeft: React.FC<SidebarLeftProps> = ({
         </div>
       </nav>
 
-      <div className="sidebar-footer">
-        <div className="footer-link" onClick={() => navigate('/settings')}>
-          <FontAwesomeIcon icon={faCog} /> Settings
+      {isAuthenticated() && (
+        <div className="sidebar-footer">
+          <div className="footer-link" onClick={() => navigate('/settings')}>
+            <FontAwesomeIcon icon={faCog} /> Settings
+          </div>
+          <div className="footer-link" onClick={() => navigate('/profilepage')}>
+            <FontAwesomeIcon icon={faUserCircle} /> Profile
+          </div>
         </div>
-        <div className="footer-link" onClick={() => navigate('/profilepage')}>
-          <FontAwesomeIcon icon={faUserCircle} /> Profile
-        </div>
-      </div>
+      )}
     </aside>
   );
 };
