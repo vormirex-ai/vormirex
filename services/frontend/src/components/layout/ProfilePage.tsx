@@ -13,6 +13,7 @@ import {
   EyeOff,
   X,
   LayoutDashboard,
+  LogOut
 } from 'lucide-react';
 import { fetchCurrentUser } from '../../api/auth';
 import { updateProfile, changePassword } from '../../api/user';
@@ -172,6 +173,14 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('user');
+      navigate('/');
+    }
+  };
   const toggleTwoFactor = () => {
     setTwoFactorEnabled(!twoFactorEnabled);
   };
@@ -227,6 +236,8 @@ const ProfilePage: React.FC = () => {
             >
               <LayoutDashboard size={20} />
             </button>
+
+
           </div>
         </div>
 
@@ -258,9 +269,21 @@ const ProfilePage: React.FC = () => {
                 {getEmail() && <small>{getEmail()}</small>}
               </div>
             </div>
-            <button className="edit-btn" onClick={handleEditToggle}>
-              <Edit2 size={14} /> {isEditing ? 'Cancel' : 'Edit Profile'}
-            </button>
+            <div className='profile-actions'>
+
+
+              <button className="edit-btn" onClick={handleEditToggle}>
+                <Edit2 size={14} /> {isEditing ? 'Cancel' : 'Edit Profile'}
+              </button>
+              {/*logout button */}
+              <button
+                className="logout-btn"
+                onClick={handleLogout}
+
+              >
+               <LogOut size={14}/> Logout
+              </button>
+            </div>
           </div>
 
           {/* Personal Info */}
