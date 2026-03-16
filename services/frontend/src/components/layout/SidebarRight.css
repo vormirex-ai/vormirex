@@ -170,7 +170,6 @@ html {
 .sidebar-logo-img {
   width: 60px;
   object-fit: cover;
-  border-radius: 50%;
 }
 
 .sidebar-company-name {
@@ -271,11 +270,11 @@ html {
 
 /* Watermark Logo */
 .watermark-logo {
-  background-image: url("./assets/logo.png");
+  background-image: url("../../assets/logo.png");
   background-repeat: no-repeat;
-  background-position: center 35%;
-  background-size: 30vmax;
-  opacity: 0.05;
+  background-position: center center;
+  background-size: 15vmax;
+  opacity: 0.08;
   filter: grayscale(100%);
   pointer-events: none;
   position: absolute;
@@ -360,7 +359,6 @@ html {
 .logo-img {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
   object-fit: cover;
 }
 
