@@ -1,0 +1,104 @@
+.admin-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0b0f19;
+  padding: 16px;
+}
+
+/* Card */
+.admin-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 400px;
+  min-height: 320px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(20, 184, 166, 0.35);
+}
+
+/* Top Row (icon + text) */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.admin-icon-box {
+  background: #14b8a6;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-platform {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Title */
+.admin-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 6px 0;
+  color: #222;
+}
+
+/* Description */
+.admin-desc {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 32px;
+}
+
+/* Buttons */
+.admin-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* Primary */
+.admin-btn-primary {
+  background: #14b8a6;
+  color: black;
+  font-weight: 500 ;
+  border: none;
+  margin-bottom: 12px;
+}
+
+.admin-btn-primary:hover {
+  background: #0d9488;
+}
+
+/* Secondary */
+.admin-btn-secondary {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  font-weight: 500 ;
+}
+
+.admin-btn-secondary:hover {
+  background: #f1f1f1;
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .admin-card {
+    padding: 36px;
+  }
+
+  .admin-title {
+    font-size: 28px;
+  }
+}

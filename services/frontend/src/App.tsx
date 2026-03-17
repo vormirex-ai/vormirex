@@ -9,6 +9,7 @@ import {
 
 import Navbar from './components/common/Navbar';
 import Footer from './components/layout/Footer';
+import AdminPage from './pages/AdminPage';
 
 /* =======================
    PUBLIC PAGES
@@ -139,7 +140,7 @@ const App: React.FC = () => {
           path="/profilepage"
           element={<ProfilePage />}
         />
-
+        <Route path="/admin" element={<AdminPage />} />
         {/* ================= DASHBOARD (MOVED TO /DASHBOARD) ================= */}
         <Route element={<DashboardWrapper />}>
           {/* Dashboard is now explicitly at /dashboard */}
