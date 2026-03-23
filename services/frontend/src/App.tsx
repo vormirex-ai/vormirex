@@ -10,6 +10,7 @@ import {
 import Navbar from './components/common/Navbar';
 import Footer from './components/layout/Footer';
 import AdminPage from './pages/AdminPage';
+import SuperAdminPage from "./pages/superAdmin/SuperAdminPage";
 
 /* =======================
    PUBLIC PAGES
@@ -141,6 +142,11 @@ const App: React.FC = () => {
           element={<ProfilePage />}
         />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/super-admin" element={<SuperAdminPage />} />
+
+
+
+
         {/* ================= DASHBOARD (MOVED TO /DASHBOARD) ================= */}
         <Route element={<DashboardWrapper />}>
           {/* Dashboard is now explicitly at /dashboard */}
@@ -168,7 +174,7 @@ const App: React.FC = () => {
         {/* Any unknown route redirects to Home (/) */}
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/contacts" element={<Contacts />} />
-        
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

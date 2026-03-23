@@ -1,0 +1,83 @@
+.super-admin-page {
+  min-height: 100vh;
+  display: flex;
+  background: linear-gradient(180deg, #060b14 0%, #040811 100%);
+  color: #ffffff;
+}
+
+.super-admin-main {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.super-admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.super-admin-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.super-admin-placeholder-card {
+  background: linear-gradient(180deg, rgba(11, 19, 33, 0.95) 0%, rgba(8, 14, 26, 0.98) 100%);
+  border: 1px solid rgba(73, 94, 130, 0.22);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 10px 30px rgba(0, 0, 0, 0.35);
+  color: #9fb0c7;
+  padding: 24px;
+}
+
+.large-card {
+  min-height: 320px;
+}
+
+.small-card {
+  min-height: 320px;
+}
+
+.logs-card {
+  min-height: 220px;
+}
+
+@media (max-width: 1200px) {
+  .super-admin-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .super-admin-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .super-admin-main {
+    padding: 16px;
+  }
+
+  .super-admin-stats {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .super-admin-content-grid {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .super-admin-placeholder-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+}

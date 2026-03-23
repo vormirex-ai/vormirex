@@ -1,8 +1,10 @@
 // import React from "react";
 import "./AdminPage.css";
 import { Lock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="admin-container">
       <div className="admin-card">
@@ -24,7 +26,9 @@ const AdminPage = () => {
         </p>
 
         {/* Buttons */}
-        <button className="admin-btn admin-btn-primary">
+        <button 
+        className="admin-btn admin-btn-primary"
+        onClick={() => navigate("/super-admin")}>
           Login as Super Admin
         </button>
 

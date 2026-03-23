@@ -1,0 +1,125 @@
+.super-admin-sidebar {
+  width: 260px;
+  min-width: 260px;
+  min-height: 100vh;
+  padding: 18px 16px;
+  background: linear-gradient(180deg, #0a101b 0%, #070c15 100%);
+  border-right: 1px solid rgba(85, 104, 137, 0.16);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.super-admin-sidebar-header {
+  height: 45px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.super-admin-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f7fbff;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 22px;
+  line-height: 1;
+}
+
+.super-admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 1px 20px;
+}
+.super-admin-sidebar-logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+}
+
+.super-admin-sidebar-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.super-admin-sidebar-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #8e9bb0;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.super-admin-sidebar-item:hover {
+  background: rgba(19, 222, 255, 0.08);
+  color: #dffcff;
+}
+
+.super-admin-sidebar-item.active {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 229, 255, 0.18) 0%,
+    rgba(0, 229, 255, 0.08) 100%
+  );
+  color: #e8feff;
+  box-shadow: inset 2px 0 0 #00e5ff;
+}
+
+.super-admin-logout-btn {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #7f8da3;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.super-admin-logout-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f8ff;
+}
+
+.super-admin-sidebar-item,
+.super-admin-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-icon {
+  flex-shrink: 0;
+}
+.super-admin-sidebar-footer {
+  padding: 0 12px 14px;
+}
+
+@media (max-width: 1024px) {
+  .super-admin-sidebar {
+    width: 220px;
+    min-width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .super-admin-sidebar {
+    display: none;
+  }
+}
