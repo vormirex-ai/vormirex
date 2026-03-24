@@ -50,6 +50,8 @@ export const login = async (
       name: result.user!.name,
       email: result.user!.email,
       role: result.user!.role,
+      phoneNumber: result.user!.phoneNumber,
+      profilePhoto: result.user!.profilePhoto,
     };
 
     return res.json({ success: true, accessToken: result.accessToken, user: userResponse });
@@ -79,6 +81,8 @@ export const verifyTwoFactor = async (req: Request, res: Response, next: NextFun
       name: user.name,
       email: user.email,
       role: user.role,
+      phoneNumber: user.phoneNumber,
+      profilePhoto: user.profilePhoto,
     };
 
     return res.json({ success: true, accessToken, user: userResponse });

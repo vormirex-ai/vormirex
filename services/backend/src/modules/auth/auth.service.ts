@@ -278,7 +278,7 @@ export const getUserProfile = async (userId: string) => {
   if (!user) {
     throw new BadRequestError('User not found');
   }
-  return { id: user._id, name: user.name, email: user.email, role: user.role, isVerified: user.isVerified };
+  return { id: user._id, name: user.name, email: user.email, role: user.role, isVerified: user.isVerified, phoneNumber: user.phoneNumber, profilePhoto: user.profilePhoto };
 };
 
 export const sendTwoFactorCode = async (user: any) => {
