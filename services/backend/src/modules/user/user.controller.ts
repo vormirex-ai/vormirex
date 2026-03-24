@@ -114,17 +114,36 @@ export const toggleUserStatus = async (req: Request, res: Response) => {
 export const updateProfile = async (req: Request, res: Response) => {
   // @ts-ignore
   const userId = req.user.userId;
-  const { name, timezone } = req.body;
+  const { name, timezone, phoneNumber } = req.body;
 
   const user = await User.findById(userId);
   if (!user) throw new NotFoundError('User not found');
 
   if (name) user.name = name;
   if (timezone) user.timezone = timezone;
+  if (phoneNumber !== undefined) user.phoneNumber = phoneNumber;
 
   await user.save();
 
   res.json({ message: 'Profile updated successfully', user });
+};
+
+export const uploadProfilePhoto = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.user.userId;
+
+  if (!req.file) {
+    throw new BadRequestError('No image file provided');
+  }
+
+  const user = await User.findById(userId);
+  if (!user) throw new NotFoundError('User not found');
+
+  // Cloudinary storage engine puts the URL in req.file.path
+  user.profilePhoto = req.file.path;
+  await user.save();
+
+  res.json({ message: 'Profile photo uploaded successfully', profilePhoto: user.profilePhoto });
 };
 
 export const changePassword = async (req: Request, res: Response) => {
@@ -292,6 +311,7 @@ export default {
   getAdmins,
   toggleUserStatus,
   updateProfile,
+  uploadProfilePhoto,
   changePassword,
   deleteAccount,
   updatePreferences,

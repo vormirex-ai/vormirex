@@ -14,6 +14,8 @@ export interface IUser extends Document {
   twoFactorCode?: string;
   twoFactorExpires?: Date;
   timezone?: string;
+  phoneNumber?: string;
+  profilePhoto?: string;
   isFrozen: boolean;
   streak: {
     current: number;
@@ -62,6 +64,8 @@ const userSchema = new Schema<IUser>(
     twoFactorCode: { type: String, select: false },
     twoFactorExpires: { type: Date, select: false },
     timezone: { type: String, default: 'UTC' },
+    phoneNumber: { type: String, required: false },
+    profilePhoto: { type: String, required: false },
     streak: {
       current: { type: Number, default: 0 },
       longest: { type: Number, default: 0 },
