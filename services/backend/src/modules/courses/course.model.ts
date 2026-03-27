@@ -30,6 +30,10 @@ export interface ICourse extends Document {
   description: string;
   price: number;
   thumbnail: string;
+  heroVideo?: string;
+  careerImage?: string;
+  gainImage?: string;
+  coursePdf?: string;
   instructorId: mongoose.Types.ObjectId;
   level: CourseLevel;
   levels: ICourseLevelBlock[]; // Rich curriculum structure
@@ -91,6 +95,10 @@ const courseSchema = new Schema<ICourse>(
       type: String,
       required: [true, 'Thumbnail URL is required'],
     },
+    heroVideo: { type: String, required: false },
+    careerImage: { type: String, required: false },
+    gainImage: { type: String, required: false },
+    coursePdf: { type: String, required: false },
     instructorId: {
       type: Schema.Types.ObjectId,
       ref: 'User',

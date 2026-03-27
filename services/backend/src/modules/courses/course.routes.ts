@@ -3,6 +3,7 @@ import courseController from './course.controller.js';
 import { validate } from '../../middleware/validate.middleware.js';
 import { requireAuth, optionalAuth } from '../../middleware/auth.middleware.js';
 import { checkRole } from '../../middleware/rbac.middleware.js';
+import { uploadGeneric } from '../../middleware/upload.middleware.js';
 import {
   createCourseSchema,
   updateCourseSchema,
@@ -79,6 +80,15 @@ router.post(
   checkRole(['admin']),
   validate(addModuleSchema),
   courseController.addModule
+);
+
+// POST /api/courses/:id/media/:field - Upload media for a specific field (Admin only)
+router.post(
+  '/:id/media/:field',
+  requireAuth,
+  checkRole(['admin']),
+  uploadGeneric.single('file'),
+  courseController.uploadMedia
 );
 
 export default router;

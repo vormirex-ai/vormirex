@@ -61,6 +61,7 @@ export const getSlug = (c: any) => {
 // --- CORRECTED MAPPING FUNCTIONS ---
 
 export const getCatalogImage = (c: any) => {
+  if (c?.thumbnail && c?.thumbnail.startsWith('http')) return c.thumbnail;
   const slug = getSlug(c);
   const map = {
     'data-science': WhyDS,
@@ -76,6 +77,7 @@ export const getCatalogImage = (c: any) => {
 };
 
 export const getHeroVideo = (c: any) => {
+  if (c?.heroVideo && c?.heroVideo.startsWith('http')) return c.heroVideo;
   const slug = getSlug(c);
   const map = {
     'cyber-security': CyberVideo,
@@ -102,15 +104,19 @@ export const getDetailImages = (c: any) => {
     'career-transition-programs': { career: CareerCyber, gain: GainCyber },
     'ai-powered-learning-paths': { career: CareerAI, gain: GainAI },
   };
-  return (
-    (map as Record<string, { career: string; gain: string }>)[slug] || {
-      career: CareerCyber,
-      gain: GainCyber,
-    }
-  );
+  const staticMap = (map as Record<string, { career: string; gain: string }>)[slug] || {
+    career: CareerCyber,
+    gain: GainCyber,
+  };
+
+  return {
+    career: (c?.careerImage && c?.careerImage.startsWith('http')) ? c.careerImage : staticMap.career,
+    gain: (c?.gainImage && c?.gainImage.startsWith('http')) ? c.gainImage : staticMap.gain,
+  };
 };
 
 export const getCoursePDF = (c: any) => {
+  if (c?.coursePdf && c?.coursePdf.startsWith('http')) return c.coursePdf;
   const slug = getSlug(c);
   const pdfMap = {
     'cyber-security': CyberSecurityPDF,

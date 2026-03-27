@@ -139,6 +139,37 @@ class CourseController {
       next(error);
     }
   }
+  async uploadMedia(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id, field } = req.params;
+      
+      const allowedFields = ['thumbnail', 'heroVideo', 'careerImage', 'gainImage', 'coursePdf'];
+      if (!allowedFields.includes(field)) {
+        res.status(400).json({ message: 'Invalid media field' });
+        return;
+      }
+
+      if (!req.file) {
+        res.status(400).json({ message: 'No file provided' });
+        return;
+      }
+
+      const course = await courseService.getById(id);
+      
+      const updateData: any = {};
+      updateData[field] = req.file.path;
+
+      const updatedCourse = await courseService.update(id, updateData);
+
+      res.status(200).json({
+        success: true,
+        message: `${field} uploaded successfully`,
+        data: updatedCourse,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new CourseController();

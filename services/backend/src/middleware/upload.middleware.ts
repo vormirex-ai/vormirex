@@ -22,3 +22,17 @@ export const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
 });
+
+const genericStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    // @ts-ignore
+    folder: 'vormirex/uploads',
+    resource_type: 'auto',
+  },
+});
+
+export const uploadGeneric = multer({
+  storage: genericStorage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
+});
