@@ -60,6 +60,10 @@
     background 0.25s ease,
     color 0.25s ease,
     transform 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
 }
 
 .super-admin-sidebar-item:hover {
@@ -75,6 +79,14 @@
   );
   color: #e8feff;
   box-shadow: inset 2px 0 0 #00e5ff;
+}
+
+.super-admin-sidebar-item:visited {
+  color: #8e9bb0;   /* add this */
+}
+
+.super-admin-sidebar-item.active:visited {
+  color: #e8feff;   /* add this */
 }
 
 .super-admin-logout-btn {

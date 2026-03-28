@@ -14,18 +14,20 @@ import {
   LogOut,
 } from "lucide-react";
 
+import { NavLink } from "react-router-dom";
+
 const menuItems = [
-  { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Admin Management", icon: UserCog },
-  { label: "Permissions Control", icon: ShieldCheck },
-  { label: "User Management", icon: Users },
-  { label: "AI Engine Control", icon: Bot },
-  { label: "Subscriptions", icon: BadgeDollarSign },
-  { label: "Payments", icon: CreditCard },
-  { label: "Reports", icon: FileText },
-  { label: "Security & Logs", icon: ShieldAlert },
-  { label: "Platform Settings", icon: Settings },
-  { label: "Course Requests", icon: BookOpen },
+  { label: "Dashboard", icon: LayoutDashboard, path: "/super-admin" },
+  { label: "Admin Management", icon: UserCog, path: "/super-admin/admin-management" },
+  { label: "Permissions Control", icon: ShieldCheck, path: "/super-admin/permission-control" },
+  { label: "User Management", icon: Users, path: "/super-admin/user-management" },
+  { label: "AI Engine Control", icon: Bot, path: "/super-admin/ai-engine-control" },
+  { label: "Subscriptions", icon: BadgeDollarSign, path: "/super-admin/subscriptions" },
+  { label: "Payments", icon: CreditCard, path: "/super-admin/payments" },
+  { label: "Reports", icon: FileText, path: "/super-admin/reports" },
+  { label: "Security & Logs", icon: ShieldAlert, path: "/super-admin/security-logs" },
+  { label: "Platform Settings", icon: Settings, path: "/super-admin/platform-settings" },
+  { label: "Course Requests", icon: BookOpen, path: "/super-admin/course-requests" },
 ];
 
 const Sidebar = () => {
@@ -50,16 +52,16 @@ const Sidebar = () => {
             const Icon = item.icon;
 
             return (
-              <button
+              <NavLink
                 key={item.label}
-                className={`super-admin-sidebar-item ${
-                  index === 0 ? "active" : ""
-                }`}
-                type="button"
+                to={item.path}
+                className={({ isActive }) =>
+                  `super-admin-sidebar-item ${isActive ? "active" : ""}`
+                }
               >
                 <Icon size={16} strokeWidth={1.8} className="sidebar-icon" />
                 <span>{item.label}</span>
-              </button>
+              </NavLink>
             );
           })}
         </nav>

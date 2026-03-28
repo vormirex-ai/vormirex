@@ -1,5 +1,5 @@
 .super-admin-topbar {
-  height: 40px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,7 +15,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-bottom: 10px;
+  /* padding-bottom: 5px; */
 }
 
 .super-admin-avatar {

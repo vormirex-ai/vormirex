@@ -1,4 +1,4 @@
-import "./SuperAdminPage.css";
+import "./SuperAdminDashboardPage.css"
 import Sidebar from "../../components/superAdmin/Sidebar/Sidebar";
 import Topbar from "../../components/superAdmin/Topbar/Topbar";
 import StatCard from "../../components/superAdmin/StatCard/StatCard";
