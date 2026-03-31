@@ -173,7 +173,7 @@
   z-index: 1;
 }
 
-.avatar {
+/* .avatar {
   position: relative;
   flex-shrink: 0;
 }
@@ -195,8 +195,41 @@
   color: white;
   font-weight: 700;
   font-size: 20px;
+} */
+
+.avatar {
+  position: relative;
+  flex-shrink: 0;
+
+  /* 🔥 ADD THIS */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: visible; 
+  border: 3px solid var(--primary); /* move border here */
 }
 
+/* image inside circle */
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;   /* 🔥 THIS will keep image circular */
+  object-fit: cover;
+}
+
+/* fallback initials */
+.avatar-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #203a43, #2c5364);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+}
 .status-dot {
   width: 20px;
   height: 20px;
@@ -210,13 +243,15 @@
 
 .camera-btn {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: -7px;
+  right: -7px;
+
   width: 36px;
   height: 36px;
   border-radius: 50%;
   background: var(--primary);
   border: 3px solid var(--bg-dark);
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -774,9 +809,9 @@
     align-items: flex-start;
     gap: 20px;
   }
-.profile-actions {
-  align-self: flex-end;
-}
+  .profile-actions {
+    align-self: flex-end;
+  }
   .profile-info {
     width: 100%;
   }
@@ -905,7 +940,7 @@
     font-size: 12px;
   }
 
-  .edit-btn, 
+  .edit-btn,
   .logout-btn {
     padding: 10px 20px;
     font-size: 13px;
@@ -1087,16 +1122,16 @@
     font-size: 14px;
   }
 
- .profile-actions {
-  width: 100%;
-  align-items: center;
-}
+  .profile-actions {
+    width: 100%;
+    align-items: center;
+  }
 
-.profile-actions button {
-  width: 100%;
-  max-width: 220px;
-  min-width: unset;
-}
+  .profile-actions button {
+    width: 100%;
+    max-width: 220px;
+    min-width: unset;
+  }
 }
 
 /* Extra Small Mobile (350px and below) */
