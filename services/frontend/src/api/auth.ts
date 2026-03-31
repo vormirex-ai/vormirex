@@ -9,6 +9,7 @@ export interface User {
     dailyGoal: number;
     focusAreas: string[];
     currentSkillLevel?: string;
+    profileImage?: string;
     // Add other fields as needed
   };
 }
@@ -129,3 +130,24 @@ export const fetchCurrentUser = async (accessToken: string): Promise<AuthRespons
 
   return response.json();
 };
+
+export const updateProfile = async (
+  token: string,
+  data: { name: string; timezone?: string }
+) => {
+  const res = await fetch(`${API_ROOT}/users/me/profile`, {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || "Failed to update profile");
+  }
+
+  return res.json();
+}

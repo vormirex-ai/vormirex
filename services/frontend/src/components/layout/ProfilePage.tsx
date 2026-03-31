@@ -16,7 +16,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { fetchCurrentUser } from '../../api/auth';
-import { updateProfile, changePassword } from '../../api/user';
+import { updateProfile, changePassword, uploadProfilePhoto } from '../../api/user';
 
 interface ProfileData {
   name: string;
@@ -54,18 +54,29 @@ const ProfilePage: React.FC = () => {
     const loadProfile = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        if (!token) return;
+        if (!token) {
+          console.warn("No token found");
+          return;
+        }
 
         const response = await fetchCurrentUser(token);
+        console.log("API response:", response);
+
         const user = response.user;
+        if (!user) {
+          console.warn("User data missing");
+          return;
+        }
+
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
         const newProfile = {
-          name: user.name || '',
+          name: user.name || '', 
           email: user.email || '',
           phone: '', // Not in User model yet
           level: user.learningPreferences?.currentSkillLevel || 'Beginner',
           bio: '', // Not in User model yet
-          profileImage: '', // Not in User model yet
+          profileImage: (user as any).profilePhoto || storedUser.profileImage || '',
           coursesEnrolled: 12, // Placeholder until detailed stats API
           completed: 8, // Placeholder until detailed stats API
           streak: (user as any).streak?.current || 0,
@@ -78,7 +89,7 @@ const ProfilePage: React.FC = () => {
       }
     };
 
-    loadProfile();
+    loadProfile(); //loading profile data on component mount
   }, []);
   const [isEditing, setIsEditing] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -117,14 +128,14 @@ const ProfilePage: React.FC = () => {
         alert("Name cannot be empty");
         return;
       }
-      
+
       const token = localStorage.getItem('accessToken');
       if (!token) return;
 
       await updateProfile(token, {
         name: editedProfile.name,
         // email: editedProfile.email, // Email change usually requires verification, skip for now
-        level: editedProfile.level,
+        // level: editedProfile.level,
       });
 
       setProfile({ ...editedProfile });
@@ -185,7 +196,7 @@ const ProfilePage: React.FC = () => {
     setTwoFactorEnabled(!twoFactorEnabled);
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
 
@@ -199,12 +210,38 @@ const ProfilePage: React.FC = () => {
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const imageUrl = event.target?.result as string;
+      const token = localStorage.getItem('accessToken');
+      if (!token) return;
+
+      //  Instant preview
+      const previewUrl = URL.createObjectURL(file);
+      setEditedProfile((prev) => ({ ...prev, profileImage: previewUrl }));
+
+      try {
+        const response = await uploadProfilePhoto(token, file);
+
+        console.log("Upload response:", response);
+
+
+        const imageUrl =
+          response.profilePhoto ||  
+          response.profileImage ||
+          response.url;
+
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+        storedUser.profileImage = imageUrl;
+        localStorage.setItem("user", JSON.stringify(storedUser));
+
+        //update UI
+        setProfile((prev) => ({ ...prev, profileImage: imageUrl }));
         setEditedProfile((prev) => ({ ...prev, profileImage: imageUrl }));
-      };
-      reader.readAsDataURL(file);
+
+        alert("Profile photo updated!");
+
+      } catch (error: any) {
+        console.error("Upload error:", error);
+        alert(error.message || "Upload failed");
+      }
     }
   };
 
@@ -281,7 +318,7 @@ const ProfilePage: React.FC = () => {
                 onClick={handleLogout}
 
               >
-               <LogOut size={14}/> Logout
+                <LogOut size={14} /> Logout
               </button>
             </div>
           </div>
@@ -317,11 +354,12 @@ const ProfilePage: React.FC = () => {
                 <label>Phone</label>
                 <input
                   name="phone"
-                  value={getPhone()}
+                  value={getPhone() || "Not available"}
                   onChange={handleInputChange}
-                  readOnly={!isEditing}
-                  className={isEditing ? 'editable' : ''}
-                  placeholder="Enter your phone number"
+                  readOnly
+                // readOnly={!isEditing}
+                // className={isEditing ? 'editable' : ''}
+                // placeholder="Enter your phone number"
                 />
               </div>
               <div className="input-group">

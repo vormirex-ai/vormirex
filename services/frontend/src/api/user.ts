@@ -154,3 +154,23 @@ export const changePassword = async (
 
   return response.json();
 }
+
+export const uploadProfilePhoto = async (token: string, file: File) => {
+  const formData = new FormData();
+  formData.append("photo", file);
+
+  const res = await fetch(`${API_ROOT}/users/me/profile-photo`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`, // ⚠️ no Content-Type
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || "Failed to upload photo");
+  }
+
+  return res.json();
+};
