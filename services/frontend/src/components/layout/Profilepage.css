@@ -139,7 +139,7 @@
 }
 
 .profile-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -152,6 +152,19 @@
   );
 }
 
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-actions button {
+  min-width: 150px;
+  justify-content: center;
+}
 .profile-info {
   display: flex;
   align-items: center;
@@ -251,7 +264,6 @@
   position: relative;
   z-index: 1;
 }
-
 .edit-btn:hover {
   background: var(--primary);
   color: var(--bg-dark);
@@ -259,6 +271,29 @@
   box-shadow: 0 4px 12px rgba(0, 245, 212, 0.3);
 }
 
+.logout-btn {
+  background: transparent;
+  border: 2px solid var(--error); /* red border */
+  padding: 12px 24px;
+  border-radius: 30px;
+  color: var(--error); /* red text */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.logout-btn:hover {
+  background: var(--error);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(53, 6, 1, 0.3);
+}
 /* ========================= SECTION CARDS ========================= */
 .section-card {
   background: var(--card-bg);
@@ -555,7 +590,7 @@
 }
 
 .slider:before {
-  content: '';
+  content: "";
   position: absolute;
   height: 18px;
   width: 18px;
@@ -739,7 +774,9 @@
     align-items: flex-start;
     gap: 20px;
   }
-
+.profile-actions {
+  align-self: flex-end;
+}
   .profile-info {
     width: 100%;
   }
@@ -868,7 +905,8 @@
     font-size: 12px;
   }
 
-  .edit-btn {
+  .edit-btn, 
+  .logout-btn {
     padding: 10px 20px;
     font-size: 13px;
   }
@@ -956,7 +994,8 @@
     font-size: 11px;
   }
 
-  .edit-btn {
+  .edit-btn,
+  .logout-btn {
     padding: 8px 16px;
     font-size: 12px;
     align-self: center;
@@ -1047,6 +1086,17 @@
     padding: 10px 40px 10px 12px;
     font-size: 14px;
   }
+
+ .profile-actions {
+  width: 100%;
+  align-items: center;
+}
+
+.profile-actions button {
+  width: 100%;
+  max-width: 220px;
+  min-width: unset;
+}
 }
 
 /* Extra Small Mobile (350px and below) */

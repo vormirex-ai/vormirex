@@ -26,6 +26,9 @@ const envSchema = z.object({
     .string()
     .nonempty('GOOGLE_CLIENT_SECRET is required.'),
   GOOGLE_CALLBACK_URL: z.string().nonempty('GOOGLE_CALLBACK_URL is required.'),
+  CLOUDINARY_CLOUD_NAME: z.string().nonempty('CLOUDINARY_CLOUD_NAME is required.'),
+  CLOUDINARY_API_KEY: z.string().nonempty('CLOUDINARY_API_KEY is required.'),
+  CLOUDINARY_API_SECRET: z.string().nonempty('CLOUDINARY_API_SECRET is required.'),
 });
 
 // Validate process.env against the schema

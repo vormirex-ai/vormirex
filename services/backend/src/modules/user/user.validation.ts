@@ -3,8 +3,9 @@ import { nameSchema, passwordSchema } from '../auth/auth.validation.js';
 
 export const updateProfileSchema = z.object({
   body: z.object({
-    name: nameSchema,
+    name: nameSchema.optional(),
     timezone: z.string().optional(),
+    phoneNumber: z.string().regex(/^\d{10}$/, 'Phone number must be exactly 10 digits').optional(),
   }),
 });
 

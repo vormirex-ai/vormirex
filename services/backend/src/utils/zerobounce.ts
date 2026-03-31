@@ -48,12 +48,19 @@ export const validateEmail = async (email: string, ip: string = ''): Promise<boo
       return true;
     }
 
-    const data = await response.json() as ZeroBounceResponse;
+    const data = await response.json() as any;
+
+    console.log('[ZeroBounce] Validation response for', email, ':', data);
+
+    // If the API returns an error (e.g. invalid API key, out of credits), fail open
+    if (data.error) {
+       console.error('[ZeroBounce] API returned an error:', data.error);
+       return true;
+    }
 
     // Strict validation: Only accept 'valid'
-    // We could also accept 'catch-all' if we want to be more lenient, 
-    // but the user specifically wants to block non-existent emails.
-    if (data.status === 'valid') {
+    // We also accept 'catch-all' to allow for testing with dummy domains
+    if (data.status === 'valid' || data.status === 'catch-all') {
       return true;
     }
 

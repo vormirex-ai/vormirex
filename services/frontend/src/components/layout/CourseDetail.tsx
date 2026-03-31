@@ -421,42 +421,10 @@ export default function CourseDetail() {
       }
       try {
         setLoading(true);
-        if (COURSE_CONTENT_DATA[courseId as keyof typeof COURSE_CONTENT_DATA]) {
-          const staticCourse = {
-            _id: courseId,
-            title:
-              COURSE_CONTENT_DATA[courseId as keyof typeof COURSE_CONTENT_DATA]
-                .title,
-            subtitle:
-              COURSE_CONTENT_DATA[courseId as keyof typeof COURSE_CONTENT_DATA]
-                .subtitle,
-            description:
-              COURSE_CONTENT_DATA[courseId as keyof typeof COURSE_CONTENT_DATA]
-                .description,
-            price: 0,
-            status: 'PUBLISHED',
-            isHidden: false,
-            instructor: 'Vormirex',
-            createdAt: new Date().toISOString(),
-            levels: [
-              {
-                level: 'FOUNDATION',
-                modules: [
-                  {
-                    title: 'Getting Started',
-                    items: ['Introduction', 'Overview', 'Prerequisites'],
-                  },
-                ],
-              },
-            ],
-          };
-          setCourse(staticCourse);
-        } else {
-          const allCourses = await getAllCourses();
-          const fetchedCourse = allCourses.find((c) => getSlug(c) === courseId);
-          if (!fetchedCourse) throw new Error('Course not found.');
-          setCourse(fetchedCourse);
-        }
+        const allCourses = await getAllCourses();
+        const fetchedCourse = allCourses.find((c) => getSlug(c) === courseId);
+        if (!fetchedCourse) throw new Error('Course not found.');
+        setCourse(fetchedCourse);
       } catch (err: any) {
         console.error('Failed to fetch course details', err);
         setError(err.message || 'An unexpected error occurred.');
@@ -553,13 +521,13 @@ export default function CourseDetail() {
 
   const renderCourseContent = () => {
     const courseData =
-      COURSE_CONTENT_DATA[courseId as keyof typeof COURSE_CONTENT_DATA];
+      COURSE_CONTENT_DATA[courseId as keyof typeof COURSE_CONTENT_DATA] as any;
     if (courseData) {
       if (courseId === 'exam-preparation-kit') {
         return (
           <div className="unique-course-content exam-prep-content">
             <div className="stats-grid">
-              {courseData.stats.map((stat, index) => (
+              {courseData.stats.map((stat: any, index: number) => (
                 <div key={index} className="stat-card">
                   <div className="stat-value">{stat.value}</div>
                   <div className="stat-label">{stat.label}</div>
@@ -569,7 +537,7 @@ export default function CourseDetail() {
             <div className="features-section">
               <h2>Why Choose Our Exam Prep Kit?</h2>
               <div className="features-grid">
-                {courseData.features.map((feature, index) => (
+                {courseData.features.map((feature: any, index: number) => (
                   <div key={index} className="feature-card">
                     <div className="feature-icon">{feature.icon}</div>
                     <h3>{feature.title}</h3>
@@ -581,7 +549,7 @@ export default function CourseDetail() {
             <div className="certification-paths">
               <h2>Certification Paths</h2>
               <div className="paths-container">
-                {courseData.certificationPaths.map((path, index) => (
+                {courseData.certificationPaths.map((path: any, index: number) => (
                   <div key={index} className="path-card">
                     <h3>{path.name}</h3>
                     <div className="path-meta">
@@ -591,7 +559,7 @@ export default function CourseDetail() {
                       </span>
                     </div>
                     <div className="certifications">
-                      {path.certifications.map((cert, certIndex) => (
+                      {path.certifications.map((cert: any, certIndex: number) => (
                         <div key={certIndex} className="cert-badge">
                           {cert}
                         </div>
@@ -604,7 +572,7 @@ export default function CourseDetail() {
             <div className="testimonials-section">
               <h2>Success Stories</h2>
               <div className="testimonials-grid">
-                {courseData.testimonials.map((testimonial, index) => (
+                {courseData.testimonials.map((testimonial: any, index: number) => (
                   <div key={index} className="testimonial-card">
                     <div className="testimonial-content">
                       <p>"{testimonial.content}"</p>
@@ -631,7 +599,7 @@ export default function CourseDetail() {
         return (
           <div className="unique-course-content career-transition-content">
             <div className="stats-grid">
-              {courseData.stats.map((stat, index) => (
+              {courseData.stats.map((stat: any, index: number) => (
                 <div key={index} className="stat-card">
                   <div className="stat-value">{stat.value}</div>
                   <div className="stat-label">{stat.label}</div>
@@ -641,7 +609,7 @@ export default function CourseDetail() {
             <div className="features-section">
               <h2>Our Transition Approach</h2>
               <div className="features-grid">
-                {courseData.features.map((feature, index) => (
+                {courseData.features.map((feature: any, index: number) => (
                   <div key={index} className="feature-card">
                     <div className="feature-icon">{feature.icon}</div>
                     <h3>{feature.title}</h3>
@@ -653,7 +621,7 @@ export default function CourseDetail() {
             <div className="transition-paths">
               <h2>Popular Transition Paths</h2>
               <div className="paths-container">
-                {courseData.transitionPaths.map((path, index) => (
+                {courseData.transitionPaths.map((path: any, index: number) => (
                   <div key={index} className="transition-path-card">
                     <div className="path-header">
                       <div className="path-from">{path.from}</div>
@@ -666,7 +634,7 @@ export default function CourseDetail() {
                     <div className="path-skills">
                       <h4>Key Skills You'll Develop:</h4>
                       <div className="skills-list">
-                        {path.skills.map((skill, skillIndex) => (
+                        {path.skills.map((skill: any, skillIndex: number) => (
                           <div key={skillIndex} className="skill-tag">
                             {skill}
                           </div>
@@ -676,7 +644,7 @@ export default function CourseDetail() {
                     <div className="path-roles">
                       <h4>Potential Roles:</h4>
                       <ul>
-                        {path.roles.map((role, roleIndex) => (
+                        {path.roles.map((role: any, roleIndex: number) => (
                           <li key={roleIndex}>{role}</li>
                         ))}
                       </ul>
@@ -688,7 +656,7 @@ export default function CourseDetail() {
             <div className="success-stories">
               <h2>Success Stories</h2>
               <div className="stories-container">
-                {courseData.successStories.map((story, index) => (
+                {courseData.successStories.map((story: any, index: number) => (
                   <div key={index} className="story-card">
                     <div className="story-transition">
                       <div className="role-from">{story.from}</div>
@@ -711,7 +679,7 @@ export default function CourseDetail() {
         return (
           <div className="unique-course-content ai-learning-content">
             <div className="stats-grid">
-              {courseData.stats.map((stat, index) => (
+              {courseData.stats.map((stat: any, index: number) => (
                 <div key={index} className="stat-card">
                   <div className="stat-value">{stat.value}</div>
                   <div className="stat-label">{stat.label}</div>
@@ -721,7 +689,7 @@ export default function CourseDetail() {
             <div className="features-section">
               <h2>The AI Learning Advantage</h2>
               <div className="features-grid">
-                {courseData.features.map((feature, index) => (
+                {courseData.features.map((feature: any, index: number) => (
                   <div key={index} className="feature-card">
                     <div className="feature-icon">{feature.icon}</div>
                     <h3>{feature.title}</h3>
@@ -733,7 +701,7 @@ export default function CourseDetail() {
             <div className="ai-technologies">
               <h2>Powered by Cutting-Edge AI</h2>
               <div className="tech-container">
-                {courseData.technologies.map((tech, index) => (
+                {courseData.technologies.map((tech: any, index: number) => (
                   <div key={index} className="tech-card">
                     <h3>{tech.name}</h3>
                     <p>{tech.description}</p>
@@ -744,7 +712,7 @@ export default function CourseDetail() {
             <div className="learning-modes">
               <h2>Adapted to Your Learning Style</h2>
               <div className="modes-container">
-                {courseData.learningModes.map((mode, index) => (
+                {courseData.learningModes.map((mode: any, index: number) => (
                   <div
                     key={index}
                     className={`mode-card ${activeTab === index ? 'active' : ''}`}

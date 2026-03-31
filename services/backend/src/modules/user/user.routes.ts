@@ -3,6 +3,7 @@ import userController from './user.controller.js';
 import { requireAuth } from '../../middleware/auth.middleware.js';
 import { checkRole } from '../../middleware/rbac.middleware.js';
 import { validate } from '../../middleware/validate.middleware.js';
+import { upload } from '../../middleware/upload.middleware.js';
 import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema, updateNotificationPreferencesSchema, updatePrivacySettingsSchema } from './user.validation.js';
 
 const router = Router();
@@ -12,6 +13,7 @@ router.use(requireAuth);
 
 // --- User Settings Routes (Accessible by all authenticated users) ---
 router.patch('/me/profile', validate(updateProfileSchema), userController.updateProfile);
+router.post('/me/profile-photo', upload.single('photo'), userController.uploadProfilePhoto);
 router.patch('/me/password', validate(changePasswordSchema), userController.changePassword);
 router.patch('/me/preferences', validate(updatePreferencesSchema), userController.updatePreferences);
 router.patch('/me/notifications', validate(updateNotificationPreferencesSchema), userController.updateNotificationPreferences);

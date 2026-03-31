@@ -8,6 +8,10 @@ export interface Course {
   description: string;
   price: number;
   thumbnail?: string;
+  heroVideo?: string;
+  careerImage?: string;
+  gainImage?: string;
+  coursePdf?: string;
   status: 'DRAFT' | 'PUBLISHED';
   isHidden: boolean;
   instructor: string;
