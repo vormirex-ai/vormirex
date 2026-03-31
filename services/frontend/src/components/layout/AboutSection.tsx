@@ -104,7 +104,8 @@ const AboutVormirex: React.FC = () => {
 
         <div className="cta-buttons">
           {/* Navigates to the Courses page */}
-          <button className="primary-btn" onClick={() => navigate('/courses')}>
+          <button className="secondary-btn" 
+          onClick={() => navigate('/courses')}>
             View Courses
           </button>
 

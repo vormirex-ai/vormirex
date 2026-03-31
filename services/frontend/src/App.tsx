@@ -10,6 +10,10 @@ import {
 import Navbar from './components/common/Navbar';
 import Footer from './components/layout/Footer';
 import AdminPage from './pages/AdminPage';
+import SuperAdminDashboardPage from "./pages/superAdmin/SuperAdminDashboardPage";
+import AdminManagementPage from './pages/superAdmin/AdminManagementPage';
+import PermissionsControlPage from './pages/superAdmin/PermissionControl';
+import UserManagementPage from './pages/superAdmin/UserManagementPage';
 
 /* =======================
    PUBLIC PAGES
@@ -50,6 +54,7 @@ import {
 import CustomCoursesList from './CustomCourses/CustomCoursesList';
 import SettingsPage from './components/settings/SettingsPage';
 import Contacts from './components/layout/Contacts';
+
 
 /* ============================================================
    PUBLIC LAYOUT (Navbar + Footer)
@@ -141,6 +146,15 @@ const App: React.FC = () => {
           element={<ProfilePage />}
         />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/super-admin/" element={<SuperAdminDashboardPage />} />
+        <Route path="/super-admin/admin-management" element={<AdminManagementPage />} />
+        <Route path="/super-admin/permission-control" element={<PermissionsControlPage />} />
+        <Route path="/super-admin/user-management" element={<UserManagementPage />} />
+
+
+
+
+
         {/* ================= DASHBOARD (MOVED TO /DASHBOARD) ================= */}
         <Route element={<DashboardWrapper />}>
           {/* Dashboard is now explicitly at /dashboard */}
@@ -168,7 +182,7 @@ const App: React.FC = () => {
         {/* Any unknown route redirects to Home (/) */}
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/contacts" element={<Contacts />} />
-        
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

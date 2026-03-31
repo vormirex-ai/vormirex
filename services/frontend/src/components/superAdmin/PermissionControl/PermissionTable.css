@@ -1,0 +1,83 @@
+.permissions-table {
+  background: linear-gradient(180deg, #0b1322 0%, #070e1a 100%);
+  border: 1px solid rgba(73, 94, 130, 0.25);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* Row */
+.permissions-row {
+  display: grid;
+  grid-template-columns: 2fr repeat(5, 1fr);
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+
+/* Hover (IMPORTANT for polish) */
+.permissions-row:hover {
+  background: rgba(0, 229, 255, 0.03);
+}
+
+/* Header */
+.permissions-row.header {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 229, 255, 0.12),
+    rgba(0, 229, 255, 0.02)
+  );
+  font-size: 12px;
+  color: #8fa2bb;
+  font-weight: 600;
+}
+
+/* Module column */
+.module-col {
+  color: #d6e2f2;
+  font-size: 14px;
+}
+
+/* Checkbox center */
+.custom-check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Glow circle */
+.checkmark {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 229, 255, 0.5);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* Hide input */
+.custom-check input {
+  display: none;
+}
+
+/* Checked */
+.custom-check input:checked + .checkmark {
+  background: #00e5ff;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
+}
+
+/* Inner dot */
+.custom-check input:checked + .checkmark::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #001018;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

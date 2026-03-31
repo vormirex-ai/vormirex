@@ -152,6 +152,7 @@ const CourseGrid: React.FC<CourseGridProps> = ({
           display: flex;
           flex-direction: column;
           align-items: center;
+          overflow: visible;
         }
 
         .course-header {
@@ -182,21 +183,33 @@ const CourseGrid: React.FC<CourseGridProps> = ({
           width: 100%;
           max-width: 1200px;
           margin-bottom: 60px;
+          overflow: visible;
+          padding: 8px; /* gives shadow room to breathe inside the grid */
+          margin: -8px; /* compensate for padding so layout doesn't shift */
+          width: calc(100% + 16px);
         }
 
         .course-card {
           background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 16px;
-          padding: 32px 20px;
+          border: none;
+          border-radius: 24px;
+          padding: 32px 24px;
+          transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           text-align: center;
-          transition: 0.3s;
           cursor: pointer;
+          box-sizing: border-box; /* Ensures padding is included in the width/height */
+          /* REMOVED: height: 100%; This was causing inconsistent heights on mobile */
+          box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+
         }
 
         .course-card:hover {
-          border-color: #6aece1;
           transform: translateY(-5px);
+          background: rgba(255, 255, 255, 0.05);
+          box-shadow: 0 0 0 1px #6aece1, 0 20px 45px rgba(0, 0, 0, 0.35);
         }
 
         .course-icon-wrapper {

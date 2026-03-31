@@ -49,8 +49,12 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
     <div className="container">
       {/* Watermark Logo - Fixed Position */}
       <div className={`watermark-logo ${scrolled ? 'visible' : ''}`}>
-        <img src={logo} alt="Vormirex Watermark" />
+      {/* <img src={logo} alt="Vormirex Watermark" /> */}
       </div>
+
+      {/* <div>
+      <img src={logo} alt="Vormirex Watermark" />
+      </div> */}
 
       {/* Hero Section */}
       <main className="hero">
@@ -137,11 +141,56 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
       </main>
 
       <style>{`
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        .container { min-height: 100vh; background-color: #0a0b14; color: #ffffff; font-family: 'Inter', sans-serif; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; position: relative; }
-        .watermark-logo { position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); width: 420px; height: 420px; opacity: 0; z-index: 0; pointer-events: none; transition: opacity 0.6s ease; }
-        .watermark-logo.visible { opacity: 0.05; }
-        .watermark-logo img { width: 100%; height: 100%; object-fit: contain; filter: blur(1.2px); }
+        * { 
+         margin: 0;
+         padding: 0; 
+         box-sizing: border-box; }
+
+         html, body {
+          overflow-x: hidden;  /* ← handle it at root level, not on .container */
+} 
+        .container 
+        { 
+          min-height: 100vh; 
+          background-color: #0a0b14; 
+          color: #ffffff; 
+          font-family: 'Inter', sans-serif; 
+          overflow-x: visible; 
+          display: flex; 
+          flex-direction: column; 
+          align-items: center; 
+          position: relative; }
+
+        .watermark-logo { 
+          position: fixed; 
+          top: 50%; 
+          left: 50%; 
+          transform: translate(-50%, -50%);
+
+
+          width: min(40vmin, 90vw, 90vh);
+          max-width: 90vw;   /* never wider than viewport */
+          max-height: 90vh;  /* never taller than viewport */
+
+          opacity: 0; 
+          z-index: 0; 
+          pointer-events: none; 
+          transition: opacity 0.6s ease; }
+
+        .watermark-logo.visible { 
+          
+          opacity: 0.05; }
+
+        .watermark-logo img { 
+          width: 100%; 
+          height: auto; 
+          max-width: 100%;
+          object-fit: contain; 
+          filter: blur(1.2px);
+          display: block; /* removes inline spacing */
+}
+
+
         .hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 92px 0 60px 0; position: relative; width: 100%; z-index: 2; }
         .glow-bg { position: absolute; top: 20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(106, 236, 225, 0.15) 0%, transparent 70%); pointer-events: none; z-index: 1; left: 50%; transform: translateX(-50%); }
         .badge { background: rgba(255, 255, 255, 0.05); margin-top: 40px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #94a3b8; margin-bottom: 24px; position: relative; z-index: 2; }

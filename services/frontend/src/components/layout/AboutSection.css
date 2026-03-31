@@ -211,7 +211,6 @@
   flex-wrap: wrap;
 }
 
-.primary-btn,
 .secondary-btn {
   padding: 14px 34px;
   font-size: 0.95rem;
@@ -221,18 +220,6 @@
   transition: var(--transition);
 }
 
-/* Primary CTA */
-.primary-btn {
-  background: var(--color-primary);
-  color: #000;
-  border: none;
-  box-shadow: 0 10px 30px var(--color-primary-glow);
-}
-
-.primary-btn:hover {
-  background: #ffffff;
-  transform: translateY(3px);
-}
 
 /* Secondary CTA */
 .secondary-btn {
