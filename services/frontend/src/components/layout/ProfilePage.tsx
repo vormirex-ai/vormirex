@@ -89,7 +89,7 @@ const ProfilePage: React.FC = () => {
       }
     };
 
-    loadProfile();
+    loadProfile(); //loading profile data on component mount
   }, []);
   const [isEditing, setIsEditing] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
