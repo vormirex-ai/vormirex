@@ -71,7 +71,7 @@ const ProfilePage: React.FC = () => {
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
         const newProfile = {
-          name: user.name || '', 
+          name: user.name || '',
           email: user.email || '',
           phone: '', // Not in User model yet
           level: user.learningPreferences?.currentSkillLevel || 'Beginner',
@@ -224,7 +224,7 @@ const ProfilePage: React.FC = () => {
 
 
         const imageUrl =
-          response.profilePhoto ||  
+          response.profilePhoto ||
           response.profileImage ||
           response.url;
 
