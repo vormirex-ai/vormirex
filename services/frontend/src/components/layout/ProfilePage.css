@@ -207,6 +207,42 @@
   font-weight: 700;
   font-size: 20px;
 }
+
+.avatar-wrapper {
+  position: relative;
+}
+
+.avatar-menu {
+  position: absolute;
+  top: 70px;
+  left: 0;
+
+  background: #121a1f;
+  border-radius: 10px;
+  padding: 8px;
+  width: 160px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.avatar-menu button {
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  color: #d1d5db;
+  text-align: left;
+  cursor: pointer;
+}
+
+.avatar-menu button:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.remove-option {
+  color: #ff4d4f;
+}
 .status-dot {
   width: 20px;
   height: 20px;
