@@ -50,6 +50,8 @@ const ProfilePage: React.FC = () => {
     ...profile,
   });
 
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false);
+
   useEffect(() => {
     const loadProfile = async () => {
       try {
@@ -70,13 +72,16 @@ const ProfilePage: React.FC = () => {
 
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
+        const profileImage = storedUser.photoRemoved
+          ? ''
+          : (user as any).profilePhoto || storedUser.profileImage || '';
         const newProfile = {
           name: user.name || '',
           email: user.email || '',
           phone: '', // Not in User model yet
           level: user.learningPreferences?.currentSkillLevel || 'Beginner',
           bio: '', // Not in User model yet
-          profileImage: (user as any).profilePhoto || storedUser.profileImage || '',
+          profileImage,
           coursesEnrolled: 12, // Placeholder until detailed stats API
           completed: 8, // Placeholder until detailed stats API
           streak: (user as any).streak?.current || 0,
@@ -230,6 +235,7 @@ const ProfilePage: React.FC = () => {
 
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
         storedUser.profileImage = imageUrl;
+        storedUser.photoRemoved = false;
         localStorage.setItem("user", JSON.stringify(storedUser));
 
         //update UI
@@ -244,6 +250,25 @@ const ProfilePage: React.FC = () => {
       }
     }
   };
+
+  const handleRemovePhoto = async () => {
+    const confirmRemove = window.confirm("Remove profile photo?");
+    if (!confirmRemove) return;
+
+    //clear from UI
+    setProfile(prev => ({ ...prev, profileImage: '' }));
+    setEditedProfile(prev => ({ ...prev, profileImage: '' }));
+
+    //clear from local storage
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    storedUser.profileImage = '';
+    storedUser.photoRemoved = true;
+    localStorage.setItem("user", JSON.stringify(storedUser));
+
+    alert("Profile photo removed");
+
+    // add API call when added to backend
+  }
 
   const triggerFileInput = () => {
     fileInputRef.current?.click();
@@ -283,29 +308,63 @@ const ProfilePage: React.FC = () => {
           {/* Top Card */}
           <div className="profile-card">
             <div className="profile-info">
-              <div className="avatar">
-                {getImage() ? (
-                  <img src={getImage()} alt="Profile" />
-                ) : (
-                  <div className="avatar-fallback">
-                    {(getName() || '')
-                      .slice(0, 2)
-                      .toUpperCase()}
-                  </div>
-                )}
-                <span className="status-dot"></span>
-                {isEditing && (
-                  <button className="camera-btn" onClick={triggerFileInput}>
-                    <Camera size={16} />
-                  </button>
-                )}
+              <div className="avatar-wrapper">
+                <div className="avatar">
+                  {getImage() ? (
+                    <img src={getImage()} alt="Profile" />
+                  ) : (
+                    <div className="avatar-fallback">
+                      {(getName() || '').slice(0, 2).toUpperCase()}
+                    </div>
+                  )}
+
+                  <span className="status-dot"></span>
+
+                  {isEditing && (
+                    <>
+                      <button
+                        className="camera-btn"
+                        onClick={() => setShowAvatarMenu(prev => !prev)}
+                      >
+                        <Camera size={16} />
+                      </button>
+
+                      {showAvatarMenu && (
+                        <div className="avatar-menu">
+                          <button
+                            onClick={() => {
+                              setShowAvatarMenu(false);
+                              triggerFileInput();
+                            }}
+                          >
+                            Change Photo
+                          </button>
+
+                          {getImage() && (
+                            <button
+                              className="remove-option"
+                              onClick={() => {
+                                setShowAvatarMenu(false);
+                                handleRemovePhoto();
+                              }}
+                            >
+                              Remove Photo
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
+
               <div className="profile-text">
                 <h3>{getName()}</h3>
                 <p>{getBio()}</p>
                 {getEmail() && <small>{getEmail()}</small>}
               </div>
             </div>
+
             <div className='profile-actions'>
 
 
