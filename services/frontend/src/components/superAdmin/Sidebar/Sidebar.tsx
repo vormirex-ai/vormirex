@@ -13,7 +13,6 @@ import {
   BookOpen,
   LogOut,
 } from "lucide-react";
-
 import { NavLink } from "react-router-dom";
 
 const menuItems = [
@@ -30,51 +29,62 @@ const menuItems = [
   { label: "Course Requests", icon: BookOpen, path: "/super-admin/course-requests" },
 ];
 
-const Sidebar = () => {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+const Sidebar = ({ isOpen = false, onClose }: SidebarProps) => {
   return (
-    <aside className="super-admin-sidebar">
-      <div>
-        <div className="super-admin-sidebar-header">
-          <div className="super-admin-sidebar-brand">
-            <img
-              src="/logo.png"
-              alt="Vormirex logo"
-              className="super-admin-sidebar-logo"
-            />
-            <span>Vormirex</span>
+    <>
+      {/* Overlay */}
+      {isOpen && (
+        <div className="super-admin-sidebar-overlay" onClick={onClose} />
+      )}
+
+      <aside className={`super-admin-sidebar ${isOpen ? "mobile-open" : ""}`}>
+        <div>
+          <div className="super-admin-sidebar-header">
+            <div className="super-admin-sidebar-brand">
+              <img
+                src="/logo.png"
+                alt="Vormirex logo"
+                className="super-admin-sidebar-logo"
+              />
+              <span>Vormirex</span>
+            </div>
           </div>
+          <div className="super-admin-sidebar-divider" />
+          <nav className="super-admin-sidebar-nav">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <NavLink
+                  key={item.label}
+                  to={item.path}
+                  end={item.path === "/super-admin"}
+                  onClick={onClose}
+                  className={({ isActive }) =>
+                    `super-admin-sidebar-item ${isActive ? "active" : ""}`
+                  }
+                >
+                  <Icon size={16} strokeWidth={1.8} className="sidebar-icon" />
+                  <span>{item.label}</span>
+                </NavLink>
+              );
+            })}
+          </nav>
         </div>
 
-        <div className="super-admin-sidebar-divider" />
-
-        <nav className="super-admin-sidebar-nav">
-          {menuItems.map((item, index) => {
-            const Icon = item.icon;
-
-            return (
-              <NavLink
-                key={item.label}
-                to={item.path}
-                className={({ isActive }) =>
-                  `super-admin-sidebar-item ${isActive ? "active" : ""}`
-                }
-              >
-                <Icon size={16} strokeWidth={1.8} className="sidebar-icon" />
-                <span>{item.label}</span>
-              </NavLink>
-            );
-          })}
-        </nav>
-      </div>
-
-      <div className="super-admin-sidebar-footer">
-        <div className="super-admin-sidebar-divider" />
-        <button className="super-admin-logout-btn" type="button">
-          <LogOut size={16} strokeWidth={1.8} className="sidebar-icon" />
-          <span>Logout</span>
-        </button>
-      </div>
-    </aside>
+        <div className="super-admin-sidebar-footer">
+          <div className="super-admin-sidebar-divider" />
+          <button className="super-admin-logout-btn" type="button">
+            <LogOut size={16} strokeWidth={1.8} className="sidebar-icon" />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 
