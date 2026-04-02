@@ -177,3 +177,42 @@ export const getProfile = async (req: Request, res: Response) => {
   const userFn = await authService.getUserProfile(userId);
   return res.json({ success: true, user: userFn });
 };
+
+export const requestGuestOTP = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.body;
+    if (!email) throw new BadRequestError('Email is required');
+    await authService.sendGuestOTP(email);
+    return res.status(200).json({ success: true, message: 'Verification code sent to your email.' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const verifyGuestOTPAccount = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, code } = req.body;
+    if (!email || !code) throw new BadRequestError('Email and code are required');
+    
+    const result = await authService.verifyGuestOTP(email, code);
+
+    // Give them the refresh cookie
+    res.cookie('refresh_token', result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    const userResponse = {
+      id: result.user._id,
+      name: result.user.name,
+      email: result.user.email,
+      role: result.user.role,
+    };
+
+    return res.json({ success: true, accessToken: result.accessToken, user: userResponse });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -11,7 +11,9 @@ import {
   getResetPasswordEmailHTML,
   getVerificationEmailHTML,
   getAdminVerificationEmailHTML,
+  getGuestVerificationEmailHTML,
 } from '../../utils/emailTemplates.js';
+
 import {
   BadRequestError,
   ConflictError,
@@ -327,6 +329,70 @@ export const verifyTwoFactorCode = async (email: string, code: string) => {
   const accessToken = generateAccess(payload);
   const refreshToken = generateRefresh(payload);
 
+  await updateUserStreak(user);
+
+  return { user, accessToken, refreshToken };
+};
+
+export const sendGuestOTP = async (email: string) => {
+  // 1. Find existing account or create a new 'guest'
+  let user = await User.findOne({ email });
+  
+  if (!user) {
+    user = await User.create({
+      name: 'Guest User',
+      email,
+      role: 'guest',
+      isVerified: false,
+    });
+  } else if (user.role !== 'guest') {
+    throw new ConflictError('An account with this email already exists. Please login normally.');
+  }
+
+  // 2. Generate a secure 6-digit OTP and hash it for the DB
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const hashedOTP = crypto.createHash('sha256').update(otp).digest('hex');
+
+  // 3. Save to DB with 10-minute expiry
+  user.twoFactorCode = hashedOTP;
+  user.twoFactorExpires = new Date(Date.now() + 10 * 60 * 1000);
+  await user.save();
+
+  // 4. Send the OTP Email
+  const emailHtml = getGuestVerificationEmailHTML(user.name, otp);
+  await sendEmail({
+    to: user.email,
+    subject: 'Vormirex Guest Login - Verification Code',
+    text: `Your guest access code is: ${otp}`,
+    html: emailHtml,
+  });
+};
+
+export const verifyGuestOTP = async (email: string, code: string) => {
+  const hashedOTP = crypto.createHash('sha256').update(code).digest('hex');
+
+  const user = await User.findOne({
+    email,
+    role: 'guest',
+    twoFactorCode: hashedOTP,
+    twoFactorExpires: { $gt: new Date() },
+  });
+
+  if (!user) {
+    throw new BadRequestError('Invalid or expired verification code');
+  }
+
+  // 1. Mark them as a verified lead and clear the OTP fields
+  user.isVerified = true;
+  user.twoFactorCode = undefined;
+  user.twoFactorExpires = undefined;
+  await user.save();
+
+  // 2. Generate standard access tokens so the frontend logs them in securely
+  const payload = { userId: user._id, role: user.role };
+  const accessToken = generateAccess(payload);
+  const refreshToken = generateRefresh(payload);
+  
   await updateUserStreak(user);
 
   return { user, accessToken, refreshToken };

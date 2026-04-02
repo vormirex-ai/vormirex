@@ -36,6 +36,13 @@ authRouter.post(
 // @route   POST /api/auth/verify-2fa
 authRouter.post('/verify-2fa', authRateLimiter, authController.verifyTwoFactor);
 
+// @route   POST /api/auth/guest/send-otp
+authRouter.post('/guest/send-otp', authRateLimiter, authController.requestGuestOTP);
+
+// @route   POST /api/auth/guest/verify-otp
+authRouter.post('/guest/verify-otp', authRateLimiter, authController.verifyGuestOTPAccount);
+
+
 // @route   GET /api/auth/verify-email
 // No rate limit needed here as it requires a unique, single-use token.
 authRouter.get('/verify-email', authController.verifyEmail);

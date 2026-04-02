@@ -271,6 +271,12 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
+  const [isGuestModalOpen, setIsGuestModalOpen] = useState(false);
+  const [guestEmail, setGuestEmail] = useState('');
+  const [guestOTP, setGuestOTP] = useState('');
+  const [isGuestOTPMode, setIsGuestOTPMode] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
+
 
   // FIXED: Set initial tab based on URL path and props
   useEffect(() => {
@@ -305,6 +311,57 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
       setForgotPasswordLoading(false);
     }
   };
+
+    const handleGuestEmailSubmit = async () => {
+    if (!guestEmail) {
+      setError('Please enter your email.');
+      return;
+    }
+    setGuestLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`${BASE_URL}/guest/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: guestEmail }),
+      });
+      const res = await response.json();
+      if (!response.ok) throw new Error(res.message || 'Failed to send verification code');
+      
+      setIsGuestOTPMode(true);
+    } catch (err: any) {
+      setError(err.message || 'Failed to request guest access');
+    } finally {
+      setGuestLoading(false);
+    }
+  };
+
+  const handleGuestOTPSubmit = async () => {
+    if (!guestOTP || guestOTP.length !== 6) {
+      setError('Please enter a valid 6-digit code.');
+      return;
+    }
+    setGuestLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`${BASE_URL}/guest/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: guestEmail, code: guestOTP }),
+      });
+      const res = await response.json();
+      if (!response.ok) throw new Error(res.message || 'Invalid verification code');
+
+      localStorage.setItem('accessToken', res.accessToken);
+      localStorage.setItem('user', JSON.stringify(res.user));
+      window.location.href = '/dashboard';
+    } catch (err: any) {
+      setError(err.message || 'Verification failed');
+    } finally {
+      setGuestLoading(false);
+    }
+  };
+
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -488,6 +545,22 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
                 ? 'Log In'
                 : 'Create Account'}
           </button>
+
+           {activeTab === 'signup' && (
+            <button 
+              type="button" 
+              className="login-btn" 
+              style={{ marginTop: '15px', background: 'transparent', border: '1px solid #00d4d4', color: '#00d4d4' }}
+              onClick={() => {
+                setError('');
+                setIsGuestOTPMode(false);
+                setIsGuestModalOpen(true);
+              }}
+            >
+              Continue as Guest
+            </button>
+          )}
+
         </form>
         <div className="divider">
           <div className="divider-line"></div>
@@ -504,6 +577,72 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
           Continue with Google
         </button>
       </div>
+
+            {/* Guest Login Modal */}
+      {isGuestModalOpen && (
+        <div className="modal-overlay" onClick={() => setIsGuestModalOpen(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close"
+              onClick={() => setIsGuestModalOpen(false)}
+            >
+              ✕
+            </button>
+            <h2 style={{ color: 'white', marginBottom: '15px' }}>
+              Guest Access
+            </h2>
+            <p
+              style={{
+                color: '#9ca3af',
+                fontSize: '14px',
+                marginBottom: '20px',
+              }}
+            >
+              {!isGuestOTPMode 
+                 ? "Enter your email. We'll send you a secure one-time code to grant you access."
+                 : `Enter the 6-digit code we sent to ${guestEmail}.`}
+            </p>
+            
+            <div className="form-group">
+              {!isGuestOTPMode ? (
+                <input
+                  type="email"
+                  className="form-input"
+                  placeholder="name@example.com"
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
+                />
+              ) : (
+                 <input
+                  type="text"
+                  className="form-input"
+                  placeholder="000000"
+                  maxLength={6}
+                  value={guestOTP}
+                  onChange={(e) => setGuestOTP(e.target.value)}
+                />
+              )}
+            </div>
+            
+            {error && (
+              <p style={{ color: 'red', marginBottom: '10px', fontSize: '13px' }}>
+                {error}
+              </p>
+            )}
+            
+            <button
+              className="login-btn"
+              disabled={guestLoading}
+              onClick={!isGuestOTPMode ? handleGuestEmailSubmit : handleGuestOTPSubmit}
+            >
+              {guestLoading 
+                ? 'Processing...' 
+                : !isGuestOTPMode ? 'Get Access Code' : 'Verify & Login'}
+            </button>
+          </div>
+        </div>
+      )}
+
 
       {/* Forgot Password Modal */}
       {isModalOpen && (

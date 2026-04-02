@@ -82,3 +82,26 @@ export const getAdminVerificationEmailHTML = (
     </div>
   `;
 };
+
+export const getGuestVerificationEmailHTML = (name: string, otp: string) => `
+  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+    <div style="padding: 20px; border: 1px solid #eaeaea; border-radius: 8px;">
+      <h2 style="color: #4b6cb7;">Guest Access Code</h2>
+      <p style="font-size: 16px;">Hi ${name},</p>
+      <p style="font-size: 16px;">We received a request for temporary guest access to Vormirex. Please use the verification code below:</p>
+      
+      <div style="margin: 30px 0; padding: 20px; background-color: #f8f9fa; border-radius: 8px; text-align: center;">
+        <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #4b6cb7; padding: 10px 20px; border: 2px dashed #4b6cb7; border-radius: 10px;">${otp}</span>
+      </div>
+      
+      <p style="font-size: 14px;">This code will expire in 10 minutes.</p>
+      <p style="font-size: 14px;">If you did not request this access, you can safely ignore this email.</p>
+      
+      <hr style="border: none; border-top: 1px solid #eaeaea; margin: 30px 0;" />
+      <p style="font-size: 12px; color: #888;">
+        Vormirex Security Team<br>
+        <a href="https://vormirex.com" style="color: #4b6cb7; text-decoration: none;">www.vormirex.com</a>
+      </p>
+    </div>
+  </div>
+`;
