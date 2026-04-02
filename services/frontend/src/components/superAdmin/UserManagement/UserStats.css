@@ -9,33 +9,56 @@
   background: linear-gradient(180deg, #0b1322, #070e1a);
   border: 1px solid rgba(73, 94, 130, 0.25);
   border-radius: 14px;
-  padding: 16px;
+  padding: 18px 20px;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  box-sizing: border-box;
 }
 
 .stat-label {
   font-size: 12px;
   color: #7f8da3;
+  font-weight: 500;
+  margin-bottom: 8px;
 }
 
 .user-stat-card h2 {
-  font-size: 22px;
-  margin: 6px 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #f0f8ff;
+  margin: 0 0 6px;
+  line-height: 1;
 }
 
 .stat-change {
   font-size: 12px;
   color: #00e5a0;
+  font-weight: 500;
 }
 
 .stat-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 12px;
   background: rgba(0, 229, 255, 0.1);
-
+  border: 1px solid rgba(0, 229, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #00e5ff;
+}
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1024px) {
+  .user-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .user-stats-grid {
+    grid-template-columns: 1fr;
+  }
 }

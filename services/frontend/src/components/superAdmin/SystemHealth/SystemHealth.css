@@ -7,6 +7,8 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.03),
     0 10px 30px rgba(0, 0, 0, 0.35);
   padding: 16px;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
 .system-health-title {
@@ -31,6 +33,7 @@
   padding: 18px 16px;
   border-radius: 14px;
   background: linear-gradient(90deg, rgba(0, 229, 255, 0.08) 0%, rgba(0, 229, 255, 0.04) 100%);
+  min-width: 0;
 }
 
 .system-health-left {
@@ -38,6 +41,7 @@
   align-items: center;
   gap: 10px;
   min-width: 0;
+  flex: 1;
 }
 
 .system-health-icon {
@@ -50,11 +54,15 @@
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;
+  white-space: nowrap;      
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .system-health-value {
   font-size: 14px;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 .system-health-value.success {
@@ -63,4 +71,15 @@
 
 .system-health-value.danger {
   color: #ff4d4f;
+}
+
+/* ══ MOBILE ══ */
+@media (max-width: 480px) {
+  .system-health-item {
+    padding: 14px 12px;
+  }
+ 
+  .system-health-label {
+    font-size: 11px;
+  }
 }

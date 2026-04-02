@@ -15,6 +15,7 @@
   background: linear-gradient(180deg, rgba(8, 16, 30, 0.96) 0%, rgba(5, 11, 22, 0.98) 100%);
   border: 1px solid rgba(0, 229, 255, 0.14);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  box-sizing: border-box;
 }
 
 .admin-stat-copy span {
@@ -36,6 +37,7 @@
 .admin-stat-icon {
   width: 44px;
   height: 44px;
+  min-width: 44px;
   border-radius: 12px;
   display: grid;
   place-items: center;
@@ -44,16 +46,19 @@
   border: 1px solid rgba(19, 223, 255, 0.16);
 }
 
+/* ── Filters ── */
 .admin-management-filters {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 22px;
+  flex-wrap: nowrap;
 }
 
 .admin-search-box {
   flex: 1;
   min-width: 0;
+  max-width: 500px;
   height: 46px;
   display: flex;
   align-items: center;
@@ -63,6 +68,7 @@
   background: rgba(10, 18, 32, 0.92);
   border: 1px solid rgba(92, 115, 156, 0.18);
   color: #7f94b7;
+  box-sizing: border-box;
 }
 
 .admin-search-box input {
@@ -72,6 +78,7 @@
   background: transparent;
   color: #e8f3ff;
   font-size: 14px;
+  min-width: 0;
 }
 
 .admin-search-box input::placeholder {
@@ -80,6 +87,7 @@
 
 .admin-filter-btn {
   min-width: 140px;
+  flex-shrink: 0;
   height: 46px;
   border: 1px solid rgba(92, 115, 156, 0.18);
   border-radius: 12px;
@@ -92,8 +100,10 @@
   gap: 12px;
   padding: 0 14px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
+/* ── Table (Desktop) ── */
 .admin-management-table-section {
   margin-top: 4px;
 }
@@ -142,6 +152,7 @@
 .admin-avatar {
   width: 34px;
   height: 34px;
+  min-width: 34px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -150,29 +161,12 @@
   color: #ffffff;
 }
 
-.admin-avatar.cyan {
-  background: #11cfe1;
-}
-
-.admin-avatar.purple {
-  background: #7a5cff;
-}
-
-.admin-avatar.pink {
-  background: #ef4fa9;
-}
-
-.admin-avatar.orange {
-  background: #f2a318;
-}
-
-.admin-avatar.green {
-  background: #1ecf88;
-}
-
-.admin-avatar.red {
-  background: #ff5c5c;
-}
+.admin-avatar.cyan    { background: #11cfe1; }
+.admin-avatar.purple  { background: #7a5cff; }
+.admin-avatar.pink    { background: #ef4fa9; }
+.admin-avatar.orange  { background: #f2a318; }
+.admin-avatar.green   { background: #1ecf88; }
+.admin-avatar.red     { background: #ff5c5c; }
 
 .admin-row-radio {
   width: 14px;
@@ -226,19 +220,26 @@
   font-weight: 500;
 }
 
-.admin-status-badge.active {
-  color: #17dd72;
-}
+.admin-status-badge.active   { color: #17dd72; }
+.admin-status-badge.inactive { color: #f4af1d; }
 
-.admin-status-badge.inactive {
-  color: #f4af1d;
-}
 
 .status-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: currentColor;
+}
+
+
+.admin-status-badge .status-dot {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  position: static;    
+  border: none;        
 }
 
 .admin-row-action-btn {
@@ -257,6 +258,73 @@
   color: #8195b2;
 }
 
+/* ══ MOBILE CARD LAYOUT — table ki jagah cards ══ */
+.admin-mobile-cards {
+  display: none;  /* default hidden */
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.admin-mobile-card {
+  background: linear-gradient(180deg, rgba(8, 16, 29, 0.98) 0%, rgba(5, 11, 21, 0.98) 100%);
+  border: 1px solid rgba(0, 229, 255, 0.12);
+  border-radius: 14px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Top row: avatar + name + action button */
+.admin-mobile-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-mobile-card-name {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: #f0f8ff;
+  min-width: 0;
+}
+
+/* Info rows */
+.admin-mobile-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-mobile-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.admin-mobile-card-label {
+  color: #5e7494;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  min-width: 80px;
+}
+
+.admin-mobile-card-val {
+  color: #8ca2bf;
+  font-size: 13px;
+  text-align: right;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ══ BREAKPOINTS ══ */
 @media (max-width: 1180px) {
   .admin-management-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -265,15 +333,38 @@
 
 @media (max-width: 768px) {
   .admin-management-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .admin-management-filters {
-    flex-direction: column;
-    align-items: stretch;
+    /* flex-direction: column;
+    align-items: stretch; */
+    flex-wrap: wrap;
+  }
+
+    .admin-search-box {
+    max-width: 100%;       
+    flex-basis: 100%;      
+    height: 46px;          
   }
 
   .admin-filter-btn {
-    width: 100%;
+    flex: 1;
+    width: auto;
+  }
+
+  /* Table hide karo, cards dikhao */
+  .admin-table-wrapper {
+    display: none;
+  }
+
+  .admin-mobile-cards {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-management-stats {
+    grid-template-columns: 1fr;
   }
 }

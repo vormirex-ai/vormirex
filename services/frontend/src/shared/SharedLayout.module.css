@@ -1,0 +1,46 @@
+/* SharedLayout.module.css
+   Import this in every superAdmin page.
+   Sidebar & Topbar handle their own CSS — only page shell is here.
+*/
+
+.page {
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  background: linear-gradient(180deg, #060b14 0%, #040811 100%);
+  color: #ffffff;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .page {
+    flex-direction: column;
+    height: auto;
+    overflow: auto;
+  }
+
+  .main {
+    height: auto;
+    overflow: visible;
+  }
+
+  .body {
+    overflow-y: visible;
+  }
+}
