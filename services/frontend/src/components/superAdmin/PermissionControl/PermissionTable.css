@@ -117,7 +117,7 @@
   }
 
   .permissions-row {
-    min-width: 380px;    /* table minimum width rakho */
+    min-width: 380px;    
     padding: 12px 14px;
     gap: 4px;
   }

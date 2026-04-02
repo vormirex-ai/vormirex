@@ -1,4 +1,4 @@
-/* Super Admin pages ko scroll lock karne ke liye */
+/* scroll lock super admin pages */
 #root:has(.super-admin-page) {
   height: 100vh;
   overflow: hidden;

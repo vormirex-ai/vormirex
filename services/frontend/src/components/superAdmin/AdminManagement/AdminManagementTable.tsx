@@ -97,7 +97,7 @@ const AdminManagementTable = () => {
         </table>
       </div>
 
-      {/* ── MOBILE CARDS — table ki jagah ── */}
+      {/* ── MOBILE CARDS  ── */}
       <div className="admin-mobile-cards">
         {admins.map((admin) => (
           <div key={admin.id} className="admin-mobile-card">
