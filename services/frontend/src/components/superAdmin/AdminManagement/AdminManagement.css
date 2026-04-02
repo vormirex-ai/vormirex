@@ -258,7 +258,7 @@
   color: #8195b2;
 }
 
-/* ══ MOBILE CARD LAYOUT — table ki jagah cards ══ */
+/* ══ MOBILE CARD LAYOUT ══ */
 .admin-mobile-cards {
   display: none;  /* default hidden */
   flex-direction: column;
@@ -337,8 +337,6 @@
   }
 
   .admin-management-filters {
-    /* flex-direction: column;
-    align-items: stretch; */
     flex-wrap: wrap;
   }
 
@@ -353,7 +351,7 @@
     width: auto;
   }
 
-  /* Table hide karo, cards dikhao */
+  /* hide table, show cards */
   .admin-table-wrapper {
     display: none;
   }
