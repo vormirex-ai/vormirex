@@ -49,7 +49,7 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
     <div className="container">
       {/* Watermark Logo - Fixed Position */}
       <div className={`watermark-logo ${scrolled ? 'visible' : ''}`}>
-      {/* <img src={logo} alt="Vormirex Watermark" /> */}
+        {/* <img src={logo} alt="Vormirex Watermark" /> */}
       </div>
 
       {/* <div>
@@ -76,7 +76,7 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
               className="btn-primary-hero large"
               onClick={handleStartFree}
             >
-              <Sparkles size={18} />
+              <Sparkles size={17} />
               Start Free
             </button>
           )}
@@ -199,7 +199,7 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         
         /* TICKET #34 FIX: Improved text contrast */
         .hero-subtitle { 
-          color: #c8d4e6; /* Lighter color for better contrast */
+          color: #d4dde9; /* Lighter color for better contrast */
           font-size: 1.2rem; 
           max-width: 600px; 
           margin-bottom: 40px; 
@@ -241,7 +241,26 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
         }
         .btn-dashboard.large { padding: 16px 36px; font-size: 1rem; }
 
-        .btn-primary-hero { background: #6aece1; border: none; color: #0a0b14; padding: 14px 32px; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .btn-primary-hero { 
+        background: #6aece1; 
+        border: none; 
+        color: #0a0b14; 
+        padding: 14px 32px; 
+        border-radius: 12px; 
+        font-weight: 700; 
+        cursor: pointer; 
+        display: inline-flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 8px; 
+        transition: transform 0.2s ease, b
+        ox-shadow 0.2s ease; 
+        }
+.btn-primary-hero svg {
+  display: block;
+  transform: translateY(1px);
+}
+
         .btn-primary-hero:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(106, 236, 225, 0.5); }
         .btn-primary-hero.large { padding: 16px 36px; font-size: 1rem; }
         .btn-secondary { background: rgba(106, 236, 225, 0.05); border: 1px solid #6aece1; color: #6aece1; padding: 14px 32px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s ease, background 0.2s ease; }
