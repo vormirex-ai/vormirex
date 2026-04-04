@@ -149,9 +149,9 @@ const Navbar: React.FC<{ brandName?: string }> = ({
               </li>
             ))}
 
-            {/* Mobile Auth Buttons / Profile */}
+            {/* Mobile Auth Buttons / Profile 
             <li className="mobile-buttons">
-              {/* Back to Dashboard button for mobile */}
+               Back to Dashboard button for mobile 
               <button
                 className="btn-back-dashboard-mobile"
                 onClick={handleBackToDashboard}
@@ -176,54 +176,97 @@ const Navbar: React.FC<{ brandName?: string }> = ({
                 </button>
               )}
             </li>
+            */
+              <li className="mobile-buttons">
+                {user ? (
+                  <>
+                    <button
+                      className="btn-back-dashboard-mobile"
+                      onClick={handleBackToDashboard}
+                    >
+                      <LayoutDashboard size={16} />
+                      Dashboard
+                    </button>
+
+                    <div className="mobile-profile-section">
+                      <div className="mobile-user-info">
+                        <User size={18} />
+                        <span>{user?.name || 'User'}</span>
+                      </div>
+                      <button className="btn-logout-mobile" onClick={handleLogout}>
+                        <LogOut size={16} /> Logout
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className="btn-start"
+                      onClick={() => navigate('/dashboard')}
+                    >
+                      Start Free
+                    </button>
+
+                    <button className="btn-signin" onClick={handleSignIn}>
+                      Sign In
+                    </button>
+                  </>
+                )}
+              </li>
+            }
           </ul>
 
           <div className="nav-right-group">
             <div className="nav-buttons">
-              {/* Always show Back to Dashboard button */}
-              <button
-                className="btn-back-dashboard"
-                onClick={handleBackToDashboard}
-              >
-                <LayoutDashboard size={16} />
-                Back to Dashboard
-              </button>
-
-              {/* Show Sign In or Profile based on login status */}
               {user ? (
-                <div className="profile-dropdown-container" ref={dropdownRef}>
-                  <div className="profile-trigger" onClick={toggleProfileMenu}>
-                    <div className="profile-avatar">
-                      {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                    </div>
-                    <ChevronDown
-                      size={14}
-                      className={`chevron ${showProfileMenu ? 'open' : ''}`}
-                    />
-                  </div>
+                <>
+                  <button
+                    className="btn-back-dashboard"
+                    onClick={handleBackToDashboard}
+                  >
+                    <LayoutDashboard size={16} />
+                    Back to Dashboard
+                  </button>
 
-                  {showProfileMenu && (
-                    <div className="profile-dropdown-menu">
-                      <div className="dropdown-header">
-                        <span className="user-name">
-                          {user?.name || 'User'}
-                        </span>
-                        <span className="user-email">
-                          {user?.email || 'No email provided'}
-                        </span>
+                  <div className="profile-dropdown-container" ref={dropdownRef}>
+                    <div className="profile-trigger" onClick={toggleProfileMenu}>
+                      <div className="profile-avatar">
+                        {user?.name?.charAt(0)?.toUpperCase() || 'U'}
                       </div>
-                      <div className="dropdown-divider"></div>
-                      <button className="dropdown-item" onClick={handleLogout}>
-                        <LogOut size={16} />
-                        <span>Logout</span>
-                      </button>
+                      <ChevronDown
+                        size={14}
+                        className={`chevron ${showProfileMenu ? 'open' : ''}`}
+                      />
                     </div>
-                  )}
-                </div>
+
+                    {showProfileMenu && (
+                      <div className="profile-dropdown-menu">
+                        <div className="dropdown-header">
+                          <span className="user-name">{user?.name}</span>
+                          <span className="user-email">{user?.email}</span>
+                        </div>
+                        <div className="dropdown-divider"></div>
+                        <button className="dropdown-item" onClick={handleLogout}>
+                          <LogOut size={16} />
+                          <span>Logout</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
               ) : (
-                <button className="btn-signin" onClick={handleSignIn}>
-                  Sign In
-                </button>
+                <>
+                  <button
+                    className="btn-start"
+                    onClick={() => navigate('/dashboard')}
+                  >
+                    Start Free
+                  </button>
+
+                  <button className="btn-signin" onClick={handleSignIn}>
+                    Sign In
+                  </button>
+                </>
               )}
             </div>
 
@@ -319,28 +362,66 @@ const Navbar: React.FC<{ brandName?: string }> = ({
         
         .nav-buttons {
           display: flex;
-          gap: 15px;
+          gap: 18px;
         }
         
         .btn-signin {
-          background: none;
-          border: none;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.12); 
+
           color: white;
           cursor: pointer;
           font-weight: 600;
-          white-space: nowrap; /* Prevents text from wrapping */
-          display: inline-block; /* Ensures proper layout */
-        }
-        
-        .btn-start {
-          background: #6aece1;
-          color: #0a0b14;
-          padding: 8px 18px;
-          border-radius: 20px;
-          border: none;
-          font-weight: 700;
-          cursor: pointer;
-        }
+
+          white-space: nowrap;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+
+          padding: 10px 18px;
+          border-radius: 10px;
+
+          transition: all 0.2s ease;
+}
+
+          .btn-signin:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+}
+      
+            .btn-start {
+              background: linear-gradient(135deg, #6aece1, #4fd1c5);
+              color: #0a0b14;
+              padding: 10px 18px;
+
+              border-radius: 10px; /*  MATCH SIGN IN */
+               border: 1px solid rgba(106, 236, 225, 0.4);
+
+              font-weight: 700;
+              font-size: 14px;
+              cursor: pointer;
+
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+
+              box-shadow: 0 4px 12px rgba(106, 236, 225, 0.18);
+              transition: all 0.25s ease;
+            }
+
+
+              .btn-start:hover {
+               transform: translateY(-2px);
+               box-shadow: 0 4px 16px rgba(106, 236, 225, 0.4);
+}
+
+            .btn-start,
+            .btn-signin {
+              height: 40px; /* force equal height */
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+}
         
         /* Mobile Setup */
         .hamburger {
