@@ -77,7 +77,7 @@ const VormirexLanding: React.FC<LandingPageProps> = ({
               onClick={handleStartFree}
             >
               <Sparkles size={17} />
-              Start Free
+              Get Started
             </button>
           )}
 
