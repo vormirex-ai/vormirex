@@ -38,6 +38,31 @@ export const signup = async (data: SignupDTO) => {
 
   const existingUser = await User.findOne({ email: data.email });
   if (existingUser) {
+    // Allow guests to upgrade to a full account
+    if(existingUser.role == "guest"){
+      const hashed = await bcrypt.hash(data.password, 10);
+      const verificationToken = crypto.randomBytes(32).toString('hex');
+
+      existingUser.name = data.name;
+      existingUser.password = hashed;
+      existingUser.role = "user";
+      existingUser.isVerified = false;
+      existingUser.emailVerificationToken = verificationToken;
+      await existingUser.save();
+
+      // Resend the verification email to the updated user.
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
+      const emailHtml = getVerificationEmailHTML(existingUser.name, verificationUrl);
+      await sendEmail({
+        to: existingUser.email,
+        subject: 'Verify Your Vormirex Account',
+        text: `Please verify your account by clicking this link: ${verificationUrl}`,
+        html: emailHtml,
+      });
+
+      return { message: 'Welcome! Your guest account has been upgraded. Please check your inbox and click the verification link to activate your full account.' };
+    }
     // Prevent creating a new account if the email is already verified
     if (existingUser.isVerified) {
       throw new ConflictError('An account with this email already exists.');
