@@ -251,24 +251,40 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  const handleRemovePhoto = async () => {
+    const handleRemovePhoto = async () => {
     const confirmRemove = window.confirm("Remove profile photo?");
     if (!confirmRemove) return;
 
-    //clear from UI
-    setProfile(prev => ({ ...prev, profileImage: '' }));
-    setEditedProfile(prev => ({ ...prev, profileImage: '' }));
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
 
-    //clear from local storage
-    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-    storedUser.profileImage = '';
-    storedUser.photoRemoved = true;
-    localStorage.setItem("user", JSON.stringify(storedUser));
+    try {
+      // 1. Call the new backend endpoint
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/users/me/profile-photo`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) throw new Error('Failed to remove photo on server');
 
-    alert("Profile photo removed");
+      // 2. Clear from UI
+      setProfile(prev => ({ ...prev, profileImage: '' }));
+      setEditedProfile(prev => ({ ...prev, profileImage: '' }));
 
-    // add API call when added to backend
+      // 3. Clear from local storage
+      const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+      storedUser.profileImage = '';
+      storedUser.photoRemoved = true;
+      localStorage.setItem("user", JSON.stringify(storedUser));
+
+      alert("Profile photo removed");
+    } catch (error: any) {
+      alert(error.message || "Could not remove profile photo");
+    }
   }
+
 
   const triggerFileInput = () => {
     fileInputRef.current?.click();
@@ -656,7 +672,7 @@ const ProfilePage: React.FC = () => {
         type="file"
         ref={fileInputRef}
         onChange={handleImageUpload}
-        accept="image/*"
+        accept="image/jpeg, image/png, image/webp"
         style={{ display: 'none' }}
       />
     </div>
