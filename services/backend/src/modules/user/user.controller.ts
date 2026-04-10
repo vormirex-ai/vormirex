@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import User from './user.model.js';
 import bcrypt from 'bcrypt';
 import { NotFoundError, BadRequestError } from '../../utils/errors.js';
+import {v2 as cloudinary } from 'cloudinary';
 
 export const getAllUsers = async (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string) || 1;
@@ -139,12 +140,45 @@ export const uploadProfilePhoto = async (req: Request, res: Response) => {
   const user = await User.findById(userId);
   if (!user) throw new NotFoundError('User not found');
 
+  if (user.profilePhoto) {
+  try {
+    const urlParts = user.profilePhoto.split('/');
+    const filename = urlParts[urlParts.length - 1];
+    const publicId = 'vormirex/profiles/' + filename.split('.')[0];
+    await cloudinary.uploader.destroy(publicId);
+  } catch (err) {
+    console.warn('[Cloudinary] Failed to delete old profile photo:', err);
+    // Non-fatal: continue with upload
+  }
+  }
   // Cloudinary storage engine puts the URL in req.file.path
   user.profilePhoto = req.file.path;
   await user.save();
 
   res.json({ message: 'Profile photo uploaded successfully', profilePhoto: user.profilePhoto });
 };
+
+export const removeProfilePhoto = async (req: Request, res: Response) => {
+  // @ts-ignore 
+  const userId = req.user.userId;
+  const user = await User.findById(userId);
+  if (!user) throw new NotFoundError('User not found');
+
+  if(!user.profilePhoto){
+    throw new BadRequestError('No profile photo found');
+  }
+  try {
+    const urlParts = user.profilePhoto.split('/');
+    const filename = urlParts[urlParts.length - 1];
+    const publicId = 'vormirex/profiles/' + filename.split('.')[0];
+    await cloudinary.uploader.destroy(publicId);
+  } catch (err) {
+    console.warn('[Cloudinary] Could not delete photo asset:', err);
+  }
+  user.profilePhoto = undefined; // always runs
+  await user.save();
+  res.json({ message: 'Profile photo removed successfully' });
+}
 
 export const changePassword = async (req: Request, res: Response) => {
   // @ts-ignore
@@ -312,6 +346,7 @@ export default {
   toggleUserStatus,
   updateProfile,
   uploadProfilePhoto,
+  removeProfilePhoto,
   changePassword,
   deleteAccount,
   updatePreferences,
