@@ -41,7 +41,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
         <h1 className="logo-mobile">VORMIREX</h1>
 
-        <div className="search-box">
+        {/* <div className="search-box">
           <label
             htmlFor="top-search"
             className="sr-only"
@@ -58,7 +58,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               e.key === 'Enter' && (e.preventDefault(), showComingSoon())
             }
           />
-        </div>
+        </div> */}
 
         <div className="tools-button" onClick={toggleRightSidebar}>
           {/* Learning Tools */}
@@ -95,8 +95,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className="ask-box">
           <input
             type="text"
-            aria-label="Ask your doubts"
-            placeholder="Ask Your Doubts..."
+            aria-label="Type your question…"
+            placeholder="Type your question…"
             onKeyDown={(e) =>
               e.key === 'Enter' && (e.preventDefault(), showComingSoon())
             }
