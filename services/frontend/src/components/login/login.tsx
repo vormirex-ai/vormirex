@@ -280,6 +280,11 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
 
   // FIXED: Set initial tab based on URL path and props
   useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0); // Force scroll to top on load/refresh
+
     if (defaultTab) {
       setActiveTab(defaultTab);
     } else if (location.pathname.includes('signup')) {
