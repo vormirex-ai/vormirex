@@ -38,6 +38,25 @@ export const getAllUsers = async (req: Request, res: Response) => {
   });
 };
 
+export const getGuestLeads = async (req: Request, res: Response) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 50;
+  const skip = (page - 1) * limit;
+
+  const query = { role: 'guest'};
+
+  const guests = await User.find(query).select('_id name email isVerified createdAt').sort({ createdAt: -1}).skip(skip).limit(limit);
+
+  const total = await User.countDocuments(query);
+
+  res.status(200).json({
+    guests,
+    total,
+    page,
+    pages: Math.ceil(total / limit),
+  }); 
+}
+
 export const updateUserRole = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { role } = req.body;
@@ -340,6 +359,7 @@ export const getPublicProfile = async (req: Request, res: Response) => {
 
 export default {
   getAllUsers,
+  getGuestLeads,
   updateUserRole,
   deleteUser,
   getAdmins,

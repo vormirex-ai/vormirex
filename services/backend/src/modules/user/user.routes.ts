@@ -30,6 +30,9 @@ router.use(checkRole(['admin']));
 // GET /api/users - Get all users
 router.get('/', userController.getAllUsers);
 
+// GET /api/users/guests - Get all guest leads for admin export
+router.get('/guests', userController.getGuestLeads);
+
 // GET /api/users/admins - Get all other admins
 router.get('/admins', userController.getAdmins);
 

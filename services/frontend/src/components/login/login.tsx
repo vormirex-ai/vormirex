@@ -317,6 +317,14 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
       setError('Please enter your email.');
       return;
     }
+
+    // NEW: Enforce strict email formatting for Guests
+    const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(guestEmail)) {
+      setError('Invalid email address (cannot start with special characters)');
+      return;
+    }
+
     setGuestLoading(true);
     setError('');
     try {
@@ -335,6 +343,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
       setGuestLoading(false);
     }
   };
+
 
   const handleGuestOTPSubmit = async () => {
     if (!guestOTP || guestOTP.length !== 6) {
