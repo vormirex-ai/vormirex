@@ -360,9 +360,17 @@ export const verifyTwoFactorCode = async (email: string, code: string) => {
 };
 
 export const sendGuestOTP = async (email: string) => {
+
+  // NEW ANTISPAM: Verify Domain & ZeroBounce for Guests
+  const isDomainValid = await hasValidMxRecord(email);
+  if (!isDomainValid) {
+    throw new BadRequestError('Invalid email domain. Please check your email address.');
+  }
+  await validateEmail(email);
+
   // 1. Find existing account or create a new 'guest'
   let user = await User.findOne({ email });
-  
+
   if (!user) {
     user = await User.create({
       name: 'Guest User',
