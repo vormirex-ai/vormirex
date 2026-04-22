@@ -16,8 +16,9 @@ export interface User {
 
 export interface AuthResponse {
   success: boolean;
-  accessToken: string;
-  user: User;
+  accessToken?: string;
+  user?: User;
+  requireTwoFactor?: boolean;
 }
 
 export interface SignupResponse {
@@ -59,6 +60,36 @@ export const signupUser = async (name: string, email: string, password: string):
   }
 
   return response.json();
+};
+
+export const adminVerifyMfa = async (email: string, code: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/verify-2fa`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, code }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { success: false, message: data.message || 'Invalid MFA code' };
+    }
+
+    return { 
+      success: true, 
+      user: data.user, 
+      accessToken: data.accessToken, 
+      refreshToken: data.refreshToken 
+    };
+  } catch (error: any) {
+    return { 
+      success: false, 
+      message: error.message || 'Network error during MFA verification' 
+    };
+  }
 };
 
 export const forgotPassword = async (email: string): Promise<{ success: boolean; message: string }> => {

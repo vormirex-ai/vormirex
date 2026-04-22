@@ -80,6 +80,26 @@ const CourseLayout: React.FC = () => (
 );
 
 /* ============================================================
+   ADMIN GUARD
+============================================================ */
+const AdminProtectedRoute = () => {
+  const userStr = localStorage.getItem('user');
+  if (!userStr) return <Navigate to="/admin" replace />;
+  
+  try {
+    const user = JSON.parse(userStr);
+    if (user.role !== 'admin' && user.role !== 'super-admin') {
+      return <Navigate to="/admin" replace />;
+    }
+    return <Outlet />;
+  } catch (err) {
+    return <Navigate to="/admin" replace />;
+  }
+};
+
+
+
+/* ============================================================
    MAIN APP
 ============================================================ */
 const App: React.FC = () => {
@@ -145,12 +165,15 @@ const App: React.FC = () => {
           path="/profilepage"
           element={<ProfilePage />}
         />
+               {/* ================= ADMIN & SUPER ADMIN ================= */}
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="/super-admin/" element={<SuperAdminDashboardPage />} />
-        <Route path="/super-admin/admin-management" element={<AdminManagementPage />} />
-        <Route path="/super-admin/permission-control" element={<PermissionsControlPage />} />
-        <Route path="/super-admin/user-management" element={<UserManagementPage />} />
-
+        
+        <Route element={<AdminProtectedRoute />}>
+          <Route path="/super-admin" element={<SuperAdminDashboardPage />} />
+          <Route path="/super-admin/admin-management" element={<AdminManagementPage />} />
+          <Route path="/super-admin/permission-control" element={<PermissionsControlPage />} />
+          <Route path="/super-admin/user-management" element={<UserManagementPage />} />
+        </Route>
 
 
 
