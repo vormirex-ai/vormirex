@@ -29,7 +29,7 @@
 }
 
 .admin-icon-box {
-  background: #14b8a6;
+  background: #6aece1;
   padding: 6px;
   border-radius: 6px;
   display: flex;
@@ -70,7 +70,7 @@
 
 /* Primary */
 .admin-btn-primary {
-  background: #14b8a6;
+  background: #6aece1;
   color: black;
   font-weight: 500 ;
   border: none;
@@ -78,7 +78,7 @@
 }
 
 .admin-btn-primary:hover {
-  background: #0d9488;
+  background: rgba(106, 236, 225, 0.5);
 }
 
 /* Secondary */

@@ -5,12 +5,12 @@ import { checkRole } from '../../middleware/rbac.middleware.js';
 
 const router = Router();
 
-// GET /api/analytics/stats - Get admin stats (Admin only)
-router.get(
-  '/stats',
-  requireAuth,
-  checkRole(['super-admin']),
-  analyticsController.getStats
-);
+// 1. Lock down all analytics endpoints globally
+router.use(requireAuth, checkRole(['super-admin']));
+
+// 2. Map the 3 controller functions
+router.get('/stats', analyticsController.getStats);
+router.get('/user-growth', analyticsController.getUserGrowth);
+router.get('/system-health', analyticsController.getSystemHealth);
 
 export default router;
