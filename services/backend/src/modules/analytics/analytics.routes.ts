@@ -12,5 +12,7 @@ router.use(requireAuth, checkRole(['super-admin']));
 router.get('/stats', analyticsController.getStats);
 router.get('/user-growth', analyticsController.getUserGrowth);
 router.get('/system-health', analyticsController.getSystemHealth);
+router.get('/audit-logs', analyticsController.getAuditLogs);
+
 
 export default router;

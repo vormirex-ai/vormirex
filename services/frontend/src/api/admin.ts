@@ -37,3 +37,9 @@ export const fetchSystemHealth = async (token: string) => {
 export const fetchGuestLeads = async (token: string) => {
   return authFetch('/users/guests', token);
 };
+
+// 5. Get the Audit Logs
+export const fetchAuditLogs = async (token: string) => {
+  return authFetch('/analytics/audit-logs', token);
+};
+

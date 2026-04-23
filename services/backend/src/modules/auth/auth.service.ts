@@ -24,6 +24,7 @@ import type { SignupDTO, LoginDTO, CustomJWTPayload } from './auth.types.js';
 
 import { hasValidMxRecord } from '../../utils/dns.js';
 import { validateEmail } from '../../utils/zerobounce.js';
+import { logAdminAction } from '../analytics/audit.service.js';
 
 export const signup = async (data: SignupDTO) => {
   // 1. Verify Domain MX Records (prevents typos like gmial.com)
@@ -355,6 +356,13 @@ export const verifyTwoFactorCode = async (email: string, code: string) => {
   const refreshToken = generateRefresh(payload);
 
   await updateUserStreak(user);
+
+  await logAdminAction({
+    adminId: user._id,
+    actionType: 'ADMIN_LOGIN_MFA',
+    targetType: 'Auth',
+    metaData: { role: user.role }
+  });
 
   return { user, accessToken, refreshToken };
 };
