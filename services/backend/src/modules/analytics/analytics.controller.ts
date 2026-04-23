@@ -3,6 +3,8 @@ import User from '../user/user.model.js';
 import Course from '../courses/course.model.js';
 import os from 'os';
 import mongoose from 'mongoose';
+import AuditLog from './auditLog.model.js';
+
 
 export const getStats = async (req: Request, res: Response) => {
   try {
@@ -98,11 +100,24 @@ export const getSystemHealth = async (req: Request, res: Response) => {
   }
 };
 
+export const getAuditLogs = async (req: Request, res: Response) => {
+  try {
+    const logs = await AuditLog.find()
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .populate('adminId', 'name email role'); // Dynamically stitch the admin profile data!
+
+    res.status(200).json(logs);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching audit logs', error });
+  }
+};
 
 
 
 export default {
   getStats,
   getUserGrowth,
-  getSystemHealth
+  getSystemHealth,
+  getAuditLogs
 };
