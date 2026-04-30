@@ -1,49 +1,39 @@
+import React from "react";
 import "./AdminManagement.css";
 import { MoreVertical } from "lucide-react";
 
-const admins = [
-  {
-    id: 1, initials: "PS", name: "Pooja Sharma",
-    email: "pooja@vormirex.com", role: "Super Admin",
-    status: "Active", lastLogin: "Mar 19, 2026 10:30 AM",
-    permissions: "Full Access", avatarClass: "cyan",
-  },
-  {
-    id: 2, initials: "RK", name: "Ravi Kumar",
-    email: "ravi@vormirex.com", role: "Admin",
-    status: "Active", lastLogin: "Mar 18, 2026 4:45 PM",
-    permissions: "4 permissions", avatarClass: "purple",
-  },
-  {
-    id: 3, initials: "NP", name: "Neha Patel",
-    email: "neha@vormirex.com", role: "Editor",
-    status: "Active", lastLogin: "Mar 17, 2026 9:15 AM",
-    permissions: "1 permission", avatarClass: "pink",
-  },
-  {
-    id: 4, initials: "AM", name: "Arjun Mehta",
-    email: "arjun@vormirex.com", role: "Admin",
-    status: "Inactive", lastLogin: "Feb 28, 2026 12:00 PM",
-    permissions: "3 permissions", avatarClass: "orange",
-  },
-  {
-    id: 5, initials: "SK", name: "Simran Kaur",
-    email: "simran@vormirex.com", role: "Editor",
-    status: "Active", lastLogin: "Mar 19, 2026 8:00 AM",
-    permissions: "2 permissions", avatarClass: "green",
-  },
-  {
-    id: 6, initials: "VS", name: "Vikram Singh",
-    email: "vikram@vormirex.com", role: "Super Admin",
-    status: "Active", lastLogin: "Mar 19, 2026 7:30 AM",
-    permissions: "Full Access", avatarClass: "red",
-  },
-];
-
+// UX Utilities
 const roleBadgeClass = (role: string) =>
-  role === "Super Admin" ? "super-admin" : role === "Admin" ? "admin" : "editor";
+  role === "super-admin" ? "super-admin" : "admin";
 
-const AdminManagementTable = () => {
+const getInitials = (name: string) => {
+  if (!name) return "AD";
+  const parts = name.split(" ");
+  if (parts.length > 1) return parts[0][0] + parts[1][0];
+  return parts[0][0] + (parts[0][1] || "");
+};
+
+const getAvatarClass = (role: string) => {
+  return role === "super-admin" ? "cyan" : "purple";
+};
+
+// Data Pipe
+interface TableProps {
+  admins: any[];
+}
+
+const AdminManagementTable = ({ admins }: TableProps) => {
+
+  // Decode Current User from LocalStorage Cache
+  const storedUserStr = localStorage.getItem("user");
+  let currentUserId = "";
+  if (storedUserStr) {
+    try {
+      const parsed = JSON.parse(storedUserStr);
+      currentUserId = parsed._id || parsed.id;
+    } catch(e) {}
+  }
+
   return (
     <section className="admin-management-table-section">
 
@@ -63,50 +53,76 @@ const AdminManagementTable = () => {
             </tr>
           </thead>
           <tbody>
-            {admins.map((admin) => (
-              <tr key={admin.id}>
+            {admins.map((admin) => {
+              const isMe = admin._id === currentUserId;
+              
+              return (
+              <tr key={admin._id}>
                 <td><span className="admin-row-radio" /></td>
                 <td>
                   <div className="admin-user-cell">
-                    <div className={`admin-avatar ${admin.avatarClass}`}>{admin.initials}</div>
-                    <span>{admin.name}</span>
+                    <div className={`admin-avatar ${getAvatarClass(admin.role)}`}>{getInitials(admin.name).toUpperCase()}</div>
+                    <span>{admin.name || "Anonymous Admin"}</span>
                   </div>
                 </td>
                 <td className="admin-email">{admin.email}</td>
                 <td>
                   <span className={`admin-role-badge ${roleBadgeClass(admin.role)}`}>
-                    {admin.role}
+                    {admin.role === 'super-admin' ? 'Super Admin' : 'Admin'}
                   </span>
                 </td>
                 <td>
-                  <span className={`admin-status-badge ${admin.status === "Active" ? "active" : "inactive"}`}>
+                  <span className={`admin-status-badge ${admin.isVerified ? "active" : "inactive"}`}>
                     <span className="status-dot" />
-                    {admin.status}
+                    {admin.isVerified ? "Verified" : "Pending"}
                   </span>
                 </td>
-                <td className="admin-last-login">{admin.lastLogin}</td>
-                <td className="admin-permissions">{admin.permissions}</td>
+                <td className="admin-last-login">--</td>
+                <td className="admin-permissions">{admin.role === 'super-admin' ? 'Full Access' : 'Read / Write'}</td>
                 <td>
-                  <button type="button" className="admin-row-action-btn">
+                  <button 
+                    type="button" 
+                    className="admin-row-action-btn"
+                    disabled={isMe}
+                    style={{ opacity: isMe ? 0.3 : 1, cursor: isMe ? 'not-allowed' : 'pointer' }}
+                    title={isMe ? "Action restricted for current user" : "Actions"}
+                  >
                     <MoreVertical size={16} />
                   </button>
                 </td>
               </tr>
-            ))}
+            )})}
+            
+            {admins.length === 0 && (
+              <tr>
+                <td colSpan={8} style={{ textAlign: "center", padding: "40px", color: "#9ca3af" }}>
+                  No administrators matched your search query.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
 
       {/* ── MOBILE CARDS  ── */}
       <div className="admin-mobile-cards">
-        {admins.map((admin) => (
-          <div key={admin.id} className="admin-mobile-card">
+        {admins.map((admin) => {
+          const isMe = admin._id === currentUserId;
+          
+          return (
+          <div key={admin._id} className="admin-mobile-card">
 
             {/* Top: avatar + name + action */}
             <div className="admin-mobile-card-top">
-              <div className={`admin-avatar ${admin.avatarClass}`}>{admin.initials}</div>
+              <div className={`admin-avatar ${getAvatarClass(admin.role)}`}>{getInitials(admin.name).toUpperCase()}</div>
               <span className="admin-mobile-card-name">{admin.name}</span>
-              <button type="button" className="admin-row-action-btn">
+              <button 
+                type="button" 
+                className="admin-row-action-btn"
+                disabled={isMe}
+                style={{ opacity: isMe ? 0.3 : 1, cursor: isMe ? 'not-allowed' : 'pointer' }}
+                title={isMe ? "Action restricted for current user" : "Actions"}
+              >
                 <MoreVertical size={16} />
               </button>
             </div>
@@ -120,31 +136,27 @@ const AdminManagementTable = () => {
               <div className="admin-mobile-card-row">
                 <span className="admin-mobile-card-label">ROLE</span>
                 <span className={`admin-role-badge ${roleBadgeClass(admin.role)}`}>
-                  {admin.role}
+                  {admin.role === 'super-admin' ? 'Super Admin' : 'Admin'}
                 </span>
               </div>
               <div className="admin-mobile-card-row">
                 <span className="admin-mobile-card-label">STATUS</span>
-                <span className={`admin-status-badge ${admin.status === "Active" ? "active" : "inactive"}`}>
+                <span className={`admin-status-badge ${admin.isVerified ? "active" : "inactive"}`}>
                   <span className="status-dot" />
-                  {admin.status}
+                  {admin.isVerified ? "Verified" : "Pending"}
                 </span>
               </div>
               <div className="admin-mobile-card-row">
-                <span className="admin-mobile-card-label">LAST LOGIN</span>
-                <span className="admin-mobile-card-val">{admin.lastLogin}</span>
-              </div>
-              <div className="admin-mobile-card-row">
                 <span className="admin-mobile-card-label">PERMISSIONS</span>
-                <span className="admin-mobile-card-val">{admin.permissions}</span>
+                <span className="admin-mobile-card-val">{admin.role === 'super-admin' ? 'Full Access' : 'Read / Write'}</span>
               </div>
             </div>
 
           </div>
-        ))}
+        )})}
       </div>
 
-      <p className="admin-table-footer">Showing 6 of 6 admins</p>
+      <p className="admin-table-footer">Showing {admins.length} administrator{admins.length !== 1 ? 's' : ''}</p>
     </section>
   );
 };

@@ -1,30 +1,40 @@
 import "./AdminManagement.css";
 import { Shield, UserCheck, UserX, Users } from "lucide-react";
 
-const stats = [
-  {
-    title: "TOTAL ADMINS",
-    value: "6",
-    icon: <Users size={22} />,
-  },
-  {
-    title: "ACTIVE",
-    value: "5",
-    icon: <UserCheck size={22} />,
-  },
-  {
-    title: "INACTIVE",
-    value: "1",
-    icon: <UserX size={22} />,
-  },
-  {
-    title: "SUPER ADMINS",
-    value: "2",
-    icon: <Shield size={22} />,
-  },
-];
+interface StatsProps {
+  admins: any[];
+}
 
-const AdminManagementStats = () => {
+const AdminManagementStats = ({ admins }: StatsProps) => {
+
+  // Dynamically calculate actual MongoDB properties
+  const activeCount = admins.filter(a => a.isVerified).length;
+  const inactiveCount = admins.filter(a => !a.isVerified).length;
+  const superCount = admins.filter(a => a.role === 'super-admin').length;
+
+  const stats = [
+    {
+      title: "TOTAL ADMINS",
+      value: admins.length.toString(),
+      icon: <Users size={22} />,
+    },
+    {
+      title: "ACTIVE",
+      value: activeCount.toString(),
+      icon: <UserCheck size={22} />,
+    },
+    {
+      title: "INACTIVE",
+      value: inactiveCount.toString(),
+      icon: <UserX size={22} />,
+    },
+    {
+      title: "SUPER ADMINS",
+      value: superCount.toString(),
+      icon: <Shield size={22} />,
+    },
+  ];
+
   return (
     <section className="admin-management-stats">
       {stats.map((stat) => (
@@ -33,7 +43,6 @@ const AdminManagementStats = () => {
             <span>{stat.title}</span>
             <h3>{stat.value}</h3>
           </div>
-
           <div className="admin-stat-icon">{stat.icon}</div>
         </article>
       ))}

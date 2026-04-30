@@ -36,6 +36,9 @@ router.get('/guests', userController.getGuestLeads);
 // GET /api/users/admins - Get all other admins
 router.get('/admins', userController.getAdmins);
 
+// POST /api/users/admins - Create a new admin
+router.post('/admins', checkRole(['super-admin']), userController.createAdmin);
+
 // PATCH /api/users/:id/role - Update user role
 router.patch('/:id/role', checkRole(['super-admin']), userController.updateUserRole);
 
