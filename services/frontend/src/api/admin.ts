@@ -43,3 +43,49 @@ export const fetchAuditLogs = async (token: string) => {
   return authFetch('/analytics/audit-logs', token);
 };
 
+// 6. Get Admin Accounts
+export const fetchAdminAccounts = async (token: string) => {
+  return authFetch('/users/admins', token);
+};
+
+// 7. Create Admin Account
+export const createAdminAccount = async (payload: any, token: string) => {
+  const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/users/admins`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to create admin');
+  }
+  return data;
+};
+
+// 8. Fetch Role Permissions Matrix
+export const fetchRoleConfig = async (roleName: string, token: string) => {
+  return authFetch(`/roles?roleName=${encodeURIComponent(roleName)}`, token);
+};
+
+// 9. Update Role Permissions Matrix
+export const updateRoleConfig = async (payload: { roleName: string; matrix: any[] }, token: string) => {
+  const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/roles`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || 'Failed to update role configuration');
+  }
+  return data;
+};
+

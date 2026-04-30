@@ -8,6 +8,7 @@ import userRouter from './modules/user/user.routes.js';
 import analyticsRouter from './modules/analytics/analytics.routes.js';
 import progressRouter from './modules/progress/progress.routes.js';
 import notificationRouter from './modules/notifications/notification.routes.js';
+import roleConfigRouter from './modules/roles/roleConfig.routes.js';
 // import paymentRouter from './modules/payment/payment.routes.js';
 import { errorHandler } from './middleware/errorHandler.middleware.js';
 import './config/passport.js';
@@ -46,6 +47,7 @@ app.use('/api/users', userRouter);
 app.use('/api/analytics', analyticsRouter);
 app.use('/api/progress', progressRouter);
 app.use('/api/notifications', notificationRouter);
+app.use('/api/roles', roleConfigRouter);
 // app.use('/api/payments', paymentRouter);
 
 // --- Centralized Error Handler ---

@@ -57,6 +57,40 @@ export const getGuestLeads = async (req: Request, res: Response) => {
   }); 
 }
 
+export const getAdmins = async (req: Request, res: Response) => {
+  const admins = await User.find({
+    role: { $in: ['admin', 'super-admin'] }
+  }).select('name email role isVerified');
+
+  res.status(200).json({ admins });
+};
+
+export const createAdmin = async (req: Request, res: Response) => {
+  const { name, email, phoneNumber, role, password } = req.body;
+
+  if (!name || !email || !role || !password) {
+    throw new BadRequestError('Missing required fields');
+  }
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw new BadRequestError('An account with this email already exists.');
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const newUser = await User.create({
+    name,
+    email,
+    phoneNumber,
+    role,
+    password: hashedPassword,
+    isVerified: true, // Manual creation skips email verification loops
+  });
+
+  res.status(201).json({ message: 'Admin created successfully', admin: newUser });
+};
+
 export const updateUserRole = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { role } = req.body;
@@ -94,18 +128,6 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 
   res.status(200).json({ message: 'User deleted successfully' });
-};
-
-export const getAdmins = async (req: Request, res: Response) => {
-  // @ts-ignore
-  const currentUserId = req.user?.userId;
-
-  const admins = await User.find({
-    role: 'admin',
-    _id: { $ne: currentUserId },
-  }).select('name email role isVerified');
-
-  res.status(200).json({ admins });
 };
 
 export const toggleUserStatus = async (req: Request, res: Response) => {
@@ -363,6 +385,7 @@ export default {
   updateUserRole,
   deleteUser,
   getAdmins,
+  createAdmin,
   toggleUserStatus,
   updateProfile,
   uploadProfilePhoto,

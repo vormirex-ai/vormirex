@@ -1,62 +1,27 @@
 import "./PermissionTable.css";
-import { useState } from "react";
 
-type PermissionKey = "view" | "create" | "edit" | "delete";
+export type PermissionKey = "view" | "create" | "edit" | "delete";
 
-type ModulePermission = {
+export type ModulePermission = {
   module: string;
   permissions: Record<PermissionKey, boolean>;
 };
 
-const initialData: ModulePermission[] = [
-  {
-    module: "Users",
-    permissions: { view: true, create: false, edit: false, delete: false },
-  },
-  {
-    module: "Courses",
-    permissions: { view: true, create: false, edit: true, delete: true },
-  },
-  {
-    module: "Payments",
-    permissions: { view: true, create: false, edit: false, delete: false },
-  },
-  {
-    module: "Reports",
-    permissions: { view: true, create: true, edit: false, delete: false },
-  },
-  {
-    module: "Support",
-    permissions: { view: true, create: false, edit: false, delete: false },
-  },
-];
+interface PermissionsTableProps {
+  data: ModulePermission[];
+  disabled: boolean;
+  onToggle: (index: number, key: PermissionKey) => void;
+  onToggleAll: (index: number) => void;
+}
 
 const permissionKeys: PermissionKey[] = ["view", "create", "edit", "delete"];
 
-const PermissionsTable = () => {
-  const [data, setData] = useState<ModulePermission[]>(initialData);
+const PermissionsTable = ({ data, disabled, onToggle, onToggleAll }: PermissionsTableProps) => {
 
-  const togglePermission = (index: number, key: PermissionKey) => {
-    const updated = [...data];
-    updated[index].permissions[key] = !updated[index].permissions[key];
-    setData(updated);
-  };
-
-  const toggleAll = (index: number) => {
-    const updated = [...data];
-    const allEnabled = permissionKeys.every(
-      (key) => updated[index].permissions[key]
-    );
-
-    permissionKeys.forEach((key) => {
-      updated[index].permissions[key] = !allEnabled;
-    });
-
-    setData(updated);
-  };
+  if (!data || data.length === 0) return null;
 
   return (
-    <div className="permissions-table">
+    <div className={`permissions-table ${disabled ? "disabled-table" : ""}`}>
       {/* Header */}
       <div className="permissions-row header">
         <span className="module-col">MODULE</span>
@@ -77,21 +42,23 @@ const PermissionsTable = () => {
             <span className="module-col">{item.module}</span>
 
             {permissionKeys.map((key) => (
-              <label key={key} className="custom-check">
+              <label key={key} className={`custom-check ${disabled ? "disabled" : ""}`}>
                 <input
                   type="checkbox"
                   checked={item.permissions[key]}
-                  onChange={() => togglePermission(index, key)}
+                  onChange={() => { if (!disabled) onToggle(index, key) }}
+                  disabled={disabled}
                 />
                 <span className="checkmark" />
               </label>
             ))}
 
-            <label className="custom-check">
+            <label className={`custom-check ${disabled ? "disabled" : ""}`}>
               <input
                 type="checkbox"
                 checked={isAllChecked}
-                onChange={() => toggleAll(index)}
+                onChange={() => { if (!disabled) onToggleAll(index) }}
+                disabled={disabled}
               />
               <span className="checkmark" />
             </label>
