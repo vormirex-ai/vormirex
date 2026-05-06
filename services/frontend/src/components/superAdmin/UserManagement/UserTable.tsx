@@ -1,19 +1,46 @@
 import "./UserTable.css";
 import { Search, Filter, Plus, MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
 
-const users = [
-  { name: "Sarah Johnson",  email: "sarah@vormirex.com",  role: "admin", courses: 12, status: "active",    lastActive: "1 hour ago" },
-  { name: "Alex Chen",      email: "alex@vormirex.com",   role: "user",  courses: 8,  status: "active",    lastActive: "3 hours ago" },
-  { name: "Maya Patel",     email: "maya@vormirex.com",   role: "super", courses: 24, status: "active",    lastActive: "30 min ago" },
-  { name: "James Wilson",   email: "james@vormirex.com",  role: "user",  courses: 5,  status: "inactive",  lastActive: "2 days ago" },
-  { name: "Emma Davis",     email: "emma@vormirex.com",   role: "user",  courses: 15, status: "active",    lastActive: "5 hours ago" },
-  { name: "Ryan Kim",       email: "ryan@vormirex.com",   role: "admin", courses: 19, status: "suspended", lastActive: "1 week ago" },
-];
+interface UserTableProps {
+  users: any[];
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+}
 
-const roleLabel = (role: string) =>
-  role === "super" ? "Super Admin" : role.charAt(0).toUpperCase() + role.slice(1);
+const roleLabel = (role: string) => {
+  if (!role) return "User";
+  if (role === "super-admin") return "Super Admin";
+  return role.charAt(0).toUpperCase() + role.slice(1);
+};
 
-const UserTable = () => {
+const getInitials = (name: string) => {
+  if (!name) return "US";
+  const parts = name.split(" ");
+  if (parts.length > 1) return parts[0][0] + parts[1][0];
+  return parts[0][0] + (parts[0][1] || "");
+};
+
+const formatTimeAgo = (dateString: string) => {
+  if (!dateString) return "--";
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) return "Just now";
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return `${diffInHours}h ago`;
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) return `${diffInDays}d ago`;
+  
+  return date.toLocaleDateString();
+};
+
+const UserTable = ({ users, currentPage, totalPages, onPageChange, searchQuery, onSearchChange }: UserTableProps) => {
   return (
     <div className="user-table-container">
 
@@ -26,7 +53,11 @@ const UserTable = () => {
         <div className="table-actions">
           <div className="search-box">
             <Search size={14} color="#7f8da3" />
-            <input placeholder="Search users..." />
+            <input 
+              placeholder="Search users..." 
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
           </div>
           <button className="filter-btn">
             <Filter size={14} />
@@ -50,16 +81,16 @@ const UserTable = () => {
           <span>ROLE</span>
           <span>COURSES</span>
           <span>STATUS</span>
-          <span>LAST ACTIVE</span>
+          <span>JOINED</span>
           <span>ACTIONS</span>
         </div>
 
         {users.map((user) => (
-          <div key={user.email} className="table-row">
+          <div key={user._id} className="table-row">
             <div className="select-circle" />
             <div className="user-info">
               <div className="user-table-avatar">
-                {user.name.split(" ").map((n) => n[0]).join("")}
+                {getInitials(user.name).toUpperCase()}
               </div>
               <div>
                 <p>{user.name}</p>
@@ -67,25 +98,31 @@ const UserTable = () => {
               </div>
             </div>
             <span className={`role ${user.role}`}>{roleLabel(user.role)}</span>
-            <span style={{ color: "#c8d8ee", fontSize: "14px" }}>{user.courses}</span>
-            <span className={`status ${user.status}`}>
-              {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+            <span style={{ color: "#c8d8ee", fontSize: "14px" }}>--</span>
+            <span className={`status ${user.isVerified ? "active" : "inactive"}`}>
+              {user.isVerified ? "Verified" : "Pending"}
             </span>
-            <span className="last-active">{user.lastActive}</span>
+            <span className="last-active">{formatTimeAgo(user.createdAt)}</span>
             <button className="actions-btn">
               <MoreVertical size={16} />
             </button>
           </div>
         ))}
+        
+        {users.length === 0 && (
+          <div style={{ textAlign: "center", padding: "40px", color: "#9ca3af" }}>
+            No users found.
+          </div>
+        )}
       </div>
 
       {/* ── MOBILE CARDS ── */}
       <div className="user-mobile-cards">
         {users.map((user) => (
-          <div key={user.email} className="user-mobile-card">
+          <div key={user._id} className="user-mobile-card">
             <div className="user-mobile-card-top">
               <div className="user-table-avatar">
-                {user.name.split(" ").map((n) => n[0]).join("")}
+                {getInitials(user.name).toUpperCase()}
               </div>
               <div className="user-mobile-card-name">
                 <p>{user.name}</p>
@@ -102,17 +139,17 @@ const UserTable = () => {
               </div>
               <div className="user-mobile-card-row">
                 <span className="user-mobile-card-label">COURSES</span>
-                <span className="user-mobile-card-val">{user.courses}</span>
+                <span className="user-mobile-card-val">--</span>
               </div>
               <div className="user-mobile-card-row">
                 <span className="user-mobile-card-label">STATUS</span>
-                <span className={`status ${user.status}`}>
-                  {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                <span className={`status ${user.isVerified ? "active" : "inactive"}`}>
+                  {user.isVerified ? "Verified" : "Pending"}
                 </span>
               </div>
               <div className="user-mobile-card-row">
-                <span className="user-mobile-card-label">LAST ACTIVE</span>
-                <span className="user-mobile-card-val">{user.lastActive}</span>
+                <span className="user-mobile-card-label">JOINED</span>
+                <span className="user-mobile-card-val">{formatTimeAgo(user.createdAt)}</span>
               </div>
             </div>
           </div>
@@ -121,12 +158,23 @@ const UserTable = () => {
 
       {/* ── Footer ── */}
       <div className="table-footer">
-        <span>Showing 1–6 of 10</span>
+        <span>Page {currentPage} of {totalPages || 1}</span>
         <div className="pagination">
-          <button><ChevronLeft size={14} /></button>
-          <button className="active">1</button>
-          <button>2</button>
-          <button><ChevronRight size={14} /></button>
+          <button 
+            disabled={currentPage <= 1} 
+            onClick={() => onPageChange(currentPage - 1)}
+            style={{ opacity: currentPage <= 1 ? 0.5 : 1, cursor: currentPage <= 1 ? 'not-allowed' : 'pointer' }}
+          >
+            <ChevronLeft size={14} />
+          </button>
+          <button className="active">{currentPage}</button>
+          <button 
+            disabled={currentPage >= totalPages} 
+            onClick={() => onPageChange(currentPage + 1)}
+            style={{ opacity: currentPage >= totalPages ? 0.5 : 1, cursor: currentPage >= totalPages ? 'not-allowed' : 'pointer' }}
+          >
+            <ChevronRight size={14} />
+          </button>
         </div>
       </div>
 
