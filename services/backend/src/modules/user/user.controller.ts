@@ -7,6 +7,7 @@ import {v2 as cloudinary } from 'cloudinary';
 export const getAllUsers = async (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 10;
+  const search = req.query.search as string;
   const skip = (page - 1) * limit;
 
   // @ts-ignore
@@ -22,17 +23,31 @@ export const getAllUsers = async (req: Request, res: Response) => {
     selectFields = '_id name email role isVerified provider createdAt streak'; 
   }
 
-  const users = await User.find()
+  const query: any = {};
+  if (search) {
+    query.$or = [
+      { name: { $regex: search, $options: 'i' } },
+      { email: { $regex: search, $options: 'i' } }
+    ];
+  }
+
+  const users = await User.find(query)
     .select(selectFields)
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit);
 
-  const total = await User.countDocuments();
+  const total = await User.countDocuments(query);
+  
+  // Calculate Global Stats (uncoupled from search query)
+  const activeCount = await User.countDocuments({ isVerified: true });
+  const adminsCount = await User.countDocuments({ role: { $in: ['admin', 'super-admin'] } });
 
   res.status(200).json({
     users,
     total,
+    activeCount,
+    adminsCount,
     page,
     pages: Math.ceil(total / limit),
   });

@@ -48,6 +48,13 @@ export const fetchAdminAccounts = async (token: string) => {
   return authFetch('/users/admins', token);
 };
 
+// 7. Get All Users with Pagination and Search
+export const fetchAllUsers = async (page: number, limit: number, search: string, token: string) => {
+  let url = `/users?page=${page}&limit=${limit}`;
+  if (search) url += `&search=${encodeURIComponent(search)}`;
+  return authFetch(url, token);
+};
+
 // 7. Create Admin Account
 export const createAdminAccount = async (payload: any, token: string) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/users/admins`, {

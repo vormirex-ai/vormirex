@@ -1,14 +1,20 @@
 import "./UserStats.css";
 import { Users, UserCheck, Shield, Activity } from "lucide-react";
 
-const stats = [
-  { label: "Total Users", value: "12,847", change: "+12%", icon: Users },
-  { label: "Active Users", value: "9,312", change: "+8%", icon: UserCheck },
-  { label: "Admins", value: "2", change: "+2", icon: Shield },
-  { label: "Total Activity", value: "34,521", change: "+18%", icon: Activity },
-];
+interface UserStatsProps {
+  total: number;
+  active: number;
+  admins: number;
+}
 
-const UserStats = () => {
+const UserStats = ({ total, active, admins }: UserStatsProps) => {
+  const stats = [
+    { label: "Total Users", value: total.toLocaleString(), change: "", icon: Users },
+    { label: "Active Users", value: active.toLocaleString(), change: "", icon: UserCheck },
+    { label: "Admins", value: admins.toString(), change: "", icon: Shield },
+    { label: "Platform Health", value: "Optimal", change: "", icon: Activity },
+  ];
+
   return (
     <div className="user-stats-grid">
       {stats.map((item) => {
