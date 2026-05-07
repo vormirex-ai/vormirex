@@ -23,6 +23,9 @@ export interface IUser extends Document {
     lastActivityDate: Date;
   };
   learningPreferences: {
+    educationLevel?: 'School' | 'College' | 'Professional';
+    selectedSubjects: string[];
+    primaryGoal?: 'Exam Prep' | 'Skill Building' | 'Job Ready' | 'Revision';
     dailyGoal: number;
     focusAreas: string[];
     primaryFocus?: 'Master a skill' | 'Ace an exam' | 'Expand knowledge';
@@ -72,6 +75,18 @@ const userSchema = new Schema<IUser>(
       lastActivityDate: { type: Date, default: null },
     },
     learningPreferences: {
+      educationLevel: {
+        type: String,
+        enum: ['School', 'College', 'Professional'],
+      },
+      selectedSubjects: { 
+        type: [String], 
+        default: [] 
+      },
+      primaryGoal: {
+        type: String,
+        enum: ['Exam Prep', 'Skill Building', 'Job Ready', 'Revision'],
+      },
       dailyGoal: { type: Number, default: 30 },
       focusAreas: { type: [String], default: [] },
       primaryFocus: {
