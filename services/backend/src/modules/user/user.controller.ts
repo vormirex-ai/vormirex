@@ -278,7 +278,7 @@ export const updatePreferences = async (req: Request, res: Response) => {
 
   // Initialize if missing (for legacy docs)
   if (!user.learningPreferences) {
-    user.learningPreferences = { dailyGoal: 30, focusAreas: [] };
+    user.learningPreferences = { dailyGoal: 30, focusAreas: [], selectedSubjects: [] };
   }
 
   if (dailyGoal !== undefined) user.learningPreferences.dailyGoal = dailyGoal;
