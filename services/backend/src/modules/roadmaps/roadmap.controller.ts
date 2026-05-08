@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Roadmap from './roadmap.model.js';
-import User from '@/modules/user/user.model.js';
+import User from '../user/user.model.js';
 
 export const generateRoadmap = async (req: Request, res: Response) => {
   // @ts-ignore (Assuming you use standard JWT middleware)
