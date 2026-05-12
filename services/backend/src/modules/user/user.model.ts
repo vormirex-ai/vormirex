@@ -16,6 +16,7 @@ export interface IUser extends Document {
   timezone?: string;
   phoneNumber?: string;
   profilePhoto?: string;
+  xp: number;
   isFrozen: boolean;
   streak: {
     current: number;
@@ -61,6 +62,7 @@ const userSchema = new Schema<IUser>(
     role: { type: String, enum: ['user', 'admin', 'super-admin', 'guest'], default: 'user' },
     isVerified: { type: Boolean, default: false },
     isFrozen: { type: Boolean, default: false },
+    xp: { type: Number, default: 0 },
     emailVerificationToken: { type: String, select: false },
     passwordResetToken: { type: String, select: false },
     passwordResetExpires: { type: Date, select: false },
@@ -69,6 +71,7 @@ const userSchema = new Schema<IUser>(
     timezone: { type: String, default: 'UTC' },
     phoneNumber: { type: String, required: false },
     profilePhoto: { type: String, required: false },
+    
     streak: {
       current: { type: Number, default: 0 },
       longest: { type: Number, default: 0 },

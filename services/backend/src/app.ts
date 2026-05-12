@@ -10,6 +10,7 @@ import progressRouter from './modules/progress/progress.routes.js';
 import notificationRouter from './modules/notifications/notification.routes.js';
 import roleConfigRouter from './modules/roles/roleConfig.routes.js';
 import roadmapRouter from './modules/roadmaps/roadmap.routes.js';
+import quizRouter from './modules/quizzes/quiz.routes.js';
 
 // import paymentRouter from './modules/payment/payment.routes.js';
 import { errorHandler } from './middleware/errorHandler.middleware.js';
@@ -47,6 +48,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/courses', courseRouter);
 app.use('/api/users', userRouter);
 app.use('/api/roadmaps', roadmapRouter);
+app.use('/api/quizzes', quizRouter);
 app.use('/api/analytics', analyticsRouter);
 app.use('/api/progress', progressRouter);
 app.use('/api/notifications', notificationRouter);
