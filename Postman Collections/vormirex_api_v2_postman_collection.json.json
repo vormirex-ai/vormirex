@@ -1,0 +1,1084 @@
+{
+	"info": {
+		"_postman_id": "1fa20d03-b36e-45f2-bd9a-e7c28d5fc562",
+		"name": "Vormirex API",
+		"description": "API collection for Vormirex Backend including Auth, Courses (Refactored), User Management, Progress, and Analytics.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"id": "456309a8-02e9-44e7-a3a9-feead456b33c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/auth/signup"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"id": "374a17e6-65a7-403d-b3bd-58cefe291971",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify 2FA",
+					"id": "93294e69-a450-4801-b489-05bce95350aa",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@example.com\",\n    \"code\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/auth/verify-2fa"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email",
+					"id": "0977353d-41e9-47eb-bb4e-d88f0b7541b7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/auth/verify-email"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"id": "d15bf18b-44b4-405e-8867-9e80631eaea5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/auth/forgot-password"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"id": "0d134035-af3e-4067-bdc4-afcdb9a552c5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"abc\",\n  \"password\": \"newpassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/auth/reset-password"
+					},
+					"response": []
+				},
+				{
+					"name": "Resend Verification",
+					"id": "324b154e-5d0b-4c16-a05a-3ffbfc8939bb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/auth/resend-verification"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"id": "d34dd3b4-d692-4124-9ec3-97dcbdb4f3c3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/api/auth/refresh"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"id": "5d2effb7-a7dd-4a1d-9fc8-c1e82fd0a1f7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/auth/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current Profile",
+					"id": "2e290734-332f-47d6-8a37-401b3aba2d12",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/auth/me"
+					},
+					"response": []
+				},
+				{
+					"name": "Request Guest OTP",
+					"id": "41b6861e-0c54-4d8c-9876-1b25b4196944",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"guest@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/auth/guest/send-otp"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Guest OTP",
+					"id": "0419da57-966c-43cb-b2b5-8d11fc58111a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"guest@example.com\",\n  \"code\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/auth/guest/verify-otp"
+					},
+					"response": []
+				}
+			],
+			"id": "4e723da0-55ca-4719-b689-26857a2085df"
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "Get All Courses (Public)",
+					"id": "eac9ecd4-3f7c-4658-9be2-b7cd3cf017e4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/courses"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Courses (Admin)",
+					"id": "5ddf00b5-0a9d-48dd-8fe9-0cc6ffa30e91",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/courses"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Course By ID",
+					"id": "1483469a-0c78-4cb0-8416-652b33666e4c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/courses/{{courseId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course (Full)",
+					"id": "c393ccfb-443f-45d8-932e-e67ecc6758d4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Advanced React Patterns\",\n    \"subtitle\": \"Master React 19\",\n    \"description\": \"Deep dive into React 19 features.\",\n    \"price\": 4999,\n    \"thumbnail\": \"https://example.com/img.png\",\n    \"instructorId\": \"{{userId}}\",\n    \"level\": \"ADVANCED\",\n    \"tags\": [\"react\", \"frontend\"],\n    \"levels\": [\n        {\n            \"level\": \"FOUNDATION\",\n            \"duration\": \"1 month\",\n            \"highlights\": [\"Hooks Deep Dive\"],\n            \"modules\": [\n                {\n                    \"title\": \"Hooks\",\n                    \"items\": [\"useState\", \"useEffect\", \"useContext\"]\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/courses"
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Visibility (Admin)",
+					"id": "8dd3bb4b-1b78-4bef-aa12-90c3186abffb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/courses/{{courseId}}/visibility"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Module (To Level)",
+					"id": "24211c77-0823-448c-8d77-b46ac6c433c6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"levelId\": \"{{foundationLevelId}}\",\n    \"title\": \"Chapter 1: Introduction\",\n    \"items\": [\n        \"Why React?\",\n        \"Setup Environment\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/courses/{{courseId}}/modules"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Course (Admin)",
+					"id": "70f37fbe-9b8b-46cb-aded-5d1cc64677ee",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Title\",\n  \"price\": 5000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/courses/{{courseId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Course (Admin)",
+					"id": "0c5882eb-9f0b-433f-b56d-7d6b27bc65aa",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/courses/{{courseId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Publish Course (Admin)",
+					"id": "ec8a9f80-cdba-4dfb-9360-1367dad7fbd2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/courses/{{courseId}}/publish"
+					},
+					"response": []
+				},
+				{
+					"name": "Unpublish Course (Admin)",
+					"id": "aa2f6d04-20e2-4ef6-87bb-a89f989a604b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/courses/{{courseId}}/unpublish"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Course Media (Admin)",
+					"id": "46290303-f9de-4fda-92ed-4c575862f1c8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"value": null
+								}
+							]
+						},
+						"url": "{{baseUrl}}/api/courses/{{courseId}}/media/{{mediaField}}"
+					},
+					"response": []
+				}
+			],
+			"id": "74cbd73d-74f8-4558-8b43-9f4046e19099"
+		},
+		{
+			"name": "User Settings",
+			"item": [
+				{
+					"name": "Update Preferences (Primary Focus)",
+					"id": "92929e1f-3173-494d-b9bc-b11f787d16f6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"primaryFocus\": \"Master a skill\",\n    \"curiosity\": [\"Coding\", \"Business\"],\n    \"learningPace\": \"Fast track\",\n    \"learningFormat\": [\"Reading\", \"AI Experience\"],\n    \"dailyGoal\": 45,\n    \"challengeLevel\": \"Progressive growth\",\n    \"learningGoals\": [\"Job ready\", \"Real Project\"],\n    \"currentSkillLevel\": \"Intermediate\",\n    \"focusAreas\": [\"Roadmap\", \"Mini Projects\"],\n    \"timeline\": \"3 months\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/users/me/preferences"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile (Name/Timezone)",
+					"id": "d0133aac-6cb6-4f99-a75d-4788352849cc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ashish Singh\",\n    \"timezone\": \"Asia/Kolkata\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/users/me/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"id": "9b14da14-506a-41f0-a6f5-05777ec9da72",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"password123\",\n    \"newPassword\": \"newpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/users/me/password"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Notification Preferences",
+					"id": "3b718840-d7e8-4459-898c-391baa7e197d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"streakReminders\": true,\n    \"newCourseAlerts\": false,\n    \"securityAlerts\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/users/me/notifications"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Privacy Settings",
+					"id": "3ebabebe-f3f5-4903-a09d-a0726bfc6fb4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isProfilePublic\": true,\n    \"showProgress\": true,\n    \"showCourses\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/users/me/privacy"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Public Profile",
+					"id": "c1dedfef-9a06-40bb-9713-460d932b6f4c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/users/{{userId}}/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Account",
+					"id": "45573a0d-4604-46c9-8c10-931d339970c4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/users/me"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Profile Photo",
+					"id": "99d09003-7e9b-4cd5-9b3f-33e805b43ae3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"type": "file",
+									"value": null
+								}
+							]
+						},
+						"url": "{{baseUrl}}/api/users/me/profile-photo"
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Profile Photo",
+					"id": "3b4deb3f-18d3-45f8-928f-472018bdb741",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/users/me/profile-photo"
+					},
+					"response": []
+				}
+			],
+			"id": "efff3db9-5c24-4b58-9848-0750e20ec97b"
+		},
+		{
+			"name": "Admin - User Mgmt",
+			"item": [
+				{
+					"name": "Get All Users",
+					"id": "8200ab41-d3c1-47b2-8a0c-cc33b5360bc0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Admins",
+					"id": "3dc0e6d0-b389-406b-aeff-74479c16850e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/users/admins"
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Freeze Status (Super Admin)",
+					"id": "cb241d3f-284a-4d0f-93da-a07a36e633e9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/users/{{userId}}/status"
+					},
+					"response": []
+				},
+				{
+					"name": "Promote to Admin (Super Admin)",
+					"id": "59b86e55-ab0f-46f1-91a7-b672f68d0cfd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/users/{{userId}}/role"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User (Super Admin)",
+					"id": "9aa4f90c-51ac-48fa-99c1-0373a063a4d8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/users/{{userId}}"
+					},
+					"response": []
+				}
+			],
+			"id": "c144e259-936b-4566-ace4-88ab23ca6c98"
+		},
+		{
+			"name": "Progress",
+			"item": [
+				{
+					"name": "Enroll User",
+					"id": "f56484e8-5319-4b8c-93fe-1f4456f02cd0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": \"{{courseId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/progress/enroll"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Progress (Grade)",
+					"id": "d49e9890-bfe9-4dd7-98c5-046eb279187b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"grade\": 85,\n    \"status\": \"completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/progress/{{progressId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Progress History (Super Admin)",
+					"id": "e175dac9-7e9d-4c0f-be82-d2eacc2c85cf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/progress/{{progressId}}"
+					},
+					"response": []
+				}
+			],
+			"id": "1db098d4-8115-46fa-bbf4-74a0ba2570cb"
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get My Notifications",
+					"id": "ede508f9-53f2-4e54-a853-e41840bc8eb6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/notifications"
+					},
+					"response": []
+				},
+				{
+					"name": "Mark All As Read",
+					"id": "6dac74f4-b023-4d53-9acd-704c96d2914b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/notifications/read-all"
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Single As Read",
+					"id": "32b316cb-2171-4dc8-8bb1-f69fcb990ce5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/notifications/{{notificationId}}/read"
+					},
+					"response": []
+				}
+			],
+			"id": "8415bbc2-c39c-4347-a809-0ac643109b57"
+		},
+		{
+			"name": "Admin Area",
+			"item": [
+				{
+					"name": "Get Analytics Overview",
+					"id": "f794ab6d-b0e2-459f-bce9-69fca3c7bac2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/analytics/stats"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Growth (Time Series)",
+					"id": "f7070818-5aed-4831-8137-d88a52e245d0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/analytics/user-growth"
+					},
+					"response": []
+				},
+				{
+					"name": "Get System Health Metrics",
+					"id": "084d3c39-d1e3-4b8f-a2a8-09e039a6933a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/analytics/system-health"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Captured Guest Leads (CSV)",
+					"id": "95a8821b-9d09-4ec4-bec9-29f032ee1cee",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/users/guests"
+					},
+					"response": []
+				}
+			],
+			"id": "3b7b967b-e9b1-4145-b4b9-d2038ce517c2"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "adminToken",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "courseId",
+			"value": ""
+		},
+		{
+			"key": "foundationLevelId",
+			"value": ""
+		},
+		{
+			"key": "progressId",
+			"value": ""
+		}
+	]
+}
