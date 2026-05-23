@@ -1,5 +1,13 @@
-const API_ROOT = import.meta.env.VITE_API_URL || 'http://localhost/api';
-export const BASE_URL = `${API_ROOT}/auth`;
+
+import { API_ROOT } from "./api.config";
+
+const AUTH_BASE_URL = `${API_ROOT}/auth`;
+
+export const GOOGLE_AUTH_URL = `${AUTH_BASE_URL}/google`;
+
+export const SEND_OTP_URL = `${AUTH_BASE_URL}/guest/send-otp`;
+
+export const VERIFY_OTP_URL = `${AUTH_BASE_URL}/guest/verify-otp`;
 
 export interface User {
   id: string;
@@ -27,7 +35,7 @@ export interface SignupResponse {
 }
 
 export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
-  const response = await fetch(`${BASE_URL}/login`, {
+  const response = await fetch(`${AUTH_BASE_URL}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -45,7 +53,7 @@ export const loginUser = async (email: string, password: string): Promise<AuthRe
 };
 
 export const signupUser = async (name: string, email: string, password: string): Promise<SignupResponse> => {
-  const response = await fetch(`${BASE_URL}/signup`, {
+  const response = await fetch(`${AUTH_BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -64,7 +72,7 @@ export const signupUser = async (name: string, email: string, password: string):
 
 export const adminVerifyMfa = async (email: string, code: string) => {
   try {
-    const response = await fetch(`${BASE_URL}/verify-2fa`, {
+    const response = await fetch(`${AUTH_BASE_URL}/verify-2fa`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -93,7 +101,7 @@ export const adminVerifyMfa = async (email: string, code: string) => {
 };
 
 export const forgotPassword = async (email: string): Promise<{ success: boolean; message: string }> => {
-  const response = await fetch(`${BASE_URL}/forgot-password`, {
+  const response = await fetch(`${AUTH_BASE_URL}/forgot-password`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -111,7 +119,7 @@ export const forgotPassword = async (email: string): Promise<{ success: boolean;
 };
 
 export const verifyEmail = async (token: string): Promise<{ success: boolean; message: string }> => {
-  const response = await fetch(`${BASE_URL}/verify-email?token=${token}`, {
+  const response = await fetch(`${AUTH_BASE_URL}/verify-email?token=${token}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -128,7 +136,7 @@ export const verifyEmail = async (token: string): Promise<{ success: boolean; me
 };
 
 export const resetPassword = async (token: string, password: string): Promise<{ success: boolean; message: string }> => {
-  const response = await fetch(`${BASE_URL}/reset-password`, {
+  const response = await fetch(`${AUTH_BASE_URL}/reset-password`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -146,7 +154,7 @@ export const resetPassword = async (token: string, password: string): Promise<{ 
 };
 
 export const fetchCurrentUser = async (accessToken: string): Promise<AuthResponse> => {
-  const response = await fetch(`${BASE_URL}/me`, {
+  const response = await fetch(`${AUTH_BASE_URL}/me`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

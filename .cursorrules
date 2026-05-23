@@ -1,0 +1,4 @@
+# Project Rules
+
+1. **No Automatic Commits or Pushes**: Never execute `git commit` or `git push` without explicitly asking the user for confirmation and obtaining approval first.
+2. **AI Anonymity & Professionalism**: Never mention "Antigravity", "AI assistant", "agent", or any related AI terminology in git commit messages, pull requests, branch names, or any metadata pushed to GitHub. Keep all commit messages and descriptions clean, professional, and styled as if written by a human developer.

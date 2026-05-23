@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, redirect } from 'react-router-dom';
 import { Home, LayoutDashboard } from 'lucide-react';
 import SEO from '../common/SEO';
 import logo from '../../assets/logo.png';
@@ -7,7 +7,9 @@ import {
   loginUser,
   signupUser,
   forgotPassword,
-  BASE_URL,
+  GOOGLE_AUTH_URL,
+  SEND_OTP_URL,
+  VERIFY_OTP_URL
 } from '../../api/auth.js';
 
 const css = `
@@ -278,6 +280,12 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
   const [guestLoading, setGuestLoading] = useState(false);
 
 
+  const handleGoogleAuthClick = () => {
+    console.log(GOOGLE_AUTH_URL);
+    window.open(GOOGLE_AUTH_URL);
+  };
+
+
   // FIXED: Set initial tab based on URL path and props
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -333,7 +341,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
     setGuestLoading(true);
     setError('');
     try {
-      const response = await fetch(`${BASE_URL}/guest/send-otp`, {
+      const response = await fetch(`${SEND_OTP_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: guestEmail }),
@@ -358,7 +366,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
     setGuestLoading(true);
     setError('');
     try {
-      const response = await fetch(`${BASE_URL}/guest/verify-otp`, {
+      const response = await fetch(`${VERIFY_OTP_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: guestEmail, code: guestOTP }),
@@ -416,7 +424,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
         if (res.success) {
           localStorage.setItem('accessToken', res.accessToken);
           localStorage.setItem('user', JSON.stringify(res.user));
-          window.location.href = '/dashboard';
+          navigate('/dashboard')
         }
       }
     } catch (err: any) {
@@ -585,7 +593,7 @@ const VormirexAuth: React.FC<VormirexAuthProps> = ({ defaultTab }) => {
           className="google-btn"
           type="button"
           onClick={() => {
-            window.location.href = `${BASE_URL}/google`;
+            handleGoogleAuthClick();
           }}
         >
           Continue with Google

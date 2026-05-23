@@ -13,6 +13,13 @@ import roadmapRouter from './modules/roadmaps/roadmap.routes.js';
 import quizRouter from './modules/quizzes/quiz.routes.js';
 import flashcardRouter from './modules/flashcards/flashcard.routes.js';
 import challengeRouter from './modules/challenges/challenge.routes.js';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
+
+const swaggerDocument = JSON.parse(
+  fs.readFileSync(path.resolve(process.cwd(), 'src/config/swagger-output.json'), 'utf8')
+);
 
 // import paymentRouter from './modules/payment/payment.routes.js';
 import { errorHandler } from './middleware/errorHandler.middleware.js';
@@ -29,6 +36,7 @@ app.use(
       process.env.FRONTEND_URL || 'http://localhost:5173',
       'http://localhost:5173',
       'http://localhost:3000',
+      'http://frontend:5173'
     ],
     credentials: true,
   })
@@ -41,6 +49,8 @@ app.use(responseLogger);
 app.use(express.json({ limit: '10kb' })); // Limit payload size for security
 
 // --- Routes ---
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.get('/', (req: Request, res: Response) => {
   res.send('Vormirex API is running...');
 });

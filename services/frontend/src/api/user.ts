@@ -1,4 +1,6 @@
-const API_ROOT = import.meta.env.VITE_API_URL || 'http://localhost/api';
+import { API_ROOT } from "./api.config";
+
+
 export const BASE_URL = `${API_ROOT}/users`;
 
 export interface NotificationPreferences {
