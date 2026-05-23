@@ -14,12 +14,7 @@ import quizRouter from './modules/quizzes/quiz.routes.js';
 import flashcardRouter from './modules/flashcards/flashcard.routes.js';
 import challengeRouter from './modules/challenges/challenge.routes.js';
 import swaggerUi from 'swagger-ui-express';
-import fs from 'fs';
-import path from 'path';
-
-const swaggerDocument = JSON.parse(
-  fs.readFileSync(path.resolve(process.cwd(), 'src/config/swagger-output.json'), 'utf8')
-);
+import swaggerDocument from './config/swagger-output.js';
 
 // import paymentRouter from './modules/payment/payment.routes.js';
 import { errorHandler } from './middleware/errorHandler.middleware.js';

@@ -1,4 +1,5 @@
 import swaggerAutogen from 'swagger-autogen';
+import fs from 'fs';
 
 const doc = {
   info: {
@@ -36,6 +37,13 @@ const endpointsFiles = ['./src/app.ts'];
 const run = async () => {
   // Use openapi: '3.0.0' option to generate v3 documentation
   await swaggerAutogen({ openapi: '3.0.0' })(outputFile, endpointsFiles, doc);
+  
+  // Read generated JSON and wrap into a TypeScript module for ESM compatibility (Vercel & Jest)
+  if (fs.existsSync(outputFile)) {
+    const jsonContent = fs.readFileSync(outputFile, 'utf8');
+    const tsContent = `// Auto-generated Swagger spec. Do not edit directly.\nexport default ${jsonContent};\n`;
+    fs.writeFileSync('./src/config/swagger-output.ts', tsContent, 'utf8');
+  }
 };
 
 run();
