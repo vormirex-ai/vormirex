@@ -8,13 +8,12 @@ import {
 } from '@jest/globals';
 import request from 'supertest';
 import express, { Express } from 'express';
-import { SignupBody } from './auth.validation.js';
+import { ConflictError } from '../../utils/errors.js';
 
 // --------------------------------------------------
-// FIX 1: Mock the TypeScript file, not .js
+// FIX 1: Mock the imported module specifier using ESM mockModule
 // --------------------------------------------------
-jest.mock('./auth.service.ts', () => ({
-  __esModule: true,
+jest.unstable_mockModule('./auth.service.js', () => ({
   signup: jest.fn(),
   login: jest.fn(),
   refreshToken: jest.fn(),
@@ -29,20 +28,20 @@ describe('Auth Routes', () => {
   // --------------------------------------------------
   // FIX 2: Correct type for mocked module
   // --------------------------------------------------
-  let mockedAuthService: jest.Mocked<typeof import('./auth.service.js')>;
+  let mockedAuthService: any;
 
   beforeAll(async () => {
     // load mocked service
-    mockedAuthService = jest.requireMock('./auth.service.ts') as jest.Mocked<
-      typeof import('./auth.service.js')
-    >;
+    mockedAuthService = await import('./auth.service.js');
 
     // FIXED: import the TS router file
     const authRouter = (await import('./auth.routes.js')).default;
+    const { errorHandler } = await import('../../middleware/errorHandler.middleware.js');
 
     app = express();
     app.use(express.json());
     app.use('/api/auth', authRouter);
+    app.use(errorHandler);
   });
 
   beforeEach(() => {
@@ -70,13 +69,13 @@ describe('Auth Routes', () => {
         .send(signupData);
 
       expect(response.status).toBe(201);
-      expect(response.body).toEqual({ success: true, data: serviceResponse });
+      expect(response.body).toEqual({ success: true, ...serviceResponse });
       expect(mockedAuthService.signup).toHaveBeenCalledWith(signupData);
     });
 
     it('should return 409 if the email already exists', async () => {
       mockedAuthService.signup.mockRejectedValue(
-        new Error('Email already exists')
+        new ConflictError('Email already exists')
       );
 
       const response = await request(app).post('/api/auth/signup').send({
@@ -118,7 +117,7 @@ describe('Auth Routes', () => {
       });
 
       expect(response.status).toBe(500);
-      expect(response.body.message).toBe('Internal Server Error');
+      expect(response.body.message).toBe('An unexpected internal server error occurred.');
     });
   });
 });

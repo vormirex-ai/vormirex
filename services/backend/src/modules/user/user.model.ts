@@ -23,6 +23,11 @@ export interface IUser extends Document {
     longest: number;
     lastActivityDate: Date;
   };
+  challengeStreak: {
+    current: number;
+    longest: number;
+    lastActivityDate: Date | null;
+  };
   learningPreferences: {
     educationLevel?: 'School' | 'College' | 'Professional';
     selectedSubjects: string[];
@@ -73,6 +78,11 @@ const userSchema = new Schema<IUser>(
     profilePhoto: { type: String, required: false },
     
     streak: {
+      current: { type: Number, default: 0 },
+      longest: { type: Number, default: 0 },
+      lastActivityDate: { type: Date, default: null },
+    },
+    challengeStreak: {
       current: { type: Number, default: 0 },
       longest: { type: Number, default: 0 },
       lastActivityDate: { type: Date, default: null },
