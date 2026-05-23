@@ -9,7 +9,6 @@ export default defineConfig({
       '/api': {
         target: 'https://vormirex-backend.vercel.app/',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
