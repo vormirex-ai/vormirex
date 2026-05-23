@@ -4,8 +4,6 @@ export default {
 
   clearMocks: true,
 
-  moduleNameMapper: {
-    // Only rewrite imports inside src/ that end in `.js`
-    '^(.*/src/.*)\\.js$': '$1.ts',
-  },
+  resolver: '<rootDir>/jest-resolver.cjs',
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
 };
