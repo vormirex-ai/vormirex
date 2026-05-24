@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { requestLogger, responseLogger } from './middleware/requestResponse.middleware.js';
@@ -36,6 +36,39 @@ app.use(
     credentials: true,
   })
 );
+
+// --- Swagger CDN Configuration & Middleware ---
+const swaggerOptions = {
+  customCssUrl: 'https://unpkg.com/swagger-ui-dist@5.32.6/swagger-ui.css',
+  customJs: [
+    'https://unpkg.com/swagger-ui-dist@5.32.6/swagger-ui-bundle.js',
+    'https://unpkg.com/swagger-ui-dist@5.32.6/swagger-ui-standalone-preset.js'
+  ]
+};
+
+// Mount Swagger UI before global helmet middleware so that it is not blocked by strict Content Security Policies
+app.use(
+  '/api-docs',
+  (helmet as any)({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "https://unpkg.com"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://unpkg.com"],
+        imgSrc: ["'self'", "data:", "https://unpkg.com"],
+      },
+    },
+  }),
+  swaggerUi.serve,
+  (req: Request, res: Response, next: NextFunction) => {
+    if (req.path === '/' || req.path === '') {
+      swaggerUi.setup(swaggerDocument, swaggerOptions)(req, res, next);
+    } else {
+      res.status(404).send('Not Found');
+    }
+  }
+);
+
 // Secure the app by setting various HTTP headers
 app.use((helmet as unknown as () => any)());
 app.use(requestLogger);
@@ -44,7 +77,6 @@ app.use(responseLogger);
 app.use(express.json({ limit: '10kb' })); // Limit payload size for security
 
 // --- Routes ---
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Vormirex API is running...');
