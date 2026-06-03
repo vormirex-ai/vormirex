@@ -13,6 +13,22 @@ export const signup = async (
   res: Response,
   next: NextFunction
 ) => {
+  /* #swagger.requestBody = {
+       required: true,
+       content: {
+         "application/json": {
+           schema: {
+             type: "object",
+             properties: {
+               name: { type: "string", example: "John Doe" },
+               email: { type: "string", example: "john@example.com" },
+               password: { type: "string", example: "password123" }
+             },
+             required: ["name", "email", "password"]
+           }
+         }
+       }
+     } */
   try {
     const result = await authService.signup(req.body);
     return res.status(201).json({ success: true, ...result });
@@ -26,6 +42,21 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
+  /* #swagger.requestBody = {
+       required: true,
+       content: {
+         "application/json": {
+           schema: {
+             type: "object",
+             properties: {
+               email: { type: "string", example: "ashishsingh4895@gmail.com" },
+               password: { type: "string", example: "123@qwe" }
+             },
+             required: ["email", "password"]
+           }
+         }
+       }
+     } */
   try {
     const result = await authService.login(req.body);
     if (result.requireTwoFactor) {

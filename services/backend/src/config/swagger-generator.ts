@@ -23,12 +23,17 @@ const doc = {
   ],
   securityDefinitions: {
     BearerAuth: {
-      type: 'apiKey',
-      in: 'header',
-      name: 'Authorization',
-      description: 'Enter your JWT token as: Bearer <token>',
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      description: 'Enter your raw JWT token (without the Bearer prefix).',
     },
   },
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
 };
 
 const outputFile = './src/config/swagger-output.json';

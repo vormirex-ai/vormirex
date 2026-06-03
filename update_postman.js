@@ -96,6 +96,42 @@ inject('Notifications', createRequest('Get My Notifications', 'GET', ['api', 'no
 inject('Notifications', createRequest('Mark All As Read', 'PATCH', ['api', 'notifications', 'read-all'], 'user'));
 inject('Notifications', createRequest('Mark Single As Read', 'PATCH', ['api', 'notifications', '{{notificationId}}', 'read'], 'user'));
 
+// SUBJECTS
+inject('Subjects', createRequest('Get All Subjects', 'GET', ['api', 'subjects'], 'user'));
+inject('Subjects', createRequest('Get Subject by ID', 'GET', ['api', 'subjects', '{{subjectId}}'], 'user'));
+inject('Subjects', createRequest('Get Subject Curriculum', 'GET', ['api', 'subjects', '{{subjectId}}', 'curriculum'], 'user'));
+inject('Subjects', createRequest('Continue Subject (Next Resume Lesson)', 'GET', ['api', 'subjects', '{{subjectId}}', 'continue'], 'user'));
+inject('Subjects', createRequest('Create Subject (Admin)', 'POST', ['api', 'subjects'], 'admin', {
+  title: "New Subject Title",
+  subtitle: "New Subject Subtitle",
+  description: "A detailed description of the new subject that contains at least ten characters.",
+  icon: "code",
+  price: 0,
+  isPro: false,
+  hasCertificate: false,
+  status: "DRAFT",
+  tags: ["javascript", "programming"]
+}));
+inject('Subjects', createRequest('Update Subject (Admin)', 'PATCH', ['api', 'subjects', '{{subjectId}}'], 'admin', {
+  title: "Updated Subject Title"
+}));
+inject('Subjects', createRequest('Delete Subject (Admin)', 'DELETE', ['api', 'subjects', '{{subjectId}}'], 'admin'));
+
+// LESSONS
+inject('Lessons', createRequest('Get Lesson Details', 'GET', ['api', 'lessons', '{{lessonId}}'], 'user'));
+inject('Lessons', createRequest('Update Lesson Progress', 'POST', ['api', 'lessons', '{{lessonId}}', 'progress'], 'user', {
+  secondsWatched: 120,
+  durationWatchedIncrement: 10
+}));
+inject('Lessons', createRequest('Complete Lesson', 'POST', ['api', 'lessons', '{{lessonId}}', 'complete'], 'user'));
+
+// AI TUTOR
+inject('AI Tutor', createRequest('Get Chat History', 'GET', ['api', 'ai-tutor', 'chats', '{{lessonId}}'], 'user'));
+inject('AI Tutor', createRequest('Send AI Tutor Message', 'POST', ['api', 'ai-tutor', 'chats', '{{lessonId}}', 'message'], 'user', {
+  message: "Explain the concept of closures in JavaScript simply.",
+  actionType: "explain"
+}));
+
 
 fs.writeFileSync(collectionPath, JSON.stringify(data, null, '\t'));
 console.log('Collection updated successfully.');
