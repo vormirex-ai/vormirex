@@ -1,6 +1,7 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import {
   requestLogger,
   responseLogger,
@@ -81,6 +82,7 @@ app.use(requestLogger);
 app.use(responseLogger);
 // Enable the Express app to parse JSON-formatted request bodies
 app.use(express.json({ limit: '10kb' })); // Limit payload size for security
+app.use(cookieParser());
 
 // --- Routes ---
 
