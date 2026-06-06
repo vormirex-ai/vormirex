@@ -21,6 +21,9 @@ services:
     volumes:
       - ./services/frontend:/app
       - /app/node_modules
+      # Host-mount the Vite dep-optimization cache so it persists
+      # across container restarts and prevents 504 Outdated Optimize Dep errors
+      - ./services/frontend/.vite-cache:/app/.vite-cache
     restart: always
 
   nginx:
