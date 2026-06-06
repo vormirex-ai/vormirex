@@ -32,14 +32,28 @@ const app: Application = express();
 
 // --- Middleware ---
 // Enable Cross-Origin Resource Sharing
+// Build allowed origins from env — supports comma-separated list for multiple deployments
+const allowedOrigins = [
+  'http://localhost:5173',   // Vite dev (local, non-Docker)
+  'http://localhost:3060',   // nginx Docker dev port
+  'http://localhost:3000',
+  'http://frontend:5173',   // internal Docker network
+  // Vercel / any extra origins set in env (comma-separated)
+  ...(process.env.FRONTEND_URL
+    ? process.env.FRONTEND_URL.split(',').map((u) => u.trim())
+    : []),
+];
+
 app.use(
   cors({
-    origin: [
-      process.env.FRONTEND_URL || 'http://localhost:5173',
-      'http://localhost:5173',
-      'http://localhost:3000',
-      'http://frontend:5173',
-    ],
+    origin: (origin, callback) => {
+      // Allow server-to-server requests (no origin header) and whitelisted origins
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin '${origin}' not allowed`));
+      }
+    },
     credentials: true,
   })
 );
