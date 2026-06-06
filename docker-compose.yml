@@ -16,7 +16,7 @@ services:
   frontend:
     build:
       context: ./services/frontend
-      dockerfile: ../../docker/frontend/Dockerfile
+      dockerfile: Dockerfile
     container_name: vormirex-frontend
     volumes:
       - ./services/frontend:/app
