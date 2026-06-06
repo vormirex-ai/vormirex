@@ -34,7 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCredentials, logout } from "@/store/slice/authSlice";
 import { setUiPreferences } from "@/store/slice/themeSlice";
 import { useLazyMeQuery } from "@/store/api/authApi";
-import { RootState } from "@/store/store";
+import { RootState, store } from "@/store/store";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,37 +44,37 @@ function App() {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        // triggerMe will automatically attempt baseQuery, which calls /auth/refresh under the hood if it fails with 401/403
+        // triggerMe calls GET /api/auth/me.
+        // If it returns 401, baseQueryWithReauth silently fires POST /api/auth/refresh
+        // (cookie is sent automatically via credentials: "include"), gets a new accessToken,
+        // stores it in Redux, then retries /auth/me.
         const result = await triggerMe(undefined).unwrap();
 
-        // After triggerMe resolves, if it was successful, the access token is in the store
-        // Let's verify we have both user details and the new token
         if (result?.success && result?.user) {
-          // Sync UI preferences from profile
+          // Sync UI preferences from the user profile
           if (result.user.preferences) {
             dispatch(setUiPreferences(result.user.preferences));
           }
-          // Triggering a reauth would have set the token in the Redux store.
-          // Let's retrieve it from the store or check it.
-          // Wait, since triggerMe successfully returned the user, we can read the token and set the full credentials.
-          // Let's retrieve the token from the active state.
-          import("@/store/store").then(({ store }) => {
-            const currentToken = store.getState().auth.token;
-            if (currentToken) {
-              dispatch(
-                setCredentials({
-                  user: result.user,
-                  token: currentToken,
-                })
-              );
-            } else {
-              dispatch(logout());
-            }
-          });
+
+          // Read the current token synchronously from the store.
+          // At this point baseQueryWithReauth has already set it via setCredentials.
+          const currentToken = store.getState().auth.token;
+
+          if (currentToken) {
+            dispatch(
+              setCredentials({
+                user: result.user,
+                token: currentToken,
+              })
+            );
+          } else {
+            dispatch(logout());
+          }
         } else {
           dispatch(logout());
         }
-      } catch (error) {
+      } catch {
+        // /auth/refresh also failed — user is genuinely logged out
         dispatch(logout());
       }
     };
