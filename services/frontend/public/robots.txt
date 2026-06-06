@@ -1,9 +1,13 @@
+# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
-Disallow: /dashboard
-Disallow: /custom
-Disallow: /verify-email
-Disallow: /reset-password
-Disallow: /oauth-success
 
+# Disallow private pages and routes
+Disallow: /dashboard/
+Disallow: /reset-password
+Disallow: /forgot-password
+Disallow: /login
+Disallow: /sign-up
+
+# Sitemap location
 Sitemap: https://vormirex.com/sitemap.xml

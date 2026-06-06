@@ -1,0 +1,35 @@
+export const pricingPlans = [
+  {
+    name: "STARTER",
+    price: "Free",
+    subtext: "Forever",
+    features: ["5 AI chats/day", "3 Subjects", "Basic Roadmap"],
+    button: "Get Started",
+    featured: false,
+  },
+  {
+    name: "PRO",
+    price: "$12",
+    monthly: "/mo",
+    subtext: "Billed monthly",
+    features: [
+      "Unlimited AI chats",
+      "All 20+ Subjects",
+      "Smart Roadmap",
+      "Video + AI panel",
+      "Quiz analytics",
+    ],
+    button: "Start Pro Trial",
+    featured: true,
+    badge: "MOST POPULAR",
+  },
+  {
+    name: "TEAM",
+    price: "$49",
+    monthly: "/mo",
+    subtext: "Up to 10 members",
+    features: ["Everything in Pro", "Team dashboard", "Priority support"],
+    button: "Contact Sales",
+    featured: false,
+  },
+];

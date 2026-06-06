@@ -1,66 +1,73 @@
-# VORMIREX - AI Learning Platform
+# React + TypeScript + Vite
 
-![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react)
-![Vite](https://img.shields.io/badge/Vite-7.0-646CFF?style=for-the-badge&logo=vite)
-![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-**VORMIREX** is a modern, responsive React dashboard designed for an AI-powered educational platform. It focuses on technical subjects like Cyber Security, Data Science, and AI/ML, providing a sleek interface for students to track progress, ask questions, and access learning tools...
+Currently, two official plugins are available:
 
-## 🚀 Features
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-- **Interactive Dashboard**: A three-column layout featuring navigation, a central chat/action area, and a learning tools sidebar.
-- **Responsive Design**: Mobile-friendly interface with collapsible sidebars and hamburger menus.
-- **Learning Tools**:
-  - **Progress Tracking**: Visual indicators for daily skill points and coding streaks.
-  - **Quick Actions**: One-click prompts for homework help, Python basics, and math problems.
-  - **Recent Chats**: History of previous AI interactions.
-- **Subject Management**: Dedicated sections for Cyber Security, Data Science, and Data Analytics.
-- **UI Components**: Custom modals ("Coming Soon"), search bars, and extensive use of FontAwesome icons.
+## React Compiler
 
-## 🛠️ Tech Stack
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-- **Framework**: [React 19](https://react.dev/)
-- **Build Tool**: [Vite](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) & Custom CSS
-- **Icons**: [FontAwesome](https://fontawesome.com/) & [Lucide React](https://lucide.dev/)
+## Expanding the ESLint configuration
 
-## 📦 Installation
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-1.  **Clone the repository**
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-    ```bash
-    git clone https://github.com/vormirex-ai/Vormirex-Frontend.git
-    cd my-react-app
-    ```
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-2.  **Install dependencies**
-
-    ```bash
-    npm install
-    ```
-
-3.  **Start the development server**
-    ```bash
-    npm run dev
-    ```
-
-## 📂 Project Structure
-
-```text
-src/
-├── assets/          # Images and static assets
-├── App.jsx          # Main application layout and logic
-├── App.css          # Global styles and dashboard layout
-└── main.jsx         # Entry point
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-## 🔮 Future Roadmap
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-- [ ] Backend integration for AI chat functionality.
-- [ ] User authentication (Login/Signup).
-- [ ] Real-time progress database connection.
-- [ ] Dark/Light mode toggle.
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-## 📄 License
-
-Distributed under the MIT License.
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```

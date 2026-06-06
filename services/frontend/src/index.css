@@ -1,31 +1,144 @@
+@plugin "tailwindcss-animate";
+@custom-variant dark (&:is(.dark *));
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@custom-variant dark (&:is(.dark *));
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+:root {
+    --background: 220 20% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 200 60% 97%;
+      --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 243 100% 67%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 196 100% 55%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 46%;
+
+    --accent: 280 100% 70%;
+    --accent-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 243 100% 67%;
+    --radius: 0.5rem;
+
+
+  }
+
+.dark {
+  --background: 222 64% 3%;
+  --foreground: 210 40% 98%;
+
+  /* --card: 228 60% 8%;
+  --card-foreground: 210 40% 98%; */
+    /* DARK MODE CARD = #051522 */
+      --card: 206.9, 74.36%, 7.65%;
+      --card-foreground: 210 40% 98%;
+
+  --popover: 228 60% 8%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 243 100% 67%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 196 100% 55%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 225 32% 17%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 280 100% 70%;
+  --accent-foreground: 0 0% 100%;
+
+  --border: 225 32% 18%;
+  --input: 225 32% 18%;
+  --ring: 243 100% 67%;
+  --radius: 0.5rem;
 }
 
+}
 html {
   scroll-behavior: smooth;
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 html,
-body,
-#root {
-  margin: 0;
-  padding: 0;
-  background-color: #0a0b14;
-  min-height: 100vh;
-  overflow-x: hidden;
+body {
+  height: 100%;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  @apply bg-background text-foreground;
+}
+
+.dark body {
+  @apply bg-[#030712] text-white;
+}
+:root {
+  --tooltip-bg: #ffffff;
+  --tooltip-border: rgba(0, 0, 0, 0.08);
+  --tooltip-text: #0f172a;
+}
+
+.dark {
+  --tooltip-bg: #071c2f;
+  --tooltip-border: rgba(34, 211, 238, 0.15);
+  --tooltip-text: #ffffff;
+}
+
+
+/* Custom Thin Gradient Scrollbar */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,
+      #63E7DC 0%,
+      #56DCD2 35%,
+      #46D3C9 70%,
+      #26BDB3 100%);
+
+  border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  opacity: 0.9;
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #46D3C9 transparent;
+}
+
+@layer components {
+  .custom-surface {
+    @apply border border-cyan-500/10 bg-card;
+  }
 }
