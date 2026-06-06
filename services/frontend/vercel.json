@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "https://vormirex-backend.vercel.app/api/:path*"
+    },
+    {
       "source": "/((?!assets/|favicon.ico|logo.png|manifest.json|robots.txt|sitemap.xml|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg).*)",
       "destination": "/index.html"
     }
