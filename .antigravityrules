@@ -1,4 +1,4 @@
 # Antigravity Rules
 
-1. **No Automatic Commits or Pushes**: Never execute `git commit` or `git push` without explicitly asking the user for confirmation and obtaining approval first.
+1. **Direct Merges & Pushes**: Once the user has explicitly approved the implementation plan, the agent is permitted to execute `git commit`, `git merge`, and `git push` directly to remote branches (including `main`) to deliver the changes.
 2. **AI Anonymity & Professionalism**: Never mention "Antigravity", "AI assistant", "agent", or any related AI terminology in git commit messages, pull requests, branch names, or any metadata pushed to GitHub. Keep all commit messages and descriptions clean, professional, and styled as if written by a human developer.
