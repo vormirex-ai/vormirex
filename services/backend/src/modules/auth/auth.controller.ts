@@ -8,6 +8,15 @@ import {
   SignupBody,
 } from './auth.validation.js';
 
+const isProduction = process.env.NODE_ENV === 'production';
+const getCookieOptions = (maxAge?: number) => ({
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: (isProduction ? 'none' : 'lax') as 'none' | 'lax' | 'strict',
+  ...(maxAge !== undefined ? { maxAge } : {}),
+});
+
+
 export const signup = async (
   req: Request<object, object, SignupBody>,
   res: Response,
@@ -69,12 +78,7 @@ export const login = async (
     }
 
     // Standard Login Success
-    res.cookie('refresh_token', result.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie('refresh_token', result.refreshToken, getCookieOptions(7 * 24 * 60 * 60 * 1000));
 
     const userResponse = {
       id: result.user!._id,
@@ -100,12 +104,7 @@ export const verifyTwoFactor = async (req: Request, res: Response, next: NextFun
 
     const { accessToken, refreshToken, user } = await authService.verifyTwoFactorCode(email, code);
 
-    res.cookie('refresh_token', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie('refresh_token', refreshToken, getCookieOptions(7 * 24 * 60 * 60 * 1000));
 
     const userResponse = {
       id: user._id,
@@ -198,11 +197,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 };
 
 export const logout = async (req: Request, res: Response) => {
-  res.clearCookie('refresh_token', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-  });
+  res.clearCookie('refresh_token', getCookieOptions());
   return res.json({ success: true, message: 'Logged out' });
 };
 
@@ -232,12 +227,7 @@ export const verifyGuestOTPAccount = async (req: Request, res: Response, next: N
     const result = await authService.verifyGuestOTP(email, code);
 
     // Give them the refresh cookie
-    res.cookie('refresh_token', result.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie('refresh_token', result.refreshToken, getCookieOptions(7 * 24 * 60 * 60 * 1000));
 
     const userResponse = {
       id: result.user._id,
