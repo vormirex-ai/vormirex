@@ -4,7 +4,7 @@ import { requireAuth } from '../../middleware/auth.middleware.js';
 import { checkRole } from '../../middleware/rbac.middleware.js';
 import { validate } from '../../middleware/validate.middleware.js';
 import { upload } from '../../middleware/upload.middleware.js';
-import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema, updateNotificationPreferencesSchema, updatePrivacySettingsSchema } from './user.validation.js';
+import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema, updateNotificationPreferencesSchema, updatePrivacySettingsSchema, updateUiPreferencesSchema } from './user.validation.js';
 
 const router = Router();
 
@@ -17,6 +17,7 @@ router.post('/me/profile-photo', upload.single('photo'), userController.uploadPr
 router.delete('/me/profile-photo', userController.removeProfilePhoto);
 router.patch('/me/password', validate(changePasswordSchema), userController.changePassword);
 router.patch('/me/preferences', validate(updatePreferencesSchema), userController.updatePreferences);
+router.patch('/me/ui-preferences', validate(updateUiPreferencesSchema), userController.updateUiPreferences);
 router.patch('/me/notifications', validate(updateNotificationPreferencesSchema), userController.updateNotificationPreferences);
 router.patch('/me/privacy', validate(updatePrivacySettingsSchema), userController.updatePrivacySettings);
 router.delete('/me', userController.deleteAccount);

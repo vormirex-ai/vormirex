@@ -58,3 +58,15 @@ export const updatePrivacySettingsSchema = z.object({
 });
 
 export type UpdatePrivacySettingsBody = z.infer<typeof updatePrivacySettingsSchema>['body'];
+
+export const updateUiPreferencesSchema = z.object({
+  body: z.object({
+    theme: z.enum(['light', 'dark']).optional(),
+    fontSize: z.enum(['small', 'medium', 'large']).optional(),
+    compactSidebar: z.boolean().optional(),
+    reducedAnimations: z.boolean().optional(),
+    accentColor: z.string().optional(),
+  }),
+});
+
+export type UpdateUiPreferencesBody = z.infer<typeof updateUiPreferencesSchema>['body'];

@@ -53,6 +53,13 @@ export interface IUser extends Document {
     showProgress: boolean;
     showCourses: boolean;
   };
+  preferences: {
+    theme: 'light' | 'dark';
+    fontSize?: 'small' | 'medium' | 'large';
+    compactSidebar?: boolean;
+    reducedAnimations?: boolean;
+    accentColor?: string;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
@@ -140,6 +147,13 @@ const userSchema = new Schema<IUser>(
       isProfilePublic: { type: Boolean, default: true },
       showProgress: { type: Boolean, default: true },
       showCourses: { type: Boolean, default: true },
+    },
+    preferences: {
+      theme: { type: String, enum: ['light', 'dark'], default: 'dark' },
+      fontSize: { type: String, enum: ['small', 'medium', 'large'], default: 'medium' },
+      compactSidebar: { type: Boolean, default: false },
+      reducedAnimations: { type: Boolean, default: false },
+      accentColor: { type: String, default: 'blue-indigo' },
     },
   },
   {

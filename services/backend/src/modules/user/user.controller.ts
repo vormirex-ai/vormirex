@@ -352,6 +352,36 @@ export const updatePrivacySettings = async (req: Request, res: Response) => {
   res.json({ message: 'Privacy settings updated', privacySettings: user.privacySettings });
 };
 
+export const updateUiPreferences = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.user.userId;
+  const { theme, fontSize, compactSidebar, reducedAnimations, accentColor } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) throw new NotFoundError('User not found');
+
+  if (!user.preferences) {
+    user.preferences = {
+      theme: 'dark',
+      fontSize: 'medium',
+      compactSidebar: false,
+      reducedAnimations: false,
+      accentColor: 'blue-indigo',
+    };
+  }
+
+  if (theme !== undefined) user.preferences.theme = theme;
+  if (fontSize !== undefined) user.preferences.fontSize = fontSize;
+  if (compactSidebar !== undefined) user.preferences.compactSidebar = compactSidebar;
+  if (reducedAnimations !== undefined) user.preferences.reducedAnimations = reducedAnimations;
+  if (accentColor !== undefined) user.preferences.accentColor = accentColor;
+
+  user.markModified('preferences');
+  await user.save();
+
+  res.json({ message: 'UI preferences updated', preferences: user.preferences });
+};
+
 export const getPublicProfile = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = await User.findById(id).select('name role createdAt streak learningPreferences privacySettings');
@@ -410,5 +440,6 @@ export default {
   updatePreferences,
   updateNotificationPreferences,
   updatePrivacySettings,
+  updateUiPreferences,
   getPublicProfile,
 };

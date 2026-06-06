@@ -1611,6 +1611,63 @@ export default {
         }
       }
     },
+    "/api/users/me/ui-preferences": {
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "theme": {
+                    "example": "any"
+                  },
+                  "fontSize": {
+                    "example": "any"
+                  },
+                  "compactSidebar": {
+                    "example": "any"
+                  },
+                  "reducedAnimations": {
+                    "example": "any"
+                  },
+                  "accentColor": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users/me/notifications": {
       "patch": {
         "description": "",
