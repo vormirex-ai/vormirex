@@ -3,13 +3,18 @@ node_modules
 
 # Build output
 dist
+dist-ssr
 
 # TypeScript build info
 *.tsbuildinfo
 
-# Environment variables (injected via docker-compose env_file)
+# Vite cache
+.vite
+
+# Environment variables (injected at runtime / not needed in image)
 .env
 .env.*
+*.local
 
 # Logs
 logs
@@ -17,14 +22,16 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Test output
-coverage
+pnpm-debug.log*
+lerna-debug.log*
 
 # Editor & IDE
 .vscode
 .idea
 *.suo
+*.ntvs*
+*.njsproj
+*.sln
 *.sw?
 
 # OS
@@ -38,7 +45,9 @@ Thumbs.db
 
 # Docker-specific (avoid recursive context)
 Dockerfile
+Dockerfile.*
 .dockerignore
 
-# Husky & lint
-.husky
+# Misc
+*.txt
+README.md
