@@ -44,7 +44,8 @@ function App() {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        // triggerMe calls GET /api/auth/me.
+        // triggerMe calls GET /api/auth/me. VITE_API_URL is relative (/api) to use
+        // Vercel server-side rewrites, avoiding third-party cookie restrictions.
         // If it returns 401, baseQueryWithReauth silently fires POST /api/auth/refresh
         // (cookie is sent automatically via credentials: "include"), gets a new accessToken,
         // stores it in Redux, then retries /auth/me.
