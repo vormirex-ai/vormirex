@@ -48,7 +48,7 @@ function App() {
         // If it returns 401, baseQueryWithReauth silently fires POST /api/auth/refresh
         // (cookie is sent automatically via credentials: "include"), gets a new accessToken,
         // stores it in Redux, then retries /auth/me.
-        const result = await triggerMe(undefined).unwrap();
+        const result = await triggerMe(undefined, false).unwrap();
 
         if (result?.success && result?.user) {
           // Sync UI preferences from the user profile

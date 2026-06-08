@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { useLogoutMutation } from "@/store/api/authApi";
-import { setCredentials } from "@/store/slice/authSlice";
+import { logout } from "@/store/slice/authSlice";
+import { apiSlice } from "@/store/api/apiSlice";
 
 const UserMenu = () => {
   const [open, setOpen] = useState(false);
@@ -14,16 +15,16 @@ const UserMenu = () => {
   const handleLogout = async () => {
     try {
       await logoutApi(undefined).unwrap();
-      dispatch(
-        setCredentials({
-          user: null,
-          token: null,
-        })
-      );
+    } catch {
+      // Even if the API call fails, clear local state
+    } finally {
+      // Clear Redux auth state — sets isAuthenticated=false, isInitialized=true
+      dispatch(logout());
+      // Reset RTK Query cache so stale /auth/me data doesn't
+      // persist and re-authenticate on the next page load
+      dispatch(apiSlice.util.resetApiState());
       setOpen(false);
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed:", error);
+      navigate("/login");
     }
   };
 
