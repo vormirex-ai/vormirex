@@ -43,6 +43,7 @@ function App() {
 
   useEffect(() => {
     const initializeAuth = async () => {
+      console.log("initializeAuth: started checking session");
       try {
         // triggerMe calls GET /api/auth/me. VITE_API_URL is relative (/api) to use
         // Vercel server-side rewrites, avoiding third-party cookie restrictions.
@@ -50,6 +51,7 @@ function App() {
         // (cookie is sent automatically via credentials: "include"), gets a new accessToken,
         // stores it in Redux, then retries /auth/me.
         const result = await triggerMe(undefined, false).unwrap();
+        console.log("initializeAuth: triggerMe succeeded:", result);
 
         if (result?.success && result?.user) {
           // Sync UI preferences from the user profile
@@ -62,6 +64,7 @@ function App() {
           const currentToken = store.getState().auth.token;
 
           if (currentToken) {
+            console.log("initializeAuth: set credentials with token");
             dispatch(
               setCredentials({
                 user: result.user,
@@ -69,12 +72,15 @@ function App() {
               })
             );
           } else {
+            console.log("initializeAuth: no current token in store, logging out");
             dispatch(logout());
           }
         } else {
+          console.log("initializeAuth: result success/user missing, logging out");
           dispatch(logout());
         }
-      } catch {
+      } catch (error) {
+        console.error("initializeAuth: caught error:", error);
         // /auth/refresh also failed — user is genuinely logged out
         dispatch(logout());
       }
