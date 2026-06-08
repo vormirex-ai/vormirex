@@ -25,12 +25,19 @@ def log_error(msg):
     print(f"{RED}✘ {msg}{RESET}")
 
 def get_compose_cmd():
-    """Determine whether to use 'docker compose' or 'docker-compose'."""
-    if shutil.which("docker-compose"):
-        return ["docker-compose"]
+    """Prefer the modern 'docker compose' plugin over the legacy standalone binary.
+    The old docker-compose binary uses an outdated API version that causes
+    '500 Internal Server Error' with newer Docker Desktop releases."""
     if shutil.which("docker"):
-        return ["docker", "compose"]
-    log_error("Neither 'docker-compose' nor 'docker' commands were found in your PATH.")
+        # Verify the compose plugin is actually available
+        import subprocess as _sp
+        check = _sp.run(["docker", "compose", "version"], capture_output=True)
+        if check.returncode == 0:
+            return ["docker", "compose"]
+    if shutil.which("docker-compose"):
+        log_warning("Falling back to legacy docker-compose. Consider upgrading to Docker Desktop.")
+        return ["docker-compose"]
+    log_error("Neither 'docker compose' nor 'docker-compose' were found in your PATH.")
     log_warning("Please make sure Docker is installed and running.")
     return None
 
