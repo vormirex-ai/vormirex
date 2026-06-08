@@ -185,27 +185,37 @@ export const resetPassword = async (
   }
 };
 
-export const refreshToken = async (req: Request, res: Response) => {
-  const token = req.cookies.refresh_token;
-  if (!token) {
-    // This is a synchronous check, so we can throw our custom error directly
-    // and express-async-errors will handle it.
-    throw new UnauthorizedError('No refresh token provided');
+export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.cookies.refresh_token;
+    if (!token) {
+      throw new UnauthorizedError('No refresh token provided');
+    }
+    const newAccess = await authService.refreshToken(token);
+    return res.json({ success: true, accessToken: newAccess });
+  } catch (error) {
+    next(error);
   }
-  const newAccess = await authService.refreshToken(token);
-  return res.json({ success: true, accessToken: newAccess });
 };
 
-export const logout = async (req: Request, res: Response) => {
-  res.clearCookie('refresh_token', getCookieOptions());
-  return res.json({ success: true, message: 'Logged out' });
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    res.clearCookie('refresh_token', getCookieOptions());
+    return res.json({ success: true, message: 'Logged out' });
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const getProfile = async (req: Request, res: Response) => {
-  // verified by requireAuth middleware
-  const userId = (req.user as any).userId; 
-  const userFn = await authService.getUserProfile(userId);
-  return res.json({ success: true, user: userFn });
+export const getProfile = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // verified by requireAuth middleware
+    const userId = (req.user as any).userId; 
+    const userFn = await authService.getUserProfile(userId);
+    return res.json({ success: true, user: userFn });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const requestGuestOTP = async (req: Request, res: Response, next: NextFunction) => {
