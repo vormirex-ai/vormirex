@@ -81,13 +81,7 @@ app.use(
     },
   }),
   swaggerUi.serve,
-  (req: Request, res: Response, next: NextFunction) => {
-    if (req.path === '/' || req.path === '') {
-      swaggerUi.setup(swaggerDocument, swaggerOptions)(req, res, next);
-    } else {
-      res.status(404).send('Not Found');
-    }
-  }
+  swaggerUi.setup(swaggerDocument, swaggerOptions)
 );
 
 // Secure the app by setting various HTTP headers
