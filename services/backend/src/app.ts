@@ -38,6 +38,7 @@ const allowedOrigins = [
   'http://localhost:3060',   // nginx Docker dev port
   'http://localhost:3000',
   'http://frontend:5173',   // internal Docker network
+  'https://vormirex-backend.vercel.app', // Backend Swagger domain
   // Vercel / any extra origins set in env (comma-separated)
   ...(process.env.FRONTEND_URL
     ? process.env.FRONTEND_URL.split(',').map((u) => u.trim())
