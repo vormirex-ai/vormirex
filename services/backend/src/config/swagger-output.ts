@@ -294,9 +294,32 @@ export default {
     "/api/auth/refresh": {
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "x-refresh-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }

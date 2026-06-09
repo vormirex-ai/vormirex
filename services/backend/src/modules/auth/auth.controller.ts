@@ -89,7 +89,7 @@ export const login = async (
       profilePhoto: result.user!.profilePhoto,
     };
 
-    return res.json({ success: true, accessToken: result.accessToken, user: userResponse });
+    return res.json({ success: true, accessToken: result.accessToken, refreshToken: result.refreshToken, user: userResponse });
   } catch (error) {
     next(error);
   }
@@ -115,7 +115,7 @@ export const verifyTwoFactor = async (req: Request, res: Response, next: NextFun
       profilePhoto: user.profilePhoto,
     };
 
-    return res.json({ success: true, accessToken, user: userResponse });
+    return res.json({ success: true, accessToken, refreshToken, user: userResponse });
   } catch (error) {
     next(error);
   }
@@ -187,8 +187,8 @@ export const resetPassword = async (
 
 export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.cookies.refresh_token;
-    if (!token) {
+    const token = req.cookies.refresh_token || req.body.refreshToken || req.headers['x-refresh-token'];
+    if (!token || typeof token !== 'string') {
       throw new UnauthorizedError('No refresh token provided');
     }
     const newAccess = await authService.refreshToken(token);
@@ -246,7 +246,7 @@ export const verifyGuestOTPAccount = async (req: Request, res: Response, next: N
       role: result.user.role,
     };
 
-    return res.json({ success: true, accessToken: result.accessToken, user: userResponse });
+    return res.json({ success: true, accessToken: result.accessToken, refreshToken: result.refreshToken, user: userResponse });
   } catch (error) {
     next(error);
   }
