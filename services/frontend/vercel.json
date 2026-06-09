@@ -9,6 +9,14 @@
       "destination": "https://vormirex-backend.vercel.app/api/:path*"
     },
     {
+      "source": "/api-docs/:path*",
+      "destination": "https://vormirex-backend.vercel.app/api-docs/:path*"
+    },
+    {
+      "source": "/redoc/:path*",
+      "destination": "https://vormirex-backend.vercel.app/redoc/:path*"
+    },
+    {
       "source": "/((?!assets/|favicon.ico|logo.png|manifest.json|robots.txt|sitemap.xml|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg).*)",
       "destination": "/index.html"
     }
