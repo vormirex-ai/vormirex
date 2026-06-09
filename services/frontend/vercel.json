@@ -9,8 +9,16 @@
       "destination": "https://vormirex-backend.vercel.app/api/:path*"
     },
     {
+      "source": "/api-docs",
+      "destination": "https://vormirex-backend.vercel.app/api-docs/"
+    },
+    {
       "source": "/api-docs/:path*",
       "destination": "https://vormirex-backend.vercel.app/api-docs/:path*"
+    },
+    {
+      "source": "/redoc",
+      "destination": "https://vormirex-backend.vercel.app/redoc/"
     },
     {
       "source": "/redoc/:path*",
