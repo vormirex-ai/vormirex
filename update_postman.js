@@ -132,6 +132,9 @@ inject('AI Tutor', createRequest('Send AI Tutor Message', 'POST', ['api', 'ai-tu
   actionType: "explain"
 }));
 
+// QUIZZES
+inject('Quizzes', createRequest('Verify Single Question Answer', 'POST', ['api', 'quizzes', 'questions', '{{questionId}}', 'verify'], 'user', { selectedOption: "A" }));
+
 
 fs.writeFileSync(collectionPath, JSON.stringify(data, null, '\t'));
 console.log('Collection updated successfully.');

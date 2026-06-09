@@ -828,6 +828,42 @@
 							]
 						}
 					}
+				},
+				{
+					"name": "Verify Single Question Answer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/quizzes/questions/{{questionId}}/verify",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"quizzes",
+								"questions",
+								"{{questionId}}",
+								"verify"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"selectedOption\": \"A\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
 				}
 			]
 		},
