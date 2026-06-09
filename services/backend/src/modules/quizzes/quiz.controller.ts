@@ -79,8 +79,26 @@ export const getGlobalStats = async (req: Request, res: Response) => {
   res.status(200).json(stats);
 };
 
+export const verifyQuestionAnswer = async (req: Request, res: Response) => {
+  const { questionId } = req.params;
+  const { selectedOption } = req.body;
+
+  if (selectedOption === undefined) {
+    return res.status(400).json({ error: 'selectedOption is required' });
+  }
+
+  const result = await quizService.verifyQuestionAnswer(questionId, selectedOption);
+
+  if (!result) {
+    return res.status(404).json({ error: 'Question not found' });
+  }
+
+  res.status(200).json(result);
+};
+
 export default { 
   getQuestionsForSubject, 
+  verifyQuestionAnswer,
   submitQuiz, 
   getQuestionDetail, 
   getQuizHistory, 
