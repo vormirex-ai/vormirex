@@ -10,7 +10,12 @@ export const getQuestionsForSubject = async (req: Request, res: Response) => {
     return res.status(404).json({ error: 'No questions found for this subject' });
   }
 
-  res.status(200).json({ questions });
+  res.status(200).json({
+    questions,
+    totalQuestions: questions.length,
+    timeLimit: 600, // 600 seconds (10 minutes)
+    totalXpReward: questions.length * 40 // 40 XP per correct question
+  });
 };
 
 export const submitQuiz = async (req: Request, res: Response) => {
