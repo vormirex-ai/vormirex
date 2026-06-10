@@ -201,8 +201,8 @@ export default {
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
