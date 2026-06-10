@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 
 const API_ROOT =
-  import.meta.env.VITE_API_URL || "http://localhost/api";
+  import.meta.env.VITE_API_URL || "/api";
 
 const GoogleLoginButton = () => {
   const handleGoogleLogin = () => {
