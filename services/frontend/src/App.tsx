@@ -35,6 +35,8 @@ import { setCredentials, logout } from "@/store/slice/authSlice";
 import { setUiPreferences } from "@/store/slice/themeSlice";
 import { useLazyMeQuery } from "@/store/api/authApi";
 import { RootState, store } from "@/store/store";
+import ChatHistoryPage from "./pages/dashboard/chat-history";
+import QuizHistoryPage from "./pages/practice/quiz/quiz-history";
 
 function App() {
   const dispatch = useDispatch();
@@ -89,6 +91,9 @@ function App() {
     initializeAuth();
   }, [dispatch, triggerMe]);
 
+
+
+
   return (
     <Routes>
       <Route path="/" element={<LandingLayout />} />
@@ -114,6 +119,7 @@ function App() {
             element={<VideoLearning />}
           />
           <Route path="ai-chat" element={<AIChatPage />} />
+          <Route path="chat-history" element={<ChatHistoryPage />} />
           <Route path="roadmap" element={<RoadmapPage />} />
           <Route path="course-details/:id?" element={<CourseDetails />} />
           <Route path="settings" element={<SettingsPage />} />
@@ -123,7 +129,9 @@ function App() {
 
 
         <Route path="/practice" element={<DashboardLayout />}>
-          <Route path="quiz" element={<QuizPage />} />
+          {/* <Route path="quiz" element={<QuizPage />} /> */}
+          <Route path="/practice/quiz/:subjectId?" element={<QuizPage />} />
+          <Route path="/practice/quiz/quiz-history" element={<QuizHistoryPage />} />
           <Route path="flash-cards" element={<FlashcardPage />} />
           <Route path="daily-challenges" element={<DailyChallengePage />} />
           <Route path="interview-bot" element={<InterviewBotPage />} />

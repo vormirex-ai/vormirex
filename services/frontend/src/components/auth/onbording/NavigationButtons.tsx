@@ -7,6 +7,7 @@ const NavigationButtons = ({
   nextStep,
   handleSubmit,
   canProceed,
+  isLoading,
 }: any) => {
   return (
     <div className="mt-10 flex items-center gap-4">
@@ -33,10 +34,10 @@ const NavigationButtons = ({
       ) : (
         <Button
           onClick={handleSubmit}
-          disabled={!canProceed}
+          disabled={!canProceed || isLoading}
           className="flex-1 py-6 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
         >
-          Finish Setup
+          {isLoading ? "Generating..." : "Generate AI Roadmap"}
         </Button>
       )}
     </div>

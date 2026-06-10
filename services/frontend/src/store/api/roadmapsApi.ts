@@ -3,12 +3,14 @@ import { apiSlice } from "./apiSlice";
 export const roadmapsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     generateRoadmap: builder.mutation({
-      query: () => ({
+      query: (body) => ({
         url: "/roadmaps/generate",
         method: "POST",
+        body,
       }),
       invalidatesTags: ["Roadmaps"],
     }),
+
     getMyRoadmap: builder.query({
       query: () => "/roadmaps/my-roadmap",
       providesTags: ["Roadmaps"],
@@ -17,7 +19,4 @@ export const roadmapsApi = apiSlice.injectEndpoints({
   overrideExisting: false,
 });
 
-export const {
-  useGenerateRoadmapMutation,
-  useGetMyRoadmapQuery,
-} = roadmapsApi;
+export const { useGenerateRoadmapMutation, useGetMyRoadmapQuery } = roadmapsApi;

@@ -1,7 +1,9 @@
 import { MessageCircle, Trash2, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
 
 export function ChatHeader() {
+  const navigate = useNavigate()
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full pb-4 border-b border-cyan-500/10">
 
@@ -36,9 +38,10 @@ export function ChatHeader() {
         </Button>
 
         <Button
+          onClick={() => navigate("/dashboard/chat-history")}
           variant="secondary"
           size="sm"
-          className="flex-1 sm:flex-none rounded-lg"
+          className="flex-1 sm:flex-none rounded-lg hover:bg-primary-gradient hover:text-slateText"
         >
           <History size={16} className="mr-2" />
           History

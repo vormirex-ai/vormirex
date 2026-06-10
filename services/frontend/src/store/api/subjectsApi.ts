@@ -23,13 +23,17 @@ export const subjectsApi = apiSlice.injectEndpoints({
     getSubjectLessons: builder.query({
       query: (subjectId) => `/lessons/${subjectId}`,
     }),
+
     updateLessonProgress: builder.mutation({
-      query: (subjectId) => ({
-        url: `/lessons/${subjectId}/progress`,
+      query: ({ lessonId, data }) => ({
+        url: `/lessons/${lessonId}/progress`,
         method: "POST",
+        body: data,
       }),
+
       invalidatesTags: ["Subjects"],
     }),
+
     completeSubjectCurriculum: builder.mutation({
       query: (subjectId) => ({
         url: `/lessons/${subjectId}/complete`,

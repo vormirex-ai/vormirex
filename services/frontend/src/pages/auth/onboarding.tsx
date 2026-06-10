@@ -6,6 +6,8 @@ import {
   setOnboardingCompleted,
   saveOnboardingData,
 } from "@/store/slice/onboardingSlice";
+
+import { useGenerateRoadmapMutation } from "@/store/api/roadmapsApi";
 import StepGoal from "@/components/auth/onbording/StepGoal";
 import StepSubjects from "@/components/auth/onbording/StepSubjects";
 import StepStudyTime from "@/components/auth/onbording/StepStudyTime";
@@ -24,11 +26,13 @@ const initialFormData = {
 const OnboardingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [searchParams, setSearchParams] = useSearchParams();
   const [step, setStep] = useState(1);
+
   const [formData, setFormData] = useState(initialFormData);
 
+  const [generateRoadmap, { isLoading }] =
+    useGenerateRoadmapMutation();
 
   useEffect(() => {
     const urlStep = Number(searchParams.get("step"));
@@ -44,7 +48,6 @@ const OnboardingPage = () => {
     }));
   };
 
-
   const nextStep = () => {
     if (step < 5) {
       const newStep = step + 1;
@@ -53,12 +56,10 @@ const OnboardingPage = () => {
     }
   };
 
-
   const prevStep = () => {
     if (step > 1) {
       const newStep = step - 1;
       setStep(newStep);
-
       setSearchParams({ step: String(newStep) });
     }
   };
@@ -69,17 +70,32 @@ const OnboardingPage = () => {
     if (step === 3) return !!formData.goal;
     if (step === 4) return !!formData.studyTime;
     if (step === 5) return true;
+
     return false;
   };
 
-  const handleSubmit = () => {
-    dispatch(saveOnboardingData(formData));
-    dispatch(setOnboardingCompleted(true));
+  const handleSubmit = async () => {
+    try {
+      const payload = {
+        educationLevel: formData.level,
+        selectedSubjects: formData.subjects,
+        primaryGoal: formData.goal,
+      };
 
-    toast.success("Onboarding Completed ✅");
+      const response = await generateRoadmap(payload).unwrap();
+      dispatch(saveOnboardingData(formData));
+      dispatch(setOnboardingCompleted(true));
 
-    setSearchParams({});
-    navigate("/dashboard");
+      toast.success("Roadmap generated successfully 🚀");
+
+      setSearchParams({});
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Failed to generate roadmap");
+    }
   };
 
   return (
@@ -121,7 +137,6 @@ const OnboardingPage = () => {
           {step === 5 && (
             <OnboardingFinish
               formData={formData}
-              updateFormData={updateFormData}
             />
           )}
 
@@ -133,6 +148,7 @@ const OnboardingPage = () => {
           nextStep={nextStep}
           handleSubmit={handleSubmit}
           canProceed={canProceed()}
+          isLoading={isLoading}
         />
 
       </div>

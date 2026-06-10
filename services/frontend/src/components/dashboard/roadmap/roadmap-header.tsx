@@ -1,5 +1,5 @@
 import { Map } from "lucide-react";
-import { RegeneratePlanModal } from "./regenerate-plan/regenerate-plan-modal";
+import { RegeneratePlanModal } from "./regenerate-plan/roadmap-plan-modal";
 
 
 export function RoadmapHeader() {

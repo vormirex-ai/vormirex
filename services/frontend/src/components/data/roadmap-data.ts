@@ -41,3 +41,14 @@ export const roadmapTimeline: TimelineItem[] = [
     duration: "20 min",
   },
 ];
+
+export const stepMeta: Record<number, string> = {
+  1: "Learning Goal",
+  2: "Skill Level",
+  3: "Daily Study Time",
+  4: "Study Pace",
+  5: "Preferences",
+  6: "Availability",
+  7: "Roadmap Enhancements",
+  8: "Summary",
+};

@@ -24,8 +24,7 @@ const authSlice = createSlice({
 
       state.user = user;
       state.token = token;
-
-      state.isAuthenticated = !!user && !!token;
+      state.isAuthenticated = true;
       state.isInitialized = true;
     },
 
@@ -33,6 +32,8 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+
+      // 🔥 IMPORTANT FIX
       state.isInitialized = true;
     },
 

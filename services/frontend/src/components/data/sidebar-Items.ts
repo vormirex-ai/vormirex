@@ -39,17 +39,17 @@ export const navGroups: NavGroup[] = [
     items: [
       { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
       { title: "Subjects", path: "/dashboard/subjects", icon: BookOpen },
-      {
-        title: "Subject Detail",
-        path: "/dashboard/course-details",
-        icon: FileText,
-      },
-      {
-        title: "Video Library",
-        path: "/dashboard/video-learning",
-        icon: Video,
-        isNew: true,
-      },
+      // {
+      //   title: "Subject Detail",
+      //   path: "/dashboard/course-details",
+      //   icon: FileText,
+      // },
+      // {
+      //   title: "Video Library",
+      //   path: "/dashboard/video-learning",
+      //   icon: Video,
+      //   isNew: true,
+      // },
       { title: "AI Chat", path: "/dashboard/ai-chat", icon: MessageCircle },
       { title: "Roadmap", path: "/dashboard/roadmap", icon: Map },
       { title: "Quiz", path: "/practice/quiz", icon: Trophy },

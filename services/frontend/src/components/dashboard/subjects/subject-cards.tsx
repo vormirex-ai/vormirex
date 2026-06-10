@@ -49,7 +49,6 @@ export const SubjectCard = ({
       <CardContent className="p-6">
         <div className="mb-4 flex items-start justify-between">
           <div className="rounded-2xl bg-border p-3 text-2xl transition-transform duration-300 group-hover:scale-105">
-            {/* {icon} */}
             <DynamicIcon icon={icon} />
           </div>
 
@@ -114,7 +113,7 @@ export const SubjectCard = ({
               style={{
                 width: `${progress}%`,
                 background: color,
-                boxShadow: `0 0 12px ${color}`,
+                boxShadow: `0 0 7px ${color}`,
               }}
             />
           </div>

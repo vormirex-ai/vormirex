@@ -74,10 +74,6 @@ export function RoadmapStepPreferences({ preferences, setPreferences }: Props) {
     <div className="space-y-8">
 
       <div>
-        <p className="text-sm text-primary mb-2 font-medium">
-          Step 5 of 7 · Learning Preferences
-        </p>
-
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Choose your learning speed
         </h2>
@@ -103,13 +99,13 @@ export function RoadmapStepPreferences({ preferences, setPreferences }: Props) {
                 "text-left",
                 "transition-all duration-300",
 
-                "bg-white border-gray-200",
-                "hover:border-primary/50",
+                "bg-white border-cyan-500/20",
+                "hover:border-primary",
                 "hover:shadow-[0_6px_24px_rgba(0,0,0,0.06)]",
 
                 "dark:bg-[#0A1625]",
                 "dark:border-white/10",
-                "dark:hover:border-cyan-400/40",
+                "dark:hover:border-primary",
                 "dark:hover:shadow-[0_0_25px_rgba(34,211,238,0.12)]",
 
                 "hover:-translate-y-0.5",

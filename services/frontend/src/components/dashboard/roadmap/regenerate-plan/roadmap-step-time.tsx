@@ -31,10 +31,6 @@ export function RoadmapStepTime({
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs text-cyan-600 dark:text-cyan-300/70 mb-3">
-          Step 3 of 7 · Daily Study Time
-        </p>
-
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">
           How much time can you dedicate each day?
         </h2>
@@ -53,9 +49,9 @@ export function RoadmapStepTime({
                 "group relative overflow-hidden",
                 "flex items-center gap-3",
                 "px-6 py-4 rounded-full",
-                "border transition-all duration-300",
-                "min-w-[150px]",
-                "bg-white border-cyan-500/30 hover:border-primary",
+                "border border-cyan-500/20 transition-all duration-300",
+                "min-w-[180px]",
+                "bg-white  hover:border-primary",
                 "dark:bg-[#071120]/90 dark:border-primary-gradient dark:hover:border-primary",
 
                 active &&
