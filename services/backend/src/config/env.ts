@@ -42,3 +42,15 @@ if (!parsedEnv.success) {
 
 // Export the validated and typed environment variables
 export const env = parsedEnv.data;
+
+/**
+ * Returns the primary frontend URL. Supports comma-separated strings
+ * (used for multiple CORS origins) and returns the first one.
+ */
+export const getFrontendUrl = (): string => {
+  const url = process.env.FRONTEND_URL || 'http://localhost:5173';
+  if (url.includes(',')) {
+    return url.split(',')[0].trim();
+  }
+  return url.trim();
+};
