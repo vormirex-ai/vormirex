@@ -106,9 +106,9 @@ export const submitChallenge = async (
     throw new BadRequestError('Invalid or empty answers format');
   }
 
-  // 2. Grade the answers and calculate speed bonuses
+  // 2. Grade the answers
   let questionsCorrect = 0;
-  let xpEarned = 15; // Base XP
+  let xpEarned = 0;
   const evaluatedAnswers = [];
 
   for (const answer of answers) {
@@ -120,10 +120,7 @@ export const submitChallenge = async (
     const isCorrect = question.correctAnswer === answer.selectedOption;
     if (isCorrect) {
       questionsCorrect++;
-      // Speed bonus: correct and answered in under 10 seconds
-      if (answer.timeToAnswer < 10000) {
-        xpEarned += 5;
-      }
+      xpEarned += 30; // 30 XP per correct answer (max 150 XP)
     }
 
     evaluatedAnswers.push({
@@ -202,6 +199,19 @@ export const submitChallenge = async (
   };
 };
 
+export const verifyQuestionAnswer = async (questionId: string, selectedOption: string) => {
+  const question = await QuizQuestion.findById(questionId);
+  if (!question) return null;
+
+  const isCorrect = question.correctAnswer === selectedOption;
+  return {
+    isCorrect,
+    correctAnswer: question.correctAnswer,
+    explanation: question.explanation || '',
+    xpEarned: isCorrect ? 30 : 0
+  };
+};
+
 export const getChallengeHistory = async (userId: string, limit: number, offset: number) => {
   return await ChallengeResult.find({ userId })
     .sort({ dateString: -1, createdAt: -1 })
@@ -257,6 +267,7 @@ export const getChallengeCalendar = async (userId: string, month: string) => {
 
 export default {
   getTodayChallenge,
+  verifyQuestionAnswer,
   submitChallenge,
   getChallengeHistory,
   getChallengeStreakAndStats,
