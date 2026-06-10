@@ -140,7 +140,7 @@ describe('Daily Challenge Service Unit Tests', () => {
       );
     });
 
-    it('should grade answers and reward XP with speed bonuses correctly', async () => {
+    it('should grade answers and reward 30 XP per correct answer correctly', async () => {
       const mockUser = {
         timezone: 'UTC',
         xp: 100,
@@ -162,22 +162,58 @@ describe('Daily Challenge Service Unit Tests', () => {
       });
 
       const userAnswers = [
-        { questionId: 'q1', selectedOption: 'A', timeToAnswer: 5000 },  // Correct, Speed bonus (+5)
-        { questionId: 'q2', selectedOption: 'B', timeToAnswer: 12000 }, // Correct, No speed bonus (+0)
-        { questionId: 'q3', selectedOption: 'D', timeToAnswer: 3000 },  // Wrong, No speed bonus (+0)
-        { questionId: 'q4', selectedOption: 'D', timeToAnswer: 8000 },  // Correct, Speed bonus (+5)
-        { questionId: 'q5', selectedOption: 'B', timeToAnswer: 4000 },  // Wrong, No speed bonus (+0)
+        { questionId: 'q1', selectedOption: 'A', timeToAnswer: 5000 },  // Correct (+30 XP)
+        { questionId: 'q2', selectedOption: 'B', timeToAnswer: 12000 }, // Correct (+30 XP)
+        { questionId: 'q3', selectedOption: 'D', timeToAnswer: 3000 },  // Wrong (+0 XP)
+        { questionId: 'q4', selectedOption: 'D', timeToAnswer: 8000 },  // Correct (+30 XP)
+        { questionId: 'q5', selectedOption: 'B', timeToAnswer: 4000 },  // Wrong (+0 XP)
       ];
 
-      // XP: 15 base + 5 (q1) + 5 (q4) = 25 XP total.
+      // XP: 3 correct * 30 XP = 90 XP total.
       jest.spyOn(ChallengeResult, 'create').mockImplementation((data: any) => Promise.resolve(data) as any);
 
       const result = await challengeService.submitChallenge(mockUserId, userAnswers);
 
-      expect(result.xpEarned).toBe(25);
-      expect(result.newTotalXp).toBe(125);
-      expect(mockUser.xp).toBe(125);
+      expect(result.xpEarned).toBe(90);
+      expect(result.newTotalXp).toBe(190);
+      expect(mockUser.xp).toBe(190);
       expect(mockUser.save).toHaveBeenCalled();
+    });
+  });
+
+  describe('verifyQuestionAnswer', () => {
+    it('should verify correct answer and return correct status, explanation and 30 XP', async () => {
+      const mockQuestion = {
+        _id: 'q1',
+        correctAnswer: 'A',
+        explanation: 'Correct explanation',
+      };
+      jest.spyOn(QuizQuestion, 'findById').mockResolvedValue(mockQuestion as any);
+
+      const result = await challengeService.verifyQuestionAnswer('q1', 'A');
+      expect(result).toEqual({
+        isCorrect: true,
+        correctAnswer: 'A',
+        explanation: 'Correct explanation',
+        xpEarned: 30,
+      });
+    });
+
+    it('should verify incorrect answer and return explanation and 0 XP', async () => {
+      const mockQuestion = {
+        _id: 'q1',
+        correctAnswer: 'A',
+        explanation: 'Correct explanation',
+      };
+      jest.spyOn(QuizQuestion, 'findById').mockResolvedValue(mockQuestion as any);
+
+      const result = await challengeService.verifyQuestionAnswer('q1', 'B');
+      expect(result).toEqual({
+        isCorrect: false,
+        correctAnswer: 'A',
+        explanation: 'Correct explanation',
+        xpEarned: 0,
+      });
     });
   });
 });

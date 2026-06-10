@@ -13,13 +13,16 @@ router.get('/today', challengeController.getTodayChallenge);
 // 2. Submit Daily Challenge Answers & Gamification
 router.post('/submit', challengeController.submitChallenge);
 
-// 3. Get Challenge History (Paginated)
+// 3. Verify Single Question Answer
+router.post('/questions/:questionId/verify', challengeController.verifyQuestionAnswer);
+
+// 4. Get Challenge History (Paginated)
 router.get('/history', challengeController.getChallengeHistory);
 
-// 4. Get Challenge Streak & Stats
+// 5. Get Challenge Streak & Stats
 router.get('/streak', challengeController.getChallengeStreakAndStats);
 
-// 5. Get Calendar View (Heatmap data)
+// 6. Get Calendar View (Heatmap data)
 router.get('/calendar/:month', challengeController.getChallengeCalendar);
 
 export default router;

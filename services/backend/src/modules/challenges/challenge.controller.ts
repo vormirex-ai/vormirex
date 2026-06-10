@@ -49,8 +49,26 @@ export const getChallengeCalendar = async (req: Request, res: Response) => {
   res.status(200).json({ calendar });
 };
 
+export const verifyQuestionAnswer = async (req: Request, res: Response) => {
+  const { questionId } = req.params;
+  const { selectedOption } = req.body;
+
+  if (selectedOption === undefined) {
+    return res.status(400).json({ error: 'selectedOption is required' });
+  }
+
+  const result = await challengeService.verifyQuestionAnswer(questionId, selectedOption);
+
+  if (!result) {
+    return res.status(404).json({ error: 'Question not found' });
+  }
+
+  res.status(200).json(result);
+};
+
 export default {
   getTodayChallenge,
+  verifyQuestionAnswer,
   submitChallenge,
   getChallengeHistory,
   getChallengeStreakAndStats,
