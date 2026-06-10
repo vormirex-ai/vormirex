@@ -49,10 +49,19 @@ export const env = parsedEnv.data;
  */
 export const getFrontendUrl = (): string => {
   const url = process.env.FRONTEND_URL || 'http://localhost:5173';
-  if (url.includes(',')) {
-    return url.split(',')[0].trim();
+  const urls = url.split(',').map((u) => u.trim());
+  if (process.env.NODE_ENV === 'production') {
+    const prodUrls = urls.filter(
+      (u) =>
+        !u.includes('localhost') &&
+        !u.includes('127.0.0.1') &&
+        !u.includes('frontend:')
+    );
+    if (prodUrls.length > 0) {
+      return prodUrls[0];
+    }
   }
-  return url.trim();
+  return urls[0];
 };
 
 /**
