@@ -51,18 +51,12 @@ export function RoadmapStepPace({
 }: Props) {
   return (
     <div className="space-y-8">
-      {/* Top */}
       <div>
-        <p className="text-sm text-cyan-400 mb-3">
-          Step 4 of 7 · Learning Pace
-        </p>
-
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">
           Choose your learning speed
         </h2>
       </div>
 
-      {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {paceOptions.map((item) => {
           const Icon = item.icon;
@@ -88,7 +82,7 @@ export function RoadmapStepPace({
                 "transition-all duration-300",
                 "min-h-[190px]",
 
-                "bg-white border-gray-200 hover:border-cyan-400/50",
+                "bg-white border-cyan-500/20 hover:border-primary-500",
                 "dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.95),rgba(4,12,28,0.98))]",
                 "dark:border-white/10",
 

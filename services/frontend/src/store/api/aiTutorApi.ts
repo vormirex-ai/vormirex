@@ -7,10 +7,10 @@ export const aiTutorApi = apiSlice.injectEndpoints({
       providesTags: ["AiChats"],
     }),
     sendAiMessage: builder.mutation({
-      query: (body) => ({
-        url: "/ai-tutor/chats",
+      query: ({ lessonId, message }) => ({
+        url: `/ai-tutor/chats/${lessonId}/message`,
         method: "POST",
-        body,
+        body: { message },
       }),
       invalidatesTags: ["AiChats"],
     }),
@@ -18,7 +18,5 @@ export const aiTutorApi = apiSlice.injectEndpoints({
   overrideExisting: false,
 });
 
-export const {
-  useGetAiChatHistoryQuery,
-  useSendAiMessageMutation,
-} = aiTutorApi;
+export const { useGetAiChatHistoryQuery, useSendAiMessageMutation } =
+  aiTutorApi;

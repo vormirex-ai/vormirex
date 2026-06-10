@@ -32,3 +32,28 @@ export interface SubjectCardProps {
   tags?: string[];
   hasCertificate?: boolean;
 }
+
+export interface SubjectState {
+  subjects: any[];
+  totalCount: number;
+  curriculum: any;
+  currentLessonId: string | null;
+  nextLessonId: string | null;
+  selectedSubjectId: string | null;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface CourseHeaderProps {
+  title: string;
+  progress: number;
+  description: string;
+  icon?: string;
+  stats: {
+    lessons: number;
+    duration: string;
+    quizzes: number;
+    hasCertificate: boolean;
+  };
+  id?: string;
+}

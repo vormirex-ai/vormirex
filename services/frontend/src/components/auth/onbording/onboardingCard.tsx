@@ -1,10 +1,11 @@
+import { DynamicIcon } from "@/components/iconMapper";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SelectableCardProps {
   title: string;
   description?: string;
-  icon: React.ReactNode;
+  icon: string;
   selected?: boolean;
   onClick?: () => void;
   iconColor?: string;
@@ -48,12 +49,10 @@ const SelectableCard = ({
 
       <div className="flex flex-col items-center text-center relative z-10">
 
-        <div
-          className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4 flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-          style={{ color: iconColor || "inherit" }}
-        >
-          {icon}
-        </div>
+        <DynamicIcon
+          icon={icon}
+          className="h-10 w-10 mb-3 transition-transform duration-300 group-hover:scale-110"
+        />
 
         <h3 className="text-sm sm:text-base md:text-lg font-semibold text-white group-hover:text-primary transition-colors">
           {title}

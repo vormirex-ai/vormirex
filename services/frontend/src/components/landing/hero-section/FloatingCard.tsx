@@ -82,7 +82,7 @@ export default function CardSection() {
                   {chatData.map((msg: any) => (
                     <div
                       key={msg.id}
-                      className={`p-2 md:p-3 text-xs md:text-sm max-w-[80%] ${msg.sender === "user"
+                      className={`p-2 md:p-3 text-xs md:text-sm w-fit max-w-[100%] md:max-w-[80%] ${msg.sender === "user"
                         ? "ml-auto bg-[#182D3C] border border-blue-500/20 rounded-xl rounded-br-none"
                         : "mr-auto text-slateText bg-primary-gradient border border-white/5 rounded-xl rounded-bl-none"
                         }`}

@@ -46,8 +46,8 @@ export function RoadmapStepLevel({
               setLevel(item.key as LevelType)
             }
             className={cn(
-              "rounded-2xl sm:rounded-[32px] p-5 sm:p-8 text-left border transition-all duration-300",
-              "dark:bg-[#071120]/90 border-cyan-500/30",
+              "rounded-2xl sm:rounded-[32px] p-5 sm:p-8 text-left  border   border-cyan-500/30 transition-all duration-300",
+              "dark:bg-[#071120]/90 ",
               "hover:border-primary",
               level === item.key &&
               "border-cyan-400 shadow-[0_0_40px_rgba(34,211,238,0.25)]"

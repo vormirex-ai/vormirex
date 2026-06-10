@@ -20,44 +20,6 @@ export const goals = [
     description: "Revisit & Consolidate",
   },
 ];
-export const subjects = [
-  {
-    title: "Math",
-    icon: "📐",
-  },
-  {
-    title: "Physics",
-    icon: "🔬",
-  },
-  {
-    title: "Chemistry",
-    icon: "🧪",
-  },
-  {
-    title: "Coding",
-    icon: "💻",
-  },
-  {
-    title: "Biology",
-    icon: "🧬",
-  },
-  {
-    title: "History",
-    icon: "📜",
-  },
-  {
-    title: "AI / ML",
-    icon: "🤖",
-  },
-  {
-    title: "Statistics",
-    icon: "📊",
-  },
-  {
-    title: "Geography",
-    icon: "🌍",
-  },
-];
 
 export const levels = [
   {

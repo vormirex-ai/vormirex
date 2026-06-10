@@ -15,9 +15,12 @@ import { GoalType } from "@/interface/roadmap.interface";
 interface Props {
   goal: GoalType;
   setGoal: (value: GoalType) => void;
+  goalDescription: string;
+  setGoalDescription: (value: string) => void;
 }
 
-export function RoadmapStepGoal({ goal, setGoal }: Props) {
+
+export function RoadmapStepGoal({ goal, setGoal, goalDescription, setGoalDescription }: Props) {
   return (
     <div className="space-y-8">
       <div>
@@ -84,6 +87,10 @@ export function RoadmapStepGoal({ goal, setGoal }: Props) {
         <Textarea
           placeholder="Become proficient in Mathematics and complete Calculus within 3 months."
           className="min-h-[120px] sm:min-h-[130px] rounded-2xl sm:rounded-3xl   resize-none"
+          value={goalDescription}
+          onChange={(e) =>
+            setGoalDescription(e.target.value)
+          }
         />
       </div>
     </div>
