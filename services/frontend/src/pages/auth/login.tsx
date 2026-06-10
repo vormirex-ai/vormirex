@@ -57,7 +57,20 @@ const Login = () => {
     } else if (verified === "false") {
       toast.error(err || "Email verification failed ❌");
     }
-  }, [searchParams]);
+
+    // Handle Google OAuth success parameters
+    const oauthToken = searchParams.get("accessToken");
+    if (oauthToken) {
+      dispatch(
+        setCredentials({
+          user: null,
+          token: oauthToken,
+        })
+      );
+      toast.success("Login Successful ✅");
+      navigate("/dashboard");
+    }
+  }, [searchParams, dispatch, navigate]);
   
   const [login, { isLoading: loading }] = useLoginMutation();
 

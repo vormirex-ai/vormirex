@@ -10,7 +10,7 @@ import {
 } from './auth.validation.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
-const getCookieOptions = (maxAge?: number) => ({
+export const getCookieOptions = (maxAge?: number) => ({
   httpOnly: true,
   secure: isProduction,
   sameSite: (isProduction ? 'none' : 'lax') as 'none' | 'lax' | 'strict',
