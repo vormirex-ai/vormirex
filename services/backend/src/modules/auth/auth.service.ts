@@ -21,7 +21,7 @@ import {
 } from '../../utils/errors.js';
 import { updateUserStreak } from '../../utils/streak.js';
 import type { SignupDTO, LoginDTO, CustomJWTPayload } from './auth.types.js';
-import { getFrontendUrl } from '../../config/env.js';
+import { getFrontendUrl, getBackendUrl } from '../../config/env.js';
 
 import { hasValidMxRecord } from '../../utils/dns.js';
 import { validateEmail } from '../../utils/zerobounce.js';
@@ -53,8 +53,8 @@ export const signup = async (data: SignupDTO) => {
       await existingUser.save();
 
       // Resend the verification email to the updated user.
-      const frontendUrl = getFrontendUrl();
-      const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
+      const backendUrl = getBackendUrl();
+      const verificationUrl = `${backendUrl}/api/auth/verify-email?token=${verificationToken}`;
       const emailHtml = getVerificationEmailHTML(existingUser.name, verificationUrl);
       await sendEmail({
         to: existingUser.email,
@@ -80,8 +80,8 @@ export const signup = async (data: SignupDTO) => {
     await existingUser.save();
 
     // Resend the verification email to the updated user.
-    const frontendUrl = getFrontendUrl();
-    const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
+    const backendUrl = getBackendUrl();
+    const verificationUrl = `${backendUrl}/api/auth/verify-email?token=${verificationToken}`;
     const emailHtml = getVerificationEmailHTML(
       existingUser.name,
       verificationUrl
@@ -105,8 +105,8 @@ export const signup = async (data: SignupDTO) => {
     });
 
     // Send verification email
-    const frontendUrl = getFrontendUrl();
-    const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
+    const backendUrl = getBackendUrl();
+    const verificationUrl = `${backendUrl}/api/auth/verify-email?token=${verificationToken}`;
     const emailHtml = getVerificationEmailHTML(user.name, verificationUrl);
 
     try {
@@ -209,8 +209,8 @@ export const resendVerificationEmail = async (email: string) => {
 
   // 5. Construct the verification URL and send the email.
   // It's good practice to use an environment variable for the base URL.
-  const frontendUrl = getFrontendUrl();
-  const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
+  const backendUrl = getBackendUrl();
+  const verificationUrl = `${backendUrl}/api/auth/verify-email?token=${verificationToken}`;
   const emailHtml = getVerificationEmailHTML(user.name, verificationUrl);
 
   await sendEmail({

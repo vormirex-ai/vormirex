@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import * as authService from './auth.service.js';
 import { BadRequestError, UnauthorizedError } from '../../utils/errors.js';
+import { getFrontendUrl } from '../../config/env.js';
 import {
   ForgotPasswordBody,
   LoginBody,
@@ -123,15 +124,17 @@ export const verifyTwoFactor = async (req: Request, res: Response, next: NextFun
 
 
 export const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
+  const frontendUrl = getFrontendUrl();
   try {
     const { token } = req.query;
     if (typeof token !== 'string') {
       throw new BadRequestError('A valid verification token must be provided.');
     }
-    const result = await authService.verifyEmail(token);
-    return res.status(200).json({ success: true, message: result.message });
+    await authService.verifyEmail(token);
+    return res.redirect(`${frontendUrl}/login?verified=true`);
   } catch (error) {
-    next(error);
+    const errorMsg = (error as any).message || 'Verification failed';
+    return res.redirect(`${frontendUrl}/login?verified=false&error=${encodeURIComponent(errorMsg)}`);
   }
 };
 

@@ -54,3 +54,23 @@ export const getFrontendUrl = (): string => {
   }
   return url.trim();
 };
+
+/**
+ * Returns the primary backend base URL. Checks BACKEND_URL first,
+ * then tries to parse the domain from GOOGLE_CALLBACK_URL,
+ * and falls back to localhost:4000.
+ */
+export const getBackendUrl = (): string => {
+  if (process.env.BACKEND_URL) {
+    return process.env.BACKEND_URL.trim();
+  }
+  if (process.env.GOOGLE_CALLBACK_URL) {
+    try {
+      const parsed = new URL(process.env.GOOGLE_CALLBACK_URL);
+      return `${parsed.protocol}//${parsed.host}`;
+    } catch {
+      // fallback
+    }
+  }
+  return 'http://localhost:4000';
+};
