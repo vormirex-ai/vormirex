@@ -33,7 +33,8 @@ export const generateRoadmap = async (req: Request, res: Response) => {
     summary: {
       durationWeeks: 8,
       totalSubjects: selectedSubjects.length,
-      dailyGoalMinutes: 45
+      dailyGoalMinutes: 45,
+      selectedSubjects: selectedSubjects
     },
     milestones: Array.from({ length: 8 }).map((_, i) => ({
       weekNumber: i + 1,

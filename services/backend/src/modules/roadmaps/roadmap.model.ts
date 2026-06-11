@@ -15,6 +15,7 @@ export interface IRoadmap extends Document {
     durationWeeks: number;
     totalSubjects: number;
     dailyGoalMinutes: number;
+    selectedSubjects: string[];
   };
   milestones: IMilestone[];
   createdAt: Date;
@@ -37,7 +38,8 @@ const roadmapSchema = new Schema<IRoadmap>(
     summary: {
       durationWeeks: { type: Number, required: true },
       totalSubjects: { type: Number, required: true },
-      dailyGoalMinutes: { type: Number, required: true }
+      dailyGoalMinutes: { type: Number, required: true },
+      selectedSubjects: { type: [String], default: [] }
     },
     milestones: [milestoneSchema]
   },
