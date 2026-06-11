@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import User from '../user/user.model.js';
-import Progress from '../progress/progress.model.js';
-import Course from '../courses/course.model.js';
 import Subject from '../subjects/subject.model.js';
+import SubjectProgress from '../subjects/subjectProgress.model.js';
+import Chapter from '../subjects/chapter.model.js';
+import Lesson from '../subjects/lesson.model.js';
 
 class DashboardService {
   async getDashboardData(userId: string) {
@@ -14,31 +15,26 @@ class DashboardService {
       throw new Error('User not found');
     }
 
-    // 2. Fetch user's course progress entries
-    const progressEntries = await Progress.find({ userId: userObjId }).populate('courseId');
+    // 2. Fetch user's subject progress entries
+    const progressEntries = await SubjectProgress.find({ userId: userObjId }).populate('subjectId');
 
     // 3. Process Continue Learning & Subject Progress
     const continueLearning: any[] = [];
     const subjectProgress: any[] = [];
     let overallCompletionSum = 0;
+    let totalStudyTimeSec = 0;
 
     for (const entry of progressEntries) {
-      const course = entry.courseId as any;
-      if (!course) continue;
+      const subject = entry.subjectId as any;
+      if (!subject) continue;
 
-      // Count total lessons from course curriculum levels
-      let totalLessons = 0;
-      if (course.levels) {
-        for (const lvl of course.levels) {
-          if (lvl.modules) {
-            for (const mod of lvl.modules) {
-              if (mod.items) {
-                totalLessons += mod.items.length;
-              }
-            }
-          }
-        }
-      }
+      // Accumulate study time
+      totalStudyTimeSec += entry.totalStudyTimeSeconds || 0;
+
+      // Find chapters and count total lessons for this subject
+      const chapters = await Chapter.find({ subjectId: subject._id });
+      const chapterIds = chapters.map((c) => c._id);
+      let totalLessons = await Lesson.countDocuments({ chapterId: { $in: chapterIds } });
 
       // Default total lessons to 10 if none found to avoid division by zero
       if (totalLessons === 0) totalLessons = 10;
@@ -51,28 +47,28 @@ class DashboardService {
 
       overallCompletionSum += completionPercentage;
 
-      // Map course tags or category as the subject name
-      const category = course.tags?.[0]?.toUpperCase() || 'GENERAL';
+      // Get first tag or fallback to title
+      const category = subject.tags?.[0]?.toUpperCase() || 'SUBJECT';
 
-      // 18 mins left (mock calculation based on remaining lessons * 6 mins each)
+      // 6 mins left per remaining lesson
       const remainingLessons = Math.max(0, totalLessons - completedCount);
       const minsLeft = remainingLessons * 6;
 
       continueLearning.push({
-        courseId: course._id,
+        subjectId: subject._id,
         subject: category,
-        title: course.title,
+        title: subject.title,
         timeLeftMinutes: minsLeft > 0 ? minsLeft : 15,
         percent: completionPercentage,
       });
 
       subjectProgress.push({
-        subject: course.title,
+        subject: subject.title,
         percent: completionPercentage,
       });
     }
 
-    // Fallbacks if user is not enrolled in anything yet (for premium visual experience)
+    // Fallbacks if user is not enrolled/has no progress (for premium visual experience)
     if (continueLearning.length === 0) {
       continueLearning.push(
         {
@@ -96,9 +92,11 @@ class DashboardService {
       );
 
       overallCompletionSum = 188; // (73 + 68 + 47)
+      totalStudyTimeSec = 124 * 3600; // Mocked 124 hours
     }
 
     const overallCompletion = Math.round(overallCompletionSum / subjectProgress.length);
+    const totalStudyHours = Math.round((totalStudyTimeSec / 3600) * 10) / 10;
 
     // 4. Assemble mock weekly activity
     const weeklyActivity = [
@@ -137,7 +135,7 @@ class DashboardService {
           weeklyDiff: 4,
         },
         totalStudyTime: {
-          value: 124,
+          value: totalStudyHours > 0 ? totalStudyHours : 124,
           todayDiff: 3.2,
         },
         xpPoints: {
