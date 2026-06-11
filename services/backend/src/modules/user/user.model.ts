@@ -28,6 +28,11 @@ export interface IUser extends Document {
     longest: number;
     lastActivityDate: Date | null;
   };
+  flashcardStreak: {
+    current: number;
+    longest: number;
+    lastActivityDate: Date | null;
+  };
   learningPreferences: {
     educationLevel?: 'School' | 'College' | 'Professional';
     selectedSubjects: string[];
@@ -90,6 +95,11 @@ const userSchema = new Schema<IUser>(
       lastActivityDate: { type: Date, default: null },
     },
     challengeStreak: {
+      current: { type: Number, default: 0 },
+      longest: { type: Number, default: 0 },
+      lastActivityDate: { type: Date, default: null },
+    },
+    flashcardStreak: {
       current: { type: Number, default: 0 },
       longest: { type: Number, default: 0 },
       lastActivityDate: { type: Date, default: null },
