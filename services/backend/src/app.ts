@@ -20,6 +20,7 @@ import challengeRouter from './modules/challenges/challenge.routes.js';
 import subjectRouter from './modules/subjects/subject.routes.js';
 import lessonRouter from './modules/subjects/lesson.routes.js';
 import aiTutorRouter from './modules/aiTutor/aiTutor.routes.js';
+import dashboardRouter from './modules/dashboard/dashboard.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './config/swagger-output.js';
 
@@ -114,6 +115,7 @@ app.use('/api/analytics', analyticsRouter);
 app.use('/api/progress', progressRouter);
 app.use('/api/notifications', notificationRouter);
 app.use('/api/roles', roleConfigRouter);
+app.use('/api/dashboard', dashboardRouter);
 // app.use('/api/payments', paymentRouter);
 
 // --- Centralized Error Handler ---
