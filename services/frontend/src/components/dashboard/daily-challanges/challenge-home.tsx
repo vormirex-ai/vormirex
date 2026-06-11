@@ -7,26 +7,59 @@ import {
   Flame,
   Zap,
   HelpCircle,
+  CalendarDays,
+  Trophy,
 } from "lucide-react";
-import { PastChallenge } from "@/interface/challenge.interface";
+import {
+  useGetChallengeHistoryQuery,
+  useGetUserStreakQuery,
+} from "@/store/api/challengesApi";
+import { buildWeeklyDays, formatDate } from "@/lib/challenge.utils";
+import { AppSkeletonCard } from "@/components/skeleton/card-skeleton";
+
+interface ChallengeHistoryItem {
+  _id: string;
+  score: number;
+  xpEarned: number;
+  dateString: string;
+  questionsCorrect: number;
+  timeSpent: number;
+}
 
 interface ChallengeHomeProps {
   onStart: () => void;
-  streakDays: number;
-  pastChallenges: PastChallenge[];
+  subjectName: string;
+  difficulty: string;
+  isCompleted?: boolean;
+  todayResult?: any;
 }
-
 export const ChallengeHome: React.FC<ChallengeHomeProps> = ({
   onStart,
-  streakDays,
-  pastChallenges,
+  subjectName,
+  difficulty,
+  isCompleted
 }) => {
-  const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  const completedDays = [true, true, true, false, false, false, false];
+  const { data: historyData, isLoading: historyLoading } =
+    useGetChallengeHistoryQuery();
+
+  const { data: streakData, isLoading: streakLoading } =
+    useGetUserStreakQuery();
+
+  const pastChallenges: ChallengeHistoryItem[] = historyData?.history || [];
+  const weeklyDays = buildWeeklyDays(pastChallenges);
+
+  if (historyLoading || streakLoading) {
+    return (
+      <div className="min-h-screen my-10 flex flex-col gap-3">
+        <AppSkeletonCard />
+        <AppSkeletonCard />
+        <AppSkeletonCard />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto w-full space-y-5 sm:space-y-6">
-
       <Card className="relative overflow-hidden border-border bg-card backdrop-blur-md">
         <div className="absolute top-0 right-0 w-40 sm:w-48 h-40 sm:h-48 bg-purple-600/10 rounded-full blur-3xl -z-10" />
 
@@ -39,11 +72,11 @@ export const ChallengeHome: React.FC<ChallengeHomeProps> = ({
               </span>
 
               <span className="bg-blue-500/10 border border-blue-500/30 text-blue-500 dark:text-blue-400 text-[11px] sm:text-xs font-medium px-2.5 py-1 rounded-full">
-                Mathematics
+                {subjectName}
               </span>
 
               <span className="bg-purple-500/10 border border-purple-500/30 text-purple-500 dark:text-purple-400 text-[11px] sm:text-xs font-medium px-2.5 py-1 rounded-full">
-                Medium
+                {difficulty}
               </span>
             </div>
 
@@ -62,135 +95,195 @@ export const ChallengeHome: React.FC<ChallengeHomeProps> = ({
             </div>
           </div>
 
-          <Button
-            onClick={onStart}
-            className="rounded-xl w-full sm:w-auto h-11 px-5 shrink-0"
-          >
-            <Zap className="w-4 h-4 fill-white" />
-            Accept Challenge
-          </Button>
+          {isCompleted ? (
+            <Button
+              disabled
+              className="rounded-xl w-full sm:w-auto h-11 px-5 shrink-0 opacity-70 cursor-not-allowed"
+            >
+              <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" />
+              Completed
+            </Button>
+          ) : (
+            <Button
+              onClick={onStart}
+              className="rounded-xl w-full sm:w-auto h-11 px-5 shrink-0"
+            >
+              <Zap className="w-4 h-4 fill-white" />
+              Accept Challenge
+            </Button>
+          )}
         </CardContent>
       </Card>
 
       <Card className="border-border bg-card overflow-hidden">
         <CardContent className="p-3 sm:p-5 space-y-4">
-
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <h3 className="text-sm sm:text-base font-semibold flex items-center gap-1.5 text-foreground">
               <Flame className="w-4 h-4 text-orange-500 fill-orange-500 shrink-0" />
               <span>This Week&apos;s Streak</span>
             </h3>
 
-            <div className="text-[11px] sm:text-sm text-muted-foreground whitespace-nowrap">
-              🔥 {streakDays} Day Streak
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 text-xs font-semibold">
+                🔥 {streakData?.current || 0} Current
+              </div>
+
+              <div className="px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-500 text-xs font-semibold">
+                🏆 {streakData?.longest || 0} Best
+              </div>
+
+              <div className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-xs font-semibold">
+                🎯 Avg {streakData?.averageScore || 0}%
+              </div>
+
+              <div className="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-500 text-xs font-semibold">
+                📚 {streakData?.totalAttempts || 0} Attempts
+              </div>
             </div>
           </div>
 
           <div className="grid grid-cols-7 gap-1 sm:gap-2 md:gap-3">
-            {daysOfWeek.map((day, idx) => {
-              const isToday = idx === 3;
-              const isCompleted = completedDays[idx];
-
-              return (
+            {weeklyDays.map((item) => (
+              <div key={item.day} className="flex flex-col items-center gap-2">
                 <div
-                  key={day}
-                  className="flex flex-col items-center gap-1.5 min-w-0"
+                  className={`
+      
+                          w-11 h-11 rounded-xl border
+                          flex items-center justify-center
+      
+                          ${item.isCompleted
+                      ? "bg-emerald-500/15 border-emerald-500 text-emerald-500"
+                      : ""
+                    }
+      
+                          ${item.isToday && !item.isCompleted
+                      ? "bg-indigo-500/10 border-indigo-500 text-indigo-500"
+                      : ""
+                    }
+      
+                          ${!item.isCompleted && !item.isToday
+                      ? "bg-muted/30 border-dashed border-muted-foreground/30 text-muted-foreground"
+                      : ""
+                    }
+      
+                        `}
                 >
-                  <div
-                    className={` w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-lg sm:rounded-xl flex items-center justify-center border transition-all duration-200 shrink-0
-
-                ${isCompleted
-                        ? "bg-emerald-100 dark:bg-emerald-950/40 border-emerald-500 text-emerald-600 dark:text-emerald-400"
-                        : ""
-                      }
-
-                ${isToday && !isCompleted
-                        ? "bg-indigo-50 dark:bg-slate-900 border-indigo-500 text-indigo-600 dark:text-indigo-400 ring-2 sm:ring-4 ring-indigo-500/10"
-                        : ""
-                      }
-
-                ${!isCompleted && !isToday
-                        ? "bg-slate-100 dark:bg-slate-900/50 border-dashed border-slate-300 dark:border-slate-700 text-slate-500"
-                        : ""
-                      }`}
-                  >
-                    {isCompleted ? (
-                      <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 fill-emerald-500 text-white dark:text-slate-950" />
-                    ) : isToday ? (
-                      <Zap className="w-4 h-4 sm:w-5 sm:h-5 fill-indigo-500 text-indigo-500" />
-                    ) : (
-                      <span className="text-xs sm:text-base font-light">-</span>
-                    )}
-                  </div>
-
-                  <span
-                    className={`
-                text-[9px] sm:text-xs truncate text-center leading-none
-
-                ${isToday
-                        ? "text-indigo-600 dark:text-indigo-400 font-medium"
-                        : "text-slate-600 dark:text-slate-500"
-                      }
-              `}
-                  >
-                    {day}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
-
-
-      <Card className="border-border bg-card">
-        <CardContent className="p-4 sm:p-5 space-y-4">
-          <h3 className="text-sm sm:text-base font-semibold flex items-center gap-1.5 text-foreground">
-            <HelpCircle className="w-4 h-4 text-amber-500" />
-            Past Challenges
-          </h3>
-
-          <div className="divide-y divide-border">
-            {pastChallenges.map((item) => (
-              <div
-                key={item.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-4 first:pt-0 last:pb-0"
-              >
-                <div className="flex items-start gap-3 min-w-0">
-                  <div className="mt-0.5 shrink-0">
-                    {item.status === "completed" ? (
-                      <CheckCircle2 className="w-5 h-5 text-emerald-500 fill-emerald-500/10" />
-                    ) : (
-                      <XCircle className="w-5 h-5 text-rose-500 fill-rose-500/10" />
-                    )}
-                  </div>
-
-                  <div className="min-w-0">
-                    <h4 className="text-sm font-medium text-foreground truncate">
-                      {item.title}
-                    </h4>
-
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {item.timeAgo} ·{" "}
-                      <span className="capitalize">{item.category}</span>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="sm:self-center">
-                  {item.status === "completed" ? (
-                    <span className="inline-flex text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20">
-                      +{item.xpEarned} XP
-                    </span>
+                  {item.isCompleted ? (
+                    <CheckCircle2 className="w-5 h-5 fill-emerald-500 text-white dark:text-slate-950" />
+                  ) : item.isToday ? (
+                    <Zap className="w-5 h-5 fill-indigo-500 text-indigo-500" />
                   ) : (
-                    <span className="inline-flex text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-md border border-rose-500/20">
-                      Missed
-                    </span>
+                    <XCircle className="w-4 h-4 opacity-40" />
                   )}
+                </div>
+
+                <div className="text-center">
+                  <p className="text-xs font-medium">{item.day}</p>
+
+                  <p className="text-[10px] text-muted-foreground">
+                    {formatDate(item.dateString)}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-border bg-card">
+        <CardContent className="p-5 space-y-4">
+          <h3 className="text-lg font-semibold flex items-center gap-2">
+            <HelpCircle className="w-5 h-5 text-amber-500" />
+            Challenge History
+          </h3>
+
+          {pastChallenges.length === 0 && (
+            <div className="py-10 text-center text-muted-foreground">
+              No challenge history found
+            </div>
+          )}
+          {pastChallenges.map((item) => {
+            const isPerfect = item.score === 100;
+
+            return (
+              <div
+                key={item._id}
+                className="rounded-2xl border border-border bg-muted/20 p-3 sm:p-4"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-5">
+                  <div className="flex items-start gap-3 min-w-0">
+
+                    <div
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0
+                   ${isPerfect
+                          ? "bg-emerald-500/15 text-emerald-500"
+                          : "bg-amber-500/15 text-amber-500"
+                        }`}
+                    >
+                      {isPerfect ? (
+                        <Trophy className="w-5 h-5 sm:w-6 sm:h-6" />
+                      ) : (
+                        <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />
+                      )}
+                    </div>
+                    <div className="space-y-2 min-w-0">
+
+                      <div>
+                        <h4 className="font-semibold text-sm sm:text-base text-foreground truncate">
+                          Daily Challenge
+                        </h4>
+
+                        <p className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                          <CalendarDays className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                          {formatDate(item.dateString)}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+
+                        <div className="px-2 sm:px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-[10px] sm:text-xs font-semibold">
+                          🎯 {item.score}%
+                        </div>
+                        <div className="px-2 sm:px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-500 text-[10px] sm:text-xs font-semibold">
+                          ✅ {item.questionsCorrect}/5
+                        </div>
+
+                        <div className="px-2 sm:px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 text-[10px] sm:text-xs font-semibold">
+                          ⏱ {item.timeSpent}s
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex sm:flex-col items-center sm:items-end gap-2 sm:gap-1">
+
+                    <div className="px-3 py-1 sm:px-4 sm:py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-bold text-xs sm:text-sm whitespace-nowrap">
+                      +{item.xpEarned} XP
+                    </div>
+
+                    <div className={`text-[10px] sm:text-xs font-medium text-center sm:text-right
+                     ${item.score >= 80
+                        ? "text-emerald-500"
+                        : item.score >= 50
+                          ? "text-yellow-500"
+                          : "text-rose-500"
+                      }`}>
+                      {item.score === 100
+                        ? "Perfect 🔥"
+                        : item.score >= 80
+                          ? "Great 🚀"
+                          : item.score >= 50
+                            ? "Good 👍"
+                            : "Improve 💪"}
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            );
+          })}
         </CardContent>
       </Card>
     </div>

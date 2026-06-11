@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { TaskFormModal } from "./add-task-form";
 
 export const tasks = [
   {
@@ -28,10 +29,7 @@ export function TaskQueue() {
           📋 Task Queue
         </h2>
 
-        <Button className="flex items-center gap-2 ">
-          <Plus className="h-4 w-4" />
-          Add
-        </Button>
+        <TaskFormModal />
       </div>
 
       <div className="space-y-4">

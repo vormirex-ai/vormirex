@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { fadeUpItem } from "@/lib/motion";
@@ -7,44 +6,49 @@ import { DeckCategoryCard } from "@/components/dashboard/flash-card/deck-categor
 import { FlashcardStage } from "@/components/dashboard/flash-card/flashcard-stage";
 import { FlashCardHeader } from "@/components/dashboard/flash-card/flashcard-header";
 import { FlashCardResult } from "@/components/dashboard/flash-card/flashcard-result";
+import { Button } from "@/components/ui/button";
 
 import {
-  CheckCircle2,
-  Flame,
-  Layers3,
-  RefreshCcw,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+  useGetFlashcardDecksQuery,
+  useGetDueCardsQuery,
+  useGetDeckCardsQuery,
+  useGetFlashcardStatsQuery,
+  useCompleteFlashcardSessionMutation,
+} from "@/store/api/flashcardsApi";
+
+import { statConfig } from "@/components/dashboard/flash-card/stat-config";
+import { useEffect, useMemo, useState } from "react";
+import { AppSkeletonCard } from "@/components/skeleton/card-skeleton";
 
 export default function FlashcardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = Number(searchParams.get("step") || 1);
   const currentIndex = Number(searchParams.get("index") || 0);
   const selectedDeck = searchParams.get("deck") || "";
+  const [results, setResults] = useState<{ cardId: string; rating: "wrong" | "close" | "correct" }[]>([]);
+  const [sessionResult, setSessionResult] = useState<any>(null);
 
-  const flashcards = useMemo(() => {
-    return [
-      {
-        question: "What is Euler's number (e)?",
-        answer: "2.71828",
-        hint: "Base of natural logarithm",
-      },
-      {
-        question: "What is PI value?",
-        answer: "3.14159",
-        hint: "Used in circles",
-      },
-      {
-        question: "Newton Second Law?",
-        answer: "F = ma",
-        hint: "Force equation",
-      },
-    ];
-  }, []);
+  // -----api ----------------
+  const { data: decksData, isLoading: decksLoading } = useGetFlashcardDecksQuery();
+  const { data: statsData, isLoading: statsLoading } = useGetFlashcardStatsQuery();
+  const [completeSession] = useCompleteFlashcardSessionMutation();
+  const { data: dueCardsData } = useGetDueCardsQuery(selectedDeck, { skip: !selectedDeck, });
+  const { data: deckCardsData } = useGetDeckCardsQuery(selectedDeck, { skip: !selectedDeck, });
 
-  const progress =
-    ((currentIndex + 1) / flashcards.length) * 100;
 
+
+  const cards = useMemo(() => {
+    if (selectedDeck && dueCardsData?.length) {
+      return dueCardsData.map((d: any) => d.card);
+    }
+    if (selectedDeck && deckCardsData?.cards?.length) {
+      return deckCardsData.cards;
+    }
+
+    return [];
+  }, [dueCardsData, deckCardsData, selectedDeck]);
+
+  const currentCard = cards?.[currentIndex];
 
   const goToStep = (newStep: number, index = 0, deck = selectedDeck) => {
     setSearchParams({
@@ -54,164 +58,167 @@ export default function FlashcardPage() {
     });
   };
 
-  const handleNext = () => {
-    if (currentIndex < flashcards.length - 1) {
-      goToStep(2, currentIndex + 1);
+  const handleNext = async (lastCardResult?: {
+    cardId: string;
+    rating: "wrong" | "close" | "correct";
+  }) => {
+    if (lastCardResult) {
+      setResults((prev) => [...prev, lastCardResult]);
+    }
+
+    if (currentIndex < cards.length - 1) {
+      goToStep(2, currentIndex + 1, selectedDeck);
     } else {
-      goToStep(3, 0);
+      try {
+        const finalResults = lastCardResult
+          ? [...results, lastCardResult]
+          : results;
+
+        const response = await completeSession({
+          deckId: selectedDeck,
+          results: finalResults,
+        });
+        setSessionResult(response)
+
+        console.log("SESSION DONE:", response);
+
+        goToStep(3, 0, selectedDeck);
+      } catch (err) {
+        console.log("Session complete error:", err);
+      }
     }
   };
+
+  useEffect(() => {
+    if (cards.length && currentIndex >= cards.length) {
+      goToStep(2, 0, selectedDeck);
+    }
+  }, [cards.length]);
 
   return (
     <div className="min-h-screen p-1 lg:p-10">
       <div className="mx-auto space-y-10">
 
-        {/* ================= STEP 1 ================= */}
         {step === 1 && (
           <>
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <FlashCardHeader />
             </motion.div>
 
             <motion.div variants={fadeUpItem}>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {statsLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <AppSkeletonCard key={i} />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  {statsData &&
+                    Object.entries(statsData).map(([key, value]) => {
+                      const config = statConfig[key];
+                      if (!config) return null;
+                      const Icon = config.icon;
 
-                <StatCard
-                  title="Total Cards"
-                  value={156}
-                  icon={Layers3}
-                  iconBg="bg-blue-500/10"
-                  iconColor="text-blue-400"
-                />
-
-                <StatCard
-                  title="Mastered"
-                  value={89}
-                  icon={CheckCircle2}
-                  iconBg="bg-emerald-500/10"
-                  iconColor="text-emerald-400"
-                />
-
-                <StatCard
-                  title="Due Today"
-                  value={34}
-                  icon={RefreshCcw}
-                  iconBg="bg-orange-500/10"
-                  iconColor="text-orange-400"
-                />
-
-                <StatCard
-                  title="Day Streak"
-                  value={7}
-                  icon={Flame}
-                  iconBg="bg-red-500/10"
-                  iconColor="text-red-400"
-                />
-              </div>
+                      return (
+                        <StatCard
+                          key={key}
+                          title={config.label}
+                          value={value}
+                          icon={Icon}
+                          iconBg={config.iconBg}
+                          iconColor={config.iconColor}
+                        />
+                      );
+                    })}
+                </div>
+              )}
             </motion.div>
 
             <motion.div variants={fadeUpItem}>
-              <div
-                className=" grid  grid-cols-1  sm:grid-cols-2  lg:grid-cols-3  xl:grid-cols-4  gap-4 sm:gap-5 md:gap-6"
-              >
-                <div
-                  onClick={() => goToStep(2, 0, "Mathematics")}
-                  className="cursor-pointer w-full"
-                >
-                  <DeckCategoryCard
-                    title="Mathematics"
-                    totalCards={48}
-                    dueToday={12}
-                    progress={70}
-                    colorClass="bg-blue-500"
-                  />
+              {decksLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <AppSkeletonCard key={i} />
+                  ))}
                 </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {decksData?.map((deck: any) => {
+                    const isCompleted =
+                      deck.dueCardsCount === 0 &&
+                      deck.cardsStudied >= deck.totalCards;
 
-                <div
-                  onClick={() => goToStep(2, 0, "Python")}
-                  className="cursor-pointer w-full"
-                >
-                  <DeckCategoryCard
-                    title="Python"
-                    totalCards={62}
-                    dueToday={18}
-                    progress={40}
-                    colorClass="bg-pink-500"
-                  />
+                    const progressValue = deck.totalCards
+                      ? Math.min(
+                        Math.round((deck.cardsStudied / deck.totalCards) * 100),
+                        100
+                      )
+                      : 0;
+
+                    return (
+                      <div
+                        key={deck._id}
+                        onClick={() => {
+                          if (isCompleted) return;
+                          goToStep(2, 0, deck._id);
+                        }}
+                        className={isCompleted ? "cursor-not-allowed" : "cursor-pointer"}
+                      >
+                        <DeckCategoryCard
+                          title={deck.name}
+                          totalCards={deck.totalCards}
+                          dueToday={deck.dueCardsCount}
+                          studied={deck.cardsStudied}
+                          icon={deck.icon}
+                          accuracy={deck.averageAccuracy}
+                          disabled={isCompleted}
+                          progress={progressValue}
+                          colorClass="bg-blue-500"
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
+              )}
             </motion.div>
           </>
         )}
 
-        {/* ================= STEP 2 ================= */}
-
         {step === 2 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="space-y-8"
-          >
-            <div className="space-y-8">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <div className="space-y-6">
 
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <Button
-                  onClick={() => goToStep(1, 0)}
-                  className="text-sm border-none rounded-lg w-full sm:w-auto"
-                  variant="secondary"
-                >
-                  ← Back to Decks
-                </Button>
+              <Button onClick={() => goToStep(1)} variant="secondary">
+                ← Back
+              </Button>
 
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                  <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left whitespace-nowrap">
-                    Card {currentIndex + 1} of {flashcards.length}
-                  </p>
+              <p className="text-sm text-muted-foreground">
+                Card {currentIndex + 1} of {cards.length}
+              </p>
 
-                  <div className="w-full sm:w-[160px] h-2 bg-muted rounded-full overflow-hidden">
-                    <motion.div
-                      animate={{ width: `${progress}%` }}
-                      className="h-full bg-primary"
-                    />
-                  </div>
-
-                </div>
-              </div>
-
-              <FlashcardStage
-                question={flashcards[currentIndex].question}
-                answer={flashcards[currentIndex].answer}
-                hint={flashcards[currentIndex].hint}
-                onNext={handleNext}
-                onReview={(type) => {
-                  console.log("Review:", type);
-                }}
-              />
+              {currentCard && (
+                <FlashcardStage
+                  question={currentCard.question}
+                  answer={currentCard.answer}
+                  hint={currentCard.hint}
+                  cardId={currentCard._id}
+                  deckId={selectedDeck}
+                  onNext={handleNext}
+                />
+              )}
             </div>
           </motion.div>
         )}
 
-        {/* ================= STEP 3 ================= */}
         {step === 3 && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
-          >
-            <FlashCardResult
-              onBackToDecks={() => {
-                setSearchParams({
-                  step: "1",
-                  index: "0",
-                  deck: "",
-                });
-              }}
-            />
-          </motion.div>
+          <FlashCardResult
+            data={sessionResult}
+            onBackToDecks={() =>
+              setSearchParams({ step: "1", index: "0", deck: "" })
+            }
+
+          />
         )}
       </div>
     </div>

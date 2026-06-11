@@ -1,7 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { navGroups } from "../data/sidebar-Items";
 import {
   Search,
@@ -9,11 +13,14 @@ import {
   Menu,
   X,
 } from "lucide-react";
-
+import { User, LogOut } from "lucide-react";
 import { ThemeToggle } from "../theme/theme-toggle";
 import { Button } from "../ui/button";
 import CommandMenu from "./command-menu";
 import NotificationDropdown from "../notification/notification-dropdown";
+import { useLogoutMutation } from "@/store/api/authApi";
+import { logout } from "@/store/slice/authSlice";
+import { apiSlice } from "@/store/api/apiSlice";
 
 const allNavItems = navGroups.flatMap((group) => group.items);
 
@@ -26,12 +33,29 @@ const DashboardNavbar = ({
   sidebarOpen,
   setSidebarOpen,
 }: NavbarProps) => {
+
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { user } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { user } = useSelector((state: any) => state.auth);
+  const [logoutApi] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      await logoutApi(undefined).unwrap();
+    } catch {
+    } finally {
+      dispatch(logout());
+
+      dispatch(apiSlice.util.resetApiState());
+      navigate("/login");
+    }
+  };
+
+  if (!user) return null;
+
+
 
   const currentPage =
     allNavItems
@@ -100,12 +124,26 @@ const DashboardNavbar = ({
 
         <CommandMenu />
 
-        <div
-          onClick={() => navigate("/account/profile")}
-          className="w-9 h-9 rounded-full bg-primary-gradient flex items-center justify-center text-primary-foreground text-sm font-bold cursor-pointer hover:opacity-80 transition"
-        >
-          {firstLetter}
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="w-9 h-9 rounded-full bg-primary-gradient flex items-center justify-center text-primary-foreground text-sm font-bold cursor-pointer hover:opacity-80 transition">
+              {firstLetter}
+            </div>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuItem onClick={() => navigate("/account/profile")}>
+              <User size={16} /> Profile
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="text-red-600 focus:text-red-800 my-2"
+            >
+              <LogOut size={16} /> Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

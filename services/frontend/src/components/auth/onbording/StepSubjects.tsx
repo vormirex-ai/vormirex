@@ -3,28 +3,35 @@ import SelectableCard from "./onboardingCard";
 import { useGetSubjectsQuery } from "@/store/api/subjectsApi";
 
 const StepSubjects = ({ formData, updateFormData }: any) => {
-  const { data, isLoading, isError } = useGetSubjectsQuery({ page: 1, limit: 20 });
+  const { data, isLoading, isError } =
+    useGetSubjectsQuery({ page: 1, limit: 20 });
 
   const subjects = data?.subjects || data?.data || [];
 
-  const toggleSubject = (subject: string) => {
-    const updated = formData.subjects.includes(subject)
-      ? formData.subjects.filter((s: string) => s !== subject)
-      : [...formData.subjects, subject];
+  const toggleSubject = (subjectId: string) => {
+    const updated = formData.subjects.includes(subjectId)
+      ? formData.subjects.filter((s: string) => s !== subjectId)
+      : [...formData.subjects, subjectId];
 
     updateFormData({ subjects: updated });
   };
 
   if (isLoading) {
-    return <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {[...Array(4)].map((_, index) => (
-        <SubjectSkeletonCard key={index} />
-      ))}
-    </div>;
+    return (
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {[...Array(4)].map((_, index) => (
+          <SubjectSkeletonCard key={index} />
+        ))}
+      </div>
+    );
   }
 
   if (isError) {
-    return <div className="text-red-400">Failed to load subjects</div>;
+    return (
+      <div className="text-red-400">
+        Failed to load subjects
+      </div>
+    );
   }
 
   return (
@@ -39,8 +46,8 @@ const StepSubjects = ({ formData, updateFormData }: any) => {
             key={subject._id}
             title={subject.title}
             icon={subject.icon}
-            selected={formData.subjects.includes(subject.title)}
-            onClick={() => toggleSubject(subject.title)}
+            selected={formData.subjects.includes(subject._id)}
+            onClick={() => toggleSubject(subject._id)}
           />
         ))}
       </div>

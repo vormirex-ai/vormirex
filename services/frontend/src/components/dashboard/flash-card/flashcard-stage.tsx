@@ -5,29 +5,45 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
 import { FlashcardReviewActions } from "./flashcard-review-action";
-import { FlashcardStageProps } from "@/interface/flashCrad.interface";
+import { useSubmitFlashcardProgressMutation } from "@/store/api/flashcardsApi";
 
 export const FlashcardStage = ({
   question,
   answer,
   hint,
   onNext,
-  onReview,
-}: FlashcardStageProps) => {
+  cardId,
+  deckId,
+}: any) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [userAnswer, setUserAnswer] = useState("");
   const [showHint, setShowHint] = useState(false);
 
-  const handleReviewSelect = (type: "wrong" | "close" | "correct") => {
-    onReview(type);
+  const [submitProgress] = useSubmitFlashcardProgressMutation();
 
-    setIsFlipped(false);
-    setUserAnswer("");
-    setShowHint(false);
+  const handleReviewSelect = async (
+    type: "wrong" | "close" | "correct"
+  ) => {
+    try {
+      const payload = {
+        deckId,
+        cardId,
+        rating: type,
+        userAnswer,
+      };
 
-    setTimeout(() => {
-      onNext();
-    }, 300);
+      const response = await submitProgress(payload).unwrap();
+      onNext({
+        cardId,
+        rating: type,
+      });
+
+      setIsFlipped(false);
+      setUserAnswer("");
+      setShowHint(false);
+    } catch (err: any) {
+      console.error("ERROR:", err?.data || err);
+    }
   };
   return (
     <div className="max-w-2xl mx-auto mt-10">

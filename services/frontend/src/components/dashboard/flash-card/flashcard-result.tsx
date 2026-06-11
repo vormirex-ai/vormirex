@@ -5,11 +5,21 @@ import { Check, Circle } from "lucide-react";
 
 interface FlashCardResultProps {
   onBackToDecks: () => void;
+  data?: any;
 }
 
 export const FlashCardResult = ({
   onBackToDecks,
+  data,
 }: FlashCardResultProps) => {
+  const result = data?.data;
+  const summary = result?.summary;
+  const score = result?.session?.score;
+  const xpEarned = result?.xpEarned;
+  const newTotalXp = result?.newTotalXp;
+
+  const totalCards = result?.session?.results?.length || 0;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
@@ -19,58 +29,44 @@ export const FlashCardResult = ({
     >
       <div className="w-full max-w-2xl p-4 sm:p-6 md:p-10 text-center">
 
-        <div className="mb-4 sm:mb-6 flex justify-center text-4xl sm:text-5xl">
-          👍
-        </div>
+        <div className="mb-4 text-5xl">🎉</div>
 
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
+        <h2 className="text-2xl font-bold text-primary">
           Deck Complete!
         </h2>
 
-        <p className="mt-2 sm:mt-3 text-sm sm:text-base text-slate-500 dark:text-slate-400">
-          5 cards reviewed
+        <p className="mt-2 text-base text-slate-500">
+          {totalCards} cards reviewed
         </p>
 
-        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
 
-          <div className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-emerald-500 dark:text-emerald-400">
-            <Check size={16} className="sm:w-[18px] sm:h-[18px]" />
-            Easy: 1
+          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-emerald-500">
+            ✅ Easy: {summary?.easy ?? 0}
           </div>
 
-          <div className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-yellow-500 dark:text-yellow-400">
-            <Circle
-              size={14}
-              className="sm:w-4 sm:h-4"
-              fill="currentColor"
-            />
-            OK: 4
+          <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-yellow-500">
+            🤨 OK: {summary?.ok ?? 0}
           </div>
 
-          <div className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-red-500 dark:text-red-400">
-            <Circle
-              size={14}
-              className="sm:w-4 sm:h-4"
-              fill="currentColor"
-            />
-            Hard: 0
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-500">
+            ❌ Hard: {summary?.hard ?? 0}
           </div>
         </div>
 
-        <h3 className="mt-8 sm:mt-10 text-3xl sm:text-4xl md:text-5xl font-bold text-cyan-500 dark:text-cyan-400">
-          Score: 60%
+        <h3 className="mt-8 text-4xl font-bold text-cyan-500">
+          Score: {score}%
         </h3>
 
-        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-          <Button className="rounded-xl h-11 sm:h-12 text-sm sm:text-base px-5 shadow-none hover:shadow-md">
-            Review Again
-          </Button>
+        <p className="mt-2 text-sm text-muted-foreground">
+          <span className="text-yellow-600">+{xpEarned}</span>   XP earned | Total XP: <span className="text-yellow-600">{newTotalXp}
+          </span>
+        </p>
 
-          <Button
-            variant="secondary"
-            className="rounded-xl h-11 sm:h-12 text-sm sm:text-base px-5"
-            onClick={onBackToDecks}
-          >
+        <div className="mt-8 flex justify-center gap-4">
+          <Button className="rounded-xl">Review Again</Button>
+
+          <Button variant="secondary" onClick={onBackToDecks}>
             Back to Decks
           </Button>
         </div>
