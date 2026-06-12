@@ -39,7 +39,7 @@ export const statConfig: Record<
   streak: {
     label: "Day Streak",
     icon: Flame,
-    iconColor: "text-red-400",
+    iconColor: "text-orange-400",
     iconBg: "bg-red-500/10",
   },
   totalCardsStudied: {

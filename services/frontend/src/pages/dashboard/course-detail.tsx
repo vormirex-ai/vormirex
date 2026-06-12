@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
@@ -18,6 +18,7 @@ import { useGetSubjectCurriculumQuery } from "@/store/api/subjectsApi";
 
 const CourseDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const reduxId = useSelector(
     (state: RootState) =>
@@ -57,7 +58,10 @@ const CourseDetails = () => {
     >
       <div className="mx-auto space-y-10">
 
-        <button className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors group">
+        <button
+          onClick={() => navigate("/dashboard/subjects")}
+          className="flex items-center gap-2 text-sm text-slate-400 hover:text-primary transition-colors group"
+        >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           Back to Subjects
         </button>
@@ -101,9 +105,7 @@ const CourseDetails = () => {
                   key={chapter._id}
                   chapter={{
                     id: chapter.sequenceOrder,
-
                     title: chapter.title,
-
                     status:
                       normalizeChapterStatus(
                         chapter.status
@@ -113,11 +115,8 @@ const CourseDetails = () => {
                       chapter.lessons?.map(
                         (lesson: any) => ({
                           id: lesson._id,
-
                           title: lesson.title,
-
                           duration: `${lesson.durationMinutes} min`,
-
                           status:
                             normalizeLessonStatus(
                               lesson.status

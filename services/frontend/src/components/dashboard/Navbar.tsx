@@ -21,6 +21,7 @@ import NotificationDropdown from "../notification/notification-dropdown";
 import { useLogoutMutation } from "@/store/api/authApi";
 import { logout } from "@/store/slice/authSlice";
 import { apiSlice } from "@/store/api/apiSlice";
+import { useGetFlashcardStatsQuery } from "@/store/api/flashcardsApi";
 
 const allNavItems = navGroups.flatMap((group) => group.items);
 
@@ -37,7 +38,7 @@ const DashboardNavbar = ({
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const { data: statsData } = useGetFlashcardStatsQuery();
   const { user } = useSelector((state: any) => state.auth);
   const [logoutApi] = useLogoutMutation();
 
@@ -103,7 +104,7 @@ const DashboardNavbar = ({
 
       <div className="flex items-center gap-4">
         <div className="hidden lg:flex items-center gap-2 bg-orange-500/10 text-orange-500 px-3 py-1.5 rounded-full border border-orange-500/20 text-xs font-bold">
-          🔥 12 day streak
+          🔥 {statsData?.streak || 0} day streak
         </div>
 
         <div className="relative hidden md:block">

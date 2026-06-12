@@ -1,11 +1,7 @@
-// components/task-queue/task-form-modal.tsx
-
-"use client";
 
 import * as React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
 import {
   Dialog,
   DialogContent,
@@ -14,10 +10,8 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
 import {
   Select,
   SelectContent,
@@ -25,42 +19,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Button } from "@/components/ui/button";
-
 import { Badge } from "@/components/ui/badge";
-
-import {
-  CalendarDays,
-  Sparkles,
-  Plus,
-  Minus,
-  X,
-} from "lucide-react";
+import { CalendarDays, Sparkles, Plus, Minus, X, } from "lucide-react";
 
 const validationSchema = Yup.object({
   title: Yup.string()
     .min(3, "Minimum 3 characters")
     .required("Task title is required"),
-
   subject: Yup.string().required("Subject is required"),
-
   taskType: Yup.string().required("Task type is required"),
-
   description: Yup.string()
     .min(10, "Minimum 10 characters")
     .required("Description is required"),
 });
 
-const quickTags = [
-  "Exam",
-  "Revision",
-  "Coding",
-  "Notes",
-  "Quiz",
-  "Lab",
-  "Reading",
-];
+const quickTags = ["Exam", "Revision", "Coding", "Notes", "Quiz", "Lab", "Reading"];
 
 export function TaskFormModal() {
 
@@ -116,14 +90,7 @@ export function TaskFormModal() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div
-                className="
-                flex h-11 w-11 items-center justify-center
-                rounded-xl
-                bg-primary/20
-                border border-primary/20
-                shadow-[0_0_25px_rgba(99,231,220,0.45)]
-              "
-              >
+                className=" flex h-11 w-11 items-center justify-center rounded-xl bg-primary/20 border border-primary/20 shadow-[0_0_25px_rgba(99,231,220,0.45)]" >
                 <Sparkles className="h-5 w-5 text-primary" />
               </div>
 
@@ -142,9 +109,8 @@ export function TaskFormModal() {
 
         <form
           onSubmit={formik.handleSubmit}
-          className="relative z-10 mt-2 space-y-5"
-        >
-          {/* Task Title */}
+          className="relative z-10 mt-2 space-y-5"  >
+
           <div>
             <label className="mb-2 block text-xs uppercase tracking-wider text-textColor">
               Task Title
@@ -168,17 +134,9 @@ export function TaskFormModal() {
               <label className="mb-2 block text-xs uppercase tracking-wider text-textColor">
                 Subject
               </label>
-
               <Select
-                onValueChange={(value) =>
-                  formik.setFieldValue("subject", value)
-                }
-              >
-                <SelectTrigger
-                  className="
-                 h-13 rounded-lg
-                   custom-surface w-full
-                  "
+                onValueChange={(value) => formik.setFieldValue("subject", value)} >
+                <SelectTrigger className=" h-13 rounded-lg custom-surface w-full"
                 >
                   <SelectValue placeholder="Select subject" />
                 </SelectTrigger>
@@ -202,15 +160,9 @@ export function TaskFormModal() {
                   formik.setFieldValue("taskType", value)
                 }
               >
-                <SelectTrigger
-                  className="
-                    h-13 rounded-lg
-                   custom-surface w-full
-                  "
-                >
+                <SelectTrigger className=" h-13 rounded-lg custom-surface w-full " >
                   <SelectValue placeholder="Select task type" />
                 </SelectTrigger>
-
                 <SelectContent>
                   <SelectItem value="Practice">Practice</SelectItem>
                   <SelectItem value="Revision">Revision</SelectItem>
@@ -248,20 +200,12 @@ export function TaskFormModal() {
               </label>
 
               <div
-                className="
-                flex h-10 items-center justify-between custom-surface
-                rounded-lg  px-3
-              "
-              >
+                className=" flex h-10 items-center justify-between custom-surface rounded-lg  px-3">
                 <Button
                   type="button"
                   size="icon"
                   variant="ghost"
-                  onClick={() =>
-                    setPomodoros((prev) =>
-                      prev > 1 ? prev - 1 : 1
-                    )
-                  }
+                  onClick={() => setPomodoros((prev) => prev > 1 ? prev - 1 : 1)}
                 >
                   <Minus className="h-4 w-4" />
                 </Button>
@@ -270,7 +214,6 @@ export function TaskFormModal() {
                   <p className="text-xl font-bold">
                     {pomodoros}
                   </p>
-
                   <span className="text-xs text-textColor">
                     50 min
                   </span>
@@ -280,9 +223,7 @@ export function TaskFormModal() {
                   type="button"
                   size="icon"
                   variant="ghost"
-                  onClick={() =>
-                    setPomodoros((prev) => prev + 1)
-                  }
+                  onClick={() => setPomodoros((prev) => prev + 1)}
                 >
                   <Plus className="h-4 w-4" />
                 </Button>
@@ -301,7 +242,6 @@ export function TaskFormModal() {
                   value={formik.values.dueDate}
                   onChange={formik.handleChange}
                 />
-
                 <CalendarDays className="absolute right-3 top-3.5 h-4 w-4 text-slate-500" />
               </div>
             </div>
