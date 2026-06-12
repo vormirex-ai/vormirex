@@ -71,7 +71,7 @@ const Login = () => {
       navigate("/dashboard");
     }
   }, [searchParams, dispatch, navigate]);
-  
+
   const [login, { isLoading: loading }] = useLoginMutation();
 
   const formik = useFormik({
@@ -117,10 +117,10 @@ const Login = () => {
 
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full" />
 
-      <Card className="w-full max-w-md backdrop-blur-xl  bg-[#051522] text-white shadow-[0_0_40px_rgba(56,189,248,0.15)] z-10 p-2 md:p-6">
+      <Card className="w-full max-w-md backdrop-blur-xl bg-[#051522] text-white shadow-[0_0_40px_rgba(56,189,248,0.15)] z-10 py-4 px-4 md:px-6">
         <CardHeader className="space-y-1 flex flex-col items-center">
 
-          <div className="flex items-center gap-2 cursor-pointer my-5">
+          <div className="flex items-center gap-2 cursor-pointer mb-3">
             <img src={logo} alt="Logo" className="w-6 h-6" />
 
             <span className="font-bold text-xl tracking-tight bg-primary bg-clip-text text-transparent">
@@ -144,11 +144,11 @@ const Login = () => {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-white/10" />
+              <span className="w-full border-t border-white/20" />
             </div>
 
             <div className="relative flex justify-center text-xs ">
-              <span className="bg-[#0c1425] px-2 text-gray-500">
+              <span className="bg-[#051522] px-2 text-gray-300">
                 or sign in with email
               </span>
             </div>
@@ -195,7 +195,7 @@ const Login = () => {
 
                 <Link
                   to="/forgot-password"
-                  className="text-xs text-blue-400 hover:underline"
+                  className="text[13px] text-blue-400 hover:underline"
                 >
                   Forgot password?
                 </Link>
@@ -222,7 +222,7 @@ const Login = () => {
                   onClick={() =>
                     setShowPassword((prev) => !prev)
                   }
-                  className="absolute right-3 top-4 text-gray-500 hover:text-white"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-11 w-11 flex items-center justify-center text-gray-500 hover:text-white"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -283,14 +283,14 @@ const Login = () => {
 
             <Link
               to="/sign-up"
-              className="text-blue-400 hover:underline"
+              className="text-blue-400 hover:underline inline-flex items-center min-h-[44px] px-2"
             >
               Create account
             </Link>
           </p>
 
           <button
-            className="text-xs text-gray-500 hover:text-white transition-colors mb-6"
+            className="text-sm text-gray-400 hover:text-primary transition-colors py-3 min-h-[44px]"
             onClick={() => navigate("/")}
           >
             ← Back to home

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-const WelcomeBanner = () => {
+const WelcomeBanner = ({ data }: { data: any }) => {
   const user = useSelector((state: any) => state.auth.user);
 
   const userName = user?.name || "Guest";
@@ -26,12 +26,13 @@ const WelcomeBanner = () => {
       <h1 className="mt-1 text-4xl font-bold text-primary-foreground dark:text-white">
         Welcome back,{" "}
         <span className="text-primary">
-          {userName}!
+          {userName || data?.name}!
         </span>
       </h1>
 
       <p className="mt-2 text-sm text-slate-400">
-        You’re on a 12-day streak. Keep going!
+        You’re on a <span className="text-yellow-500"> {data?.streak} </span>- day streak and
+        <span className="text-yellow-500"> XP-{data?.xp}</span>. Keep going!
       </p>
     </div>
   );

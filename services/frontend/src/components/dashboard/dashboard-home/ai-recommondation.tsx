@@ -1,6 +1,7 @@
 import {
   Brain,
   ArrowUpRight,
+  Sparkles,
 } from "lucide-react";
 
 import {
@@ -9,10 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { recommendationStyles } from "@/components/data/dashboard";
 
-import { recommendations } from "@/components/data/dashboard";
+export function AIRecommendations({ data }: any) {
 
-export function AIRecommendations() {
   return (
     <Card >
       <CardHeader>
@@ -33,43 +34,47 @@ export function AIRecommendations() {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-3">
-        {recommendations.map((item) => {
-          const Icon = item.icon;
+      <CardContent className="space-y-3  max-h-[350px] overflow-y-auto custom-scrollbar">
+        {data?.map((item: any) => {
+          const style =
+            recommendationStyles[
+            item.tag as keyof typeof recommendationStyles
+            ];
+
+          const Icon = style?.icon ?? Sparkles;
 
           return (
             <div
               key={item.title}
-              className="group flex items-center justify-between rounded-2xl border dark:border-white/5 border-primary bg-primary/5 dark:bg-[#154249]/40  p-4 transition-all duration-300 hover:bg-white/[0.05]"
+              className="group flex items-center justify-between rounded-2xl border dark:border-white/5 border-primary bg-primary/5 dark:bg-[#154249]/40 p-4"
             >
               <div className="flex items-center gap-4">
                 <div
-                  className={`flex h-10 w-10 items-center justify-center rounded-full border ${item.iconBorder} ${item.iconBg}`}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border ${style?.iconBorder}`}
                 >
                   <Icon
-                    className={`h-4 w-4 ${item.iconColor}`}
+                    className={`h-4 w-4 ${style?.iconColor}`}
                   />
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-medium ">
+                  <h4 className="text-sm font-medium">
                     {item.title}
                   </h4>
 
                   <div
-                    className={`mt-2 inline-flex rounded-full px-2 py-1 text-[10px] font-medium ${item.tagBg} ${item.tagColor}`}
+                    className={`mt-2 inline-flex rounded-full px-2 py-1 text-[10px] font-medium ${style?.tagBg} ${style?.tagColor}`}
                   >
                     {item.tag}
                   </div>
                 </div>
               </div>
 
-              <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.03] text-textColor transition-all duration-300  group-hover:translate-x-0.5">
-                <ArrowUpRight className="h-4 w-4" />
-              </button>
+              <ArrowUpRight className="h-4 w-4" />
             </div>
           );
         })}
+
       </CardContent>
     </Card>
   );

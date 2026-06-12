@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import { containerStagger, fadeUpItem } from "@/lib/motion";
@@ -32,9 +31,8 @@ export default function SubjectPage() {
       activeTab === "All Subjects"
         ? true
         : activeTab === "In Progress"
-          ? subject.userStatus === "in_progress"
-          : subject.userStatus === "completed";
-
+          ? subject.userStatus === "In Progress"
+          : subject.userStatus === "Completed";
     return matchSearch && matchTab;
   });
 

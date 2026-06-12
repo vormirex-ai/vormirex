@@ -28,7 +28,7 @@ const signupSchema = Yup.object().shape({
 const SignUp = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const [signup, { isLoading: loading }] = useSignupMutation();
 
   const formik = useFormik({
@@ -42,7 +42,7 @@ const SignUp = () => {
       try {
         const response = await signup(values).unwrap();
         if (response?.success) {
-          toast.success("Signup Successful ✅");
+          toast.success("Signup successful! Please verify your email to continue.");
           formik.resetForm();
           navigate("/login");
         } else {
@@ -65,7 +65,7 @@ const SignUp = () => {
 
       <Card className="w-full max-w-md bg-[#051522] backdrop-blur-xl  text-white shadow-[0_0_40px_rgba(56,189,248,0.15)] z-10 p-2 md:p-6">
         <CardHeader className="space-y-1 flex flex-col items-center">
-          <div className="flex items-center gap-2 cursor-pointer my-5">
+          <div className="flex items-center gap-2 cursor-pointer mb-3">
             <img src={logo} alt="Logo" className="w-6 h-6" />
 
             <span className="font-bold text-xl tracking-tight bg-primary bg-clip-text text-transparent">
@@ -84,10 +84,10 @@ const SignUp = () => {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-white/10" />
+              <span className="w-full border-t border-white/20" />
             </div>
             <div className="relative flex justify-center text-xs ">
-              <span className="bg-[#0c1425] px-2 text-gray-500">or sign up with email</span>
+              <span className="bg-[#051522] px-2 text-gray-300">or sign up with email</span>
             </div>
           </div>
 
@@ -156,7 +156,7 @@ const SignUp = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-3 top-4 text-gray-500 hover:text-white"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-11 w-11 flex items-center justify-center text-gray-500 hover:text-white"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -172,8 +172,8 @@ const SignUp = () => {
                 )}
               </div>
             </div>
-            <p className="text-xs text-textColor">By creating an account you agree to our
-              <span className="text-blue-400 text-xs"> Terms of Service</span>
+            <p className="text-[13px] text-textColor">By creating an account you agree to our
+              <span className="text-blue-400 text-xs ml-2"> Terms of Service</span>
             </p>
           </div>
 
@@ -186,7 +186,8 @@ const SignUp = () => {
 
           <p className="text-sm text-gray-400 text-center">
             Already have an account? {""}
-            <Link to="/login" className="text-blue-400 hover:underline">
+            <Link to="/login"
+              className="text-blue-400 hover:underline inline-flex items-center min-h-[44px] px-2">
               Sign in
             </Link>
           </p>

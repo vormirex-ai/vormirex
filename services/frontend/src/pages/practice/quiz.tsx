@@ -267,7 +267,7 @@ export default function QuizPage() {
               className="mx-auto flex w-full max-w-4xl items-center justify-center"
             >
               {quizLoading ? (
-                <div className="text-center py-20">
+                <div className="text-center py-20 max-w-4xl ">
                   <AppSkeletonCard variant="quiz" />
                 </div>
               ) : (

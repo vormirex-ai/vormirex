@@ -62,7 +62,7 @@ const UserMenu = () => {
         </div>
 
         {open && (
-          <div className="absolute right-0 mt-2 w-64 bg-[#0c1425] border border-white/10 rounded-lg shadow-lg p-3 z-50">
+          <div className="absolute right-2 top-12 mt-2 w-64 bg-[#0c1425] border border-white/10 rounded-lg shadow-lg p-3 z-50">
 
             <p className="text-white font-medium">
               {user?.name}

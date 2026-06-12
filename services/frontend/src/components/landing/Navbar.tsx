@@ -8,7 +8,7 @@ import UserMenu from "./userMenu";
 const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useSelector((state: any) => state.auth);
+  const { user, isInitialized } = useSelector((state: any) => state.auth);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
 
@@ -65,13 +65,13 @@ const Navbar = () => {
       `}
     >
       <div className="mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex items-center justify-between h-16 gap-4">
 
           <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => {
               navigate("/");
-              scrollToSection("hero");
+              // scrollToSection("hero");
             }}
           >
             <img src={logo} className="w-8 h-8" alt="logo" />
@@ -82,7 +82,7 @@ const Navbar = () => {
           </div>
 
           {/* DESKTOP NAV */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center gap-6 shrink-0">
 
             {navItems.map((item) => (
               <button
@@ -135,23 +135,24 @@ const Navbar = () => {
               </button>
             )}
 
-            {user ? (
-              <UserMenu />
-            ) : (
-              <>
-                <Button
-                  onClick={() => navigate("/login")}
-                  variant="secondary"
-                >
-                  Sign In
-                </Button>
+            {isInitialized && (
+              user ? (
+                <UserMenu />
+              ) : (
+                <>
+                  <Button
+                    onClick={() => navigate("/login")}
+                    variant="secondary"
+                  >
+                    Sign In
+                  </Button>
 
-                <Button onClick={() => navigate("/login")}>
-                  Get Started Free
-                </Button>
-              </>
+                  <Button onClick={() => navigate("/login")}>
+                    Get Started Free
+                  </Button>
+                </>
+              )
             )}
-
           </div>
 
           {/* MOBILE */}

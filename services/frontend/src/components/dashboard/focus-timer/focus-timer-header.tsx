@@ -24,9 +24,9 @@ const FocusTimerHeader = () => {
             🔥 3 sessions today
           </div>
 
-          <button className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium transition hover:bg-slate-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+          {/* <button className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium transition hover:bg-slate-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
             ⚙ Settings
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

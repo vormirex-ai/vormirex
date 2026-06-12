@@ -4,9 +4,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-import { weeklyData } from "@/components/data/dashboard";
-
 import {
   BarChart,
   Bar,
@@ -17,7 +14,13 @@ import {
   Tooltip,
 } from "recharts";
 
-export function WeeklyActivity() {
+export function WeeklyActivity({ data }: any) {
+
+  const formattedData = data?.map((item: any) => ({
+    day: item.day,
+    value: item.minutesStudied,
+  })) || [];
+
   return (
     <Card className="lg:col-span-2">
       <CardHeader>
@@ -39,7 +42,7 @@ export function WeeklyActivity() {
       <CardContent>
         <div className="h-[320px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={weeklyData}>
+            <BarChart data={formattedData}>
               <defs>
                 <linearGradient
                   id="barGradient"

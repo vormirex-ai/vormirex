@@ -2,15 +2,22 @@ import { apiSlice } from "./apiSlice";
 
 export const flashcardsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getFlashcardDecks: builder.query({
+    getFlashcardDecks: builder.query<any, void>({
       query: () => "/flashcards/decks",
       providesTags: ["Flashcards"],
     }),
-    getDueCards: builder.query({
+
+    getDeckCards: builder.query<any, string>({
+      query: (deckId) => `/flashcards/decks/${deckId}/cards`,
+      providesTags: ["Flashcards"],
+    }),
+
+    getDueCards: builder.query<any, string>({
       query: (deckId) => `/flashcards/decks/${deckId}/due`,
       providesTags: ["Flashcards"],
     }),
-    submitFlashcardProgress: builder.mutation({
+
+    submitFlashcardProgress: builder.mutation<any, any>({
       query: (payload) => ({
         url: "/flashcards/progress",
         method: "POST",
@@ -18,7 +25,17 @@ export const flashcardsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Flashcards"],
     }),
-    getFlashcardStats: builder.query({
+
+    completeFlashcardSession: builder.mutation<any, any>({
+      query: (payload) => ({
+        url: "/flashcards/sessions/complete",
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Flashcards"],
+    }),
+
+    getFlashcardStats: builder.query<any, void>({
       query: () => "/flashcards/stats",
       providesTags: ["Flashcards"],
     }),
@@ -28,7 +45,9 @@ export const flashcardsApi = apiSlice.injectEndpoints({
 
 export const {
   useGetFlashcardDecksQuery,
+  useGetDeckCardsQuery,
   useGetDueCardsQuery,
   useSubmitFlashcardProgressMutation,
+  useCompleteFlashcardSessionMutation,
   useGetFlashcardStatsQuery,
 } = flashcardsApi;

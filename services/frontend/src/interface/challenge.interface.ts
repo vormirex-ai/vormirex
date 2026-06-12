@@ -1,9 +1,11 @@
 export interface Question {
-  id: string;
-  text: string;
+  _id: string;
+  subjectId: string;
+  questionText: string;
   options: string[];
   correctAnswerIndex: number;
-  explanation: string;
+  explanation?: string;
+  difficulty: string;
 }
 
 export interface PastChallenge {

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Clock, CheckCircle2, XCircle, Lightbulb, ArrowRight, ArrowLeft } from "lucide-react";
-import { useSubmitQuizMutation, useVerifyQuizAnswerMutation } from "@/store/api/quizzesApi";
+import { useVerifyQuizAnswerMutation } from "@/store/api/quizzesApi";
 
 
 export default function QuizCard({
