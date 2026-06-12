@@ -7,7 +7,7 @@ import Lesson from '../subjects/lesson.model.js';
 import QuizResult from '../quizzes/quizResult.model.js';
 import FlashcardSession from '../flashcards/flashcardSession.model.js';
 import ChallengeResult from '../challenges/challengeResult.model.js';
-import mongoose from 'mongoose';
+import StudyLog from '../analytics/studyLog.model.js';
 
 describe('Dashboard Service Unit Tests', () => {
   const mockUserId = '60d0fe4f5311236168a109ca';
@@ -54,26 +54,29 @@ describe('Dashboard Service Unit Tests', () => {
     jest.spyOn(Chapter, 'find').mockResolvedValue(mockChapters as any);
     jest.spyOn(Lesson, 'countDocuments').mockResolvedValue(3); // 3 lessons total (67%)
 
-    // Mock recent activity queries to run immediately without real DB access
-    jest.spyOn(QuizResult, 'find').mockReturnValue({
-      sort: jest.fn().mockReturnValue({
-        limit: jest.fn().mockResolvedValue([]),
-      }),
-    } as any);
+    // Mock StudyLog query
+    (jest.spyOn(StudyLog, 'find') as any).mockResolvedValue([] as any);
 
-    jest.spyOn(FlashcardSession, 'find').mockReturnValue({
+    // Mock recent activity queries to run immediately without real DB access
+    (jest.spyOn(QuizResult, 'find') as any).mockReturnValue({
+      sort: jest.fn().mockReturnValue({
+        limit: jest.fn(() => Promise.resolve([] as any)),
+      }),
+    });
+
+    (jest.spyOn(FlashcardSession, 'find') as any).mockReturnValue({
       populate: jest.fn().mockReturnValue({
         sort: jest.fn().mockReturnValue({
-          limit: jest.fn().mockResolvedValue([]),
+          limit: jest.fn(() => Promise.resolve([] as any)),
         }),
       }),
-    } as any);
+    });
 
-    jest.spyOn(ChallengeResult, 'find').mockReturnValue({
+    (jest.spyOn(ChallengeResult, 'find') as any).mockReturnValue({
       sort: jest.fn().mockReturnValue({
-        limit: jest.fn().mockResolvedValue([]),
+        limit: jest.fn(() => Promise.resolve([] as any)),
       }),
-    } as any);
+    });
 
     const data = await dashboardService.getDashboardData(mockUserId);
 
@@ -108,26 +111,29 @@ describe('Dashboard Service Unit Tests', () => {
       populate: jest.fn().mockReturnValue(Promise.resolve([])), // No progress entries
     } as any);
 
-    // Mock recent activity queries
-    jest.spyOn(QuizResult, 'find').mockReturnValue({
-      sort: jest.fn().mockReturnValue({
-        limit: jest.fn().mockResolvedValue([]),
-      }),
-    } as any);
+    // Mock StudyLog query
+    (jest.spyOn(StudyLog, 'find') as any).mockResolvedValue([] as any);
 
-    jest.spyOn(FlashcardSession, 'find').mockReturnValue({
+    // Mock recent activity queries
+    (jest.spyOn(QuizResult, 'find') as any).mockReturnValue({
+      sort: jest.fn().mockReturnValue({
+        limit: jest.fn(() => Promise.resolve([] as any)),
+      }),
+    });
+
+    (jest.spyOn(FlashcardSession, 'find') as any).mockReturnValue({
       populate: jest.fn().mockReturnValue({
         sort: jest.fn().mockReturnValue({
-          limit: jest.fn().mockResolvedValue([]),
+          limit: jest.fn(() => Promise.resolve([] as any)),
         }),
       }),
-    } as any);
+    });
 
-    jest.spyOn(ChallengeResult, 'find').mockReturnValue({
+    (jest.spyOn(ChallengeResult, 'find') as any).mockReturnValue({
       sort: jest.fn().mockReturnValue({
-        limit: jest.fn().mockResolvedValue([]),
+        limit: jest.fn(() => Promise.resolve([] as any)),
       }),
-    } as any);
+    });
 
     const data = await dashboardService.getDashboardData(mockUserId);
 

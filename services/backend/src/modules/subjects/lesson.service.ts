@@ -3,6 +3,8 @@ import lessonRepository from './lesson.repository.js';
 import SubjectProgressModel from './subjectProgress.model.js';
 import ChapterModel from './chapter.model.js';
 import LessonModel from './lesson.model.js';
+import User from '../user/user.model.js';
+import StudyLogModel from '../analytics/studyLog.model.js';
 import { NotFoundError } from '../../utils/errors.js';
 
 class LessonService {
@@ -35,6 +37,22 @@ class LessonService {
 
     // Increment cumulative study time
     progress.totalStudyTimeSeconds += durationWatchedIncrement;
+
+    // Increment daily study log
+    const user = await User.findById(userId);
+    const timezone = user?.timezone || 'UTC';
+    const dateString = new Intl.DateTimeFormat('en-CA', {
+      timeZone: timezone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date());
+
+    await StudyLogModel.findOneAndUpdate(
+      { userId: new mongoose.Types.ObjectId(userId), dateString },
+      { $inc: { secondsStudied: durationWatchedIncrement } },
+      { upsert: true, new: true }
+    );
 
     // Update active lesson watch offset
     const activeLessonIndex = progress.activeLessons.findIndex(
