@@ -34,8 +34,10 @@ export const getDueCards = async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.user.userId;
     const { deckId } = req.params;
+    const { limit } = req.query;
     
-    const dueCards = await flashcardService.getDueCards(userId, deckId);
+    const parsedLimit = limit ? parseInt(limit as string, 10) : undefined;
+    const dueCards = await flashcardService.getDueCards(userId, deckId, parsedLimit);
     res.status(200).json(dueCards);
   } catch (error) {
     console.error('Error fetching due cards:', error);

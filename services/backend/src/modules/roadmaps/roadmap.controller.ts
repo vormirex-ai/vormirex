@@ -33,7 +33,8 @@ export const generateRoadmap = async (req: Request, res: Response) => {
     summary: {
       durationWeeks: 8,
       totalSubjects: selectedSubjects.length,
-      dailyGoalMinutes: 45
+      dailyGoalMinutes: 45,
+      selectedSubjects: selectedSubjects
     },
     milestones: Array.from({ length: 8 }).map((_, i) => ({
       weekNumber: i + 1,
@@ -64,6 +65,19 @@ export const getMyRoadmap = async (req: Request, res: Response) => {
   const roadmap = await Roadmap.findOne({ userId });
   if (!roadmap) {
     return res.status(404).json({ error: 'No active roadmap found for this user' });
+  }
+
+  // Fallback for older roadmaps that do not have selectedSubjects in their summary
+  if (!roadmap.summary.selectedSubjects || roadmap.summary.selectedSubjects.length === 0) {
+    const user = await User.findById(userId);
+    if (user && user.learningPreferences?.selectedSubjects?.length > 0) {
+      const roadmapObj = roadmap.toObject();
+      roadmapObj.summary = {
+        ...roadmapObj.summary,
+        selectedSubjects: user.learningPreferences.selectedSubjects
+      };
+      return res.status(200).json({ roadmap: roadmapObj });
+    }
   }
 
   res.status(200).json({ roadmap });

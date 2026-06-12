@@ -13,7 +13,7 @@ import {
 import { validate } from '../../middleware/validate.middleware.js';
 import { streakMiddleware } from '../../middleware/streak.middleware.js';
 import { generateAccess, generateRefresh } from '../../utils/jwt.js';
-import { env } from '../../config/env.js';
+import { env, getFrontendUrl } from '../../config/env.js';
 
 const authRouter = Router();
 
@@ -117,13 +117,14 @@ authRouter.get(
     const accessToken = generateAccess(payload);
     const refreshToken = generateRefresh(payload);
 
+    // Set HTTP-only refresh token cookie
+    res.cookie('refresh_token', refreshToken, authController.getCookieOptions(7 * 24 * 60 * 60 * 1000));
+
     // Redirect to the frontend with tokens.
-    // In a production app, you might set these as HTTP-only cookies here,
-    // or pass them in the URL fragment/query params for the frontend to capture.
     // Make sure FRONTEND_URL is defined in your .env
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const frontendUrl = getFrontendUrl();
     res.redirect(
-      `${frontendUrl}/oauth-success?accessToken=${accessToken}&refreshToken=${refreshToken}`
+      `${frontendUrl}/login?accessToken=${accessToken}&refreshToken=${refreshToken}`
     );
   }
 );

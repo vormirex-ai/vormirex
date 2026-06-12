@@ -22,7 +22,10 @@ router.get('/history/:subjectId', quizController.getSubjectHistory);
 // 5. Reveal Single Question Detail
 router.get('/questions/:questionId', quizController.getQuestionDetail);
 
-// 6. Fetch 10 random questions for a subject 
+// 6. Verify Single Question Answer
+router.post('/questions/:questionId/verify', quizController.verifyQuestionAnswer);
+
+// 7. Fetch 5 random questions for a subject 
 // (Placed at the bottom so the :subjectId wildcard doesn't accidentally catch the static routes above!)
 router.get('/:subjectId/questions', quizController.getQuestionsForSubject);
 

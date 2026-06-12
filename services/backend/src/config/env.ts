@@ -42,3 +42,44 @@ if (!parsedEnv.success) {
 
 // Export the validated and typed environment variables
 export const env = parsedEnv.data;
+
+/**
+ * Returns the primary frontend URL. Supports comma-separated strings
+ * (used for multiple CORS origins) and returns the first one.
+ */
+export const getFrontendUrl = (): string => {
+  const url = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const urls = url.split(',').map((u) => u.trim());
+  if (process.env.NODE_ENV === 'production') {
+    const prodUrls = urls.filter(
+      (u) =>
+        !u.includes('localhost') &&
+        !u.includes('127.0.0.1') &&
+        !u.includes('frontend:')
+    );
+    if (prodUrls.length > 0) {
+      return prodUrls[0];
+    }
+  }
+  return urls[0];
+};
+
+/**
+ * Returns the primary backend base URL. Checks BACKEND_URL first,
+ * then tries to parse the domain from GOOGLE_CALLBACK_URL,
+ * and falls back to localhost:4000.
+ */
+export const getBackendUrl = (): string => {
+  if (process.env.BACKEND_URL) {
+    return process.env.BACKEND_URL.trim();
+  }
+  if (process.env.GOOGLE_CALLBACK_URL) {
+    try {
+      const parsed = new URL(process.env.GOOGLE_CALLBACK_URL);
+      return `${parsed.protocol}//${parsed.host}`;
+    } catch {
+      // fallback
+    }
+  }
+  return 'http://localhost:4000';
+};

@@ -5,6 +5,15 @@ import FlashcardProgress from './flashcardProgress.model.js';
 import FlashcardSession from './flashcardSession.model.js';
 import User from '../user/user.model.js';
 
+const getDateString = (date: Date, tz: string): string => {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: tz,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(date);
+};
+
 export const getDecks = async (userId: string, subjectId?: string) => {
   const matchStage: any = { isPublic: true };
   if (subjectId) matchStage.subjectId = subjectId;
@@ -31,8 +40,49 @@ export const getDecks = async (userId: string, subjectId?: string) => {
       }
     },
     {
+      $lookup: {
+        from: 'flashcards',
+        localField: '_id',
+        foreignField: 'deckId',
+        as: 'deckCards'
+      }
+    },
+    {
       $addFields: {
+        totalCards: { $size: '$deckCards' },
         cardsStudied: { $size: '$userProgress' },
+        dueCardsCount: {
+          $size: {
+            $filter: {
+              input: '$deckCards',
+              as: 'card',
+              cond: {
+                $let: {
+                  vars: {
+                    matchingProgress: {
+                      $filter: {
+                        input: '$userProgress',
+                        as: 'p',
+                        cond: { $eq: ['$$p.cardId', '$$card._id'] }
+                      }
+                    }
+                  },
+                  in: {
+                    $or: [
+                      { $eq: [{ $size: '$$matchingProgress' }, 0] },
+                      {
+                        $lte: [
+                          { $arrayElemAt: ['$$matchingProgress.nextReviewDate', 0] },
+                          new Date()
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
         averageAccuracy: {
           $cond: {
             if: { $gt: [{ $size: '$userProgress' }, 0] },
@@ -60,7 +110,7 @@ export const getDecks = async (userId: string, subjectId?: string) => {
         }
       }
     },
-    { $project: { userProgress: 0 } }
+    { $project: { userProgress: 0, deckCards: 0 } }
   ]);
 };
 
@@ -95,7 +145,7 @@ export const getDeckCards = async (userId: string, deckId: string) => {
   ]);
 };
 
-export const getDueCards = async (userId: string, deckId: string) => {
+export const getDueCards = async (userId: string, deckId: string, limit?: number) => {
   // Spaced Repetition Engine
   // 1. Find cards where nextReviewDate <= now OR they don't have a progress document
   
@@ -130,6 +180,10 @@ export const getDueCards = async (userId: string, deckId: string) => {
 
   // Sort by priority (wrong -> close -> unseen -> correct)
   combined.sort((a, b) => a.priority - b.priority);
+
+  if (limit !== undefined && limit > 0) {
+    return combined.slice(0, limit);
+  }
 
   return combined;
 };
@@ -175,15 +229,24 @@ export const submitProgress = async (userId: string, cardId: string, deckId: str
 };
 
 export const completeSession = async (userId: string, deckId: string, results: { cardId: string, rating: 'wrong' | 'close' | 'correct' }[]) => {
-  if (!results.length) return { score: 0, xpEarned: 0, leveledUp: false };
+  if (!results.length) return { score: 0, xpEarned: 0, leveledUp: false, summary: { easy: 0, ok: 0, hard: 0 } };
 
   let totalPoints = 0;
   const maxPoints = results.length * 10;
+  let easy = 0;
+  let ok = 0;
+  let hard = 0;
 
   for (const res of results) {
-    if (res.rating === 'correct') totalPoints += 10;
-    else if (res.rating === 'close') totalPoints += 5;
-    // wrong = 0
+    if (res.rating === 'correct') {
+      totalPoints += 10;
+      easy += 1;
+    } else if (res.rating === 'close') {
+      totalPoints += 5;
+      ok += 1;
+    } else {
+      hard += 1;
+    }
   }
 
   const scorePercentage = Math.round((totalPoints / maxPoints) * 100);
@@ -200,18 +263,88 @@ export const completeSession = async (userId: string, deckId: string, results: {
     results
   });
 
-  const updatedUser = await User.findByIdAndUpdate(
-    userId,
-    { $inc: { xp: xpEarned } },
-    { new: true }
-  );
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
 
-  return { session, xpEarned, newTotalXp: updatedUser?.xp };
+  // Manage Flashcard Day Streak
+  const timezone = user.timezone || 'UTC';
+  const todayString = getDateString(new Date(), timezone);
+  const lastActivityDate = user.flashcardStreak?.lastActivityDate
+    ? new Date(user.flashcardStreak.lastActivityDate)
+    : null;
+
+  if (!lastActivityDate) {
+    user.flashcardStreak = {
+      current: 1,
+      longest: 1,
+      lastActivityDate: new Date(),
+    };
+  } else {
+    const lastActivityString = getDateString(lastActivityDate, timezone);
+    if (lastActivityString !== todayString) {
+      const todayDate = new Date(todayString);
+      const lastDate = new Date(lastActivityString);
+      const diffTime = Math.abs(todayDate.getTime() - lastDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 1) {
+        user.flashcardStreak.current += 1;
+      } else {
+        user.flashcardStreak.current = 1;
+      }
+
+      if (user.flashcardStreak.current > user.flashcardStreak.longest) {
+        user.flashcardStreak.longest = user.flashcardStreak.current;
+      }
+      user.flashcardStreak.lastActivityDate = new Date();
+    }
+  }
+
+  user.xp += xpEarned;
+  await user.save();
+
+  return { 
+    session, 
+    xpEarned, 
+    newTotalXp: user.xp, 
+    summary: { easy, ok, hard } 
+  };
 };
 
 export const getStats = async (userId: string) => {
   const userObjId = new mongoose.Types.ObjectId(userId);
 
+  // 1. Get user streak
+  const user = await User.findById(userId);
+  const streak = user?.flashcardStreak?.current || 0;
+
+  // 2. Count total cards
+  const totalCards = await Flashcard.countDocuments({});
+
+  // 3. Count mastered cards
+  const masteredCount = await FlashcardProgress.countDocuments({
+    userId: userObjId,
+    lastRating: 'correct'
+  });
+
+  // 4. Count due today cards (unseen + overdue cards)
+  const allCards = await Flashcard.find({}).select('_id');
+  const cardIds = allCards.map(c => c._id);
+
+  const progresses = await FlashcardProgress.find({
+    userId: userObjId,
+    cardId: { $in: cardIds }
+  });
+
+  const dueProgressesCount = progresses.filter(p => p.nextReviewDate <= new Date()).length;
+  const seenCardIds = progresses.map(p => p.cardId.toString());
+  const unseenCount = allCards.filter(c => !seenCardIds.includes(c._id.toString())).length;
+
+  const dueTodayCount = dueProgressesCount + unseenCount;
+
+  // 5. Historic aggregate metrics (backward compatibility)
   const overallStats = await FlashcardSession.aggregate([
     { $match: { userId: userObjId } },
     {
@@ -224,17 +357,19 @@ export const getStats = async (userId: string) => {
     }
   ]);
 
-  const cardsStudied = await FlashcardProgress.countDocuments({ userId: userObjId });
-
-  if (!overallStats.length) {
-    return { totalCardsStudied: cardsStudied, averageAccuracy: 0, decksCompleted: 0 };
-  }
+  const averageAccuracy = overallStats.length ? Math.round(overallStats[0].averageSessionScore) : 0;
+  const decksCompleted = overallStats.length ? overallStats[0].decksCompleted.length : 0;
+  const totalSessions = overallStats.length ? overallStats[0].totalSessions : 0;
 
   return {
-    totalCardsStudied: cardsStudied,
-    averageAccuracy: Math.round(overallStats[0].averageSessionScore),
-    decksCompleted: overallStats[0].decksCompleted.length,
-    totalSessions: overallStats[0].totalSessions
+    totalCards,
+    masteredCount,
+    dueTodayCount,
+    streak,
+    totalCardsStudied: progresses.length,
+    averageAccuracy,
+    decksCompleted,
+    totalSessions
   };
 };
 

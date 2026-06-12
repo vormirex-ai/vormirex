@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 import logo from "../../assets/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import GoogleLoginButton from "@/components/auth/googleLoginButton";
 import { useLoginMutation } from "@/store/api/authApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,12 +41,36 @@ const loginSchema = Yup.object().shape({
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
 
   const onboardingCompleted = useSelector(
     (state: RootState) => state.onboarding.completed
   );
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const verified = searchParams.get("verified");
+    const err = searchParams.get("error");
+    if (verified === "true") {
+      toast.success("Email verified successfully! You can now log in. 🚀");
+    } else if (verified === "false") {
+      toast.error(err || "Email verification failed ❌");
+    }
+
+    // Handle Google OAuth success parameters
+    const oauthToken = searchParams.get("accessToken");
+    if (oauthToken) {
+      dispatch(
+        setCredentials({
+          user: null,
+          token: oauthToken,
+        })
+      );
+      toast.success("Login Successful ✅");
+      navigate("/dashboard");
+    }
+  }, [searchParams, dispatch, navigate]);
 
   const [login, { isLoading: loading }] = useLoginMutation();
 

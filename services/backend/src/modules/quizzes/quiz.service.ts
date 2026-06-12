@@ -6,9 +6,22 @@ import User from '../user/user.model.js';
 export const generateQuizQuestions = async (subjectId: string) => {
   return await QuizQuestion.aggregate([
     { $match: { subjectId } },
-    { $sample: { size: 10 } },
+    { $sample: { size: 5 } },
     { $project: { correctAnswer: 0, explanation: 0 } }
   ]);
+};
+
+export const verifyQuestionAnswer = async (questionId: string, selectedOption: string) => {
+  const question = await QuizQuestion.findById(questionId);
+  if (!question) return null;
+
+  const isCorrect = question.correctAnswer === selectedOption;
+  return {
+    isCorrect,
+    correctAnswer: question.correctAnswer,
+    explanation: question.explanation || '',
+    xpEarned: isCorrect ? 40 : 0
+  };
 };
 
 export const evaluateAndSubmitQuiz = async (userId: string, subjectId: string, answers: any[], timeTaken: number) => {
@@ -32,8 +45,7 @@ export const evaluateAndSubmitQuiz = async (userId: string, subjectId: string, a
   const totalQuestions = answers.length;
   const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
 
-  let xpEarned = 10 + Math.round(scorePercentage * 0.4);
-  if (scorePercentage === 100) xpEarned += 50;
+  const xpEarned = correctCount * 40;
 
   const updatedUser = await User.findByIdAndUpdate(
     userId,
@@ -125,6 +137,7 @@ export const calculateGlobalStats = async (userId: string) => {
 
 export default {
   generateQuizQuestions,
+  verifyQuestionAnswer,
   evaluateAndSubmitQuiz,
   verifyAndGetQuestionDetail,
   getUserQuizHistory,

@@ -16,8 +16,9 @@ describe('Swagger UI Integration Tests', () => {
     expect(response.text).toContain('swagger-ui');
   });
 
-  it('should return 404 for missing static assets on /api-docs/', async () => {
+  it('should serve Swagger UI HTML on sub-paths of /api-docs/', async () => {
     const response = await request(app).get('/api-docs/non-existent-file.js');
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(200);
+    expect(response.text).toContain('html');
   });
 });

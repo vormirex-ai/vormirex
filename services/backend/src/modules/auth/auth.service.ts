@@ -21,6 +21,7 @@ import {
 } from '../../utils/errors.js';
 import { updateUserStreak } from '../../utils/streak.js';
 import type { SignupDTO, LoginDTO, CustomJWTPayload } from './auth.types.js';
+import { getFrontendUrl, getBackendUrl } from '../../config/env.js';
 
 import { hasValidMxRecord } from '../../utils/dns.js';
 import { validateEmail } from '../../utils/zerobounce.js';
@@ -52,8 +53,8 @@ export const signup = async (data: SignupDTO) => {
       await existingUser.save();
 
       // Resend the verification email to the updated user.
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-      const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
+      const backendUrl = getBackendUrl();
+      const verificationUrl = `${backendUrl}/api/auth/verify-email?token=${verificationToken}`;
       const emailHtml = getVerificationEmailHTML(existingUser.name, verificationUrl);
       await sendEmail({
         to: existingUser.email,
@@ -79,8 +80,8 @@ export const signup = async (data: SignupDTO) => {
     await existingUser.save();
 
     // Resend the verification email to the updated user.
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-    const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
+    const backendUrl = getBackendUrl();
+    const verificationUrl = `${backendUrl}/api/auth/verify-email?token=${verificationToken}`;
     const emailHtml = getVerificationEmailHTML(
       existingUser.name,
       verificationUrl
@@ -104,8 +105,8 @@ export const signup = async (data: SignupDTO) => {
     });
 
     // Send verification email
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-    const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
+    const backendUrl = getBackendUrl();
+    const verificationUrl = `${backendUrl}/api/auth/verify-email?token=${verificationToken}`;
     const emailHtml = getVerificationEmailHTML(user.name, verificationUrl);
 
     try {
@@ -208,8 +209,8 @@ export const resendVerificationEmail = async (email: string) => {
 
   // 5. Construct the verification URL and send the email.
   // It's good practice to use an environment variable for the base URL.
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-  const verificationUrl = `${frontendUrl}/verify-email?token=${verificationToken}`;
+  const backendUrl = getBackendUrl();
+  const verificationUrl = `${backendUrl}/api/auth/verify-email?token=${verificationToken}`;
   const emailHtml = getVerificationEmailHTML(user.name, verificationUrl);
 
   await sendEmail({
@@ -249,7 +250,7 @@ export const handleForgotPassword = async (email: string) => {
 
   // 4. Send the email with the unhashed token.
   // Use an environment variable for the frontend URL for better flexibility.
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const frontendUrl = getFrontendUrl();
   const resetUrl = `${frontendUrl}/reset-password?token=${resetToken}`;
   const emailHtml = getResetPasswordEmailHTML(user.name, resetUrl);
 

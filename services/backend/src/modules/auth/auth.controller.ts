@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import * as authService from './auth.service.js';
 import { BadRequestError, UnauthorizedError } from '../../utils/errors.js';
+import { getFrontendUrl } from '../../config/env.js';
 import {
   ForgotPasswordBody,
   LoginBody,
@@ -9,7 +10,7 @@ import {
 } from './auth.validation.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
-const getCookieOptions = (maxAge?: number) => ({
+export const getCookieOptions = (maxAge?: number) => ({
   httpOnly: true,
   secure: isProduction,
   sameSite: (isProduction ? 'none' : 'lax') as 'none' | 'lax' | 'strict',
@@ -89,7 +90,7 @@ export const login = async (
       profilePhoto: result.user!.profilePhoto,
     };
 
-    return res.json({ success: true, accessToken: result.accessToken, user: userResponse });
+    return res.json({ success: true, accessToken: result.accessToken, refreshToken: result.refreshToken, user: userResponse });
   } catch (error) {
     next(error);
   }
@@ -115,7 +116,7 @@ export const verifyTwoFactor = async (req: Request, res: Response, next: NextFun
       profilePhoto: user.profilePhoto,
     };
 
-    return res.json({ success: true, accessToken, user: userResponse });
+    return res.json({ success: true, accessToken, refreshToken, user: userResponse });
   } catch (error) {
     next(error);
   }
@@ -123,15 +124,17 @@ export const verifyTwoFactor = async (req: Request, res: Response, next: NextFun
 
 
 export const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
+  const frontendUrl = getFrontendUrl();
   try {
     const { token } = req.query;
     if (typeof token !== 'string') {
       throw new BadRequestError('A valid verification token must be provided.');
     }
-    const result = await authService.verifyEmail(token);
-    return res.status(200).json({ success: true, message: result.message });
+    await authService.verifyEmail(token);
+    return res.redirect(`${frontendUrl}/login?verified=true`);
   } catch (error) {
-    next(error);
+    const errorMsg = (error as any).message || 'Verification failed';
+    return res.redirect(`${frontendUrl}/login?verified=false&error=${encodeURIComponent(errorMsg)}`);
   }
 };
 
@@ -187,8 +190,8 @@ export const resetPassword = async (
 
 export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.cookies.refresh_token;
-    if (!token) {
+    const token = req.cookies.refresh_token || req.body.refreshToken || req.headers['x-refresh-token'];
+    if (!token || typeof token !== 'string') {
       throw new UnauthorizedError('No refresh token provided');
     }
     const newAccess = await authService.refreshToken(token);
@@ -246,7 +249,7 @@ export const verifyGuestOTPAccount = async (req: Request, res: Response, next: N
       role: result.user.role,
     };
 
-    return res.json({ success: true, accessToken: result.accessToken, user: userResponse });
+    return res.json({ success: true, accessToken: result.accessToken, refreshToken: result.refreshToken, user: userResponse });
   } catch (error) {
     next(error);
   }

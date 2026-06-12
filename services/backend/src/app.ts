@@ -20,6 +20,7 @@ import challengeRouter from './modules/challenges/challenge.routes.js';
 import subjectRouter from './modules/subjects/subject.routes.js';
 import lessonRouter from './modules/subjects/lesson.routes.js';
 import aiTutorRouter from './modules/aiTutor/aiTutor.routes.js';
+import dashboardRouter from './modules/dashboard/dashboard.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './config/swagger-output.js';
 
@@ -38,6 +39,7 @@ const allowedOrigins = [
   'http://localhost:3060',   // nginx Docker dev port
   'http://localhost:3000',
   'http://frontend:5173',   // internal Docker network
+  'https://vormirex-backend.vercel.app', // Backend Swagger domain
   // Vercel / any extra origins set in env (comma-separated)
   ...(process.env.FRONTEND_URL
     ? process.env.FRONTEND_URL.split(',').map((u) => u.trim())
@@ -81,13 +83,7 @@ app.use(
     },
   }),
   swaggerUi.serve,
-  (req: Request, res: Response, next: NextFunction) => {
-    if (req.path === '/' || req.path === '') {
-      swaggerUi.setup(swaggerDocument, swaggerOptions)(req, res, next);
-    } else {
-      res.status(404).send('Not Found');
-    }
-  }
+  swaggerUi.setup(swaggerDocument, swaggerOptions)
 );
 
 // Secure the app by setting various HTTP headers
@@ -119,6 +115,7 @@ app.use('/api/analytics', analyticsRouter);
 app.use('/api/progress', progressRouter);
 app.use('/api/notifications', notificationRouter);
 app.use('/api/roles', roleConfigRouter);
+app.use('/api/dashboard', dashboardRouter);
 // app.use('/api/payments', paymentRouter);
 
 // --- Centralized Error Handler ---
