@@ -7,11 +7,14 @@ interface AuthState {
   isInitialized: boolean;
 }
 
+const storedUser = localStorage.getItem("user");
+const storedToken = localStorage.getItem("token");
+
 const initialState: AuthState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
-  isInitialized: false,
+  user: storedUser ? JSON.parse(storedUser) : null,
+  token: storedToken || null,
+  isAuthenticated: !!storedToken,
+  isInitialized: true,
 };
 
 const authSlice = createSlice({
@@ -26,15 +29,19 @@ const authSlice = createSlice({
       state.token = token;
       state.isAuthenticated = true;
       state.isInitialized = true;
+
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
     },
 
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-
-      // 🔥 IMPORTANT FIX
       state.isInitialized = true;
+
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
     },
 
     setInitialized: (state, action) => {
