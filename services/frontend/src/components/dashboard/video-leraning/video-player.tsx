@@ -229,7 +229,7 @@ export const VideoPlayer = forwardRef<
               )}
             </button>
 
-            <SkipBack />
+            <SkipBack className="w-5 h-5 opacity-50 pointer-events-none" />
 
             <SkipForward
               onClick={handleNext}

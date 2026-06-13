@@ -3,17 +3,14 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { RootState } from "@/store/store";
-
 import { containerStagger, fadeUpItem } from "@/lib/motion";
 import {
   normalizeChapterStatus,
   normalizeLessonStatus,
 } from "@/lib/statusNormalizer";
-
 import { CourseChapterCard } from "@/components/dashboard/course-details/chapter-card";
 import { CourseHeader } from "@/components/dashboard/course-details/course-header";
 import { CourseDetailsSkeleton } from "@/components/skeleton/course-details-skeleton";
-
 import { useGetSubjectCurriculumQuery } from "@/store/api/subjectsApi";
 
 const CourseDetails = () => {
@@ -70,27 +67,13 @@ const CourseDetails = () => {
           <CourseHeader
             title={curriculum?.subject?.title}
             icon={curriculum?.subject?.icon}
-            progress={
-              curriculum?.overallProgress?.percentage || 0
-            }
-            description={
-              curriculum?.subject?.description
-            }
+            progress={curriculum?.overallProgress?.percentage || 0}
+            description={curriculum?.subject?.description}
             stats={{
-              lessons:
-                curriculum?.overallProgress
-                  ?.totalLessons || 0,
-
-              duration: `${curriculum?.overallProgress
-                ?.studyTimeHours || 0
-                }h`,
-
-              quizzes:
-                curriculum?.chapters?.length || 0,
-
-              hasCertificate:
-                curriculum?.subject
-                  ?.hasCertificate,
+              lessons: curriculum?.overallProgress?.totalLessons || 0,
+              duration: `${curriculum?.overallProgress?.studyTimeHours || 0}h`,
+              quizzes: curriculum?.chapters?.length || 0,
+              hasCertificate: curriculum?.subject?.hasCertificate
             }}
             id={curriculum?.subject?.id}
           />
@@ -106,21 +89,14 @@ const CourseDetails = () => {
                   chapter={{
                     id: chapter.sequenceOrder,
                     title: chapter.title,
-                    status:
-                      normalizeChapterStatus(
-                        chapter.status
-                      ),
-
+                    status: normalizeChapterStatus(chapter.status),
                     lessons:
                       chapter.lessons?.map(
                         (lesson: any) => ({
                           id: lesson._id,
                           title: lesson.title,
                           duration: `${lesson.durationMinutes} min`,
-                          status:
-                            normalizeLessonStatus(
-                              lesson.status
-                            ),
+                          status: normalizeLessonStatus(lesson.status),
                         })
                       ),
                   }}

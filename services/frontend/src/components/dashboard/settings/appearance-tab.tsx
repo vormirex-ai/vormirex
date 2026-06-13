@@ -22,14 +22,12 @@ export function AppearanceTab() {
   const [updateUiPreferences] = useUpdateUiPreferencesMutation();
 
   const handleUpdatePreference = async (key: string, value: any) => {
-    // Update local Redux state immediately (optimistic UI)
     if (key === "theme") dispatch(value === "dark" ? setTheme("dark") : setTheme("light"));
     else if (key === "fontSize") dispatch(setFontSize(value as FontSize));
     else if (key === "compactSidebar") dispatch(setCompactSidebar(value));
     else if (key === "reducedAnimations") dispatch(setReducedAnimations(value));
     else if (key === "accentColor") dispatch(setAccentColor(value));
 
-    // Update backend database if authenticated
     if (isAuthenticated) {
       try {
         await updateUiPreferences({ [key]: value }).unwrap();
@@ -119,7 +117,7 @@ export function AppearanceTab() {
         </Button>
       </div>
 
-      <div className="custom-surface p-6 rounded-2xl shadow-xl space-y-3">
+      {/* <div className="custom-surface p-6 rounded-2xl shadow-xl space-y-3">
         <h3 className="text-sm font-medium text-slateText dark:text-slate-200">Accent Color</h3>
         <div className="flex items-center gap-3">
           {colors.map((color) => (
@@ -131,7 +129,7 @@ export function AppearanceTab() {
             />
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

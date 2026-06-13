@@ -25,10 +25,7 @@ export default function VideoLearning() {
   if (
     lessonData?.nextLessonId
   ) {
-    dispatch(
-      setNextLessonId(
-        lessonData.nextLessonId
-      )
+    dispatch(setNextLessonId(lessonData.nextLessonId)
     );
   }
 
@@ -37,17 +34,10 @@ export default function VideoLearning() {
   ) => {
     if (!videoRef.current) return;
 
-    const [minutes, seconds] =
-      timeString
-        .split(":")
-        .map(Number);
+    const [minutes, seconds] = timeString.split(":").map(Number);
 
-    const totalSeconds =
-      minutes * 60 + seconds;
-
-    videoRef.current.currentTime =
-      totalSeconds;
-
+    const totalSeconds = minutes * 60 + seconds;
+    videoRef.current.currentTime = totalSeconds;
     await videoRef.current.play();
   };
 

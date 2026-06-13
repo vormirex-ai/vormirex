@@ -117,12 +117,6 @@ export default function QuizCard({
       return;
     }
 
-    console.log("🔥 FINAL QUIZ DATA =>", {
-      answers,
-      score,
-      timeTaken: 600 - timeLeft,
-    });
-
     onFinish({
       answers,
       score,

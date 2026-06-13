@@ -1,6 +1,7 @@
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCurrentLessonId } from "@/store/slice/subjectSlice";
+import { setCurrentLessonId, setCurrentChapterId, } from "@/store/slice/subjectSlice";
 import { Check, Play, Lock } from "lucide-react";
 
 export interface Lesson {
@@ -20,12 +21,24 @@ export interface Chapter {
 export function CourseChapterCard({ chapter }: { chapter: Chapter }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log("chapter card", chapter)
+
+  const activeLessonRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (activeLessonRef.current) {
+      activeLessonRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, []);
 
   return (
     <div className="custom-surface rounded-2xl p-5 flex flex-col h-[420px] overflow-hidden transition-all duration-200 hover:border-primary">
 
       <div className="shrink-0">
         <div className="flex items-center justify-between mb-4">
+
           <div>
             <span className="text-[11px] font-bold tracking-widest uppercase text-slate-600 dark:text-slate-400">
               Chapter {chapter.id}
@@ -36,9 +49,10 @@ export function CourseChapterCard({ chapter }: { chapter: Chapter }) {
             </h2>
           </div>
 
-          <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-primary/10 text-primary border border-primary/20">
+          <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-primary/10 text-primary border border-primary/20 capitalize">
             {chapter.status}
           </span>
+
         </div>
       </div>
 
@@ -52,14 +66,16 @@ export function CourseChapterCard({ chapter }: { chapter: Chapter }) {
           return (
             <div
               key={lesson.id}
+              ref={isInProgress ? activeLessonRef : null}
               className={`flex items-center justify-between p-3.5 rounded-xl border transition-all shadow-sm
-  ${isInProgress
+                ${isInProgress
                   ? "bg-primary/10 border-primary/40"
                   : isCompleted
                     ? "bg-emerald-50 border-emerald-200 dark:bg-emerald-500/10 dark:border-emerald-500/30"
                     : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
                 }
-  hover:shadow-md hover:border-primary/40`}
+                hover:shadow-md hover:border-primary/40
+              `}
             >
 
               <div className="flex items-center gap-3.5">
@@ -84,7 +100,6 @@ export function CourseChapterCard({ chapter }: { chapter: Chapter }) {
                   <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                     {lesson.title}
                   </h3>
-
                   <p className="text-xs text-slate-500 mt-0.5">
                     {lesson.duration}
                   </p>
@@ -103,8 +118,8 @@ export function CourseChapterCard({ chapter }: { chapter: Chapter }) {
                         console.log("Lesson ID missing", lesson);
                         return;
                       }
-
                       dispatch(setCurrentLessonId(lesson.id));
+                      dispatch(setCurrentChapterId(chapter.id));
                       navigate(
                         `/dashboard/video-learning?lessonId=${lesson.id}`
                       );
