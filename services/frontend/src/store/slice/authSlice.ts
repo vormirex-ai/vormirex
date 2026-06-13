@@ -10,10 +10,19 @@ interface AuthState {
 const storedUser = localStorage.getItem("user");
 const storedToken = localStorage.getItem("token");
 
+const getParsedUser = () => {
+  if (!storedUser || storedUser === "undefined") return null;
+  try {
+    return JSON.parse(storedUser);
+  } catch (e) {
+    return null;
+  }
+};
+
 const initialState: AuthState = {
-  user: storedUser ? JSON.parse(storedUser) : null,
-  token: storedToken || null,
-  isAuthenticated: !!storedToken,
+  user: getParsedUser(),
+  token: storedToken && storedToken !== "undefined" ? storedToken : null,
+  isAuthenticated: !!storedToken && storedToken !== "undefined",
   isInitialized: true,
 };
 

@@ -5,6 +5,7 @@ import ChapterModel from './chapter.model.js';
 import LessonModel from './lesson.model.js';
 import User from '../user/user.model.js';
 import StudyLogModel from '../analytics/studyLog.model.js';
+import { createNotification } from '../notifications/notification.controller.js';
 import { NotFoundError } from '../../utils/errors.js';
 
 class LessonService {
@@ -95,6 +96,18 @@ class LessonService {
     if (!completedSet.has(lessonId)) {
       progress.completedLessons.push(
         new mongoose.Types.ObjectId(lessonId) as any
+      );
+
+      // Trigger a notification for lesson completion!
+      await createNotification(
+        userId,
+        'lesson',
+        'Lesson completed',
+        `${lesson.title || 'Lesson'} — Ch. ${lesson.chapterId?.sequenceOrder || 1}`,
+        {
+          lessonId,
+          subjectId: lesson.chapterId?.subjectId?.toString(),
+        }
       );
     }
 

@@ -4,6 +4,7 @@ import Flashcard from './flashcard.model.js';
 import FlashcardProgress from './flashcardProgress.model.js';
 import FlashcardSession from './flashcardSession.model.js';
 import User from '../user/user.model.js';
+import { createNotification } from '../notifications/notification.controller.js';
 
 const getDateString = (date: Date, tz: string): string => {
   return new Intl.DateTimeFormat('en-CA', {
@@ -304,6 +305,17 @@ export const completeSession = async (userId: string, deckId: string, results: {
 
   user.xp += xpEarned;
   await user.save();
+
+  // Trigger flashcard session completed notification
+  const deck = await FlashcardDeck.findById(deckId);
+  const deckName = deck?.name || 'Basics';
+  await createNotification(
+    userId,
+    'achievement',
+    `+${xpEarned} XP earned`,
+    `Completed ${deckName} Flashcards successfully.`,
+    { xpEarned, actionUrl: '/practice/flash-cards' }
+  );
 
   return { 
     session, 

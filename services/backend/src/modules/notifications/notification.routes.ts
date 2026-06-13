@@ -8,6 +8,10 @@ const router = Router();
 router.use(requireAuth);
 
 router.get('/', notificationController.getNotifications);
+router.get('/stream', notificationController.streamNotifications);
+router.get('/stats', notificationController.getNotificationStats);
+router.delete('/clear', notificationController.clearHistory);
+router.get('/export', notificationController.exportActivity);
 router.patch('/read-all', notificationController.markAllAsRead);
 router.patch('/:id/read', notificationController.markAsRead);
 

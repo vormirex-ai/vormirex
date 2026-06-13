@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import QuizQuestion from './quizQuestion.model.js';
 import QuizResult from './quizResult.model.js';
 import User from '../user/user.model.js';
+import Subject from '../subjects/subject.model.js';
+import { createNotification } from '../notifications/notification.controller.js';
 
 export const generateQuizQuestions = async (subjectId: string) => {
   return await QuizQuestion.aggregate([
@@ -62,6 +64,16 @@ export const evaluateAndSubmitQuiz = async (userId: string, subjectId: string, a
     xpEarned,
     answers: evaluatedAnswers
   });
+
+  const subject = await Subject.findById(subjectId);
+  const subjectName = subject?.title || 'Subject';
+  await createNotification(
+    userId,
+    'achievement',
+    `+${xpEarned} XP earned`,
+    `Completed ${subjectName} Quiz successfully.`,
+    { xpEarned, subjectId: subjectId.toString() }
+  );
 
   return { quizResult, xpEarned, newTotalXp: updatedUser?.xp };
 };

@@ -5,6 +5,7 @@ import Flashcard from './flashcard.model.js';
 import FlashcardProgress from './flashcardProgress.model.js';
 import FlashcardSession from './flashcardSession.model.js';
 import User from '../user/user.model.js';
+import Notification from '../notifications/notification.model.js';
 import mongoose from 'mongoose';
 
 describe('Flashcard Service Unit Tests', () => {
@@ -68,6 +69,8 @@ describe('Flashcard Service Unit Tests', () => {
 
       jest.spyOn(User, 'findById').mockResolvedValue(mockUser as any);
       jest.spyOn(FlashcardSession, 'create').mockResolvedValue({} as any);
+      jest.spyOn(FlashcardDeck, 'findById').mockResolvedValue({ name: 'Mathematics Fundamentals' } as any);
+      (jest.spyOn(Notification, 'create') as any).mockResolvedValue({} as any);
 
       const results = [
         { cardId: 'c1', rating: 'correct' as const },
