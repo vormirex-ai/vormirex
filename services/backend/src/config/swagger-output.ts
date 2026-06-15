@@ -334,6 +334,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -359,6 +366,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -410,6 +424,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -435,6 +456,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -464,6 +492,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -508,6 +543,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -539,6 +581,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -576,6 +625,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -618,6 +674,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -654,6 +717,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -696,6 +766,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -732,6 +809,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -802,6 +886,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -835,6 +926,13 @@ export default {
             }
           },
           {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "schema": {
@@ -861,6 +959,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -962,6 +1067,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -993,6 +1105,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1087,6 +1206,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1123,6 +1249,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1165,6 +1298,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1204,6 +1344,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1234,6 +1381,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1293,6 +1447,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1332,6 +1493,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1368,6 +1536,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1416,6 +1591,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1470,6 +1652,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1493,6 +1682,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1521,6 +1717,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1569,6 +1772,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1644,6 +1854,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1701,6 +1918,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1749,6 +1973,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1803,6 +2034,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1839,6 +2077,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1864,6 +2109,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -1918,6 +2170,13 @@ export default {
             }
           },
           {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "schema": {
@@ -1958,6 +2217,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1981,6 +2247,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -2046,6 +2319,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2096,6 +2376,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2132,6 +2419,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2157,6 +2451,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -2214,6 +2515,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2242,6 +2550,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -2296,6 +2611,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2321,6 +2643,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -2374,6 +2703,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2410,6 +2746,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2443,6 +2786,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -2502,6 +2852,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2530,6 +2887,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -2576,6 +2940,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2614,6 +2985,13 @@ export default {
             }
           },
           {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "schema": {
@@ -2644,6 +3022,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -2701,6 +3086,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2749,6 +3141,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2777,6 +3176,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2802,6 +3208,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -2858,6 +3271,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2908,6 +3328,13 @@ export default {
             }
           },
           {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "schema": {
@@ -2948,6 +3375,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2984,6 +3418,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -3009,6 +3450,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -3040,6 +3488,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -3065,6 +3520,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -3096,6 +3558,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -3121,6 +3590,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -3180,6 +3656,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -3234,6 +3717,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -3259,6 +3749,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -3311,6 +3808,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -3333,6 +3837,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -3361,6 +3872,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -3397,6 +3915,13 @@ export default {
             }
           },
           {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "format",
             "in": "query",
             "schema": {
@@ -3427,6 +3952,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -3466,6 +3998,13 @@ export default {
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -3491,6 +4030,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -3527,6 +4073,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -3575,6 +4128,13 @@ export default {
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
             "schema": {
               "type": "string"
             }

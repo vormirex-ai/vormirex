@@ -6,11 +6,18 @@ export const requireAuth = (
   res: Response,
   next: NextFunction
 ) => {
+  let token: string | undefined;
   const header = req.headers.authorization;
-  if (!header) return res.status(401).json({ message: "No token" });
+  
+  if (header && header.startsWith("Bearer ")) {
+    token = header.split(" ")[1];
+  } else if (req.query.token) {
+    token = req.query.token as string;
+  }
 
-  const token = header.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "Malformed token" });
+  if (!token) {
+    return res.status(401).json({ message: "No token" });
+  }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!, (err, decoded) => {
     if (err || !decoded)
@@ -19,9 +26,6 @@ export const requireAuth = (
     req.user = decoded;
 
     // Check if user is frozen or deleted in DB
-    // We import User dynamically to avoid circular deps if any, though here it strictly depends on modules structure.
-    // Assuming cleaner arch, we just import User at top. But let's check if we can import User model here.
-    // Yes, we can import User model.
     import('../modules/user/user.model.js').then(async ({ default: User }) => {
        try {
           const payload = decoded as any; // Cast to any or CustomJWTPayload
@@ -32,9 +36,9 @@ export const requireAuth = (
           if (user.isFrozen) {
              return res.status(403).json({ message: "Account is frozen. Contact support." });
           }
-           next();
+          next();
        } catch (dbErr) {
-           return res.status(500).json({ message: "Auth Error" });
+          return res.status(500).json({ message: "Auth Error" });
        }
     }).catch(err => next(err));
   });
@@ -45,13 +49,18 @@ export const optionalAuth = (
   res: Response,
   next: NextFunction
 ) => {
+  let token: string | undefined;
   const header = req.headers.authorization;
-  if (!header || !header.startsWith('Bearer ')) {
-    return next();
+  
+  if (header && header.startsWith("Bearer ")) {
+    token = header.split(" ")[1];
+  } else if (req.query.token) {
+    token = req.query.token as string;
   }
 
-  const token = header.split(' ')[1];
-  if (!token) return next();
+  if (!token) {
+    return next();
+  }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!, (err, decoded) => {
     if (!err && decoded) {
