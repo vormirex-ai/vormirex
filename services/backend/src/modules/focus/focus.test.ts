@@ -47,7 +47,7 @@ describe('Focus Timer Controller Unit Tests', () => {
       
       (jest.spyOn(FocusTask, 'find') as any).mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          sort: jest.fn().mockResolvedValue(mockTasks as any),
+          sort: jest.fn(() => Promise.resolve(mockTasks as any)),
         }),
       });
 
@@ -82,7 +82,7 @@ describe('Focus Timer Controller Unit Tests', () => {
       
       (jest.spyOn(FocusTask, 'find') as any).mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          sort: jest.fn().mockResolvedValue([] as any),
+          sort: jest.fn(() => Promise.resolve([] as any)),
         }),
       });
 
@@ -117,7 +117,7 @@ describe('Focus Timer Controller Unit Tests', () => {
       
       (jest.spyOn(FocusTask, 'find') as any).mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          sort: jest.fn().mockResolvedValue([] as any),
+          sort: jest.fn(() => Promise.resolve([] as any)),
         }),
       });
 
@@ -145,7 +145,7 @@ describe('Focus Timer Controller Unit Tests', () => {
       
       (jest.spyOn(FocusTask, 'find') as any).mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          sort: jest.fn().mockResolvedValue([] as any),
+          sort: jest.fn(() => Promise.resolve([] as any)),
         }),
       });
 
@@ -175,7 +175,7 @@ describe('Focus Timer Controller Unit Tests', () => {
 
       (jest.spyOn(FocusTask, 'find') as any).mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          sort: jest.fn().mockResolvedValue([] as any),
+          sort: jest.fn(() => Promise.resolve([] as any)),
         }),
       });
 
