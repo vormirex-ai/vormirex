@@ -12,6 +12,7 @@ type Props = {
   icon?: LucideIcon | string;
   iconBg?: string;
   iconColor?: string;
+  compact?: boolean;
 };
 
 export function StatCard({
@@ -22,12 +23,9 @@ export function StatCard({
   icon,
   iconBg,
   iconColor,
+  compact = false,
 }: Props) {
-
-  const numericValue = parseInt(
-    value.toString().replace(/,/g, ""),
-    10
-  );
+  const numericValue = parseInt(value.toString().replace(/,/g, ""), 10);
 
   const [count, setCount] = useState(0);
 
@@ -43,8 +41,7 @@ export function StatCard({
     return () => controls.stop();
   }, [numericValue]);
 
-  const IconComponent =
-    typeof icon !== "string" ? icon : null;
+  const IconComponent = typeof icon !== "string" ? icon : null;
 
   return (
     <motion.div
@@ -53,12 +50,9 @@ export function StatCard({
       transition={{ duration: 0.5 }}
     >
       <Card className="group relative overflow-hidden cursor-pointer">
+        <div className=" absolute left-0 top-0 h-[2px] w-0 bg-gradient-to-r from-[#63E7DC] via-[#46D3C9] to-[#26BDB3] transition-all duration-300 ease-out group-hover:w-full " />
 
-        <div
-          className=" absolute left-0 top-0 h-[2px] w-0 bg-gradient-to-r from-[#63E7DC] via-[#46D3C9] to-[#26BDB3] transition-all duration-300 ease-out group-hover:w-full "
-        />
-
-        <CardContent className="p-5">
+        <CardContent className={compact ? "p-3" : "p-5"}>
           <div className="flex items-start justify-between">
             <motion.div
               initial={{ scale: 0 }}
@@ -69,38 +63,37 @@ export function StatCard({
                 damping: 12,
               }}
               className={`
-                flex h-12 w-12 items-center justify-center
-                rounded-2xl shadow-lg
-                ${iconBg}
-              `}
+  flex items-center justify-center
+  rounded-2xl shadow-lg
+  ${compact ? "h-10 w-10" : "h-12 w-12"}
+  ${iconBg}
+`}
             >
               <div
                 className={` flex items-center justify-center text-xl [&_svg]:h-5 [&_svg]:w-5
                   ${iconColor}
                 `}
               >
-                {typeof icon === "string" ? (
-                  icon
-                ) : (
-                  IconComponent && <IconComponent />
-                )}
+                {typeof icon === "string"
+                  ? icon
+                  : IconComponent && <IconComponent />}
               </div>
             </motion.div>
           </div>
 
-          <div className="mt-6">
-            <p className="my-1 text-sm text-slate-400">
-              {title}
-            </p>
+          <div className={compact ? "mt-3" : "mt-6"}>
+            <p className="my-1 text-sm text-slate-400">{title}</p>
 
             <div className="mt-1 flex items-end gap-1">
-              <motion.h2 className="text-3xl font-bold">
+              <motion.h2
+                className={
+                  compact ? "text-2xl font-bold" : "text-3xl font-bold"
+                }
+              >
                 {count.toLocaleString()}
               </motion.h2>
 
-              <span className="mb-1 text-sm text-slate-400">
-                {suffix}
-              </span>
+              <span className="mb-1 text-sm text-slate-400">{suffix}</span>
             </div>
 
             {badge && (
@@ -109,7 +102,6 @@ export function StatCard({
                 {badge}
               </p>
             )}
-
           </div>
         </CardContent>
       </Card>
