@@ -6,7 +6,10 @@ import {
   Star,
 } from "lucide-react";
 
+
 import { useReadNotificationMutation } from "@/store/api/notificationsApi";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
 
 const notificationIcons: any = {
   achievement: {
@@ -15,11 +18,13 @@ const notificationIcons: any = {
     iconColor: "text-yellow-400",
   },
 
+
   streak: {
     icon: Flame,
     iconBg: "bg-orange-500/20",
     iconColor: "text-orange-400",
   },
+
 
   completed: {
     icon: CheckCircle2,
@@ -27,11 +32,13 @@ const notificationIcons: any = {
     iconColor: "text-green-400",
   },
 
+
   reminder: {
     icon: CalendarDays,
     iconBg: "bg-violet-500/20",
     iconColor: "text-violet-400",
   },
+
 
   xp: {
     icon: Star,
@@ -40,44 +47,57 @@ const notificationIcons: any = {
   },
 };
 
+
 interface Props {
   item: any;
 }
 
-const NotificationCard = ({ item }: Props) => {
+
+const NotificationCard = ({ item, setOpen }: any) => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const selectedId = searchParams.get("id");
   const [readNotification] = useReadNotificationMutation();
-
-  const config =
-    notificationIcons[item.type] || notificationIcons.achievement;
-
+  const config = notificationIcons[item.type] || notificationIcons.achievement;
   const Icon = config.icon;
 
+
   const handleReadNotification = async () => {
-    if (item.isRead) {
-      console.log("already read");
-      return;
-    }
-
     try {
-      const response = await readNotification(item._id).unwrap();
+      setOpen?.(false);
 
-      console.log("API response:", response);
-    } catch (error) {
-      console.error("API error:", error);
+
+      if (!item.isRead) {
+        await readNotification(item._id).unwrap();
+      }
+
+
+      navigate(`/dashboard/notifications?id=${item._id}`);
+    } catch (err) {
+      console.error(err);
     }
   };
-
   return (
     <div
       onClick={handleReadNotification}
       className={`flex items-start gap-4 p-4 border-b border-border hover:bg-primary/10 transition cursor-pointer ${!item.isRead ? "bg-primary/5" : ""
         }`}
+
+
+
+
+    // className={`flex items-start gap-4 p-4 border-b cursor-pointer hover:bg-primary/10 transition
+    //   ${!item.isRead ? "bg-primary/5" : ""}
+    //   ${selectedId === item._id ? "bg-primary/15 border-l-4 border-primary" : ""}
+    // `}
     >
       <div
         className={`w-11 h-11 rounded-xl flex items-center justify-center ${config.iconBg}`}
       >
         <Icon className={`w-5 h-5 ${config.iconColor}`} />
       </div>
+
+
 
 
       <div className="flex-1">
@@ -89,18 +109,29 @@ const NotificationCard = ({ item }: Props) => {
           </span>
         </h4>
 
+
         <p className="text-xs text-muted-foreground mt-1">
           {new Date(item.createdAt).toLocaleString()}
         </p>
 
+
       </div>
+
 
       {!item.isRead && (
         <span className="w-2 h-2 rounded-full bg-primary mt-2 " />
       )}
     </div>
 
+
   );
 };
 
+
 export default NotificationCard;
+
+
+
+
+
+

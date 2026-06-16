@@ -1,9 +1,11 @@
 import React from "react";
 import logo from "../../assets/logo.png";
 import { footerConfig } from "../data/footerData";
+import { useNavigate } from "react-router";
 
 
 const Footer: React.FC = () => {
+  const navigate =useNavigate()
   return (
     <footer className="relative overflow-hidden border-t border-white/5 bg-[#040816] text-white">
 
@@ -16,7 +18,10 @@ const Footer: React.FC = () => {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
 
           <div className="space-y-6">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 cursor-pointer"
+                   onClick={() => {
+              navigate("/")}}
+            >
               <img
                 src={logo}
                 alt="logo"

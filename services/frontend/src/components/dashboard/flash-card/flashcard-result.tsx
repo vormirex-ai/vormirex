@@ -64,7 +64,7 @@ export const FlashCardResult = ({
         </p>
 
         <div className="mt-8 flex justify-center gap-4">
-          <Button className="rounded-xl">Review Again</Button>
+          {/* <Button className="rounded-xl">Review Again</Button> */}
 
           <Button variant="secondary" onClick={onBackToDecks}>
             Back to Decks

@@ -18,13 +18,7 @@ export default function QuizHistoryPage() {
   const [searchParams] = useSearchParams();
   const subjectFromUrl = searchParams.get("subject") || "all";
   const [selectedSubject, setSelectedSubject] = useState(subjectFromUrl);
-
-  useEffect(() => {
-    setSelectedSubject(subjectFromUrl);
-  }, [subjectFromUrl]);
-
   const isSubjectView = !!searchParams.get("subject");
-
   const { data: stats } = useGetQuizStatsQuery({});
 
   const { data: allHistoryData, isLoading: allLoading } =
@@ -42,33 +36,18 @@ export default function QuizHistoryPage() {
     }
   );
 
-  const { data: subjectsData } =
-    useGetSubjectsQuery({
-      page: 1,
-      limit: 50,
-    });
-
-  const subjects =
-    subjectsData?.subjects ||
-    subjectsData?.data ||
+  const { data: subjectsData } = useGetSubjectsQuery({ page: 1, limit: 50});
+  const subjects = subjectsData?.subjects || subjectsData?.data ||
     [];
 
-  const allHistory =
-    allHistoryData?.history || [];
+  const allHistory = allHistoryData?.history || [];
 
   const historyList = isSubjectView
     ? subjectHistoryData?.history || []
     : selectedSubject === "all"
-      ? allHistory
-      : allHistory.filter(
-        (item: any) =>
-          item.subjectId === selectedSubject
-      );
+      ? allHistory : allHistory.filter((item: any) =>item.subjectId === selectedSubject );
 
-  const isLoading = isSubjectView
-    ? subjectLoading
-    : allLoading;
-
+  const isLoading = isSubjectView ? subjectLoading : allLoading;
   const statsData = stats?.stats || stats || {};
 
   const getSubjectName = (id: string) => {
@@ -79,11 +58,13 @@ export default function QuizHistoryPage() {
     return found?.title || "Unknown Subject";
   };
 
-  const handleSubjectChange = (
-    value: string
-  ) => {
+  const handleSubjectChange = ( value: string) => {
     setSelectedSubject(value);
   };
+
+    useEffect(() => {
+    setSelectedSubject(subjectFromUrl);
+  }, [subjectFromUrl]);
 
   if (isLoading) {
     return (

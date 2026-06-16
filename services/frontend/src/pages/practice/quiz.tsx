@@ -6,7 +6,10 @@ import QuizStart from "@/components/dashboard/quiz/quiz-start";
 import QuizCard from "@/components/dashboard/quiz/quiz-card";
 import QuizResult from "@/components/dashboard/quiz/quiz-result";
 import { useGetSubjectsQuery } from "@/store/api/subjectsApi";
-import { useGetQuizQuestionsQuery, useSubmitQuizMutation } from "@/store/api/quizzesApi";
+import {
+  useGetQuizQuestionsQuery,
+  useSubmitQuizMutation,
+} from "@/store/api/quizzesApi";
 import { DynamicIcon } from "@/components/iconMapper";
 import { SubjectSkeletonCard } from "@/components/skeleton/SubjectSkeletonCard";
 import { QuizHeader } from "@/components/dashboard/quiz/quiz-header";
@@ -16,54 +19,42 @@ import { useSearchParams } from "react-router-dom";
 import { AppSkeletonCard } from "@/components/skeleton/card-skeleton";
 
 export default function QuizPage() {
-  const navigate = useNavigate(); const { subjectId } = useParams();
+  const navigate = useNavigate();
+  const { subjectId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentStep =
-    (searchParams.get("step") as
-      | "subjects"
-      | "start"
-      | "quiz"
-      | "result") || "subjects";
+  const currentStep =(searchParams.get("step") as "subjects" | "start" | "quiz" | "result") ||"subjects";
 
-  const [step, setStep] = useState<"subjects" | "start" | "quiz" | "result">(currentStep);
   const [score, setScore] = useState(0);
-  const [selectedSubject, setSelectedSubject] = useState<SubjectType | null>(null);
+  const [selectedSubject, setSelectedSubject] = useState<SubjectType | null>(
+    null,
+  );
   const [quizResult, setQuizResult] = useState<any>(null);
-  const { data, isLoading, isError } = useGetSubjectsQuery({ page: 1, limit: 20 });
-  const subjects = data?.subjects || data?.data || [];
-  const {
-    data: quizData,
-    isLoading: quizLoading,
-  } = useGetQuizQuestionsQuery(selectedSubject?._id, {
-    skip: !selectedSubject?._id,
+  const { data, isLoading, isError } = useGetSubjectsQuery({
+    page: 1,
+    limit: 20,
   });
+  const subjects = data?.subjects || data?.data || [];
+  const { data: quizData, isLoading: quizLoading } = useGetQuizQuestionsQuery(
+    selectedSubject?._id,
+    {
+      skip: !selectedSubject?._id,
+    },
+  );
 
   const [submitQuiz] = useSubmitQuizMutation();
   const quiz = quizData || {};
   const questions = quiz?.questions || [];
 
-  const updateStep = (
-    newStep:
-      | "subjects"
-      | "start"
-      | "quiz"
-      | "result"
-  ) => {
-    setStep(newStep);
+const updateStep = (newStep: "subjects" | "start" | "quiz" | "result") => {
+  setSearchParams({
+    step: newStep,
+  });
+};
 
-    setSearchParams({
-      step: newStep,
-    });
-  };
-
-  const handleSubjectSelect = (subject: SubjectType) => {
-    setSelectedSubject(subject);
-
-    navigate(
-      `/practice/quiz/${subject._id}?step=start`);
-    updateStep("start");
-  };
-
+const handleSubjectSelect = (subject: SubjectType) => {
+  setSelectedSubject(subject);
+  navigate(`/practice/quiz/${subject._id}?step=start`);
+};
 
   const startQuiz = () => {
     setScore(0);
@@ -91,6 +82,15 @@ export default function QuizPage() {
       };
 
       const response = await submitQuiz(payload).unwrap();
+      localStorage.setItem(
+        "quiz_result",
+        JSON.stringify({
+          ...response,
+          score,
+          subjectId: selectedSubject._id,
+          submittedAt: new Date().toISOString(),
+        }),
+      );
       toast.success(response?.message || "Quiz submitted successfully");
       setScore(score);
       setQuizResult(response);
@@ -101,24 +101,29 @@ export default function QuizPage() {
     }
   };
 
-  useEffect(() => {
-    if (subjectId && subjects.length > 0) {
-      const foundSubject = subjects.find(
-        (item: SubjectType) => item._id === subjectId,
-      );
+useEffect(() => {
+  if (!subjectId || !subjects.length) return;
+  const found = subjects.find((s: SubjectType) => s._id === subjectId);
+  if (found) {
+    setSelectedSubject(found);
+  }
+}, [subjectId, subjects]);
 
-      if (foundSubject) {
-        setSelectedSubject(foundSubject);
-        updateStep("start");
-      }
+  const getStoredQuizResult = () => {
+    try {
+      return JSON.parse(localStorage.getItem("quiz_result") || "null");
+    } catch {
+      return null;
     }
-  }, [subjectId, subjects]);
+  };
+
+  const storedResult = getStoredQuizResult();
+  const finalResult = quizResult || storedResult;
 
   return (
     <div className="flex p-4 lg:p-10">
       <AnimatePresence mode="wait">
-
-        {step === "subjects" && (
+        {currentStep  === "subjects" && (
           <motion.div
             key="subjects"
             variants={containerStagger(0.12)}
@@ -191,7 +196,7 @@ export default function QuizPage() {
                         <button
                           onClick={() =>
                             navigate(
-                              `/practice/quiz/quiz-history?subject=${subject._id}`
+                              `/practice/quiz/quiz-history?subject=${subject._id}`,
                             )
                           }
                           className="rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm font-medium text-muted-foreground backdrop-blur-xl transition-all duration-300 hover:border-primary/30 hover:bg-primary/10 hover:text-primary"
@@ -200,13 +205,10 @@ export default function QuizPage() {
                         </button>
 
                         <button
-                          onClick={() =>
-                            handleSubjectSelect(subject)
-                          }
+                          onClick={() => handleSubjectSelect(subject)}
                           className="group/button flex items-center gap-3 rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/30"
                         >
                           Start Quiz
-
                           <span className="transition-transform duration-300 group-hover/button:translate-x-1">
                             →
                           </span>
@@ -220,7 +222,7 @@ export default function QuizPage() {
           </motion.div>
         )}
 
-        {step === "start" && (
+        {currentStep  === "start" && (
           <motion.div
             key="start"
             variants={containerStagger(0.12)}
@@ -253,7 +255,7 @@ export default function QuizPage() {
           </motion.div>
         )}
 
-        {step === "quiz" && (
+        {currentStep  === "quiz" && (
           <motion.div
             key="quiz"
             variants={containerStagger(0.12)}
@@ -267,21 +269,23 @@ export default function QuizPage() {
               className="mx-auto flex w-full max-w-4xl items-center justify-center"
             >
               {quizLoading ? (
-                <div className="text-center py-20 max-w-4xl ">
+                <div className="text-center py-20 max-w-4xl flex gap-5 ">
                   <AppSkeletonCard variant="quiz" />
+                    <AppSkeletonCard variant="quiz" />
+                      <AppSkeletonCard variant="quiz" />
                 </div>
               ) : (
                 <QuizCard
                   questions={questions}
                   onFinish={finishQuiz}
-                  onBack={() => setStep("start")}
+                  onBack={() => updateStep("start")}
                 />
               )}
             </motion.div>
           </motion.div>
         )}
 
-        {step === "result" && (
+        {currentStep  === "result" && (
           <motion.div
             key="result"
             variants={containerStagger(0.12)}
@@ -295,16 +299,11 @@ export default function QuizPage() {
               className="mx-auto flex w-full max-w-4xl items-center justify-center"
             >
               <QuizResult
-                score={quizResult?.result?.score || score}
-                total={
-                  quizResult?.result?.totalQuestions ||
-                  questions.length
-                }
-                xp={quizResult?.xpEarned || 0}
-                accuracy={quizResult?.result?.score || 0}
-                timeTaken={
-                  quizResult?.result?.timeTaken || 0
-                }
+                score={finalResult?.result?.score || score}
+                total={finalResult?.result?.totalQuestions || questions.length}
+                xp={finalResult?.xpEarned || 0}
+                accuracy={finalResult?.result?.score || 0}
+                timeTaken={finalResult?.result?.timeTaken || 0}
                 onRetake={startQuiz}
                 onGoSubjects={() => {
                   navigate("/practice/quiz");

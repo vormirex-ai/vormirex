@@ -37,6 +37,11 @@ import { useLazyMeQuery } from "@/store/api/authApi";
 import { RootState, store } from "@/store/store";
 import ChatHistoryPage from "./pages/dashboard/chat-history";
 import QuizHistoryPage from "./pages/practice/quiz/quiz-history";
+import { PrivacyPolicyPage } from "./pages/legal/privacy-policy";
+import { TermsAndConditionPage } from "./pages/legal/terms-and-conditions";
+import { SupportPage } from "./pages/legal/support";
+import { HelpCenterPage } from "./pages/legal/help-center";
+import LegalLayout from "./components/layouts/LegalLayout";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,14 +76,18 @@ function App() {
               setCredentials({
                 user: result.user,
                 token: currentToken,
-              })
+              }),
             );
           } else {
-            console.log("initializeAuth: no current token in store, logging out");
+            console.log(
+              "initializeAuth: no current token in store, logging out",
+            );
             dispatch(logout());
           }
         } else {
-          console.log("initializeAuth: result success/user missing, logging out");
+          console.log(
+            "initializeAuth: result success/user missing, logging out",
+          );
           dispatch(logout());
         }
       } catch (error) {
@@ -90,9 +99,6 @@ function App() {
 
     initializeAuth();
   }, [dispatch, triggerMe]);
-
-
-
 
   return (
     <Routes>
@@ -114,10 +120,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardHome />} />
           <Route path="subjects" element={<SubjectPage />} />
-          <Route
-            path="video-learning/:id?"
-            element={<VideoLearning />}
-          />
+          <Route path="video-learning/:id?" element={<VideoLearning />} />
           <Route path="ai-chat" element={<AIChatPage />} />
           <Route path="chat-history" element={<ChatHistoryPage />} />
           <Route path="roadmap" element={<RoadmapPage />} />
@@ -126,17 +129,14 @@ function App() {
           <Route path="notifications" element={<NotificationsPage />} />
         </Route>
 
-
-
         <Route path="/practice" element={<DashboardLayout />}>
           {/* <Route path="quiz" element={<QuizPage />} /> */}
-          <Route path="/practice/quiz/:subjectId?" element={<QuizPage />} />
-          <Route path="/practice/quiz/quiz-history" element={<QuizHistoryPage />} />
+          <Route path="quiz/:subjectId?" element={<QuizPage />} />
+          <Route path="quiz/quiz-history" element={<QuizHistoryPage />} />
           <Route path="flash-cards" element={<FlashcardPage />} />
           <Route path="daily-challenges" element={<DailyChallengePage />} />
           <Route path="interview-bot" element={<InterviewBotPage />} />
         </Route>
-
 
         <Route path="/productivity" element={<DashboardLayout />}>
           <Route path="timer" element={<PromodoroTimer />} />
@@ -160,6 +160,15 @@ function App() {
           <Route path="ai-chat" element={<AIChatPage />} />
         </Route>
       </Route>
+
+<Route element={<LegalLayout />}>
+  <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+  <Route path="/terms-and-conditions" element={<TermsAndConditionPage />} />
+  <Route path="/support" element={<SupportPage />} />
+  <Route path="/help-center" element={<HelpCenterPage />} />
+</Route>
+
+
 
       {/* Catch-all route */}
       <Route path="*" element={<NotFound />} />

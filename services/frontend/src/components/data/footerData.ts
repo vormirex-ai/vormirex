@@ -26,14 +26,10 @@ export const footerConfig = {
       title: "Quick Links",
 
       links: [
-        {
-          label: "Pricing",
-          href: "/pricing",
-        },
-        {
-          label: "Features",
-          href: "/features",
-        },
+        // {
+        //   label: "Pricing",
+        //   href: "/pricing",
+        // },
         {
           label: "AI Chat",
           href: "/ai-chat",
