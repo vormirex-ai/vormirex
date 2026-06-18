@@ -10,20 +10,14 @@ import { ChallengeHome } from "@/components/dashboard/daily-challanges/challenge
 import { ChallengeQuiz } from "@/components/dashboard/daily-challanges/challenge-quiz";
 import { ChallengeResult } from "@/components/dashboard/daily-challanges/challenge-result";
 import { ChallengesHeaders } from "@/components/dashboard/daily-challanges/challenges-header";
-
-import {
-  useGetTodayChallengeQuery
-} from "@/store/api/challengesApi";
-
+import { useGetTodayChallengeQuery } from "@/store/api/challengesApi";
 import { useGetSubjectsQuery } from "@/store/api/subjectsApi";
 import { AppSkeletonCard } from "@/components/skeleton/card-skeleton";
 
 export default function DailyChallengePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = (searchParams.get("step") as ChallengeStep) || "home";
-  const updateStep = (newStep: ChallengeStep) => {
-    setSearchParams({ step: newStep });
-  };
+  const updateStep = (newStep: ChallengeStep) => { setSearchParams({ step: newStep }); };
   const [finalScore, setFinalScore] = useState(0);
   const [finalAccuracy, setFinalAccuracy] = useState(0);
 
@@ -34,7 +28,6 @@ export default function DailyChallengePage() {
   } = useGetTodayChallengeQuery();
 
   const { data: subjectsResponse, } = useGetSubjectsQuery();
-
   const questions: Question[] =
     Array.isArray(todayChallenge?.questions) ? todayChallenge.questions : [];
 
@@ -44,10 +37,7 @@ export default function DailyChallengePage() {
     ? subjectsResponse
     : subjectsResponse?.subjects || [];
 
-  const matchedSubject = subjects.find(
-    (sub: any) =>
-      sub._id === firstQuestion?.subjectId
-  );
+  const matchedSubject = subjects.find((sub: any) => sub._id === firstQuestion?.subjectId);
 
   const subjectName = matchedSubject?.title || "Unknown Subject";
   const difficulty = firstQuestion?.difficulty || "Beginner";
@@ -59,13 +49,9 @@ export default function DailyChallengePage() {
     updateStep("quiz");
   };
 
-  const handleQuizFinish = (
-    score: number,
-    accuracy: number
-  ) => {
+  const handleQuizFinish = (score: number, accuracy: number) => {
     setFinalScore(score);
     setFinalAccuracy(accuracy);
-
     updateStep("result");
   };
 
@@ -85,64 +71,44 @@ export default function DailyChallengePage() {
       <div className="mx-auto space-y-10">
 
         <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            variants={fadeUpItem}
+            initial="hidden"
+            animate="show"
+            exit={{ opacity: 0, y: -20 }}
+          >
+            {step === "home" && (
+              <>
+                <ChallengesHeaders />
 
-          {step === "home" && (
-            <motion.div
-              key="home"
-              variants={fadeUpItem}
-              initial="hidden"
-              animate="show"
-              exit={{ opacity: 0, y: -20 }}
-            >
-              <ChallengesHeaders />
+                <ChallengeHome
+                  subjectName={subjectName}
+                  difficulty={difficulty}
+                  onStart={handleStart}
+                  onViewResult={() => updateStep("result")}
+                  isCompleted={isTodayCompleted}
+                  todayResult={todayResult}
+                />
+              </>
+            )}
 
-              <ChallengeHome
-                subjectName={subjectName}
-                difficulty={difficulty}
-                onStart={handleStart}
-                isCompleted={isTodayCompleted}
-                todayResult={todayResult}
-              />
-            </motion.div>
-          )}
-
-
-          {step === "quiz" && (
-            <motion.div
-              key="quiz"
-              variants={fadeUpItem}
-              initial="hidden"
-              animate="show"
-              exit={{ opacity: 0, y: -20 }}
-            >
+            {step === "quiz" && (
               <ChallengeQuiz
                 questions={questions}
                 onFinish={handleQuizFinish}
               />
-            </motion.div>
-          )}
+            )}
 
-          {step === "result" && (
-            <motion.div
-              key="result"
-              variants={fadeUpItem}
-              initial="hidden"
-              animate="show"
-              exit={{ opacity: 0, y: -20 }}
-            >
+            {step === "result" && (
               <ChallengeResult
                 score={finalScore}
                 accuracy={finalAccuracy}
-                onRetry={() =>
-                  updateStep("quiz")
-                }
-                onExit={() =>
-                  updateStep("home")
-                }
+                challengeResult={todayResult}
+                onExit={() => updateStep("home")}
               />
-            </motion.div>
-          )}
-
+            )}
+          </motion.div>
         </AnimatePresence>
 
       </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Bot, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
 
 interface InsightRowProps {
   icon: string;
@@ -21,6 +22,7 @@ function InsightItem({ icon, boldText, regularText }: InsightRowProps) {
 }
 
 export function AIInsights() {
+  const navigate = useNavigate()
   return (
     <div className="w-full flex flex-col gap-3">
       <div className="flex items-center gap-2 px-1 text-xs font-bold uppercase tracking-wider text-textColor">
@@ -63,8 +65,10 @@ export function AIInsights() {
           />
         </div>
 
-        {/* Action Trigger chat bar */}
-        <Button className="w-full  flex items-center justify-center gap-2 shadow-inner">
+
+        <Button className="w-full  flex items-center justify-center gap-2 shadow-inner"
+          onClick={() => navigate("/dashboard/ai-chat")}
+        >
           <MessageSquare className="w-4 h-4 " />
           Chat with AI about my progress
         </Button>

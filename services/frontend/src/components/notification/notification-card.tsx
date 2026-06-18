@@ -6,86 +6,132 @@ import {
   Star,
 } from "lucide-react";
 
-export const notifications = [
-  {
-    id: 1,
-    title: "+120 XP earned",
-    description: "Completed Python Quiz",
-    time: "2 minutes ago",
-    icon: Star,
-    iconBg: "bg-emerald-500/20",
+
+import { useReadNotificationMutation } from "@/store/api/notificationsApi";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
+
+const notificationIcons: any = {
+  achievement: {
+    icon: Trophy,
+    iconBg: "bg-yellow-500/20",
     iconColor: "text-yellow-400",
   },
-  {
-    id: 2,
-    title: "Lesson completed",
-    description: "Derivatives & Rules Ch. 4",
-    time: "2 hours ago",
-    icon: CheckCircle2,
-    iconBg: "bg-blue-500/20",
-    iconColor: "text-green-400",
-  },
-  {
-    id: 3,
-    title: "12-day streak!",
-    description: "Keep going — you're on fire!",
-    time: "Today, 8:00 AM",
+
+
+  streak: {
     icon: Flame,
     iconBg: "bg-orange-500/20",
     iconColor: "text-orange-400",
   },
-  {
-    id: 4,
-    title: "Reminder",
-    description: "Physics lesson scheduled for today 6 PM",
-    time: "Yesterday, 9:00 PM",
+
+
+  completed: {
+    icon: CheckCircle2,
+    iconBg: "bg-green-500/20",
+    iconColor: "text-green-400",
+  },
+
+
+  reminder: {
     icon: CalendarDays,
     iconBg: "bg-violet-500/20",
     iconColor: "text-violet-400",
   },
-  {
-    id: 5,
-    title: "Rank up!",
-    description: "You're now in the top 5% of learners",
-    time: "2 days ago",
-    icon: Trophy,
-    iconBg: "bg-pink-500/20",
+
+
+  xp: {
+    icon: Star,
+    iconBg: "bg-emerald-500/20",
     iconColor: "text-yellow-400",
   },
-];
-
+};
 
 
 interface Props {
-  item: (typeof notifications)[0];
+  item: any;
 }
 
-const NotificationCard = ({ item }: Props) => {
-  const Icon = item.icon;
 
+const NotificationCard = ({ item, setOpen }: any) => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const selectedId = searchParams.get("id");
+  const [readNotification] = useReadNotificationMutation();
+  const config = notificationIcons[item.type] || notificationIcons.achievement;
+  const Icon = config.icon;
+
+
+  const handleReadNotification = async () => {
+    try {
+      setOpen?.(false);
+
+
+      if (!item.isRead) {
+        await readNotification(item._id).unwrap();
+      }
+
+
+      navigate(`/dashboard/notifications?id=${item._id}`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
-    <div className="flex items-start gap-4 p-4 border-b border-border hover:bg-primary/10 transition cursor-pointer">
+    <div
+      onClick={handleReadNotification}
+      className={`flex items-start gap-4 p-4 border-b border-border hover:bg-primary/10 transition cursor-pointer ${!item.isRead ? "bg-primary/5" : ""
+        }`}
+
+
+
+
+    // className={`flex items-start gap-4 p-4 border-b cursor-pointer hover:bg-primary/10 transition
+    //   ${!item.isRead ? "bg-primary/5" : ""}
+    //   ${selectedId === item._id ? "bg-primary/15 border-l-4 border-primary" : ""}
+    // `}
+    >
       <div
-        className={`w-11 h-11 rounded-xl flex items-center justify-center ${item.iconBg}`}
+        className={`w-11 h-11 rounded-xl flex items-center justify-center ${config.iconBg}`}
       >
-        <Icon className={`w-5 h-5 ${item.iconColor}`} />
+        <Icon className={`w-5 h-5 ${config.iconColor}`} />
       </div>
 
+
+
+
       <div className="flex-1">
-        <h4 className="text-sm font-semibold text-foreground">
+        <h4 className="text-sm font-semibold text-foreground line-clamp-1">
           {item.title}
-          <span className="text-muted-foreground font-normal">
+          <span className="text-muted-foreground font-normal text-xs ">
             {" "}
-            — {item.description}
+            —     {item.message}
           </span>
         </h4>
 
+
         <p className="text-xs text-muted-foreground mt-1">
-          {item.time}
+          {new Date(item.createdAt).toLocaleString()}
         </p>
+
+
       </div>
+
+
+      {!item.isRead && (
+        <span className="w-2 h-2 rounded-full bg-primary mt-2 " />
+      )}
     </div>
+
+
   );
 };
 
+
 export default NotificationCard;
+
+
+
+
+
+

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Bookmark, Share2 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 interface LessonHeaderProps {
   title?: string;
@@ -15,6 +16,9 @@ export function LessonHeader({
   chapterTitle,
   lessonNumber,
 }: LessonHeaderProps) {
+  const chapterId = useSelector(
+    (state: any) => state.subject.currentChapterId
+  );
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
 
@@ -34,7 +38,7 @@ export function LessonHeader({
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
 
           <span>
-            {chapterTitle || "Chapter"}
+            Chapter: {chapterId}
             {lessonNumber ? ` • Lesson ${lessonNumber}` : ""}
           </span>
 

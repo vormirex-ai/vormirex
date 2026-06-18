@@ -4,7 +4,6 @@ import { Progress } from "@/components/ui/progress";
 import { Clock, CheckCircle2, XCircle, Lightbulb, ArrowRight, ArrowLeft } from "lucide-react";
 import { useVerifyQuizAnswerMutation } from "@/store/api/quizzesApi";
 
-
 export default function QuizCard({
   questions,
   onFinish,
@@ -22,12 +21,99 @@ export default function QuizCard({
   const [timeLeft, setTimeLeft] = useState(600);
   const [verifyResult, setVerifyResult] = useState<any>(null);
 
-
   const [verifyQuizAnswer] = useVerifyQuizAnswerMutation();
   const currentQuestion = questions[currentIndex] || questions[0];
   const progressValue = ((currentIndex + 1) / questions.length) * 100;
 
-  const getDifficultyStyle = (difficulty: string) => {
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) =>
+        prev > 0 ? prev - 1 : 0,
+      );
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+   useEffect(() => {
+      if (timeLeft === 0 && !isSubmitted) {
+        handleAutoSubmit();
+      }
+    }, [timeLeft]);
+
+   const handleAutoSubmit = async () => {
+    try {
+      const res = await verifyQuizAnswer({
+        questionId: currentQuestion._id,
+        selectedOption: null,
+      }).unwrap();
+
+      setVerifyResult(res);
+      setIsSubmitted(true);
+      setSelectedOption(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+
+    return `${mins
+      .toString()
+      .padStart(2, "0")
+      }:${secs
+        .toString()
+        .padStart(2, "0")
+      } `;
+  };
+
+  const handleOptionSelect = async (option: string) => {
+    if (isSubmitted) return;
+
+    setSelectedOption(option);
+
+    const response = await verifyQuizAnswer({
+      questionId: currentQuestion._id,
+      selectedOption: option,
+    }).unwrap();
+
+    setVerifyResult(response);
+    setIsSubmitted(true);
+
+    if (response?.isCorrect) {
+      setScore((prev) => prev + 1);
+    }
+    setAnswers((prev) => [
+      ...prev,
+      {
+        questionId: currentQuestion._id,
+        selectedOption: option,
+        isCorrect: response?.isCorrect,
+      },
+    ]);
+  };
+
+   const handleNext = () => {
+    if (currentIndex + 1 < questions.length) {
+      setCurrentIndex((prev) => prev + 1);
+      setSelectedOption(null);
+      setIsSubmitted(false);
+      setVerifyResult(null);
+      return;
+    }
+
+    onFinish({
+      answers,
+      score,
+      timeTaken: 600 - timeLeft,
+    });
+  };
+ if (!currentQuestion) return null;
+ 
+    const getDifficultyStyle = (difficulty: string) => {
     switch (difficulty?.toLowerCase()) {
       case "beginner":
         return `
@@ -57,77 +143,6 @@ export default function QuizCard({
         backdrop-blur-md
       `;
     }
-  };
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) =>
-        prev > 0 ? prev - 1 : 0,
-      );
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-
-    const secs = seconds % 60;
-
-    return `${mins
-      .toString()
-      .padStart(2, "0")
-      }:${secs
-        .toString()
-        .padStart(2, "0")
-      } `;
-  };
-
-  const handleOptionSelect = async (option: string) => {
-    if (isSubmitted) return;
-
-    setSelectedOption(option);
-
-    const response = await verifyQuizAnswer({
-      questionId: currentQuestion._id,
-      selectedOption: option,
-    }).unwrap();
-
-    setVerifyResult(response);
-    setIsSubmitted(true);
-
-    if (response?.isCorrect) {
-      setScore((prev) => prev + 1);
-    }
-
-    setAnswers((prev) => [
-      ...prev,
-      {
-        questionId: currentQuestion._id,
-        selectedOption: option,
-        isCorrect: response?.isCorrect,
-      },
-    ]);
-  };
-
-  const handleNext = async () => {
-    if (currentIndex + 1 < questions.length) {
-      setCurrentIndex((prev) => prev + 1);
-      setSelectedOption(null);
-      setIsSubmitted(false);
-      return;
-    }
-
-    console.log("🔥 FINAL QUIZ DATA =>", {
-      answers,
-      score,
-      timeTaken: 600 - timeLeft,
-    });
-
-    onFinish({
-      answers,
-      score,
-      timeTaken: 600 - timeLeft,
-    });
   };
 
   if (!currentQuestion) {
@@ -210,13 +225,9 @@ export default function QuizCard({
 
         <div className="flex flex-col gap-3">
           {currentQuestion.options.map((option: string, index: number) => {
-            const optionId = ["A", "B", "C", "D"][index];
-
-            const isSelected = selectedOption === optionId;
-
-            const isCorrect =
-              option === verifyResult?.correctAnswer;
-
+            const correctAnswer = verifyResult?.correctAnswer;
+            const isSelected = selectedOption === option;
+              const isCorrect = option === correctAnswer;
             let optionStyles = ` border border-slate-200 bg-slate-50 hover:bg-cyan-50 hover:border-cyan-300 dark:border-white/10 dark:bg-[#154249] dark:hover:bg-[#1b5660] dark:hover:border-cyan-400/30 transition-colors duration-200
     `;
 
@@ -230,10 +241,7 @@ export default function QuizCard({
                 badgeStyles =
                   "bg-emerald-500 text-white";
               }
-              else if (
-                isSelected &&
-                !isCorrect
-              ) {
+                else if (isSelected && !isCorrect) {
                 optionStyles =
                   "bg-red-50 dark:bg-[#291216] border-red-500/40 text-red-400";
 
@@ -241,6 +249,7 @@ export default function QuizCard({
                   "bg-red-500 text-white";
               }
             }
+               const optionId = ["A", "B", "C", "D"][index];
 
             return (
               <button

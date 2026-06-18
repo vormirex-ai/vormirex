@@ -41,6 +41,9 @@ const DashboardNavbar = ({
   const { data: statsData } = useGetFlashcardStatsQuery();
   const { user } = useSelector((state: any) => state.auth);
   const [logoutApi] = useLogoutMutation();
+  const routeTitleMap: Record<string, string> = {
+  "/dashboard/notifications": "Notifications",
+};
 
   const handleLogout = async () => {
     try {
@@ -68,6 +71,11 @@ const DashboardNavbar = ({
       })
       .sort((a, b) => b.path.length - a.path.length)[0];
 
+      const pageTitle =
+  routeTitleMap[location.pathname] ||
+  currentPage?.title ||
+  "Dashboard";
+
   const firstLetter =
     user?.name?.charAt(0)?.toUpperCase() ||
     user?.email?.charAt(0)?.toUpperCase() ||
@@ -93,11 +101,11 @@ const DashboardNavbar = ({
 
         <div className="hidden sm:block">
           <h2 className="text-lg font-bold text-foreground">
-            {currentPage?.title || "Dashboard"}
+            {pageTitle || "Dashboard"}
           </h2>
 
           <p className="text-xs text-muted-foreground">
-            Vormirex / {currentPage?.title || "Dashboard"}
+            Vormirex / {pageTitle|| "Dashboard"}
           </p>
         </div>
       </div>

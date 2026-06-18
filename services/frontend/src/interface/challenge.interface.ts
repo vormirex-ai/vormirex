@@ -17,4 +17,22 @@ export interface PastChallenge {
   status: "completed" | "missed";
 }
 
+export interface ChallengeHistoryItem {
+  _id: string;
+  score: number;
+  xpEarned: number;
+  dateString: string;
+  questionsCorrect: number;
+  timeSpent: number;
+}
+
+export interface ChallengeHomeProps {
+  onStart: () => void;
+  onViewResult: () => void;
+  subjectName: string;
+  difficulty: string;
+  isCompleted?: boolean;
+  todayResult?: any;
+}
+
 export type ChallengeStep = "home" | "quiz" | "result";

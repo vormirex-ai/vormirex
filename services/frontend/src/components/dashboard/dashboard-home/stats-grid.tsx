@@ -44,11 +44,16 @@ const statsConfig = {
 
 type StatsKey = keyof typeof statsConfig;
 
-export function StatsGrid({ data }: any) {
+type StatsGridProps = {
+  data: any;
+  className?: string;
+};
+
+export function StatsGrid({ data, className }: StatsGridProps) {
   if (!data) return null;
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className={className ?? "grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4"}>
       {Object.entries(data).map(([key, value]) => {
         const config = statsConfig[key as StatsKey];
 
@@ -60,8 +65,8 @@ export function StatsGrid({ data }: any) {
             suffix={config.suffix}
             badge={config.badge}
             icon={config.icon}
-            iconColor={config?.iconColor}
-            iconBg={config?.iconBg}
+            iconColor={config.iconColor}
+            iconBg={config.iconBg}
           />
         );
       })}

@@ -11,42 +11,29 @@ import {
   Trophy,
 } from "lucide-react";
 import {
+  useGetChallengeCalendarQuery,
   useGetChallengeHistoryQuery,
   useGetUserStreakQuery,
 } from "@/store/api/challengesApi";
 import { buildWeeklyDays, formatDate } from "@/lib/challenge.utils";
 import { AppSkeletonCard } from "@/components/skeleton/card-skeleton";
+import { ChallengeHistoryItem, ChallengeHomeProps } from "@/interface/challenge.interface";
 
-interface ChallengeHistoryItem {
-  _id: string;
-  score: number;
-  xpEarned: number;
-  dateString: string;
-  questionsCorrect: number;
-  timeSpent: number;
-}
 
-interface ChallengeHomeProps {
-  onStart: () => void;
-  subjectName: string;
-  difficulty: string;
-  isCompleted?: boolean;
-  todayResult?: any;
-}
 export const ChallengeHome: React.FC<ChallengeHomeProps> = ({
   onStart,
   subjectName,
   difficulty,
-  isCompleted
+  isCompleted,
+  onViewResult,
 }) => {
-  const { data: historyData, isLoading: historyLoading } =
-    useGetChallengeHistoryQuery();
-
-  const { data: streakData, isLoading: streakLoading } =
-    useGetUserStreakQuery();
+  const { data: historyData, isLoading: historyLoading } = useGetChallengeHistoryQuery();
+  const { data: streakData, isLoading: streakLoading } = useGetUserStreakQuery();
+  const currentMonth = new Date().toISOString().slice(0, 7);
+  const { data: calendarData } = useGetChallengeCalendarQuery(currentMonth);
 
   const pastChallenges: ChallengeHistoryItem[] = historyData?.history || [];
-  const weeklyDays = buildWeeklyDays(pastChallenges);
+  const weeklyDays = buildWeeklyDays(calendarData?.calendar || []);
 
   if (historyLoading || streakLoading) {
     return (
@@ -97,11 +84,12 @@ export const ChallengeHome: React.FC<ChallengeHomeProps> = ({
 
           {isCompleted ? (
             <Button
-              disabled
-              className="rounded-xl w-full sm:w-auto h-11 px-5 shrink-0 opacity-70 cursor-not-allowed"
+              onClick={onViewResult}
+              variant="secondary"
+              className="rounded-xl w-full sm:w-auto h-11 px-5 shrink-0 border border-primary"
             >
-              <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" />
-              Completed
+              <Trophy className="w-4 h-4 mr-2 text-amber-500" />
+              View Result
             </Button>
           ) : (
             <Button
@@ -116,57 +104,67 @@ export const ChallengeHome: React.FC<ChallengeHomeProps> = ({
       </Card>
 
       <Card className="border-border bg-card overflow-hidden">
-        <CardContent className="p-3 sm:p-5 space-y-4">
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            <h3 className="text-sm sm:text-base font-semibold flex items-center gap-1.5 text-foreground">
-              <Flame className="w-4 h-4 text-orange-500 fill-orange-500 shrink-0" />
+        <CardContent className="p-3 sm:p-5 space-y-5">
+          {/* Header */}
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <h3 className="text-sm sm:text-base font-semibold flex items-center gap-2 text-foreground">
+              <div className="p-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />
+              </div>
+
               <span>This Week&apos;s Streak</span>
             </h3>
 
+            {/* Stats */}
             <div className="flex flex-wrap items-center gap-2">
-              <div className="px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 text-xs font-semibold">
+              <div className="px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 text-[11px] font-semibold">
                 🔥 {streakData?.current || 0} Current
               </div>
 
-              <div className="px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-500 text-xs font-semibold">
+              <div className="px-3 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-500 text-[11px] font-semibold">
                 🏆 {streakData?.longest || 0} Best
               </div>
 
-              <div className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-xs font-semibold">
-                🎯 Avg {streakData?.averageScore || 0}%
+              <div className="px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-[11px] font-semibold">
+                🎯 {streakData?.averageScore || 0}% Avg
               </div>
 
-              <div className="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-500 text-xs font-semibold">
+              <div className="px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-500 text-[11px] font-semibold">
                 📚 {streakData?.totalAttempts || 0} Attempts
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-7 gap-1 sm:gap-2 md:gap-3">
+          {/* Week Grid */}
+          <div className="grid grid-cols-7 gap-2 sm:gap-3">
             {weeklyDays.map((item) => (
-              <div key={item.day} className="flex flex-col items-center gap-2">
+              <div
+                key={item.day}
+                className="flex flex-col items-center gap-2"
+              >
+                {/* Day Circle */}
                 <div
                   className={`
-      
-                          w-11 h-11 rounded-xl border
-                          flex items-center justify-center
-      
-                          ${item.isCompleted
-                      ? "bg-emerald-500/15 border-emerald-500 text-emerald-500"
+              relative
+              w-12 h-12 rounded-2xl border
+              flex items-center justify-center
+              transition-all duration-300
+
+              ${item.isCompleted
+                      ? "bg-emerald-500/15 border-emerald-500 text-emerald-500 shadow-sm shadow-emerald-500/20"
                       : ""
                     }
-      
-                          ${item.isToday && !item.isCompleted
-                      ? "bg-indigo-500/10 border-indigo-500 text-indigo-500"
+
+              ${item.isToday && !item.isCompleted
+                      ? "bg-indigo-500/10 border-indigo-500 text-indigo-500 shadow-sm shadow-indigo-500/20"
                       : ""
                     }
-      
-                          ${!item.isCompleted && !item.isToday
+
+              ${!item.isCompleted && !item.isToday
                       ? "bg-muted/30 border-dashed border-muted-foreground/30 text-muted-foreground"
                       : ""
                     }
-      
-                        `}
+            `}
                 >
                   {item.isCompleted ? (
                     <CheckCircle2 className="w-5 h-5 fill-emerald-500 text-white dark:text-slate-950" />
@@ -175,14 +173,40 @@ export const ChallengeHome: React.FC<ChallengeHomeProps> = ({
                   ) : (
                     <XCircle className="w-4 h-4 opacity-40" />
                   )}
+
+                  {/* Score Badge */}
+                  {item.isCompleted && (
+                    <div className="absolute -bottom-1.5 -right-1.5 min-w-[22px] h-5 px-1 rounded-full bg-background border border-emerald-500/20 shadow-sm flex items-center justify-center">
+                      <span className="text-[9px] font-bold text-emerald-500">
+                        {item.score}%
+                      </span>
+                    </div>
+                  )}
                 </div>
 
-                <div className="text-center">
-                  <p className="text-xs font-medium">{item.day}</p>
+                {/* Day Info */}
+                <div className="text-center leading-tight">
+                  <p className="text-xs font-semibold text-foreground">
+                    {item.day}
+                  </p>
 
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-[10px] text-muted-foreground mt-0.5">
                     {formatDate(item.dateString)}
                   </p>
+
+                  {item.isCompleted ? (
+                    <p className="text-[10px] font-medium text-yellow-500 mt-1">
+                      +{item.xpEarned} XP
+                    </p>
+                  ) : item.isToday ? (
+                    <p className="text-[10px] font-medium text-indigo-500 mt-1">
+                      Today
+                    </p>
+                  ) : (
+                    <p className="text-[10px] text-muted-foreground/50 mt-1">
+                      ---
+                    </p>
+                  )}
                 </div>
               </div>
             ))}

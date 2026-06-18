@@ -80,11 +80,11 @@ export default function FlashcardPage() {
         });
         setSessionResult(response)
 
-        console.log("SESSION DONE:", response);
+        // console.log("SESSION DONE:", response);
 
         goToStep(3, 0, selectedDeck);
       } catch (err) {
-        console.log("Session complete error:", err);
+        console.error("Session complete error:", err);
       }
     }
   };

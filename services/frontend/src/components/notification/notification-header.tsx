@@ -1,7 +1,31 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-const NotificationsHeader = () => {
+
+import { useReadAllNotificationsMutation } from "@/store/api/notificationsApi";
+
+
+interface Props {
+  unreadCount: number;
+}
+
+
+const NotificationsHeader = ({
+  unreadCount,
+}: Props) => {
+  const [readAllNotifications, { isLoading }] =
+    useReadAllNotificationsMutation();
+
+
+  const handleReadAll = async () => {
+    try {
+      await readAllNotifications(undefined).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div>
@@ -10,8 +34,15 @@ const NotificationsHeader = () => {
             Notifications
           </h1>
 
-          <Badge variant="secondary" className="rounded-full">6</Badge>
+
+          <Badge
+            variant="secondary"
+            className="rounded-full"
+          >
+            {unreadCount}
+          </Badge>
         </div>
+
 
         <p className="mt-2 text-sm text-muted-foreground">
           Stay updated with your learning progress,
@@ -19,11 +50,16 @@ const NotificationsHeader = () => {
         </p>
       </div>
 
-      <Button>
+
+      <Button
+        onClick={handleReadAll}
+        disabled={isLoading || unreadCount === 0}
+      >
         Mark All As Read
       </Button>
     </div>
   );
 };
+
 
 export default NotificationsHeader;

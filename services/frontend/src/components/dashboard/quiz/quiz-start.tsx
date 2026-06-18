@@ -14,6 +14,9 @@ export default function QuizStart({
   timeLimit: number;
   xpReward: number;
 }) {
+
+  const isQuizDisabled = totalQuestions === 0 || timeLimit === 0 || xpReward === 0;
+
   return (
     <div className="text-center max-w-md w-full px-3 sm:px-4">
 
@@ -69,12 +72,16 @@ export default function QuizStart({
       </div>
 
       <Button
-        className="w-full rounded-lg py-5 sm:py-6 text-sm sm:text-base"
+        className={`w-full rounded-lg py-5 sm:py-6 text-sm sm:text-base ${isQuizDisabled
+          ? "opacity-50 cursor-not-allowed"
+          : ""
+          }`}
         onClick={onStart}
+        disabled={isQuizDisabled}
       >
         <Play className="w-4 h-4 fill-current mr-2" />
 
-        Start Quiz
+        {isQuizDisabled ? "Quiz Not Available" : "Start Quiz"}
       </Button>
     </div>
   );

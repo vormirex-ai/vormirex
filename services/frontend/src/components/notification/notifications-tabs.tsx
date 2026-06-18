@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { notificationTabs } from "../data/notification-data";
 
+
 interface Props {
   activeTab: string;
   setActiveTab: (tab: string) => void;
 }
+
 
 const NotificationsTabs = ({
   activeTab,
@@ -28,5 +30,6 @@ const NotificationsTabs = ({
     </div>
   );
 };
+
 
 export default NotificationsTabs;

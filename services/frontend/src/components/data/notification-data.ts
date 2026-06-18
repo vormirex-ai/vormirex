@@ -1,14 +1,5 @@
-import {
-  Trophy,
-  Flame,
-  CheckCircle2,
-  CalendarDays,
-  Star,
-  Bell,
-  Sparkles,
-  Settings2,
-  Brain,
-} from "lucide-react";
+import { Trophy, Flame, CheckCircle2, CalendarDays, Star } from "lucide-react";
+
 
 export const notificationTabs = [
   "All",
@@ -20,108 +11,39 @@ export const notificationTabs = [
   "System Updates",
 ];
 
-export const notifications = [
-  {
-    id: 1,
-    category: "Achievements",
-    title: "+120 XP earned",
-    description: "Completed Python Quiz successfully.",
-    time: "2 minutes ago",
-    icon: Star,
-    iconBg: "bg-yellow-500/10",
-    iconColor: "text-yellow-500",
-    action: "Continue Learning",
+
+export const notificationIcons: any = {
+  achievement: {
+    icon: Trophy,
+    iconBg: "bg-yellow-500/20",
+    iconColor: "text-yellow-400",
   },
-  {
-    id: 2,
-    category: "Lessons",
-    title: "Lesson completed",
-    description: "Derivatives & Rules - Chapter 4",
-    time: "2 hours ago",
-    icon: CheckCircle2,
-    iconBg: "bg-green-500/10",
-    iconColor: "text-green-500",
-    action: "Continue Learning",
-  },
-  {
-    id: 3,
-    category: "Achievements",
-    title: "12-Day Learning Streak",
-    description: "Keep going! You're maintaining consistency.",
-    time: "5 hours ago",
+
+
+  streak: {
     icon: Flame,
-    iconBg: "bg-orange-500/10",
-    iconColor: "text-orange-500",
-    action: "Share Achievement",
+    iconBg: "bg-orange-500/20",
+    iconColor: "text-orange-400",
   },
-  {
-    id: 4,
-    category: "Reminders",
-    title: "Physics Lesson Reminder",
-    description: "Upcoming lesson scheduled today at 6 PM.",
-    time: "Yesterday · 9:00 AM",
+
+
+  completed: {
+    icon: CheckCircle2,
+    iconBg: "bg-green-500/20",
+    iconColor: "text-green-400",
+  },
+
+
+  reminder: {
     icon: CalendarDays,
-    iconBg: "bg-violet-500/10",
-    iconColor: "text-violet-500",
-    action: "View Lesson",
+    iconBg: "bg-violet-500/20",
+    iconColor: "text-violet-400",
   },
-  {
-    id: 5,
-    category: "Achievements",
-    title: "Congratulations!",
-    description: "You've reached the Top 5% of learners.",
-    time: "2 days ago",
-    icon: Trophy,
-    iconBg: "bg-pink-500/10",
-    iconColor: "text-pink-500",
-    action: "View Leaderboard",
+
+
+  xp: {
+    icon: Star,
+    iconBg: "bg-emerald-500/20",
+    iconColor: "text-yellow-400",
   },
-  {
-    id: 6,
-    category: "AI Recommendations",
-    title: "Recommended For You",
-    description: "Based on your progress, start Advanced Calculus.",
-    time: "3 days ago",
-    icon: Brain,
-    iconBg: "bg-cyan-500/10",
-    iconColor: "text-cyan-500",
-    action: "Start Learning",
-  },
-  {
-    id: 7,
-    category: "System Updates",
-    title: "Platform Updated",
-    description: "New dashboard improvements and fixes released.",
-    time: "4 days ago",
-    icon: Settings2,
-    iconBg: "bg-blue-500/10",
-    iconColor: "text-blue-500",
-    action: "Read Update",
-  },
-];
-export const stats = [
-  {
-    title: "All Notifications",
-    label: "total",
-    value: "6",
-    icon: Bell,
-  },
-  {
-    title: "Unread",
-    label: "new",
-    value: "2",
-    icon: Sparkles,
-  },
-  {
-    title: "Achievements",
-    label: "XP earned",
-    value: "1,840",
-    icon: Trophy,
-  },
-  {
-    title: "Reminders",
-    label: "upcoming",
-    value: "1",
-    icon: CalendarDays,
-  },
-];
+};

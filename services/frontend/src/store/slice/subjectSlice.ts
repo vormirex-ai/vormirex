@@ -4,12 +4,14 @@ interface SubjectState {
   selectedSubjectId: string | null;
   currentLessonId: string | null;
   nextLessonId: string | null;
+  currentChapterId: string | null;
 }
 
 const initialState: SubjectState = {
   selectedSubjectId: null,
   currentLessonId: localStorage.getItem("lessonId") || null,
   nextLessonId: null,
+  currentChapterId: null,
 };
 
 const subjectSlice = createSlice({
@@ -31,6 +33,9 @@ const subjectSlice = createSlice({
     setNextLessonId: (state, action: PayloadAction<string>) => {
       state.nextLessonId = action.payload;
     },
+    setCurrentChapterId: (state, action) => {
+      state.currentChapterId = action.payload;
+    },
 
     clearLessonId: (state) => {
       state.currentLessonId = null;
@@ -44,6 +49,7 @@ export const {
   setSelectedSubjectId,
   setCurrentLessonId,
   setNextLessonId,
+  setCurrentChapterId,
   clearLessonId,
 } = subjectSlice.actions;
 

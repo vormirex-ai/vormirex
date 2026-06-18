@@ -1,5 +1,3 @@
-import React from "react";
-
 interface BadgeProps {
   emoji: string;
   title: string;
@@ -24,9 +22,11 @@ function AchievementBadge({ emoji, title, unlocked }: BadgeProps) {
   );
 }
 
-export function BadgesSection() {
+export function BadgesSection({ data }: { data: any }) {
+
+  const streak = data?.streak || 0;
   const achievements = [
-    { emoji: "🔥", title: "10-Day Streak", unlocked: true },
+    { emoji: "🔥", title: `${streak}-Day Streak`, unlocked: true },
     { emoji: "🎯", title: "Quiz Master", unlocked: true },
     { emoji: "📚", title: "Fast Learner", unlocked: true },
     { emoji: "💬", title: "AI Explorer", unlocked: true },
@@ -49,3 +49,5 @@ export function BadgesSection() {
     </div>
   );
 }
+
+

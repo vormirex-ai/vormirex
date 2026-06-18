@@ -1,10 +1,3 @@
-export interface WeeklyDay {
-  day: string;
-  dateString: string;
-  isCompleted: boolean;
-  isToday: boolean;
-}
-
 export const formatToDateString = (date: Date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -22,15 +15,28 @@ export const getStartOfWeek = (date: Date) => {
   return start;
 };
 
+export interface WeeklyDay {
+  day: string;
+  dateString: string;
+  isCompleted: boolean;
+  isToday: boolean;
+  score?: number;
+  xpEarned?: number;
+}
+
+interface CalendarItem {
+  date: string;
+  score: number;
+  xpEarned: number;
+}
+
 export const buildWeeklyDays = (
-  pastChallenges: { dateString: string }[],
+  calendar: CalendarItem[],
   baseDate: Date = new Date(),
 ): WeeklyDay[] => {
   const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   const startOfWeek = getStartOfWeek(baseDate);
-
-  const completedDates = pastChallenges.map((item) => item.dateString);
 
   return daysOfWeek.map((day, index) => {
     const date = new Date(startOfWeek);
@@ -39,11 +45,15 @@ export const buildWeeklyDays = (
     const dateString = formatToDateString(date);
     const todayString = formatToDateString(baseDate);
 
+    const matchedDay = calendar.find((item) => item.date === dateString);
+
     return {
       day,
       dateString,
-      isCompleted: completedDates.includes(dateString),
+      isCompleted: !!matchedDay,
       isToday: dateString === todayString,
+      score: matchedDay?.score,
+      xpEarned: matchedDay?.xpEarned,
     };
   });
 };

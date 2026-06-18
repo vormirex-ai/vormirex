@@ -9,7 +9,7 @@ export const pricingPlans = [
   },
   {
     name: "PRO",
-    price: "$12",
+    price: "₹4999",
     monthly: "/mo",
     subtext: "Billed monthly",
     features: [
@@ -25,7 +25,7 @@ export const pricingPlans = [
   },
   {
     name: "TEAM",
-    price: "$49",
+    price: "₹6999",
     monthly: "/mo",
     subtext: "Up to 10 members",
     features: ["Everything in Pro", "Team dashboard", "Priority support"],
