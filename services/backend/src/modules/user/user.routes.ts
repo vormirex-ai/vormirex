@@ -21,6 +21,7 @@ router.patch('/me/ui-preferences', validate(updateUiPreferencesSchema), userCont
 router.patch('/me/notifications', validate(updateNotificationPreferencesSchema), userController.updateNotificationPreferences);
 router.patch('/me/privacy', validate(updatePrivacySettingsSchema), userController.updatePrivacySettings);
 router.delete('/me', userController.deleteAccount);
+router.get('/me/profile', userController.getProfilePageData);
 
 // --- Public Profile Route (Respects Privacy) ---
 router.get('/:id/profile', userController.getPublicProfile);

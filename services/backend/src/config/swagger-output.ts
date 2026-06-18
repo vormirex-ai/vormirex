@@ -1634,10 +1634,49 @@ export default {
                   },
                   "phoneNumber": {
                     "example": "any"
+                  },
+                  "username": {
+                    "example": "any"
+                  },
+                  "bio": {
+                    "example": "any"
                   }
                 }
               }
             }
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -1673,6 +1712,25 @@ export default {
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "photo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "photo"
+                ]
+              }
+            }
           }
         }
       },

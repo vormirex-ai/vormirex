@@ -319,6 +319,1032 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Fetch Today's Challenge",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/challenges/today",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"challenges",
+								"today"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Daily Challenge",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/challenges/submit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"challenges",
+								"submit"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"answers\": [\n    {\n      \"questionId\": \"60d0fe4f5311236168a109cb\",\n      \"selectedOption\": \"A\",\n      \"timeToAnswer\": 4500\n    }\n  ],\n  \"timeSpent\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Challenge History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/challenges/history?limit=10&offset=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"challenges",
+								"history"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Challenge Streak & Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/challenges/streak",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"challenges",
+								"streak"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Challenge Calendar View",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/challenges/calendar/2026-05",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"challenges",
+								"calendar",
+								"2026-05"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Courses (Admin View)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Advanced React Patterns\",\n    \"subtitle\": \"Master React 19\",\n    \"description\": \"Deep dive into React 19 features.\",\n    \"price\": 4999,\n    \"thumbnail\": \"https://example.com/img.png\",\n    \"instructorId\": \"{{userId}}\",\n    \"level\": \"ADVANCED\",\n    \"tags\": [\"react\", \"frontend\"],\n    \"levels\": [\n        {\n            \"level\": \"FOUNDATION\",\n            \"duration\": \"1 month\",\n            \"highlights\": [\"Hooks Deep Dive\"],\n            \"modules\": [\n                {\n                    \"title\": \"Hooks\",\n                    \"items\": [\"useState\", \"useEffect\", \"useContext\"]\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses"
+							]
+						}
+					}
+				},
+				{
+					"name": "Toggle Visibility",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/{{courseId}}/visibility",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"{{courseId}}",
+								"visibility"
+							]
+						}
+					}
+				},
+				{
+					"name": "Add Module",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"levelId\": \"{{foundationLevelId}}\",\n    \"title\": \"Chapter 1: Introduction\",\n    \"items\": [\n        \"Why React?\",\n        \"Setup Environment\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/{{courseId}}/modules",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"{{courseId}}",
+								"modules"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Course",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/{{courseId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"{{courseId}}"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Title\",\n  \"price\": 5000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Course",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/{{courseId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"{{courseId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publish Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/{{courseId}}/publish",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"{{courseId}}",
+								"publish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unpublish Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/{{courseId}}/unpublish",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"{{courseId}}",
+								"unpublish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Course Media",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/{{courseId}}/media/{{mediaField}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"{{courseId}}",
+								"media",
+								"{{mediaField}}"
+							]
+						},
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Admins",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/admins",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"admins"
+							]
+						}
+					}
+				},
+				{
+					"name": "Toggle Freeze Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/{{userId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}",
+								"status"
+							]
+						}
+					}
+				},
+				{
+					"name": "Promote User to Admin",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/{{userId}}/role",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}",
+								"role"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Progress History",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/progress/{{progressId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"progress",
+								"{{progressId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Analytics Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/analytics/stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"analytics",
+								"stats"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Admin Analytics Overview",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/analytics/stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"analytics",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Growth Analytics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/analytics/user-growth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"analytics",
+								"user-growth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get System Health Metrics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/analytics/system-health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"analytics",
+								"system-health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Guest Leads CSV",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/guests",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"guests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Subjects",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/subjects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Subject by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"subjects",
+								"{{subjectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Subject Curriculum",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}/curriculum",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"subjects",
+								"{{subjectId}}",
+								"curriculum"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Continue Subject (Next Resume Lesson)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}/continue",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"subjects",
+								"{{subjectId}}",
+								"continue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Subject (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/subjects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"subjects"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"New Subject Title\",\n  \"subtitle\": \"New Subject Subtitle\",\n  \"description\": \"A detailed description of the new subject that contains at least ten characters.\",\n  \"icon\": \"code\",\n  \"price\": 0,\n  \"isPro\": false,\n  \"hasCertificate\": false,\n  \"status\": \"DRAFT\",\n  \"tags\": [\n    \"javascript\",\n    \"programming\"\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Subject (Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"subjects",
+								"{{subjectId}}"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Subject Title\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Subject (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"subjects",
+								"{{subjectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lesson Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/lessons/{{lessonId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"{{lessonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Lesson Progress",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/lessons/{{lessonId}}/progress",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"{{lessonId}}",
+								"progress"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"secondsWatched\": 120,\n  \"durationWatchedIncrement\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Lesson",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/lessons/{{lessonId}}/complete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"{{lessonId}}",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chat History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/ai-tutor/chats/{{lessonId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ai-tutor",
+								"chats",
+								"{{lessonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send AI Tutor Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/ai-tutor/chats/{{lessonId}}/message",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ai-tutor",
+								"chats",
+								"{{lessonId}}",
+								"message"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"message\": \"Explain the concept of closures in JavaScript simply.\",\n  \"actionType\": \"explain\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -359,154 +1385,6 @@
 							]
 						}
 					}
-				},
-				{
-					"name": "Update Course (Admin)",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/courses/{{courseId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"{{courseId}}"
-							]
-						},
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"Updated Title\",\n  \"price\": 5000\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Course (Admin)",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/courses/{{courseId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"{{courseId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Publish Course (Admin)",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/courses/{{courseId}}/publish",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"{{courseId}}",
-								"publish"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Unpublish Course (Admin)",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/courses/{{courseId}}/unpublish",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"{{courseId}}",
-								"unpublish"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Upload Course Media (Admin)",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/courses/{{courseId}}/media/{{mediaField}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"{{courseId}}",
-								"media",
-								"{{mediaField}}"
-							]
-						},
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": []
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -1179,6 +2057,164 @@
 			]
 		},
 		{
+			"name": "Focus & Pomodoro",
+			"item": [
+				{
+					"name": "Get Focus Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/focus",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"focus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Focus Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/focus/tasks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"focus",
+								"tasks"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Review Data Structures\",\n  \"subjectId\": \"65e8a2e6f47b2c01889a7102\",\n  \"taskType\": \"revision\",\n  \"description\": \"Understand arrays, trees, and linked lists.\",\n  \"estimatedPomodoros\": 3,\n  \"priority\": \"high\",\n  \"tags\": [\n    \"dsa\",\n    \"exam-prep\"\n  ],\n  \"status\": \"upcoming\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Focus Task",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/focus/tasks/{{taskId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"focus",
+								"tasks",
+								"{{taskId}}"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"active\",\n  \"completedPomodoros\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Focus Task",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/focus/tasks/{{taskId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"focus",
+								"tasks",
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record Focus Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/focus/sessions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"focus",
+								"sessions"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"taskId\": \"{{taskId}}\",\n  \"type\": \"focus\",\n  \"durationMinutes\": 25\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "User Settings",
 			"item": [
 				{
@@ -1455,6 +2491,32 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Unified Profile Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/me/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"profile"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1541,120 +2603,6 @@
 		{
 			"name": "Admin - Courses",
 			"item": [
-				{
-					"name": "Get All Courses (Admin View)",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/courses",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"courses"
-							]
-						}
-					}
-				},
-				{
-					"name": "Create Course",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"Advanced React Patterns\",\n    \"subtitle\": \"Master React 19\",\n    \"description\": \"Deep dive into React 19 features.\",\n    \"price\": 4999,\n    \"thumbnail\": \"https://example.com/img.png\",\n    \"instructorId\": \"{{userId}}\",\n    \"level\": \"ADVANCED\",\n    \"tags\": [\"react\", \"frontend\"],\n    \"levels\": [\n        {\n            \"level\": \"FOUNDATION\",\n            \"duration\": \"1 month\",\n            \"highlights\": [\"Hooks Deep Dive\"],\n            \"modules\": [\n                {\n                    \"title\": \"Hooks\",\n                    \"items\": [\"useState\", \"useEffect\", \"useContext\"]\n                }\n            ]\n        }\n    ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/courses",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"courses"
-							]
-						}
-					}
-				},
-				{
-					"name": "Toggle Visibility",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/courses/{{courseId}}/visibility",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"{{courseId}}",
-								"visibility"
-							]
-						}
-					}
-				},
-				{
-					"name": "Add Module",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"levelId\": \"{{foundationLevelId}}\",\n    \"title\": \"Chapter 1: Introduction\",\n    \"items\": [\n        \"Why React?\",\n        \"Setup Environment\"\n    ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/courses/{{courseId}}/modules",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"courses",
-								"{{courseId}}",
-								"modules"
-							]
-						}
-					}
-				},
 				{
 					"name": "Update Course",
 					"request": {
@@ -1807,647 +2755,11 @@
 		},
 		{
 			"name": "Admin - User Management",
-			"item": [
-				{
-					"name": "Get All Users",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/users",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Admins",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/users/admins",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"admins"
-							]
-						}
-					}
-				},
-				{
-					"name": "Toggle Freeze Status",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/users/{{userId}}/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"{{userId}}",
-								"status"
-							]
-						}
-					}
-				},
-				{
-					"name": "Promote User to Admin",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"role\": \"admin\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/users/{{userId}}/role",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"{{userId}}",
-								"role"
-							]
-						}
-					}
-				},
-				{
-					"name": "Delete User",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/users/{{userId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"{{userId}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Delete Progress History",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/progress/{{progressId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"progress",
-								"{{progressId}}"
-							]
-						}
-					}
-				}
-			]
+			"item": []
 		},
 		{
 			"name": "Admin - Analytics & System",
-			"item": [
-				{
-					"name": "Get Analytics Stats",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/analytics/stats",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"analytics",
-								"stats"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Admin Analytics Overview",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/analytics/stats",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"analytics",
-								"stats"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get User Growth Analytics",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/analytics/user-growth",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"analytics",
-								"user-growth"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get System Health Metrics",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/analytics/system-health",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"analytics",
-								"system-health"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Export Guest Leads CSV",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/users/guests",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"guests"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Subjects",
-			"item": [
-				{
-					"name": "Get All Subjects",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{userToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/subjects",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"subjects"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Subject by ID",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{userToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"subjects",
-								"{{subjectId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Subject Curriculum",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{userToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}/curriculum",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"subjects",
-								"{{subjectId}}",
-								"curriculum"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Continue Subject (Next Resume Lesson)",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{userToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}/continue",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"subjects",
-								"{{subjectId}}",
-								"continue"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Subject (Admin)",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/subjects",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"subjects"
-							]
-						},
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"New Subject Title\",\n  \"subtitle\": \"New Subject Subtitle\",\n  \"description\": \"A detailed description of the new subject that contains at least ten characters.\",\n  \"icon\": \"code\",\n  \"price\": 0,\n  \"isPro\": false,\n  \"hasCertificate\": false,\n  \"status\": \"DRAFT\",\n  \"tags\": [\n    \"javascript\",\n    \"programming\"\n  ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Subject (Admin)",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"subjects",
-								"{{subjectId}}"
-							]
-						},
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"Updated Subject Title\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Subject (Admin)",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/subjects/{{subjectId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"subjects",
-								"{{subjectId}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Lessons",
-			"item": [
-				{
-					"name": "Get Lesson Details",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{userToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/lessons/{{lessonId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"lessons",
-								"{{lessonId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Lesson Progress",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{userToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/lessons/{{lessonId}}/progress",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"lessons",
-								"{{lessonId}}",
-								"progress"
-							]
-						},
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"secondsWatched\": 120,\n  \"durationWatchedIncrement\": 10\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Complete Lesson",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{userToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/lessons/{{lessonId}}/complete",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"lessons",
-								"{{lessonId}}",
-								"complete"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "AI Tutor",
-			"item": [
-				{
-					"name": "Get Chat History",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{userToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/ai-tutor/chats/{{lessonId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"ai-tutor",
-								"chats",
-								"{{lessonId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Send AI Tutor Message",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{userToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/ai-tutor/chats/{{lessonId}}/message",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"ai-tutor",
-								"chats",
-								"{{lessonId}}",
-								"message"
-							]
-						},
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"message\": \"Explain the concept of closures in JavaScript simply.\",\n  \"actionType\": \"explain\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						}
-					},
-					"response": []
-				}
-			]
+			"item": []
 		}
 	],
 	"variable": [

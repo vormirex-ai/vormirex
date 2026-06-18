@@ -6,6 +6,8 @@ export const updateProfileSchema = z.object({
     name: nameSchema.optional(),
     timezone: z.string().optional(),
     phoneNumber: z.string().regex(/^\d{10}$/, 'Phone number must be exactly 10 digits').optional(),
+    username: z.string().min(3).max(30).regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores').optional(),
+    bio: z.string().max(500).optional(),
   }),
 });
 

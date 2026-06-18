@@ -16,6 +16,10 @@ export interface IUser extends Document {
   timezone?: string;
   phoneNumber?: string;
   profilePhoto?: string;
+  username?: string;
+  bio?: string;
+  isPro?: boolean;
+  badges?: string[];
   xp: number;
   isFrozen: boolean;
   streak: {
@@ -88,6 +92,10 @@ const userSchema = new Schema<IUser>(
     timezone: { type: String, default: 'UTC' },
     phoneNumber: { type: String, required: false },
     profilePhoto: { type: String, required: false },
+    username: { type: String, unique: true, sparse: true, trim: true },
+    bio: { type: String, default: '' },
+    isPro: { type: Boolean, default: false },
+    badges: { type: [String], default: [] },
     
     streak: {
       current: { type: Number, default: 0 },
