@@ -11,8 +11,11 @@ export interface IFocusTask extends Document {
   dueDate?: Date;
   priority: 'low' | 'medium' | 'high';
   tags: string[];
-  status: 'active' | 'next' | 'upcoming' | 'completed';
+  status: 'active' | 'next' | 'upcoming' | 'completed' | 'skipped';
   order?: number;
+  date?: Date;
+  durationMinutes: number;
+  xpAwarded: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,10 +42,13 @@ const focusTaskSchema = new Schema<IFocusTask>(
     tags: { type: [String], default: [] },
     status: {
       type: String,
-      enum: ['active', 'next', 'upcoming', 'completed'],
+      enum: ['active', 'next', 'upcoming', 'completed', 'skipped'],
       default: 'upcoming',
     },
     order: { type: Number, default: 0 },
+    date: { type: Date, required: false, index: true },
+    durationMinutes: { type: Number, default: 30 },
+    xpAwarded: { type: Number, default: 50 },
   },
   { timestamps: true }
 );
