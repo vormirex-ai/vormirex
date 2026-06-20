@@ -159,4 +159,51 @@ describe('User Profile Unit Tests', () => {
       );
     });
   });
+
+  describe('updateNotificationPreferences', () => {
+    it('should update user notification preferences with 6 UI options successfully', async () => {
+      const mockUser = {
+        _id: mockUserId,
+        notificationPreferences: {
+          dailyStudyReminders: true,
+          xpAchievementAlerts: true,
+          streakReminders: true,
+          leaderboardUpdates: true,
+          newContentAlerts: true,
+          emailDigest: true,
+        },
+        save: jest.fn(() => Promise.resolve(true as any)),
+      };
+
+      jest.spyOn(User, 'findById').mockResolvedValue(mockUser as any);
+
+      mockReq.body = {
+        dailyStudyReminders: false,
+        xpAchievementAlerts: false,
+        streakReminders: true,
+        leaderboardUpdates: false,
+        newContentAlerts: false,
+        emailDigest: false,
+      };
+
+      await userController.updateNotificationPreferences(mockReq, mockRes);
+
+      expect(mockUser.notificationPreferences.dailyStudyReminders).toBe(false);
+      expect(mockUser.notificationPreferences.xpAchievementAlerts).toBe(false);
+      expect(mockUser.notificationPreferences.streakReminders).toBe(true);
+      expect(mockUser.notificationPreferences.leaderboardUpdates).toBe(false);
+      expect(mockUser.notificationPreferences.newContentAlerts).toBe(false);
+      expect(mockUser.notificationPreferences.emailDigest).toBe(false);
+      expect(mockUser.save).toHaveBeenCalled();
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Notification preferences updated',
+          preferences: expect.objectContaining({
+            dailyStudyReminders: false,
+            xpAchievementAlerts: false,
+          }),
+        })
+      );
+    });
+  });
 });

@@ -2008,7 +2008,22 @@ export default {
               "schema": {
                 "type": "object",
                 "properties": {
+                  "dailyStudyReminders": {
+                    "example": "any"
+                  },
+                  "xpAchievementAlerts": {
+                    "example": "any"
+                  },
                   "streakReminders": {
+                    "example": "any"
+                  },
+                  "leaderboardUpdates": {
+                    "example": "any"
+                  },
+                  "newContentAlerts": {
+                    "example": "any"
+                  },
+                  "emailDigest": {
                     "example": "any"
                   },
                   "newCourseAlerts": {

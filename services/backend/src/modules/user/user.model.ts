@@ -53,9 +53,14 @@ export interface IUser extends Document {
     timeline?: string;
   };
   notificationPreferences: {
+    dailyStudyReminders: boolean;
+    xpAchievementAlerts: boolean;
     streakReminders: boolean;
-    newCourseAlerts: boolean;
-    securityAlerts: boolean;
+    leaderboardUpdates: boolean;
+    newContentAlerts: boolean;
+    emailDigest: boolean;
+    newCourseAlerts?: boolean;
+    securityAlerts?: boolean;
   };
   privacySettings: {
     isProfilePublic: boolean;
@@ -157,7 +162,12 @@ const userSchema = new Schema<IUser>(
       timeline: { type: String },
     },
     notificationPreferences: {
+      dailyStudyReminders: { type: Boolean, default: true },
+      xpAchievementAlerts: { type: Boolean, default: true },
       streakReminders: { type: Boolean, default: true },
+      leaderboardUpdates: { type: Boolean, default: true },
+      newContentAlerts: { type: Boolean, default: true },
+      emailDigest: { type: Boolean, default: true },
       newCourseAlerts: { type: Boolean, default: true },
       securityAlerts: { type: Boolean, default: true },
     },

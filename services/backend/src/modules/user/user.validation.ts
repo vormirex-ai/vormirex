@@ -43,7 +43,12 @@ export type UpdatePreferencesBody = z.infer<typeof updatePreferencesSchema>['bod
 
 export const updateNotificationPreferencesSchema = z.object({
   body: z.object({
+    dailyStudyReminders: z.boolean().optional(),
+    xpAchievementAlerts: z.boolean().optional(),
     streakReminders: z.boolean().optional(),
+    leaderboardUpdates: z.boolean().optional(),
+    newContentAlerts: z.boolean().optional(),
+    emailDigest: z.boolean().optional(),
     newCourseAlerts: z.boolean().optional(),
     securityAlerts: z.boolean().optional(),
   }),

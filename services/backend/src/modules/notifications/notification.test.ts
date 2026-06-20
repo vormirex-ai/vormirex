@@ -1,6 +1,7 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
-import notificationController from './notification.controller.js';
+import notificationController, { createNotification } from './notification.controller.js';
 import Notification from './notification.model.js';
+import User from '../user/user.model.js';
 import { notificationEmitter } from './notification.emitter.js';
 
 describe('Notification Controller Unit Tests', () => {
@@ -181,5 +182,72 @@ describe('Notification Controller Unit Tests', () => {
     if (closeCallback) {
       closeCallback();
     }
+  });
+
+  describe('createNotification preferences filtering', () => {
+    it('should create notification if user preferences allow it', async () => {
+      const mockUser = {
+        _id: mockUserId,
+        notificationPreferences: {
+          xpAchievementAlerts: true,
+        },
+      };
+      jest.spyOn(User, 'findById').mockResolvedValue(mockUser as any);
+      const saveSpy = jest.spyOn(Notification, 'create').mockResolvedValue({
+        userId: mockUserId,
+        type: 'achievement',
+        title: 'Achievement unlocked',
+        message: 'Congrats!',
+      } as any);
+
+      const result = await createNotification(mockUserId, 'achievement', 'Achievement unlocked', 'Congrats!');
+      expect(result).not.toBeNull();
+      expect(saveSpy).toHaveBeenCalled();
+    });
+
+    it('should NOT create notification if user preferences disable it', async () => {
+      const mockUser = {
+        _id: mockUserId,
+        notificationPreferences: {
+          xpAchievementAlerts: false,
+        },
+      };
+      jest.spyOn(User, 'findById').mockResolvedValue(mockUser as any);
+      const saveSpy = jest.spyOn(Notification, 'create');
+
+      const result = await createNotification(mockUserId, 'achievement', 'Achievement unlocked', 'Congrats!');
+      expect(result).toBeNull();
+      expect(saveSpy).not.toHaveBeenCalled();
+    });
+
+    it('should NOT create a reminder notification if daily study reminders are disabled', async () => {
+      const mockUser = {
+        _id: mockUserId,
+        notificationPreferences: {
+          dailyStudyReminders: false,
+        },
+      };
+      jest.spyOn(User, 'findById').mockResolvedValue(mockUser as any);
+      const saveSpy = jest.spyOn(Notification, 'create');
+
+      const result = await createNotification(mockUserId, 'reminder', 'Daily Reminder', 'Time to study!');
+      expect(result).toBeNull();
+      expect(saveSpy).not.toHaveBeenCalled();
+    });
+
+    it('should NOT create a streak reminder notification if streak reminders are disabled', async () => {
+      const mockUser = {
+        _id: mockUserId,
+        notificationPreferences: {
+          streakReminders: false,
+        },
+      };
+      jest.spyOn(User, 'findById').mockResolvedValue(mockUser as any);
+      const saveSpy = jest.spyOn(Notification, 'create');
+
+      const result = await createNotification(mockUserId, 'reminder', 'Your Streak is endangered!', 'Save your streak!');
+      expect(result).toBeNull();
+      expect(saveSpy).not.toHaveBeenCalled();
+    });
   });
 });

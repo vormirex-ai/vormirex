@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Notification from './notification.model.js';
+import User from '../user/user.model.js';
 import { NotFoundError } from '../../utils/errors.js';
 import { notificationEmitter } from './notification.emitter.js';
 
@@ -170,6 +171,24 @@ export const createNotification = async (
   message: string,
   metadata?: any
 ) => {
+  const user = await User.findById(userId);
+  if (user && user.notificationPreferences) {
+    const prefs = user.notificationPreferences;
+    let isEnabled = true;
+
+    if (type === 'achievement' && prefs.xpAchievementAlerts === false) isEnabled = false;
+    if (type === 'lesson' && prefs.newContentAlerts === false) isEnabled = false;
+    
+    if (type === 'reminder') {
+      if (title.toLowerCase().includes('streak') && prefs.streakReminders === false) isEnabled = false;
+      else if (prefs.dailyStudyReminders === false) isEnabled = false;
+    }
+
+    if (!isEnabled) {
+      return null;
+    }
+  }
+
   const notification = await Notification.create({ userId, type, title, message, metadata });
   notificationEmitter.emit('new_notification', notification);
   return notification;

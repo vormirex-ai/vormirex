@@ -339,7 +339,16 @@ export const updatePreferences = async (req: Request, res: Response) => {
 export const updateNotificationPreferences = async (req: Request, res: Response) => {
   // @ts-ignore
   const userId = req.user.userId;
-  const { streakReminders, newCourseAlerts, securityAlerts } = req.body;
+  const {
+    dailyStudyReminders,
+    xpAchievementAlerts,
+    streakReminders,
+    leaderboardUpdates,
+    newContentAlerts,
+    emailDigest,
+    newCourseAlerts,
+    securityAlerts,
+  } = req.body;
 
   const user = await User.findById(userId);
   if (!user) throw new NotFoundError('User not found');
@@ -347,13 +356,23 @@ export const updateNotificationPreferences = async (req: Request, res: Response)
   // Initialize if missing
   if (!user.notificationPreferences) {
     user.notificationPreferences = { 
-      streakReminders: true, 
-      newCourseAlerts: true, 
+      dailyStudyReminders: true,
+      xpAchievementAlerts: true,
+      streakReminders: true,
+      leaderboardUpdates: true,
+      newContentAlerts: true,
+      emailDigest: true,
+      newCourseAlerts: true,
       securityAlerts: true 
     };
   }
 
+  if (dailyStudyReminders !== undefined) user.notificationPreferences.dailyStudyReminders = dailyStudyReminders;
+  if (xpAchievementAlerts !== undefined) user.notificationPreferences.xpAchievementAlerts = xpAchievementAlerts;
   if (streakReminders !== undefined) user.notificationPreferences.streakReminders = streakReminders;
+  if (leaderboardUpdates !== undefined) user.notificationPreferences.leaderboardUpdates = leaderboardUpdates;
+  if (newContentAlerts !== undefined) user.notificationPreferences.newContentAlerts = newContentAlerts;
+  if (emailDigest !== undefined) user.notificationPreferences.emailDigest = emailDigest;
   if (newCourseAlerts !== undefined) user.notificationPreferences.newCourseAlerts = newCourseAlerts;
   if (securityAlerts !== undefined) user.notificationPreferences.securityAlerts = securityAlerts;
 
