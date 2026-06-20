@@ -45,7 +45,7 @@ describe('Planner Controller Unit Tests', () => {
           status: 'upcoming',
           durationMinutes: 40,
           xpAwarded: 50,
-          date: new Date('2026-06-24T12:00:00Z'), // Wednesday
+          dueDate: new Date('2026-06-24T12:00:00Z'), // Wednesday
           populate: jest.fn().mockReturnThis(),
         },
       ];

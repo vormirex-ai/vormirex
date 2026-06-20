@@ -71,19 +71,30 @@ const buildPlannerDashboardResponse = async (userId: string, weekStartString?: s
 
   const tasks = await FocusTask.find({
     userId,
-    date: { $gte: startRange, $lte: endRange },
+    $or: [
+      { date: { $gte: startRange, $lte: endRange } },
+      {
+        date: { $exists: false },
+        dueDate: { $gte: startRange, $lte: endRange },
+      },
+      {
+        date: null,
+        dueDate: { $gte: startRange, $lte: endRange },
+      },
+    ],
   }).populate('subjectId', 'title');
 
   // Map tasks to their formatted date strings
   const weeklyTasks = daysInfo.map((day) => {
     const dayTasks = tasks.filter((t) => {
-      if (!t.date) return false;
+      const resolvedDate = t.date || t.dueDate;
+      if (!resolvedDate) return false;
       const tDateStr = new Intl.DateTimeFormat('en-CA', {
         timeZone: timezone,
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
-      }).format(t.date);
+      }).format(resolvedDate);
       return tDateStr === day.dateString;
     });
 
@@ -103,13 +114,14 @@ const buildPlannerDashboardResponse = async (userId: string, weekStartString?: s
   });
 
   const weekTasksFlat = tasks.filter((t) => {
-    if (!t.date) return false;
+    const resolvedDate = t.date || t.dueDate;
+    if (!resolvedDate) return false;
     const tDateStr = new Intl.DateTimeFormat('en-CA', {
       timeZone: timezone,
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
-    }).format(t.date);
+    }).format(resolvedDate);
     return dateStrings.includes(tDateStr);
   });
 
@@ -131,7 +143,7 @@ const buildPlannerDashboardResponse = async (userId: string, weekStartString?: s
     status: t.status,
     durationMinutes: t.durationMinutes,
     xpAwarded: t.xpAwarded,
-    date: t.date,
+    date: t.date || t.dueDate,
   }));
 
   const upcomingList = pendingTasks.map((t) => ({
@@ -140,7 +152,7 @@ const buildPlannerDashboardResponse = async (userId: string, weekStartString?: s
     status: t.status,
     durationMinutes: t.durationMinutes,
     xpAwarded: t.xpAwarded,
-    date: t.date,
+    date: t.date || t.dueDate,
   }));
 
   return {
