@@ -20,10 +20,12 @@ import { store } from "@/store/store";
 const NotificationDropdown = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-   const { data, isLoading } = useGetNotificationsQuery(undefined);
+  const { data, isLoading } = useGetNotificationsQuery({
+  page: 1,
+  limit: 10,
+});
 
-  const [readAllNotifications, { isLoading: isReading }] =
-    useReadAllNotificationsMutation();
+  const [readAllNotifications, { isLoading: isReading }] =  useReadAllNotificationsMutation();
 
   const token = useSelector((state: any) => state.auth.token);
 
@@ -133,7 +135,7 @@ const NotificationDropdown = () => {
         {notifications.length > 4 && (
           <button
             onClick={handleNavigate}
-            className="w-full py-3 text-sm border-t hover:bg-muted transition"
+            className="w-full py-3 text-sm border-t hover:bg-muted transition hover:text-primary-500"
           >
             View all notifications →
           </button>

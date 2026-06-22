@@ -21,7 +21,7 @@ export interface Chapter {
 export function CourseChapterCard({ chapter }: { chapter: Chapter }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("chapter card", chapter)
+
 
   const activeLessonRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {

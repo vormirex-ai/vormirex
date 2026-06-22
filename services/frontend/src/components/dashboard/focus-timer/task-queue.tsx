@@ -5,10 +5,10 @@ import {
   Layers3,
   Play,
   Target,
-  Trash2,
 } from "lucide-react";
 
 import { TaskFormModal } from "./add-task-form";
+import { TaskActions } from "@/components/common/add-task/task-action";
 
 export function TaskQueue({
   taskData = [],
@@ -17,16 +17,31 @@ export function TaskQueue({
   onCompleteTask,
   onDeleteTask,
 }: any) {
+
+  const sortedTasks = [...taskData].sort((a: any, b: any) => {
+    const getRank = (task: any) => {
+      if (task.status === "completed") return 3;
+      if (selectedTask?._id === task?._id) return 1;
+      return 2;
+    };
+
+    return getRank(a) - getRank(b);
+  });
+
   return (
     <div className="rounded-3xl custom-surface p-3">
-      <div className="mb-5 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">📋 Task Queue</h2>
-        <TaskFormModal />
-      </div>
+   <div className="mb-5 flex items-center justify-between">
+  <h2 className="text-lg font-semibold">
+    📋 Task Queue ({sortedTasks.length})
+  </h2>
+
+  <TaskFormModal />
+</div>
+
 
       <div className="space-y-4 max-h-[400px] md:max-h-[350px] overflow-y-auto custom-scrollbar">
-        {taskData?.length > 0 ? (
-          taskData.map((task: any, index: number) => {
+        {sortedTasks?.length > 0 ? (
+          sortedTasks.map((task: any) => {
             const isActive =
               selectedTask?._id === task?._id && task.status !== "completed";
 
@@ -35,18 +50,20 @@ export function TaskQueue({
                 key={task?._id}
                 onClick={() => onSelectTask(task)}
                 className={`rounded-2xl border p-3 transition-all duration-300 cursor-pointer
-                  ${isActive ? ` border-primary bg-primary/5 shadow-lg shadow-primary/10 dark:bg-[#154249]/30 `
-                    : ` border-slate-200 bg-white hover:border-cyan-300 hover:bg-cyan-50 dark:border-white/10 dark:bg-card dark:hover:bg-[#0f2236]
-                    `
+                  ${
+                    isActive
+                      ? `border-primary bg-primary/5 shadow-lg shadow-primary/10 dark:bg-[#154249]/30`
+                      : `border-slate-200 bg-white hover:border-cyan-300 hover:bg-cyan-50 dark:border-white/10 dark:bg-card dark:hover:bg-[#0f2236]`
                   }`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex flex-1 items-start gap-3">
                     <div
-                      className={`mt-2 h-2 w-2 rounded-full ${isActive
+                      className={`mt-2 h-2 w-2 rounded-full ${
+                        isActive
                           ? "bg-primary shadow-[0_0_10px_rgba(99,231,220,0.9)]"
                           : "bg-slate-400"
-                        }`}
+                      }`}
                     />
 
                     <div className="space-y-3">
@@ -91,13 +108,13 @@ export function TaskQueue({
 
                         <div className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 dark:bg-white/5">
                           <Target className="h-3.5 w-3.5" />
-
                           <span>{task?.priority}</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
+                  {/* STATUS BADGE */}
                   <div className="flex flex-col items-end gap-2">
                     {task.status === "completed" ? (
                       <span className="flex items-center gap-1 border border-green-300 bg-green-500/10 text-green-600 rounded-full px-3 py-1 text-xs font-medium capitalize">
@@ -121,32 +138,11 @@ export function TaskQueue({
                       {task?.estimatedPomodoros}
                     </span>
 
-                    <div className="flex items-center gap-2 pt-2">
-                      <button
-                        disabled={task.status === "completed"}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onCompleteTask(task);
-                        }}
-                        className={`flex h-8 w-8 items-center justify-center rounded-full transition
-                        ${task.status === "completed"
-                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                            : "bg-green-500/10 text-green-500 hover:scale-105"
-                          }`}
-                      >
-                        <CheckCircle2 className="h-4 w-4" />
-                      </button>
-
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDeleteTask(task._id);
-                        }}
-                        className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500/10 text-red-500 hover:scale-105"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
+                    <TaskActions
+                      completeDisabled={task.status === "completed"}
+                      onComplete={() => onCompleteTask(task)}
+                      onDelete={() => onDeleteTask(task._id)}
+                    />
                   </div>
                 </div>
               </div>

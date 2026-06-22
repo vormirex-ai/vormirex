@@ -1,78 +1,60 @@
 import { Edit3, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import UserAvatar from "./user-avtar";
+import { ProfileStatsBadges } from "./profile-stats-badges";
 
-export function ProfileHeader({ data }: any) {
-  const user = useSelector((state: any) => state.auth.user);
-  const initials = user?.name
-    ? user?.name.charAt(0).toUpperCase()
-    : "U";
+export function ProfileHeader({ data, stats }: any) {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate("/dashboard/settings?tab=profile");
+  };
 
   return (
     <div className="w-full rounded-2xl bg-white dark:bg-card border border-gray-200 dark:border-cyan-500/10 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 shadow-md dark:shadow-xl relative overflow-hidden">
-
       <div className="flex items-center gap-5 relative z-10">
         <div className="relative">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-gradient text-white font-bold text-2xl sm:text-3xl flex items-center justify-center rounded-full tracking-wider shadow-md ring-2 ring-gray-200 dark:ring-indigo-500/20">
-            {initials}
-          </div>
+          <UserAvatar size="lg" />
 
           <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-[#090d16]" />
         </div>
 
         <div className="space-y-2">
-
           <div>
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {user?.name || "User"}
+              {data?.name || "User"}
             </h2>
 
             <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-500 font-mono">
-              {user?.email}
+              {data?.email}
             </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-semibold">
-
-            <span className="px-2 py-0.5 rounded-md bg-blue-100 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/40 text-blue-600 dark:text-blue-400 capitalize">
-              {user?.role || "User"}
-            </span>
-
-            {user?.isVerified && (
-              <span className="px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-400">
-                ✅ Verified
-              </span>
+            {data?.bio && (
+              <p className="text-xs text-primary-500 line-clamp-2">
+                Bio:- <span className="text-textColor">{data?.bio || ""}</span>
+              </p>
             )}
-
-            {/* <span className="px-2 py-0.5 rounded-md bg-blue-100 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/40 text-blue-600 dark:text-blue-400">
-              Pro Member
-            </span> */}
-
-            <span className="px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/30 text-amber-600 dark:text-amber-500">
-              🔥 {data?.streak}-Day Streak
-            </span>
-            <span className="px-2 py-0.5 rounded-md bg-cyan-100 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-900/30 text-cyan-700 dark:text-cyan-400 flex items-center gap-1">
-              <Zap className="w-3 h-3" />
-              {data?.xp} XP Points
-            </span>
-
-            {/* <span className="px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900/30 text-purple-600 dark:text-purple-400">
-              🏆 Level 8
-            </span>
-
-            <span className="px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-400">
-              Top 5%
-            </span> */}
-
           </div>
+
+          <ProfileStatsBadges
+            isPro={data?.isPro}
+            dayStreak={stats?.dayStreak}
+            xpPoints={stats?.xpPoints}
+            level={data?.level}
+            percentile={data?.percentile}
+          />
         </div>
       </div>
 
-      <Button variant="secondary" className="dark:bg-white/10 dark:text-white">
+      <Button
+        onClick={handleEdit}
+        variant="secondary"
+        className="dark:bg-white/10 dark:text-white
+        hover:border hover:border-primary"
+      >
         <Edit3 className="w-4 h-4" />
         Edit Profile
       </Button>
-
     </div>
   );
 }

@@ -46,6 +46,21 @@ export const authApi = apiSlice.injectEndpoints({
         body: preferences,
       }),
     }),
+
+changePassword: builder.mutation({
+  query: (data) => ({
+    url: "/users/me/password",
+    method: "PATCH",
+    body: data,
+  }),
+}),
+
+deleteAccount: builder.mutation<any, void>({
+  query: () => ({
+    url: "/users/me",
+    method: "DELETE",
+  }),
+}),
   }),
   overrideExisting: false,
 });
@@ -58,4 +73,6 @@ export const {
   useLogoutMutation,
   useLazyMeQuery,
   useUpdateUiPreferencesMutation,
+  useChangePasswordMutation,
+   useDeleteAccountMutation,
 } = authApi;

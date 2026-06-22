@@ -6,8 +6,12 @@ import { ProfileTab } from "./profile-tab";
 import { AppearanceTab } from "./appearance-tab";
 import { NotificationsTab } from "./notifications-tab";
 import { AccountTab } from "./account-tab";
+import { useSearchParams } from "react-router-dom";
 
 export function SettingsContainer() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get("tab") || "profile";
+
   const tabsList = [
     { value: "profile", label: "Profile", icon: User },
     { value: "appearance", label: "Appearance", icon: Palette },
@@ -15,14 +19,17 @@ export function SettingsContainer() {
     { value: "account", label: "Account", icon: ShieldAlert },
   ];
 
+  const handleTabChange = (value: string) => {
+    setSearchParams({ tab: value });
+  };
+
   return (
     <motion.div
       variants={containerStagger(0.12)}
       initial="hidden"
       animate="show"
-      className="max-w-4xl mx-auto space-y-6 p-4 md:p-8"
+      className="max-w-4xl mx-auto space-y-6"
     >
-
       <div>
         <motion.div variants={fadeUpItem}>
           <h1 className="text-3xl font-bold flex items-center gap-2">
@@ -34,7 +41,11 @@ export function SettingsContainer() {
         </motion.div>
       </div>
 
-      <Tabs defaultValue="profile" className="space-y-6 " >
+      <Tabs
+        value={tabFromUrl}
+        className="space-y-6 "
+        onValueChange={handleTabChange}
+      >
         <motion.div variants={fadeUpItem}>
           <TabsList className="!custom-surface p-1 rounded-xl w-full flex justify-start gap-1 overflow-x-auto">
             {tabsList.map((tab) => {
@@ -112,5 +123,3 @@ export function SettingsContainer() {
     </motion.div>
   );
 }
-
-

@@ -14,25 +14,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Plus, Minus, X, Loader2 } from "lucide-react";
+import { Plus, X, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { useGetSubjectsQuery } from "@/store/api/subjectsApi";
-import { useCreateFocusTaskMutation } from "@/store/api/focusApi";
+import { useCreateTaskMutation } from "@/store/api/studyPlannerApi";
+import { FaPlus } from "react-icons/fa6";
+import TagsSelector from "@/components/common/add-task/tag-selector";
 import SubjectSelect from "@/components/common/add-task/subject-select";
 import TaskTypeSelect from "@/components/common/add-task/task-type-select";
-import TagsSelector from "@/components/common/add-task/tag-selector";
 import PrioritySelector from "@/components/common/add-task/priority-selector";
 import DatePicker from "@/components/common/add-task/task-date-picker";
 
 const validationSchema = Yup.object({
-  title: Yup.string()
-    .min(3, "Minimum 3 characters")
-    .required("Task title is required"),
+  title: Yup.string().min(3).required("Task title is required"),
   subject: Yup.string().required("Subject is required"),
   taskType: Yup.string().required("Task type is required"),
-  description: Yup.string()
-    .min(10, "Minimum 10 characters")
-    .required("Description is required"),
+  description: Yup.string().min(10).required("Description is required"),
+  priority: Yup.string().oneOf(["low", "medium", "high"]).required(),
+  durationType: Yup.string().required(),
+  customMinutes: Yup.number().when("durationType", {
+    is: "custom",
+    then: (schema) =>
+      schema
+        .typeError("Enter valid minutes")
+        .required("Custom duration is required")
+        .min(5),
+    otherwise: (schema) => schema.notRequired(),
+  }),
 });
 
 const quickTags = [
@@ -45,14 +53,18 @@ const quickTags = [
   "Reading",
 ];
 
-export function TaskFormModal() {
+export function StudyPlannerTaskModal() {
   const [open, setOpen] = React.useState(false);
-  const [pomodoros, setPomodoros] = React.useState(2);
-  const [priority, setPriority] = React.useState("medium");
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
-  const { data: subjectsData } = useGetSubjectsQuery({ page: 1, limit: 100 });
 
-  const [createFocusTask, { isLoading }] = useCreateFocusTaskMutation();
+  const { data: subjectsData } = useGetSubjectsQuery({ page: 1, limit: 100 });
+  const [createTask, { isLoading }] = useCreateTaskMutation();
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
+    );
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -60,59 +72,53 @@ export function TaskFormModal() {
       subject: "",
       taskType: "",
       description: "",
-      dueDate: "",
+      date: "",
+      priority: "medium",
+      durationType: "30",
+      customMinutes: "",
     },
-
     validationSchema,
-    validateOnMount: true,
 
     onSubmit: async (values, { resetForm }) => {
       try {
+        const durationMinutes =
+          values.durationType === "custom"
+            ? Number(values.customMinutes)
+            : Number(values.durationType);
+
         const payload = {
           title: values.title,
-          subjectId: values.subject,
-          taskType: values.taskType,
           description: values.description,
-          dueDate: values.dueDate || undefined,
-          estimatedPomodoros: pomodoros,
-          priority,
+          taskType: values.taskType,
+          subjectId: values.subject,
+          priority: values.priority,
           tags: selectedTags,
+          durationMinutes,
+          status: "upcoming",
+          ...(values.date ? { date: values.date } : {}),
         };
-
-        const response = await createFocusTask(payload).unwrap();
+        const response = await createTask(payload).unwrap();
         toast.success("Task created successfully");
+
         resetForm();
-        setPomodoros(2);
-        setPriority("medium");
         setSelectedTags([]);
         setOpen(false);
       } catch (error: any) {
-        console.error("CREATE TASK ERROR =>", error);
         toast.error(error?.data?.message || "Failed to create task");
       }
     },
   });
 
-  const toggleTag = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter((item) => item !== tag));
-    } else {
-      setSelectedTags([...selectedTags, tag]);
-    }
-  };
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Add
+        <Button className="flex rounded-lg gap-2">
+          <FaPlus /> Add Study Task
         </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-2xl rounded-3xl max-h-[600px] overflow-y-auto custom-scrollbar">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,#43fff433,transparent_45%)]" />
-
         <DialogHeader>
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/20 border border-primary/20">
@@ -120,20 +126,16 @@ export function TaskFormModal() {
             </div>
             <div>
               <DialogTitle className="text-xl font-semibold">
-                {" "}
-                Add Task to Queue
+                Study Plan Task
               </DialogTitle>
               <DialogDescription>
-                Plan your next focused study session
+                Create a task and stay on track with your studies.
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
-        <form
-          onSubmit={formik.handleSubmit}
-          className="relative z-10 mt-2 space-y-5"
-        >
+        <form onSubmit={formik.handleSubmit} className="space-y-5">
           <div>
             <label className="mb-2 flex items-center gap-1 text-xs uppercase tracking-wider text-textColor">
               Task Title
@@ -190,47 +192,66 @@ export function TaskFormModal() {
             )}
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-2 block text-xs uppercase tracking-wider text-textColor">
-                Estimated Pomodoros
-              </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            <PrioritySelector
+              value={formik.values.priority}
+              onChange={(value) => formik.setFieldValue("priority", value)}
+            />
 
-              <div className="flex h-10 items-center justify-between custom-surface rounded-lg px-3">
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="ghost"
-                  onClick={() =>
-                    setPomodoros((prev) => (prev > 1 ? prev - 1 : 1))
-                  }
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-
-                <div className="text-center">
-                  <p className="text-xl font-bold">{pomodoros}</p>
-                </div>
-
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => setPomodoros((prev) => prev + 1)}
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
             <DatePicker
-              label="Due Date"
-              name="dueDate"
-              value={formik.values.dueDate}
+              label="Date"
+              name="date"
+              value={formik.values.date}
               onChange={formik.handleChange}
             />
           </div>
-          <PrioritySelector value={priority} onChange={setPriority} />
 
+          <div className="grid grid-cols-4 gap-2 rounded-2xl custom-surface p-1">
+            {[
+              { label: "15m", value: "15" },
+              { label: "30m", value: "30" },
+              { label: "1h", value: "60" },
+              { label: "Custom", value: "custom" },
+            ].map((item) => (
+              <button
+                type="button"
+                key={item.value}
+                onClick={() => formik.setFieldValue("durationType", item.value)}
+                className={`h-10 rounded-xl text-xs transition-all
+      ${
+        formik.values.durationType === item.value
+          ? "bg-primary-gradient text-black"
+          : "text-textColor"
+      }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          {formik.values.durationType === "custom" && (
+            <div className="mt-2">
+              <label className="text-xs text-textColor">
+                Custom Duration (minutes)
+              </label>
+
+              <Input
+                type="number"
+                placeholder="e.g. 90"
+                value={formik.values.customMinutes}
+                onChange={(e) =>
+                  formik.setFieldValue("customMinutes", e.target.value)
+                }
+                className="custom-surface mt-1"
+              />
+
+              {formik.touched.customMinutes && formik.errors.customMinutes && (
+                <p className="text-xs text-red-400">
+                  {formik.errors.customMinutes}
+                </p>
+              )}
+            </div>
+          )}
           <TagsSelector
             selectedTags={selectedTags}
             quickTags={quickTags}

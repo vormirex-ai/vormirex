@@ -1,118 +1,173 @@
+import { useState, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Save, Edit2, Zap } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Pencil, Save } from "lucide-react";
+
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "@/store/api/profileApi";
+
+import ProfilePhotoUploader from "../profile/profile-photo-uploader";
+import { ProfileStatsBadges } from "../profile/profile-stats-badges";
+
+const validationSchema = Yup.object({
+  name: Yup.string().required("Name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  bio: Yup.string(),
+  phoneNumber: Yup.string(),
+});
 
 export function ProfileTab() {
-  return (
-    <div className="space-y-6  custom-surface p-6 rounded-2xl shadow-xl">
+  const user = useSelector((state: any) => state.auth.user);
+  const { data: profileData, isLoading } = useGetProfileQuery(undefined);
+  const [isEditing, setIsEditing] = useState(false);
+  const [updateProfile] = useUpdateProfileMutation();
 
+  const profile = profileData?.user;
+
+  const initialValues = useMemo(
+    () => ({
+      name: profile?.name || user?.name || "",
+      email: profile?.email || user?.email || "",
+      phoneNumber: profile?.phoneNumber || user?.phoneNumber || "",
+      bio: profile?.bio || user?.bio || "",
+    }),
+    [profile, user],
+  );
+
+  const formik = useFormik({
+    initialValues,
+    enableReinitialize: true,
+    validationSchema,
+
+    onSubmit: async (values) => {
+      try {
+        await updateProfile(values).unwrap();
+        setIsEditing(false);
+      } catch (error) {
+        console.error("Profile Update Error:", error);
+      }
+    },
+  });
+
+  return (
+    <form
+      onSubmit={formik.handleSubmit}
+      className="space-y-6 custom-surface p-6 rounded-2xl shadow-xl"
+    >
       <div>
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-200">
-          Profile Information
-        </h3>
+        <h3 className="text-lg font-semibold">Profile Information</h3>
       </div>
 
-
       <div className="flex items-center gap-4">
+        <ProfilePhotoUploader />
 
-        <div className="relative group cursor-pointer">
+        <div>
+          <h4 className="text-base font-medium">
+            {profile?.name || user?.name || "User"}
+          </h4>
 
-          <div className="w-20 h-20 bg-primary-gradient rounded-full flex items-center justify-center text-white text-3xl font-bold border-2 border-white dark:border-slate-800">
-            S
-          </div>
+          <p className="text-xs text-slate-500">
+            {profile?.email || user?.email}
+          </p>
+          {profile?.bio && (
+            <p className="text-xs text-primary-500 line-clamp-2">
+              Bio:- <span className="text-textColor">{profile?.bio || ""}</span>
+            </p>
+          )}
 
-          <button className="absolute bottom-0 right-0 p-1.5 bg-primary-gradient hover:bg-indigo-500 text-slateText  rounded-full border-2 border-white dark:border-[#0d111c] transition">
-            <Pencil className="w-3.5 h-3.5" />
-          </button>
+          <ProfileStatsBadges
+            isPro={profileData?.user?.isPro}
+            dayStreak={profileData?.stats?.dayStreak}
+            xpPoints={profileData?.stats?.xpPoints}
+            level={profileData?.stats?.level}
+            percentile={profileData?.user?.percentile}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label className="my-2">Full Name</Label>
+          <Input
+            name="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            disabled={!isEditing}
+          />
         </div>
 
         <div>
-          <h4 className="text-base font-medium text-slate-900 dark:text-slate-200">
-            Sandhya
-          </h4>
+          <Label className="my-2">Email</Label>
+          <Input
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            disabled={!isEditing}
+          />
+        </div>
 
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            sandhya@gmail.com
-          </p>
+        <div>
+          <Label className="my-2">Phone</Label>
+          <Input
+            name="phoneNumber"
+            value={formik.values.phoneNumber}
+            onChange={formik.handleChange}
+            disabled={!isEditing}
+          />
+        </div>
 
-          <span className="inline-block mt-1.5 text-[11px] font-semibold bg-indigo-100 bg-primary/5 dark:bg-[#154249]/40 border border-primary px-2.5 py-0.5 rounded-full">
-            Pro Member
-          </span>
+        <div>
+          <Label className="my-2">Role</Label>
+          <Input value={profile?.role || user?.role || ""} disabled />
         </div>
       </div>
 
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-            Full Name
-          </Label>
-
-          <Input
-            defaultValue="Alex Johnson"
-            className="bg-primary/5 dark:bg-[#154249]/ border border-cyan-500/10  focus:border-primary focus:ring-primary"
-          />
-        </div>
-
-
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-            Username
-          </Label>
-
-          <Input
-            defaultValue="alexj"
-            className="bg-primary/5 dark:bg-[#154249]/ border border-cyan-500/10  focus:border-primary focus:ring-primary"
-          />
-        </div>
-
-
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-            Email
-          </Label>
-
-          <Input
-            type="email"
-            defaultValue="alex.johnson@email.com"
-            className="bg-primary/5 dark:bg-[#154249]/ border border-cyan-500/10  focus:border-primary focus:ring-primary"
-          />
-        </div>
-
-
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-            Phone (optional)
-          </Label>
-
-          <Input
-            type="tel"
-            placeholder="+1 234 567 8900"
-            className="bg-primary/5 dark:bg-[#154249]/ border border-cyan-500/10  focus:border-primary focus:ring-primary"
-          />
-        </div>
-      </div>
-
-
-      <div className="space-y-2">
-        <Label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          Bio
-        </Label>
-
+      <div>
+        <Label className="my-2">Bio</Label>
         <Textarea
-          defaultValue="Passionate learner focused on Mathematics and Python Programming. Love problem-solving!"
-          className="bg-primary/5 dark:bg-[#154249]/ border border-cyan-500/10  focus:border-primary focus:ring-primary"
+          name="bio"
+          value={formik.values.bio}
+          onChange={formik.handleChange}
+          disabled={!isEditing}
         />
       </div>
 
+      {!isEditing ? (
+        <Button
+          type="button"
+          onClick={() => setIsEditing(true)}
+          className="gap-2"
+        >
+          <Edit2 className="w-4 h-4" />
+          Edit Profile
+        </Button>
+      ) : (
+        <div className="flex gap-3">
+          <Button type="submit" className="gap-2">
+            <Save className="w-4 h-4" />
+            Save Changes
+          </Button>
 
-      <Button className="shadow-lg shadow-indigo-500/20 px-5 gap-2">
-        <Save className="w-4 h-4" />
-        Save Changes
-      </Button>
-    </div>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              formik.resetForm();
+              setIsEditing(false);
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
+      )}
+    </form>
   );
 }

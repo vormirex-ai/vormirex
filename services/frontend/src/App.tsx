@@ -139,7 +139,7 @@ function App() {
         </Route>
 
         <Route path="/productivity" element={<DashboardLayout />}>
-          <Route path="timer" element={<PromodoroTimer />} />
+          <Route path="timer/:taskId?" element={<PromodoroTimer />} />
           <Route path="study-planner" element={<StudyPlannerPage />} />
           <Route path="notes" element={<NotesPage />} />
         </Route>

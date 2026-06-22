@@ -1,62 +1,14 @@
-import {
-  Trophy,
-  Flame,
-  CheckCircle2,
-  CalendarDays,
-  Star,
-} from "lucide-react";
-
-
 import { useReadNotificationMutation } from "@/store/api/notificationsApi";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
-
-const notificationIcons: any = {
-  achievement: {
-    icon: Trophy,
-    iconBg: "bg-yellow-500/20",
-    iconColor: "text-yellow-400",
-  },
-
-
-  streak: {
-    icon: Flame,
-    iconBg: "bg-orange-500/20",
-    iconColor: "text-orange-400",
-  },
-
-
-  completed: {
-    icon: CheckCircle2,
-    iconBg: "bg-green-500/20",
-    iconColor: "text-green-400",
-  },
-
-
-  reminder: {
-    icon: CalendarDays,
-    iconBg: "bg-violet-500/20",
-    iconColor: "text-violet-400",
-  },
-
-
-  xp: {
-    icon: Star,
-    iconBg: "bg-emerald-500/20",
-    iconColor: "text-yellow-400",
-  },
-};
+import { notificationIcons } from "../data/notification-data";
 
 
 interface Props {
   item: any;
 }
 
-
 const NotificationCard = ({ item, setOpen }: any) => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const selectedId = searchParams.get("id");
   const [readNotification] = useReadNotificationMutation();
   const config = notificationIcons[item.type] || notificationIcons.achievement;
   const Icon = config.icon;
@@ -65,14 +17,10 @@ const NotificationCard = ({ item, setOpen }: any) => {
   const handleReadNotification = async () => {
     try {
       setOpen?.(false);
-
-
       if (!item.isRead) {
         await readNotification(item._id).unwrap();
       }
-
-
-      navigate(`/dashboard/notifications?id=${item._id}`);
+navigate(`/dashboard/notifications?notificationId=${item._id}`);
     } catch (err) {
       console.error(err);
     }
@@ -82,14 +30,6 @@ const NotificationCard = ({ item, setOpen }: any) => {
       onClick={handleReadNotification}
       className={`flex items-start gap-4 p-4 border-b border-border hover:bg-primary/10 transition cursor-pointer ${!item.isRead ? "bg-primary/5" : ""
         }`}
-
-
-
-
-    // className={`flex items-start gap-4 p-4 border-b cursor-pointer hover:bg-primary/10 transition
-    //   ${!item.isRead ? "bg-primary/5" : ""}
-    //   ${selectedId === item._id ? "bg-primary/15 border-l-4 border-primary" : ""}
-    // `}
     >
       <div
         className={`w-11 h-11 rounded-xl flex items-center justify-center ${config.iconBg}`}
