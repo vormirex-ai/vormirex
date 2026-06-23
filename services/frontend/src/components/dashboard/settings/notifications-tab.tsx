@@ -9,28 +9,11 @@ import { useUpdateNotificationPreferencesMutation } from "@/store/api/notificati
 
 export function NotificationsTab() {
   const user = useSelector((state: RootState) => state.auth.user);
-
-  const [updateNotifications, { isLoading }] =
-    useUpdateNotificationPreferencesMutation();
+  const [updateNotifications, { isLoading }] = useUpdateNotificationPreferencesMutation();
 
   const [settings, setSettings] = useState<any>(null);
   const [initialSettings, setInitialSettings] = useState<any>(null);
 
-  // useEffect(() => {
-  //   if (!user) return;
-
-  //   const init = {
-  //     dailyStudyReminders: user?.notificationPreferences?.streakReminders ?? true,
-  //     xpAchievementAlerts: user?.notificationPreferences?.securityAlerts ?? true,
-  //     streakReminders:user?.notificationPreferences?.streakReminders ?? true,
-  //     leaderboardUpdates: false,
-  //     newContentAlerts:user?.notificationPreferences?.newCourseAlerts ?? true,
-  //     emailDigest: false,
-  //   };
-
-  //   setSettings(init);
-  //   setInitialSettings(init);
-  // }, [user]);
 
   const options = [
     {
@@ -76,33 +59,6 @@ export function NotificationsTab() {
     if (!settings || !initialSettings) return false;
     return JSON.stringify(settings) !== JSON.stringify(initialSettings);
   }, [settings, initialSettings]);
-
-// const handleSave = async () => {
-//   try {
-//     const payload = {
-//       dailyStudyReminders: settings.dailyStudyReminders,
-//       xpAchievementAlerts: settings.xpAchievementAlerts,
-//       streakReminders: settings.streakReminders,
-//       leaderboardUpdates: settings.leaderboardUpdates,
-//       newContentAlerts: settings.newContentAlerts,
-//       emailDigest: settings.emailDigest,
-//     };
-
-//     const response = await updateNotifications(payload).unwrap();
-//     console.log("Response:", response);
-
-//     toast.success(response?.message || "Notification preferences updated");
-//     if (response?.preferences) {
-//       setSettings(response.preferences);
-//       setInitialSettings(response.preferences);
-//     } else {
-//       setInitialSettings(settings);
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     toast.error("Failed to update notification preferences");
-//   }
-// };
 
 const handleSave = async () => {
   try {

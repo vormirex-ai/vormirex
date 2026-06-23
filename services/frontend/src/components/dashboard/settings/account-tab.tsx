@@ -38,7 +38,7 @@ export function AccountTab() {
               <p className="text-sm font-medium ">Change Password</p>
               <p className="text-xs text-slate-400">Last changed 30 days ago</p>
             </div>
-         <ChangePasswordDialog/>
+     <ChangePasswordDialog onPasswordChanged={handleLogout}/>
           </div>
 
           <div className="flex items-center justify-between pt-4">
@@ -54,7 +54,7 @@ export function AccountTab() {
               <p className="text-sm font-medium ">Active Sessions</p>
               <p className="text-xs text-slate-400">1 active session (this device)</p>
             </div>
-            <Button variant="outline" className=" rounded-lg text-xs">
+            <Button variant="outline" className="  text-xs">
               Sign out others
             </Button>
           </div>

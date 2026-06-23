@@ -10,7 +10,7 @@ function AchievementBadge({ emoji, title, unlocked ,description}: BadgeProps) {
     <div
       className={`rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-3 border transition-all duration-200 aspect-square ${unlocked
         ? "dark:bg-[#154249]  border border-cyan-500/10 shadow-md dark:text-slate-200 text-slateText "
-        : "dark:bg-[#154249]/100 border-slate-900/40 opacity-20 dark:text-slate-300  text-slateText select-none"
+        : "dark:bg-[#154249]/100 border-slate-900/40 opacity-30 dark:text-slate-300  text-slateText select-none"
         }`}
     >
       <span className={`text-2xl filter ${!unlocked && "grayscale saturate-0"}`}>

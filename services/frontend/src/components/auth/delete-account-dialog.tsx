@@ -31,7 +31,7 @@ export function DeleteAccountButton() {
     <>
       <Button
         variant="destructive"
-        className="rounded-lg text-xs"
+        className="text-xs"
         onClick={() => setOpen(true)}
       >
         Delete Account

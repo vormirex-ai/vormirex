@@ -104,7 +104,7 @@ export function AppearanceTab() {
       </div>
 
       {/* Tour Card */}
-      <div className="custom-surface p-4 sm:p-6 rounded-2xl shadow-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      {/* <div className="custom-surface p-4 sm:p-6 rounded-2xl shadow-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h3 className="text-sm font-medium">Interactive Tour</h3>
           <p className="text-xs text-slate-400">
@@ -115,7 +115,7 @@ export function AppearanceTab() {
         <Button className="rounded-xl gap-2 text-xs w-full sm:w-auto">
           <Compass className="w-4 h-4" /> Start Tour
         </Button>
-      </div>
+      </div> */}
          {/* <div className="custom-surface p-6 rounded-2xl shadow-xl space-y-3">
         <h3 className="text-sm font-medium text-slateText dark:text-slate-200">Accent Color</h3>
         <div className="flex items-center gap-3">
