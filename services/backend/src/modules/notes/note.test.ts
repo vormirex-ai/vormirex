@@ -2,6 +2,7 @@ import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import noteController from './note.controller.js';
 import Note from './note.model.js';
 import User from '../user/user.model.js';
+import Subject from '../subjects/subject.model.js';
 import { ForbiddenError, NotFoundError } from '../../utils/errors.js';
 
 describe('Notes Controller Unit Tests', () => {
@@ -133,26 +134,50 @@ describe('Notes Controller Unit Tests', () => {
   });
 
   describe('createNote', () => {
-    it('should successfully create a new user note', async () => {
+    it('should successfully create a new user note and resolve subjectName', async () => {
       const mockNote = {
         title: 'New Note',
         content: 'Note Content',
         userId: mockUserId,
+        subjectId: '60d0fe4f5311236168a109cc',
+        subjectName: 'Mathematics',
+        fileUrl: 'https://cloudinary.com/file.pdf',
         isPrivate: true,
       };
 
+      const mockSubject = {
+        _id: '60d0fe4f5311236168a109cc',
+        title: 'Mathematics',
+      };
+
+      jest.spyOn(Subject, 'findById').mockResolvedValue(mockSubject as any);
       jest.spyOn(Note, 'create').mockResolvedValue(mockNote as any);
-      mockReq.body = { title: 'New Note', content: 'Note Content' };
+
+      mockReq.body = {
+        title: 'New Note',
+        content: 'Note Content',
+        subjectId: '60d0fe4f5311236168a109cc',
+      };
+      mockReq.file = { path: 'https://cloudinary.com/file.pdf' };
 
       await noteController.createNote(mockReq, mockRes);
 
+      expect(Subject.findById).toHaveBeenCalledWith('60d0fe4f5311236168a109cc');
+      expect(Note.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          userId: mockUserId,
+          title: 'New Note',
+          subjectName: 'Mathematics',
+          fileUrl: 'https://cloudinary.com/file.pdf',
+        })
+      );
       expect(mockRes.status).toHaveBeenCalledWith(201);
       expect(mockRes.json).toHaveBeenCalledWith(mockNote);
     });
   });
 
   describe('updateNote', () => {
-    it('should update note if owned by requestor', async () => {
+    it('should update note and resolve subjectName if subjectId is provided', async () => {
       const mockNote = {
         _id: 'note1',
         title: 'Old Title',
@@ -160,13 +185,24 @@ describe('Notes Controller Unit Tests', () => {
         save: jest.fn(() => Promise.resolve(true as any)),
       };
 
+      const mockSubject = {
+        _id: '60d0fe4f5311236168a109cd',
+        title: 'Physics',
+      };
+
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
+      jest.spyOn(Subject, 'findById').mockResolvedValue(mockSubject as any);
+
       mockReq.params.id = 'note1';
-      mockReq.body = { title: 'New Title' };
+      mockReq.body = { title: 'New Title', subjectId: '60d0fe4f5311236168a109cd' };
+      mockReq.file = { path: 'https://cloudinary.com/newfile.pdf' };
 
       await noteController.updateNote(mockReq, mockRes);
 
       expect(mockNote.title).toBe('New Title');
+      expect((mockNote as any).subjectId).toBe('60d0fe4f5311236168a109cd');
+      expect((mockNote as any).subjectName).toBe('Physics');
+      expect((mockNote as any).fileUrl).toBe('https://cloudinary.com/newfile.pdf');
       expect(mockNote.save).toHaveBeenCalled();
       expect(mockRes.status).toHaveBeenCalledWith(200);
     });
@@ -214,17 +250,6 @@ describe('Notes Controller Unit Tests', () => {
       mockReq.params.id = 'note1';
 
       await expect(noteController.deleteNote(mockReq, mockRes)).rejects.toThrow(ForbiddenError);
-    });
-  });
-
-  describe('uploadNoteFile', () => {
-    it('should return Cloudinary URL on file upload', async () => {
-      mockReq.file = { path: 'https://cloudinary.com/path/to/file.pdf' };
-
-      await noteController.uploadNoteFile(mockReq, mockRes);
-
-      expect(mockRes.status).toHaveBeenCalledWith(200);
-      expect(mockRes.json).toHaveBeenCalledWith({ fileUrl: 'https://cloudinary.com/path/to/file.pdf' });
     });
   });
 });

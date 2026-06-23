@@ -12,9 +12,8 @@ router.use(requireAuth);
 
 router.get('/', noteController.getNotes);
 router.get('/:id', noteController.getNoteById);
-router.post('/', validate(createNoteSchema), noteController.createNote);
-router.patch('/:id', validate(updateNoteSchema), noteController.updateNote);
+router.post('/', uploadGeneric.single('file'), validate(createNoteSchema), noteController.createNote);
+router.patch('/:id', uploadGeneric.single('file'), validate(updateNoteSchema), noteController.updateNote);
 router.delete('/:id', noteController.deleteNote);
-router.post('/upload', uploadGeneric.single('file'), noteController.uploadNoteFile);
 
 export default router;

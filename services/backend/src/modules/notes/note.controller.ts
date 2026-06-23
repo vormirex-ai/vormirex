@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Note from './note.model.js';
 import User from '../user/user.model.js';
+import Subject from '../subjects/subject.model.js';
 import { NotFoundError, ForbiddenError, BadRequestError } from '../../utils/errors.js';
 
 export const getNotes = async (req: Request, res: Response) => {
@@ -96,7 +97,7 @@ export const createNote = async (req: Request, res: Response) => {
   /* #swagger.requestBody = {
        required: true,
        content: {
-         "application/json": {
+         "multipart/form-data": {
            schema: {
              type: "object",
              properties: {
@@ -104,7 +105,7 @@ export const createNote = async (req: Request, res: Response) => {
                content: { type: "string", example: "∫u dv = uv - ∫v du. Use the LIATE rule..." },
                subjectId: { type: "string", example: "60d0fe4f5311236168a109cc" },
                subjectName: { type: "string", example: "Mathematics" },
-               fileUrl: { type: "string", example: "https://res.cloudinary.com/...pdf" }
+               file: { type: "string", format: "binary" }
              },
              required: ["title"]
            }
@@ -113,14 +114,23 @@ export const createNote = async (req: Request, res: Response) => {
      } */
   // @ts-ignore
   const userId = req.user.userId;
-  const { title, content, subjectId, subjectName, fileUrl } = req.body;
+  const { title, content, subjectId, subjectName } = req.body;
+  const fileUrl = req.file?.path; // Set by multer if a file was uploaded
+
+  let resolvedSubjectName = subjectName;
+  if (subjectId) {
+    const subject = await Subject.findById(subjectId);
+    if (subject) {
+      resolvedSubjectName = subject.title;
+    }
+  }
 
   const note = await Note.create({
     userId,
     title,
     content,
     subjectId,
-    subjectName,
+    subjectName: resolvedSubjectName,
     fileUrl,
     isPrivate: true, // Default user-created notes to private
     isBookmarked: false
@@ -133,7 +143,7 @@ export const updateNote = async (req: Request, res: Response) => {
   /* #swagger.requestBody = {
        required: true,
        content: {
-         "application/json": {
+         "multipart/form-data": {
            schema: {
              type: "object",
              properties: {
@@ -142,7 +152,7 @@ export const updateNote = async (req: Request, res: Response) => {
                subjectId: { type: "string", example: "60d0fe4f5311236168a109cc" },
                subjectName: { type: "string", example: "Mathematics" },
                isBookmarked: { type: "boolean", example: true },
-               fileUrl: { type: "string", example: "https://res.cloudinary.com/...pdf" }
+               file: { type: "string", format: "binary" }
              }
            }
          }
@@ -151,7 +161,8 @@ export const updateNote = async (req: Request, res: Response) => {
   // @ts-ignore
   const userId = req.user.userId;
   const { id } = req.params;
-  const { title, content, subjectId, subjectName, isBookmarked, fileUrl } = req.body;
+  const { title, content, subjectId, subjectName, isBookmarked } = req.body;
+  const fileUrl = req.file?.path;
 
   const note = await Note.findById(id);
   if (!note) throw new NotFoundError('Note not found');
@@ -163,10 +174,18 @@ export const updateNote = async (req: Request, res: Response) => {
 
   if (title !== undefined) note.title = title;
   if (content !== undefined) note.content = content;
-  if (subjectId !== undefined) note.subjectId = subjectId;
-  if (subjectName !== undefined) note.subjectName = subjectName;
   if (isBookmarked !== undefined) note.isBookmarked = isBookmarked;
   if (fileUrl !== undefined) note.fileUrl = fileUrl;
+
+  if (subjectId !== undefined) {
+    note.subjectId = subjectId;
+    const subject = await Subject.findById(subjectId);
+    if (subject) {
+      note.subjectName = subject.title;
+    }
+  } else if (subjectName !== undefined) {
+    note.subjectName = subjectName;
+  }
 
   await note.save();
 
@@ -191,36 +210,10 @@ export const deleteNote = async (req: Request, res: Response) => {
   res.status(200).json({ message: 'Note deleted successfully' });
 };
 
-export const uploadNoteFile = async (req: Request, res: Response) => {
-  /* #swagger.requestBody = {
-       required: true,
-       content: {
-         "multipart/form-data": {
-           schema: {
-             type: "object",
-             properties: {
-               file: {
-                 type: "string",
-                 format: "binary"
-               }
-             },
-             required: ["file"]
-           }
-         }
-       }
-     } */
-  if (!req.file) {
-    throw new BadRequestError('No file uploaded');
-  }
-  // Multer Cloudinary storage populates req.file.path with Cloudinary URL
-  res.status(200).json({ fileUrl: req.file.path });
-};
-
 export default {
   getNotes,
   getNoteById,
   createNote,
   updateNote,
   deleteNote,
-  uploadNoteFile,
 };

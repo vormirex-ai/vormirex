@@ -4814,7 +4814,7 @@ export default {
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -4834,9 +4834,9 @@ export default {
                     "type": "string",
                     "example": "Mathematics"
                   },
-                  "fileUrl": {
+                  "file": {
                     "type": "string",
-                    "example": "https://res.cloudinary.com/...pdf"
+                    "format": "binary"
                   }
                 },
                 "required": [
@@ -4936,7 +4936,7 @@ export default {
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -4960,9 +4960,9 @@ export default {
                     "type": "boolean",
                     "example": true
                   },
-                  "fileUrl": {
+                  "file": {
                     "type": "string",
-                    "example": "https://res.cloudinary.com/...pdf"
+                    "format": "binary"
                   }
                 }
               }
@@ -5008,60 +5008,6 @@ export default {
           },
           "500": {
             "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/notes/upload": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "token",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                },
-                "required": [
-                  "file"
-                ]
-              }
-            }
           }
         }
       }
