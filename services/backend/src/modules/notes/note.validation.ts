@@ -16,7 +16,11 @@ export const updateNoteSchema = z.object({
     content: z.string().optional(),
     subjectId: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid Subject ID').optional(),
     subjectName: z.string().optional(),
-    isBookmarked: z.boolean().optional(),
+    isBookmarked: z.preprocess((val) => {
+      if (val === 'true') return true;
+      if (val === 'false') return false;
+      return val;
+    }, z.boolean()).optional(),
     fileUrl: z.string().url('Invalid file URL').optional(),
   }),
 });
