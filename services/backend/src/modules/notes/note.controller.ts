@@ -192,6 +192,23 @@ export const deleteNote = async (req: Request, res: Response) => {
 };
 
 export const uploadNoteFile = async (req: Request, res: Response) => {
+  /* #swagger.requestBody = {
+       required: true,
+       content: {
+         "multipart/form-data": {
+           schema: {
+             type: "object",
+             properties: {
+               file: {
+                 type: "string",
+                 format: "binary"
+               }
+             },
+             required: ["file"]
+           }
+         }
+       }
+     } */
   if (!req.file) {
     throw new BadRequestError('No file uploaded');
   }
