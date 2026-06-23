@@ -23,6 +23,7 @@ import aiTutorRouter from './modules/aiTutor/aiTutor.routes.js';
 import dashboardRouter from './modules/dashboard/dashboard.routes.js';
 import focusRouter from './modules/focus/focus.routes.js';
 import plannerRouter from './modules/planner/planner.routes.js';
+import noteRouter from './modules/notes/note.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './config/swagger-output.js';
 
@@ -121,6 +122,7 @@ app.use('/api/roles', roleConfigRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/focus', focusRouter);
 app.use('/api/planner', plannerRouter);
+app.use('/api/notes', noteRouter);
 // app.use('/api/payments', paymentRouter);
 
 // --- Centralized Error Handler ---
