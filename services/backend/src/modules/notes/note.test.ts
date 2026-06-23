@@ -252,4 +252,76 @@ describe('Notes Controller Unit Tests', () => {
       await expect(noteController.deleteNote(mockReq, mockRes)).rejects.toThrow(ForbiddenError);
     });
   });
+
+  describe('downloadNote', () => {
+    beforeEach(() => {
+      mockRes.setHeader = jest.fn().mockReturnThis();
+      mockRes.send = jest.fn().mockReturnThis();
+    });
+
+    it('should download a text-only note as a markdown attachment', async () => {
+      const mockNote = {
+        _id: 'note1',
+        title: 'Integration by Parts',
+        content: '# Math content',
+        isPrivate: false,
+      };
+
+      jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
+      mockReq.params.id = 'note1';
+
+      await noteController.downloadNote(mockReq, mockRes);
+
+      expect(mockRes.setHeader).toHaveBeenCalledWith('Content-Type', 'text/markdown');
+      expect(mockRes.setHeader).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="Integration_by_Parts.md"');
+      expect(mockRes.send).toHaveBeenCalledWith('# Math content');
+    });
+
+    it('should download a file note by fetching and streaming the file attachment', async () => {
+      const mockNote = {
+        _id: 'note1',
+        title: 'Physics Lab',
+        fileUrl: 'https://cloudinary.com/PhysicsLab.pdf',
+        isPrivate: false,
+      };
+
+      jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
+      
+      const mockResponse = {
+        ok: true,
+        arrayBuffer: jest.fn(() => Promise.resolve(new ArrayBuffer(8))),
+        headers: {
+          get: jest.fn(() => 'application/pdf'),
+        },
+      };
+      
+      const originalFetch = global.fetch;
+      global.fetch = jest.fn(() => Promise.resolve(mockResponse as any));
+      
+      mockReq.params.id = 'note1';
+
+      await noteController.downloadNote(mockReq, mockRes);
+
+      expect(global.fetch).toHaveBeenCalledWith('https://cloudinary.com/PhysicsLab.pdf');
+      expect(mockRes.setHeader).toHaveBeenCalledWith('Content-Type', 'application/pdf');
+      expect(mockRes.setHeader).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="Physics_Lab.pdf"');
+      expect(mockRes.send).toHaveBeenCalled();
+      
+      global.fetch = originalFetch;
+    });
+
+    it('should throw ForbiddenError when downloading a private note not owned by the user', async () => {
+      const mockNote = {
+        _id: 'note1',
+        title: 'Secret Note',
+        isPrivate: true,
+        userId: otherUserId,
+      };
+
+      jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
+      mockReq.params.id = 'note1';
+
+      await expect(noteController.downloadNote(mockReq, mockRes)).rejects.toThrow(ForbiddenError);
+    });
+  });
 });

@@ -15,5 +15,6 @@ router.get('/:id', noteController.getNoteById);
 router.post('/', uploadGeneric.single('file'), validate(createNoteSchema), noteController.createNote);
 router.patch('/:id', uploadGeneric.single('file'), validate(updateNoteSchema), noteController.updateNote);
 router.delete('/:id', noteController.deleteNote);
+router.get('/:id/download', noteController.downloadNote);
 
 export default router;

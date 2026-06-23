@@ -210,10 +210,58 @@ export const deleteNote = async (req: Request, res: Response) => {
   res.status(200).json({ message: 'Note deleted successfully' });
 };
 
+export const downloadNote = async (req: Request, res: Response) => {
+  // @ts-ignore
+  const userId = req.user.userId;
+  const { id } = req.params;
+
+  const note = await Note.findById(id);
+  if (!note) throw new NotFoundError('Note not found');
+
+  // Check ownership if private
+  if (note.isPrivate && note.userId?.toString() !== userId.toString()) {
+    throw new ForbiddenError('You do not have permission to download this note');
+  }
+
+  const safeFilename = note.title.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+  if (note.fileUrl) {
+    try {
+      const response = await fetch(note.fileUrl);
+      if (!response.ok) {
+        throw new BadRequestError('Failed to fetch the document from storage provider');
+      }
+
+      const arrayBuffer = await response.arrayBuffer();
+      const contentType = response.headers.get('content-type') || 'application/octet-stream';
+      const extension = note.fileUrl.split('.').pop() || 'pdf';
+
+      res.setHeader('Content-Type', contentType);
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${safeFilename}.${extension}"`
+      );
+
+      res.send(Buffer.from(arrayBuffer));
+    } catch (err) {
+      throw new BadRequestError('Failed to fetch the document from storage provider');
+    }
+  } else {
+    const content = note.content || '';
+    res.setHeader('Content-Type', 'text/markdown');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${safeFilename}.md"`
+    );
+    res.send(content);
+  }
+};
+
 export default {
   getNotes,
   getNoteById,
   createNote,
   updateNote,
   deleteNote,
+  downloadNote,
 };
