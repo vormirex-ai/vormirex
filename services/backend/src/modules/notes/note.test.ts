@@ -3,6 +3,7 @@ import noteController from './note.controller.js';
 import Note from './note.model.js';
 import User from '../user/user.model.js';
 import Subject from '../subjects/subject.model.js';
+import Bookmark from './bookmark.model.js';
 import { ForbiddenError, NotFoundError } from '../../utils/errors.js';
 
 describe('Notes Controller Unit Tests', () => {
@@ -24,6 +25,14 @@ describe('Notes Controller Unit Tests', () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn().mockReturnThis(),
     };
+
+    // Default mocks for Bookmark to avoid DB queries and timeouts
+    jest.spyOn(Bookmark, 'find').mockReturnValue({
+      select: (jest.fn() as any).mockResolvedValue([]),
+    } as any);
+    jest.spyOn(Bookmark, 'exists').mockResolvedValue(null as any);
+    jest.spyOn(Bookmark, 'findOneAndUpdate').mockResolvedValue({} as any);
+    jest.spyOn(Bookmark, 'findOneAndDelete').mockResolvedValue({} as any);
   });
 
   describe('getNotes', () => {
@@ -36,8 +45,20 @@ describe('Notes Controller Unit Tests', () => {
       };
 
       const mockNotes = [
-        { title: 'My Private Chemistry Note', isPrivate: true, userId: mockUserId },
-        { title: 'Platform Physics Guide', isPrivate: false, subjectName: 'Physics' },
+        {
+          _id: '60d0fe4f5311236168a109cd',
+          title: 'My Private Chemistry Note',
+          isPrivate: true,
+          userId: mockUserId,
+          toObject: function() { return this; }
+        },
+        {
+          _id: '60d0fe4f5311236168a109ce',
+          title: 'Platform Physics Guide',
+          isPrivate: false,
+          subjectName: 'Physics',
+          toObject: function() { return this; }
+        },
       ];
 
       jest.spyOn(User, 'findById').mockResolvedValue(mockUser as any);
@@ -85,7 +106,7 @@ describe('Notes Controller Unit Tests', () => {
 
       expect(findSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          isBookmarked: true,
+          _id: expect.any(Object),
           $and: expect.arrayContaining([
             expect.objectContaining({
               $or: [
@@ -103,14 +124,15 @@ describe('Notes Controller Unit Tests', () => {
   describe('getNoteById', () => {
     it('should successfully return the note if owned by user', async () => {
       const mockNote = {
-        _id: 'note1',
+        _id: '60d0fe4f5311236168a109cd',
         title: 'Secret Note',
         isPrivate: true,
         userId: mockUserId,
+        toObject: function() { return this; }
       };
 
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
-      mockReq.params.id = 'note1';
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
 
       await noteController.getNoteById(mockReq, mockRes);
 
@@ -120,14 +142,15 @@ describe('Notes Controller Unit Tests', () => {
 
     it('should throw ForbiddenError if user requests someone else\'s private note', async () => {
       const mockNote = {
-        _id: 'note1',
+        _id: '60d0fe4f5311236168a109cd',
         title: 'Someone else\'s secret',
         isPrivate: true,
         userId: otherUserId,
+        toObject: function() { return this; }
       };
 
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
-      mockReq.params.id = 'note1';
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
 
       await expect(noteController.getNoteById(mockReq, mockRes)).rejects.toThrow(ForbiddenError);
     });
@@ -179,10 +202,11 @@ describe('Notes Controller Unit Tests', () => {
   describe('updateNote', () => {
     it('should update note and resolve subjectName if subjectId is provided', async () => {
       const mockNote = {
-        _id: 'note1',
+        _id: '60d0fe4f5311236168a109cd',
         title: 'Old Title',
         userId: mockUserId,
         save: jest.fn(() => Promise.resolve(true as any)),
+        toObject: function() { return this; }
       };
 
       const mockSubject = {
@@ -193,7 +217,7 @@ describe('Notes Controller Unit Tests', () => {
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
       jest.spyOn(Subject, 'findById').mockResolvedValue(mockSubject as any);
 
-      mockReq.params.id = 'note1';
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
       mockReq.body = { title: 'New Title', subjectId: '60d0fe4f5311236168a109cd' };
       mockReq.file = { path: 'https://cloudinary.com/newfile.pdf' };
 
@@ -209,29 +233,57 @@ describe('Notes Controller Unit Tests', () => {
 
     it('should throw ForbiddenError if user attempts to update a note they do not own', async () => {
       const mockNote = {
-        _id: 'note1',
+        _id: '60d0fe4f5311236168a109cd',
         title: 'Platform Note',
         userId: otherUserId,
+        toObject: function() { return this; }
       };
 
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
-      mockReq.params.id = 'note1';
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
       mockReq.body = { title: 'New Title' };
 
       await expect(noteController.updateNote(mockReq, mockRes)).rejects.toThrow(ForbiddenError);
+    });
+
+    it('should successfully toggle bookmark on a platform note (bypassing ownership check)', async () => {
+      const mockNote = {
+        _id: '60d0fe4f5311236168a109cd',
+        title: 'Platform Guide',
+        userId: null,
+        isPrivate: false,
+        toObject: function() { return this; },
+      };
+
+      jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
+      const findOneAndUpdateSpy = jest.spyOn(Bookmark, 'findOneAndUpdate').mockResolvedValue({} as any);
+
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
+      mockReq.body = { isBookmarked: true };
+
+      await noteController.updateNote(mockReq, mockRes);
+
+      expect(findOneAndUpdateSpy).toHaveBeenCalledWith(
+        { userId: mockUserId, noteId: mockNote._id },
+        { userId: mockUserId, noteId: mockNote._id },
+        { upsert: true, new: true }
+      );
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.json).toHaveBeenCalledWith(expect.objectContaining({ isBookmarked: true }));
     });
   });
 
   describe('deleteNote', () => {
     it('should successfully delete owned note', async () => {
       const mockNote = {
-        _id: 'note1',
+        _id: '60d0fe4f5311236168a109cd',
         userId: mockUserId,
+        toObject: function() { return this; }
       };
 
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
       jest.spyOn(Note, 'findByIdAndDelete').mockResolvedValue(mockNote as any);
-      mockReq.params.id = 'note1';
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
 
       await noteController.deleteNote(mockReq, mockRes);
 
@@ -241,13 +293,14 @@ describe('Notes Controller Unit Tests', () => {
 
     it('should throw ForbiddenError when deleting notes owned by other users', async () => {
       const mockNote = {
-        _id: 'note1',
+        _id: '60d0fe4f5311236168a109cd',
         userId: otherUserId,
+        toObject: function() { return this; }
       };
 
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
 
-      mockReq.params.id = 'note1';
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
 
       await expect(noteController.deleteNote(mockReq, mockRes)).rejects.toThrow(ForbiddenError);
     });
@@ -261,14 +314,15 @@ describe('Notes Controller Unit Tests', () => {
 
     it('should download a text-only note as a markdown attachment', async () => {
       const mockNote = {
-        _id: 'note1',
+        _id: '60d0fe4f5311236168a109cd',
         title: 'Integration by Parts',
         content: '# Math content',
         isPrivate: false,
+        toObject: function() { return this; }
       };
 
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
-      mockReq.params.id = 'note1';
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
 
       await noteController.downloadNote(mockReq, mockRes);
 
@@ -279,14 +333,15 @@ describe('Notes Controller Unit Tests', () => {
 
     it('should download a file note by fetching and streaming the file attachment', async () => {
       const mockNote = {
-        _id: 'note1',
+        _id: '60d0fe4f5311236168a109cd',
         title: 'Physics Lab',
         fileUrl: 'https://cloudinary.com/PhysicsLab.pdf',
         isPrivate: false,
+        toObject: function() { return this; }
       };
 
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
-      
+
       const mockResponse = {
         ok: true,
         arrayBuffer: jest.fn(() => Promise.resolve(new ArrayBuffer(8))),
@@ -294,11 +349,11 @@ describe('Notes Controller Unit Tests', () => {
           get: jest.fn(() => 'application/pdf'),
         },
       };
-      
+
       const originalFetch = global.fetch;
       global.fetch = jest.fn(() => Promise.resolve(mockResponse as any));
-      
-      mockReq.params.id = 'note1';
+
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
 
       await noteController.downloadNote(mockReq, mockRes);
 
@@ -306,20 +361,21 @@ describe('Notes Controller Unit Tests', () => {
       expect(mockRes.setHeader).toHaveBeenCalledWith('Content-Type', 'application/pdf');
       expect(mockRes.setHeader).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="Physics_Lab.pdf"');
       expect(mockRes.send).toHaveBeenCalled();
-      
+
       global.fetch = originalFetch;
     });
 
     it('should throw ForbiddenError when downloading a private note not owned by the user', async () => {
       const mockNote = {
-        _id: 'note1',
+        _id: '60d0fe4f5311236168a109cd',
         title: 'Secret Note',
         isPrivate: true,
         userId: otherUserId,
+        toObject: function() { return this; }
       };
 
       jest.spyOn(Note, 'findById').mockResolvedValue(mockNote as any);
-      mockReq.params.id = 'note1';
+      mockReq.params.id = '60d0fe4f5311236168a109cd';
 
       await expect(noteController.downloadNote(mockReq, mockRes)).rejects.toThrow(ForbiddenError);
     });

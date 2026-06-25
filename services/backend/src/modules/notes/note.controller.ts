@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Note from './note.model.js';
 import User from '../user/user.model.js';
 import Subject from '../subjects/subject.model.js';
+import Bookmark from './bookmark.model.js';
 import { NotFoundError, ForbiddenError, BadRequestError } from '../../utils/errors.js';
 
 export const getNotes = async (req: Request, res: Response) => {
@@ -47,7 +48,9 @@ export const getNotes = async (req: Request, res: Response) => {
 
   // Add bookmark filter if requested
   if (isBookmarked) {
-    query.isBookmarked = true;
+    const userBookmarks = await Bookmark.find({ userId }).select('noteId');
+    const bookmarkedNoteIds = userBookmarks.map((b) => b.noteId);
+    query._id = { $in: bookmarkedNoteIds };
   }
 
   // Add text search if requested
@@ -69,8 +72,18 @@ export const getNotes = async (req: Request, res: Response) => {
 
   const total = await Note.countDocuments(query);
 
+  // Dynamically attach isBookmarked flag to each note
+  const userBookmarks = await Bookmark.find({ userId }).select('noteId');
+  const bookmarkedNoteIds = new Set(userBookmarks.map((b) => b.noteId.toString()));
+
+  const notesWithBookmark = notes.map((note) => {
+    const noteObj = note.toObject();
+    noteObj.isBookmarked = bookmarkedNoteIds.has(note._id.toString());
+    return noteObj;
+  });
+
   res.status(200).json({
-    notes,
+    notes: notesWithBookmark,
     total,
     page,
     pages: Math.ceil(total / limit),
@@ -90,7 +103,11 @@ export const getNoteById = async (req: Request, res: Response) => {
     throw new ForbiddenError('You do not have permission to view this note');
   }
 
-  res.status(200).json(note);
+  const isBookmarked = await Bookmark.exists({ userId, noteId: note._id });
+  const noteObj = note.toObject();
+  noteObj.isBookmarked = !!isBookmarked;
+
+  res.status(200).json(noteObj);
 };
 
 export const createNote = async (req: Request, res: Response) => {
@@ -167,29 +184,52 @@ export const updateNote = async (req: Request, res: Response) => {
   const note = await Note.findById(id);
   if (!note) throw new NotFoundError('Note not found');
 
-  // Check ownership
-  if (note.userId?.toString() !== userId.toString()) {
+  // Check if this is ONLY a bookmark toggle update (bypassing ownership for platform notes)
+  const activeKeys = Object.keys(req.body).filter(
+    (key) => req.body[key] !== undefined && req.body[key] !== ''
+  );
+  const isOnlyBookmarking = activeKeys.every((key) => key === 'isBookmarked') && isBookmarked !== undefined;
+
+  if (!isOnlyBookmarking && note.userId?.toString() !== userId.toString()) {
     throw new ForbiddenError('You can only modify your own notes');
   }
 
-  if (title !== undefined) note.title = title;
-  if (content !== undefined) note.content = content;
-  if (isBookmarked !== undefined) note.isBookmarked = isBookmarked;
-  if (fileUrl !== undefined) note.fileUrl = fileUrl;
-
-  if (subjectId !== undefined) {
-    note.subjectId = subjectId;
-    const subject = await Subject.findById(subjectId);
-    if (subject) {
-      note.subjectName = subject.title;
+  // Handle bookmarking in the separate Bookmark collection
+  if (isBookmarked !== undefined) {
+    if (isBookmarked) {
+      await Bookmark.findOneAndUpdate(
+        { userId, noteId: note._id },
+        { userId, noteId: note._id },
+        { upsert: true, new: true }
+      );
+    } else {
+      await Bookmark.findOneAndDelete({ userId, noteId: note._id });
     }
-  } else if (subjectName !== undefined) {
-    note.subjectName = subjectName;
   }
 
-  await note.save();
+  // Handle other note field updates (only allowed if owner)
+  if (!isOnlyBookmarking) {
+    if (title !== undefined) note.title = title;
+    if (content !== undefined) note.content = content;
+    if (fileUrl !== undefined) note.fileUrl = fileUrl;
 
-  res.status(200).json(note);
+    if (subjectId !== undefined) {
+      note.subjectId = subjectId;
+      const subject = await Subject.findById(subjectId);
+      if (subject) {
+        note.subjectName = subject.title;
+      }
+    } else if (subjectName !== undefined) {
+      note.subjectName = subjectName;
+    }
+
+    await note.save();
+  }
+
+  const noteObj = note.toObject();
+  noteObj.isBookmarked = isBookmarked !== undefined ? isBookmarked : (await Bookmark.exists({ userId, noteId: note._id }) !== null);
+
+  res.status(200).json(noteObj);
 };
 
 export const deleteNote = async (req: Request, res: Response) => {
