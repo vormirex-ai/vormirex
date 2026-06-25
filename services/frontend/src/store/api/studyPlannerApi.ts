@@ -19,9 +19,6 @@ getPlanner: builder.query<any, void>({
 
   updateTask: builder.mutation({
   query: ({ id, ...body }) => {
-    console.log("PATCH URL =>", `/planner/tasks/${id}`);
-    console.log("PATCH BODY =>", body);
-
     return {
       url: `/planner/tasks/${id}`,
       method: "PATCH",

@@ -1,7 +1,5 @@
 import * as React from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-
 import {
   Dialog,
   DialogContent,
@@ -23,17 +21,7 @@ import TaskTypeSelect from "@/components/common/add-task/task-type-select";
 import TagsSelector from "@/components/common/add-task/tag-selector";
 import PrioritySelector from "@/components/common/add-task/priority-selector";
 import DatePicker from "@/components/common/add-task/task-date-picker";
-
-const validationSchema = Yup.object({
-  title: Yup.string()
-    .min(3, "Minimum 3 characters")
-    .required("Task title is required"),
-  subject: Yup.string().required("Subject is required"),
-  taskType: Yup.string().required("Task type is required"),
-  description: Yup.string()
-    .min(10, "Minimum 10 characters")
-    .required("Description is required"),
-});
+import { focusTimerFormSchema } from "../../common/add-task-form.schema";
 
 const quickTags = [
   "Exam",
@@ -63,7 +51,7 @@ export function TaskFormModal() {
       dueDate: "",
     },
 
-    validationSchema,
+    validationSchema : focusTimerFormSchema,
     validateOnMount: true,
 
     onSubmit: async (values, { resetForm }) => {
@@ -159,7 +147,7 @@ export function TaskFormModal() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <SubjectSelect formik={formik} subjectsData={subjectsData} />
+          <SubjectSelect formik={formik} />
             <TaskTypeSelect formik={formik} />
           </div>
 

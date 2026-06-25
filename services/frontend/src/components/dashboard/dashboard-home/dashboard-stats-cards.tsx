@@ -62,12 +62,8 @@ export function StatCard({
                 stiffness: 200,
                 damping: 12,
               }}
-              className={`
-  flex items-center justify-center
-  rounded-2xl shadow-lg
-  ${compact ? "h-10 w-10" : "h-12 w-12"}
-  ${iconBg}
-`}
+              className={` flex items-center justify-center rounded-2xl shadow-lg
+             ${compact ? "h-10 w-10" : "h-12 w-12"} ${iconBg}`}
             >
               <div
                 className={` flex items-center justify-center text-xl [&_svg]:h-5 [&_svg]:w-5

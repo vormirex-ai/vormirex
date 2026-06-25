@@ -43,11 +43,11 @@ export function SettingsContainer() {
 
       <Tabs
         value={tabFromUrl}
-        className="space-y-6 "
+        className="space-y-6"
         onValueChange={handleTabChange}
       >
         <motion.div variants={fadeUpItem}>
-          <TabsList className="!custom-surface p-1 rounded-xl w-full flex justify-start gap-1 overflow-x-auto">
+          <TabsList className="!custom-surface p-1 rounded-xl w-full flex justify-start gap-1 overflow-x-auto custom-horizontal-scrollbar">
             {tabsList.map((tab) => {
               const Icon = tab.icon;
               return (

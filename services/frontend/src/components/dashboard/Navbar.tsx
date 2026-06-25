@@ -124,9 +124,9 @@ const DashboardNavbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
             </div>
           </DropdownMenuTrigger> */}
           <DropdownMenuTrigger asChild>
-            <button className="w-9 h-9 rounded-full border border-primary-500">
-              <UserAvatar size="sm" />
-            </button>
+         <button className="w-10 h-10 rounded-full border border-primary-500 flex items-center justify-center overflow-hidden">
+  <UserAvatar size="sm" />
+</button>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end" className="w-44">

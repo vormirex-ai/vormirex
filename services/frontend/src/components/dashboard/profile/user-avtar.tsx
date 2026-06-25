@@ -10,14 +10,14 @@ export default function UserAvatar({ size = "md" }: Props) {
 
   const sizeClass =
     size === "sm"
-      ? "w-8 h-8 text-sm"
+      ? "w-10 h-10 text-sm leading-none"
       : size === "md"
-      ? "w-10 h-10 text-base"
-      : "w-20 h-20 text-3xl";
+        ? "w-10 h-10 text-base leading-none"
+        : "w-20 h-20 text-3xl leading-none";
 
   return (
     <div
-      className={`${sizeClass} rounded-full overflow-hidden bg-primary-gradient flex items-center justify-center text-white font-bold`}
+      className={`${sizeClass} rounded-full overflow-hidden bg-primary-gradient grid place-items-center text-white font-semibold leading-none`}
     >
       {user?.profilePhoto ? (
         <img

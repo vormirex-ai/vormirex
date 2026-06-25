@@ -5,21 +5,29 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useGetSubjectsQuery } from "@/store/api/subjectsApi";
 
 type Props = {
   formik: any;
-  subjectsData: any;
 };
 
-const SubjectSelect = ({ formik, subjectsData }: Props) => {
+const SubjectSelect = ({ formik }: Props) => {
+  const { data: subjectsData } = useGetSubjectsQuery({
+    page: 1,
+    limit: 100,
+  });
+
+  const fieldName = "subject" in formik.values ? "subject" : "subjectId";
+
   const selectedSubject = subjectsData?.subjects?.find(
-    (item: any) => item._id === formik.values.subject
+    (item: any) => item._id === formik.values[fieldName]
   );
 
   return (
     <div>
       <label className="mb-2 flex items-center gap-1 text-xs uppercase tracking-wider text-textColor">
-        Subject <span className="text-red-500">*</span>
+        Subject
+        <span className="text-red-500">*</span>
       </label>
 
       <DropdownMenu>
@@ -27,13 +35,14 @@ const SubjectSelect = ({ formik, subjectsData }: Props) => {
           <button
             type="button"
             className={`h-10 w-full rounded-lg custom-surface px-3 flex items-center justify-between ${
-              formik.touched.subject && formik.errors.subject
+              formik.touched[fieldName] &&
+              formik.errors[fieldName]
                 ? "border border-red-500"
                 : ""
             }`}
           >
             <span className="truncate">
-              {selectedSubject?.title || "Select subject"}
+              {selectedSubject?.title || "Select Subject"}
             </span>
 
             <ChevronDown className="h-4 w-4 opacity-70" />
@@ -47,11 +56,18 @@ const SubjectSelect = ({ formik, subjectsData }: Props) => {
           {subjectsData?.subjects?.map((subject: any) => (
             <DropdownMenuItem
               key={subject._id}
-              onClick={() =>
-                formik.setFieldValue("subject", subject._id)
-              }
+              onClick={() => {
+                formik.setFieldValue(fieldName, subject._id);
+
+                if ("subjectName" in formik.values) {
+                  formik.setFieldValue(
+                    "subjectName",
+                    subject.title
+                  );
+                }
+              }}
               className={`cursor-pointer ${
-                formik.values.subject === subject._id
+                formik.values[fieldName] === subject._id
                   ? "bg-primary text-black"
                   : ""
               }`}
@@ -62,11 +78,12 @@ const SubjectSelect = ({ formik, subjectsData }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {formik.touched.subject && formik.errors.subject && (
-        <p className="mt-1 text-xs text-red-400">
-          {formik.errors.subject}
-        </p>
-      )}
+      {formik.touched[fieldName] &&
+        formik.errors[fieldName] && (
+          <p className="mt-1 text-xs text-red-400">
+            {formik.errors[fieldName]}
+          </p>
+        )}
     </div>
   );
 };

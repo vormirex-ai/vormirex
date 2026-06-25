@@ -22,7 +22,9 @@ export default function QuizPage() {
   const navigate = useNavigate();
   const { subjectId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentStep =(searchParams.get("step") as "subjects" | "start" | "quiz" | "result") ||"subjects";
+  const currentStep =
+    (searchParams.get("step") as "subjects" | "start" | "quiz" | "result") ||
+    "subjects";
 
   const [score, setScore] = useState(0);
   const [selectedSubject, setSelectedSubject] = useState<SubjectType | null>(
@@ -45,16 +47,16 @@ export default function QuizPage() {
   const quiz = quizData || {};
   const questions = quiz?.questions || [];
 
-const updateStep = (newStep: "subjects" | "start" | "quiz" | "result") => {
-  setSearchParams({
-    step: newStep,
-  });
-};
+  const updateStep = (newStep: "subjects" | "start" | "quiz" | "result") => {
+    setSearchParams({
+      step: newStep,
+    });
+  };
 
-const handleSubjectSelect = (subject: SubjectType) => {
-  setSelectedSubject(subject);
-  navigate(`/practice/quiz/${subject._id}?step=start`);
-};
+  const handleSubjectSelect = (subject: SubjectType) => {
+    setSelectedSubject(subject);
+    navigate(`/practice/quiz/${subject._id}?step=start`);
+  };
 
   const startQuiz = () => {
     setScore(0);
@@ -101,13 +103,13 @@ const handleSubjectSelect = (subject: SubjectType) => {
     }
   };
 
-useEffect(() => {
-  if (!subjectId || !subjects.length) return;
-  const found = subjects.find((s: SubjectType) => s._id === subjectId);
-  if (found) {
-    setSelectedSubject(found);
-  }
-}, [subjectId, subjects]);
+  useEffect(() => {
+    if (!subjectId || !subjects.length) return;
+    const found = subjects.find((s: SubjectType) => s._id === subjectId);
+    if (found) {
+      setSelectedSubject(found);
+    }
+  }, [subjectId, subjects]);
 
   const getStoredQuizResult = () => {
     try {
@@ -123,7 +125,7 @@ useEffect(() => {
   return (
     <div className="flex p-4 lg:p-10">
       <AnimatePresence mode="wait">
-        {currentStep  === "subjects" && (
+        {currentStep === "subjects" && (
           <motion.div
             key="subjects"
             variants={containerStagger(0.12)}
@@ -222,7 +224,7 @@ useEffect(() => {
           </motion.div>
         )}
 
-        {currentStep  === "start" && (
+        {currentStep === "start" && (
           <motion.div
             key="start"
             variants={containerStagger(0.12)}
@@ -232,12 +234,12 @@ useEffect(() => {
             className="w-full"
           >
             <div className="mb-6 flex w-full">
-              <Button
-                variant="secondary"
+              <button
                 onClick={() => updateStep("subjects")}
+                className="mb-2 flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 ← Back To Subjects
-              </Button>
+              </button>
             </div>
 
             <motion.div
@@ -255,7 +257,7 @@ useEffect(() => {
           </motion.div>
         )}
 
-        {currentStep  === "quiz" && (
+        {currentStep === "quiz" && (
           <motion.div
             key="quiz"
             variants={containerStagger(0.12)}
@@ -271,8 +273,8 @@ useEffect(() => {
               {quizLoading ? (
                 <div className="text-center py-20 max-w-4xl flex gap-5 ">
                   <AppSkeletonCard variant="quiz" />
-                    <AppSkeletonCard variant="quiz" />
-                      <AppSkeletonCard variant="quiz" />
+                  <AppSkeletonCard variant="quiz" />
+                  <AppSkeletonCard variant="quiz" />
                 </div>
               ) : (
                 <QuizCard
@@ -285,7 +287,7 @@ useEffect(() => {
           </motion.div>
         )}
 
-        {currentStep  === "result" && (
+        {currentStep === "result" && (
           <motion.div
             key="result"
             variants={containerStagger(0.12)}

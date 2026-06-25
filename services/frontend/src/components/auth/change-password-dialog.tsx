@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useChangePasswordMutation } from "@/store/api/authApi";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, KeyRound, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
 
 interface ChangePasswordDialogProps {
@@ -33,22 +33,28 @@ export function ChangePasswordDialog({
   const handleSubmit = async () => {
     setPasswordError("");
 
+    if (!currentPassword || !newPassword) {
+      setPasswordError("All fields are required.");
+      return;
+    }
+
     if (currentPassword === newPassword) {
-      setPasswordError("New password cannot be the same as current password.");
+      setPasswordError("New password must be different.");
       return;
     }
 
     try {
       await changePassword({ currentPassword, newPassword }).unwrap();
 
-      toast.success("Password changed successfully");
+      toast.success("Password updated successfully");
+
       setCurrentPassword("");
       setNewPassword("");
-      setPasswordError("");
       setOpen(false);
+
       setTimeout(() => {
         onPasswordChanged?.();
-      }, 1500);
+      }, 1000);
     } catch (err) {
       toast.error("Failed to change password");
     }
@@ -57,48 +63,51 @@ export function ChangePasswordDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="text-xs"
-          onClick={() => setOpen(true)}
-        >
-          Change
+        <Button variant="outline" className="text-xs gap-2">
+          <KeyRound className="h-4 w-4" />
+          Change Password
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="md:w-[40vw] w-[90vw] p-6 space-y-4">
-        <DialogHeader>
-          <DialogTitle className="text-center text-primary">
-            Change Password
+      <DialogContent className="sm:max-w-md p-6 space-y-3 rounded-xl">
+        <DialogHeader className="text-center space-y-2">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+            <ShieldAlert className="h-6 w-6 text-primary" />
+          </div>
+
+          <DialogTitle className="text-lg font-semibold">
+            Update Password
           </DialogTitle>
-          <DialogDescription className="text-center text-xs">
-            Enter your current password and set a new password. You will be
-            asked to sign in again after updating your password.
+
+          <DialogDescription className="text-xs text-muted-foreground">
+            Enter your current password and choose a new secure password.
+            You’ll need to sign in again after this change.
           </DialogDescription>
         </DialogHeader>
 
-        <div>
-          <p className="text-sm mb-1">Current Password</p>
+        <div className="space-y-1">
+          <p className="text-sm">Current Password</p>
 
           <div className="relative">
             <Input
               type={showCurrent ? "text" : "password"}
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
+              className="pr-10"
             />
 
             <button
               type="button"
               onClick={() => setShowCurrent(!showCurrent)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
             >
               {showCurrent ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
         </div>
 
-        <div>
-          <p className="text-sm mb-1">New Password</p>
+        <div className="space-y-1">
+          <p className="text-sm">New Password</p>
 
           <div className="relative">
             <Input
@@ -106,29 +115,31 @@ export function ChangePasswordDialog({
               value={newPassword}
               onChange={(e) => {
                 setNewPassword(e.target.value);
-
-                if (passwordError) {
-                  setPasswordError("");
-                }
+                if (passwordError) setPasswordError("");
               }}
+              className="pr-10"
             />
 
             <button
               type="button"
               onClick={() => setShowNew(!showNew)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
             >
               {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
 
           {passwordError && (
-            <p className="mt-1 text-xs text-red-500">{passwordError}</p>
+            <p className="text-xs text-red-500">{passwordError}</p>
           )}
         </div>
 
-        <Button onClick={handleSubmit} disabled={isLoading} className="w-full">
-          {isLoading ? "Updating..." : "Change Password"}
+        <Button
+          onClick={handleSubmit}
+          disabled={isLoading}
+          className="w-full rounded-lg"
+        >
+          {isLoading ? "Updating..." : "Update Password"}
         </Button>
       </DialogContent>
     </Dialog>

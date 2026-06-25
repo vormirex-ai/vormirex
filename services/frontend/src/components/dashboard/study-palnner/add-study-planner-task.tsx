@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 
 import {
   Dialog,
@@ -24,24 +23,9 @@ import SubjectSelect from "@/components/common/add-task/subject-select";
 import TaskTypeSelect from "@/components/common/add-task/task-type-select";
 import PrioritySelector from "@/components/common/add-task/priority-selector";
 import DatePicker from "@/components/common/add-task/task-date-picker";
+import { studyPlannerFormSchema } from "../../common/add-task-form.schema";
 
-const validationSchema = Yup.object({
-  title: Yup.string().min(3).required("Task title is required"),
-  subject: Yup.string().required("Subject is required"),
-  taskType: Yup.string().required("Task type is required"),
-  description: Yup.string().min(10).required("Description is required"),
-  priority: Yup.string().oneOf(["low", "medium", "high"]).required(),
-  durationType: Yup.string().required(),
-  customMinutes: Yup.number().when("durationType", {
-    is: "custom",
-    then: (schema) =>
-      schema
-        .typeError("Enter valid minutes")
-        .required("Custom duration is required")
-        .min(5),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-});
+
 
 const quickTags = [
   "Exam",
@@ -77,7 +61,7 @@ export function StudyPlannerTaskModal() {
       durationType: "30",
       customMinutes: "",
     },
-    validationSchema,
+    validationSchema: studyPlannerFormSchema,
 
     onSubmit: async (values, { resetForm }) => {
       try {
@@ -161,7 +145,7 @@ export function StudyPlannerTaskModal() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <SubjectSelect formik={formik} subjectsData={subjectsData} />
+       <SubjectSelect formik={formik} />
             <TaskTypeSelect formik={formik} />
           </div>
 
