@@ -19,7 +19,6 @@ const noteSchema = new Schema<INote>({
   content: { type: String, required: false },
   subjectId: { type: Schema.Types.ObjectId, ref: 'Subject', required: false, index: true },
   subjectName: { type: String, required: false },
-  isBookmarked: { type: Boolean, default: false, index: true },
   isPrivate: { type: Boolean, default: false, index: true },
   fileUrl: { type: String, required: false }
 }, { timestamps: true });
