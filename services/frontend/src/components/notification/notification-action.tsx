@@ -61,7 +61,7 @@ const NotificationActions = () => {
     <div className="mt-5 flex flex-col gap-2">
       <Button
         variant="outline"
-        className="justify-start"
+        className="justify-start rounded-lg"
         onClick={handleExport}
       >
         Export Activity

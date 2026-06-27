@@ -93,7 +93,7 @@ export const navGroups: NavGroup[] = [
     items: [
       { title: "Profile", path: "/account/profile", icon: User },
       { title: "Settings", path: "/dashboard/settings", icon: Settings },
-      { title: "Help", path: "/", icon: HelpCircle },
+      { title: "Help", path: "/help-center", icon: HelpCircle },
       { title: "Home", path: "/", icon: Home },
     ],
   },

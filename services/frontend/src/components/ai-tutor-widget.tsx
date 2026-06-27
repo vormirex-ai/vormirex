@@ -50,7 +50,17 @@ export default function AITutorWidget() {
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {isOpen && (
-        <Card className="mb-4 w-[320px] md:w-[400px] md:h-[580px] h-[450px] overflow-hidden border border-border bg-background/95 backdrop-blur-xl shadow-2xl rounded-3xl animate-in fade-in slide-in-from-bottom-4 duration-300 md:py-4 py-2">
+           <Card className="
+            w-[92vw] sm:w-[360px] md:w-[400px]
+            h-[70vh] md:h-[520px] 
+            overflow-hidden border border-border
+            bg-background/95 backdrop-blur-xl
+            shadow-2xl rounded-2xl sm:rounded-3xl
+            animate-in fade-in slide-in-from-bottom-4
+            duration-300 flex flex-col
+            py-0
+          "
+        >
 
           <CardHeader className="border-b border-border px-4 py-3 flex flex-row items-center justify-between space-y-0 bg-background/80 backdrop-blur-xl">
             <div className="flex items-center gap-3">
@@ -91,7 +101,7 @@ export default function AITutorWidget() {
             </Button>
           </CardHeader>
 
-          <CardContent className="p-0 flex-1 h-[calc(100%-140px)]">
+               <CardContent className="flex-1 p-0 overflow-hidden">
             <ScrollArea className="h-full px-4 md:py-4 py-2">
               <div className="space-y-4">
                 {messages.map((msg) => (
@@ -170,7 +180,7 @@ export default function AITutorWidget() {
       rounded-full md:px-5 px-3
       bg-primary shadow-2xl overflow-visible
       transition-all duration-300
-      ${isOpen ? "scale-95" : "hover:scale-110"}
+      ${isOpen ? "scale-95" : ""}
     `}
         >
           {!isOpen && (

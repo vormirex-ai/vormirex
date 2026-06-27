@@ -13,11 +13,13 @@ import {
 } from "@/store/slice/themeSlice";
 import { useUpdateUiPreferencesMutation } from "@/store/api/authApi";
 
+
 export function AppearanceTab() {
   const dispatch = useDispatch();
-  const { theme, fontSize, compactSidebar, reducedAnimations, accentColor } = useSelector(
+  const { theme, fontSize, compactSidebar } = useSelector(
     (state: RootState) => state.theme
   );
+
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const [updateUiPreferences] = useUpdateUiPreferencesMutation();
 
@@ -25,78 +27,72 @@ export function AppearanceTab() {
     if (key === "theme") dispatch(value === "dark" ? setTheme("dark") : setTheme("light"));
     else if (key === "fontSize") dispatch(setFontSize(value as FontSize));
     else if (key === "compactSidebar") dispatch(setCompactSidebar(value));
-    else if (key === "reducedAnimations") dispatch(setReducedAnimations(value));
     else if (key === "accentColor") dispatch(setAccentColor(value));
 
     if (isAuthenticated) {
       try {
         await updateUiPreferences({ [key]: value }).unwrap();
       } catch (error) {
-        console.error(`Failed to update UI preference ${key} on backend:`, error);
+        console.error(error);
       }
     }
   };
 
-  const colors = [
-    { id: "blue-indigo", bg: "bg-gradient-to-r from-indigo-500 to-purple-500" },
-    { id: "pink", bg: "bg-gradient-to-r from-pink-500 to-purple-400" },
-    { id: "cyan", bg: "bg-gradient-to-r from-cyan-400 to-blue-500" },
-    { id: "emerald", bg: "bg-gradient-to-r from-emerald-400 to-teal-500" },
-    { id: "orange", bg: "bg-gradient-to-r from-orange-400 to-amber-500" },
-  ];
-
   return (
-    <div className="space-y-6">
-      <div className="custom-surface p-6 rounded-2xl shadow-xl space-y-6">
-        <h3 className="text-lg font-semibold">Appearance</h3>
+    <div className="space-y-4 sm:space-y-6">
+      {/* Appearance Card */}
+      <div className="custom-surface p-4 sm:p-6 rounded-2xl shadow-xl space-y-5 sm:space-y-6">
+        <h3 className="text-base sm:text-lg font-semibold">Appearance</h3>
 
-        <div className="divide-y divide-slate-800/50 space-y-4">
-          <div className="flex items-center justify-between pt-2">
+        <div className="divide-y divide-slate-800/50 space-y-3 sm:space-y-4">
+
+          {/* Dark Mode */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
             <div>
-              <p className="text-sm font-medium text-slateText dark:text-slate-200">Dark Mode</p>
+              <p className="text-sm font-medium">Dark Mode</p>
               <p className="text-xs text-slate-400">Use dark theme across the app</p>
             </div>
             <Switch
               checked={theme === "dark"}
-              onCheckedChange={(checked) => handleUpdatePreference("theme", checked ? "dark" : "light")}
+              onCheckedChange={(checked) =>
+                handleUpdatePreference("theme", checked ? "dark" : "light")
+              }
             />
           </div>
 
-          <div className="flex items-center justify-between pt-4">
+          {/* Compact Sidebar */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4">
             <div>
-              <p className="text-sm font-medium text-slateText dark:text-slate-200">Compact Sidebar</p>
-              <p className="text-xs text-slate-400">Show only icons in the sidebar</p>
+              <p className="text-sm font-medium">Compact Sidebar</p>
+              <p className="text-xs text-slate-400">Show only icons in sidebar</p>
             </div>
             <Switch
               checked={compactSidebar}
-              onCheckedChange={(checked) => handleUpdatePreference("compactSidebar", checked)}
+              onCheckedChange={(checked) =>
+                handleUpdatePreference("compactSidebar", checked)
+              }
             />
           </div>
 
-          <div className="flex items-center justify-between pt-4">
+          {/* Font Size */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4">
             <div>
-              <p className="text-sm font-medium text-slateText dark:text-slate-200">Reduced Animations</p>
-              <p className="text-xs text-slate-400">Minimize motion effects</p>
+              <p className="text-sm font-medium">Font Size</p>
+              <p className="text-xs text-slate-400">
+                Adjust text size for readability
+              </p>
             </div>
-            <Switch
-              checked={reducedAnimations}
-              onCheckedChange={(checked) => handleUpdatePreference("reducedAnimations", checked)}
-            />
-          </div>
 
-          <div className="flex items-center justify-between pt-4">
-            <div>
-              <p className="text-sm font-medium text-slateText dark:text-slate-200">Font Size</p>
-              <p className="text-xs text-slate-400">Adjust text size for readability</p>
-            </div>
-            <div className="flex p-1 bg-[#dff4f7] dark:bg-[#154249] border-primary border border-primary/10 rounded-lg">
+            <div className="flex flex-wrap gap-2 p-1 bg-[#dff4f7] dark:bg-[#154249] border border-primary/10 rounded-lg w-full sm:w-auto">
               {["small", "medium", "large"].map((size) => (
                 <button
                   key={size}
                   onClick={() => handleUpdatePreference("fontSize", size)}
-                  className={`text-xs px-3 py-1.5 rounded-md capitalize font-medium transition cursor-pointer ${fontSize === size
-                    ? "bg-primary text-white font-bold rounded-md"
-                    : "text-slate-400 dark:hover:text-slate-200 hover:text-primary"
+                  className={`text-xs px-3 py-1.5 rounded-md capitalize font-medium transition flex-1 sm:flex-none
+                    ${
+                      fontSize === size
+                        ? "bg-primary text-white"
+                        : "text-slate-400 hover:text-primary"
                     }`}
                 >
                   {size}
@@ -107,17 +103,20 @@ export function AppearanceTab() {
         </div>
       </div>
 
-      <div className="custom-surface p-6 rounded-2xl shadow-xl flex items-center justify-between">
+      {/* Tour Card */}
+      {/* <div className="custom-surface p-4 sm:p-6 rounded-2xl shadow-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h3 className="text-sm font-medium text-slateText dark:text-slate-200">Interactive Tour</h3>
-          <p className="text-xs text-slate-400">Replay the guided walkthrough of all features</p>
+          <h3 className="text-sm font-medium">Interactive Tour</h3>
+          <p className="text-xs text-slate-400">
+            Replay guided walkthrough of features
+          </p>
         </div>
-        <Button className="rounded-xl gap-2 text-xs cursor-pointer">
+
+        <Button className="rounded-xl gap-2 text-xs w-full sm:w-auto">
           <Compass className="w-4 h-4" /> Start Tour
         </Button>
-      </div>
-
-      {/* <div className="custom-surface p-6 rounded-2xl shadow-xl space-y-3">
+      </div> */}
+         {/* <div className="custom-surface p-6 rounded-2xl shadow-xl space-y-3">
         <h3 className="text-sm font-medium text-slateText dark:text-slate-200">Accent Color</h3>
         <div className="flex items-center gap-3">
           {colors.map((color) => (

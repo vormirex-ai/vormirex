@@ -31,7 +31,7 @@ const CourseDetails = () => {
   } = useGetSubjectCurriculumQuery(subjectId!, {
     skip: !subjectId,
   });
-
+  
   const curriculum = response?.data;
 
   if (loading) {
@@ -69,6 +69,7 @@ const CourseDetails = () => {
             icon={curriculum?.subject?.icon}
             progress={curriculum?.overallProgress?.percentage || 0}
             description={curriculum?.subject?.description}
+             isPro={curriculum?.subject?.isPro}
             stats={{
               lessons: curriculum?.overallProgress?.totalLessons || 0,
               duration: `${curriculum?.overallProgress?.studyTimeHours || 0}h`,

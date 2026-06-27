@@ -1,7 +1,4 @@
-import { CalendarDateRangePicker } from "@/components/date-range-picker";
-import { Button } from "@/components/ui/button";
-import { DateRange } from "react-day-picker";
-import { FaPlus } from "react-icons/fa6";
+import { StudyPlannerTaskModal } from "./add-study-planner-task";
 
 
 export const StudyPannerHeader = () => {
@@ -17,10 +14,7 @@ export const StudyPannerHeader = () => {
 
         <div className="flex gap-3">
 
-          <CalendarDateRangePicker setDate={function (newDate: DateRange): void {
-            throw new Error("Function not implemented.");
-          }} />
-          <Button className="flex rounded-lg gap-2"><FaPlus />Add Task</Button>
+      <StudyPlannerTaskModal/>
         </div>
 
       </div>

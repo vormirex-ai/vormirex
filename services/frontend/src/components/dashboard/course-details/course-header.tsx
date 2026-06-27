@@ -6,6 +6,7 @@ import {
   Clock,
   Target,
   Trophy,
+  Crown,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ export function CourseHeader({
   stats,
   id,
   icon,
+  isPro,
 }: CourseHeaderProps) {
 
   const dispatch = useDispatch();
@@ -62,16 +64,16 @@ export function CourseHeader({
                 {title}
               </h1>
 
-              <div className="flex gap-2">
-
+                <div className="flex gap-2">
+                   {isPro && (
+                  <span className="rounded-full px-3  text-xs font-medium bg-primary/20 border border-primary text-primary flex items-center gap-1">
+                <Crown className="w-3 h-3" />
+                Pro
+              </span>
+                )}
                 <span className="px-2.5 py-0.5 text-[10px] sm:text-xs font-semibold rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 whitespace-nowrap">
                   In Progress
                 </span>
-
-                <span className="px-2.5 py-0.5 text-[10px] sm:text-xs font-semibold rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 whitespace-nowrap">
-                  Pro
-                </span>
-
               </div>
             </div>
           </div>

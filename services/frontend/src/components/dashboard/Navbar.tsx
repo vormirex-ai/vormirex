@@ -7,12 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { navGroups } from "../data/sidebar-Items";
-import {
-  Search,
-  Bell,
-  Menu,
-  X,
-} from "lucide-react";
+import { Search, Bell, Menu, X } from "lucide-react";
 import { User, LogOut } from "lucide-react";
 import { ThemeToggle } from "../theme/theme-toggle";
 import { Button } from "../ui/button";
@@ -22,6 +17,8 @@ import { useLogoutMutation } from "@/store/api/authApi";
 import { logout } from "@/store/slice/authSlice";
 import { apiSlice } from "@/store/api/apiSlice";
 import { useGetFlashcardStatsQuery } from "@/store/api/flashcardsApi";
+import UserAvatar from "./profile/user-avtar";
+import { RootState } from "@/store/store";
 
 const allNavItems = navGroups.flatMap((group) => group.items);
 
@@ -30,20 +27,17 @@ interface NavbarProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DashboardNavbar = ({
-  sidebarOpen,
-  setSidebarOpen,
-}: NavbarProps) => {
-
+const DashboardNavbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const compactSidebar = useSelector( (state: RootState) => state.theme.compactSidebar);
   const { data: statsData } = useGetFlashcardStatsQuery();
   const { user } = useSelector((state: any) => state.auth);
   const [logoutApi] = useLogoutMutation();
   const routeTitleMap: Record<string, string> = {
-  "/dashboard/notifications": "Notifications",
-};
+    "/dashboard/notifications": "Notifications",
+  };
 
   const handleLogout = async () => {
     try {
@@ -59,44 +53,34 @@ const DashboardNavbar = ({
 
   if (!user) return null;
 
+  const currentPage = allNavItems
+    .filter((item) => {
+      return (
+        location.pathname === item.path ||
+        location.pathname.startsWith(item.path + "/")
+      );
+    })
+    .sort((a, b) => b.path.length - a.path.length)[0];
 
-
-  const currentPage =
-    allNavItems
-      .filter((item) => {
-        return (
-          location.pathname === item.path ||
-          location.pathname.startsWith(item.path + "/")
-        );
-      })
-      .sort((a, b) => b.path.length - a.path.length)[0];
-
-      const pageTitle =
-  routeTitleMap[location.pathname] ||
-  currentPage?.title ||
-  "Dashboard";
-
-  const firstLetter =
-    user?.name?.charAt(0)?.toUpperCase() ||
-    user?.email?.charAt(0)?.toUpperCase() ||
-    "S";
+  const pageTitle =
+    routeTitleMap[location.pathname] || currentPage?.title || "Dashboard";
 
   return (
-    <header className="h-16 fixed top-0 left-0 lg:left-64 right-0 bg-background/90 backdrop-blur-xl border-b border-border px-4 lg:px-6 flex items-center justify-between z-40">
-
+    <header 
+    // className="h-16 fixed top-0 left-0 lg:left-64 right-0 bg-background/90 backdrop-blur-xl border-b border-border px-4 lg:px-6 flex items-center justify-between z-40"
+    className={`h-16 fixed top-0 left-0 right-0 bg-background/90 backdrop-blur-xl border-b border-border px-4 lg:px-6 flex items-center justify-between z-40 transition-all duration-300
+  ${compactSidebar ? "lg:left-[5rem]" : "lg:left-[17rem]"}
+`}
+    
+    >
       <div className="flex items-center gap-4">
-
         <Button
           variant="secondary"
           size="icon"
           className="lg:hidden"
           onClick={() => setSidebarOpen(!sidebarOpen)}
         >
-          {sidebarOpen ? (
-            <X size={18} />
-          ) : (
-            <Menu size={18} />
-          )}
+          {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
         </Button>
 
         <div className="hidden sm:block">
@@ -105,7 +89,7 @@ const DashboardNavbar = ({
           </h2>
 
           <p className="text-xs text-muted-foreground">
-            Vormirex / {pageTitle|| "Dashboard"}
+            Vormirex / {pageTitle || "Dashboard"}
           </p>
         </div>
       </div>
@@ -134,10 +118,15 @@ const DashboardNavbar = ({
         <CommandMenu />
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          {/* <DropdownMenuTrigger asChild>
             <div className="w-9 h-9 rounded-full bg-primary-gradient flex items-center justify-center text-primary-foreground text-sm font-bold cursor-pointer hover:opacity-80 transition">
               {firstLetter}
             </div>
+          </DropdownMenuTrigger> */}
+          <DropdownMenuTrigger asChild>
+         <button className="w-10 h-10 rounded-full border border-primary-500 flex items-center justify-center overflow-hidden">
+  <UserAvatar size="sm" />
+</button>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end" className="w-44">

@@ -1,18 +1,13 @@
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
-import { Clock } from "lucide-react";
+import { Clock, Crown } from "lucide-react";
 import { CustomProgress } from "@/components/common/custom-progress";
 import { DynamicIcon } from "@/components/iconMapper";
 import { SubjectCardProps } from "@/interface/subject.interface";
 import { useDispatch } from "react-redux";
 import { setSelectedSubjectId } from "@/store/slice/subjectSlice";
 import { useNavigate } from "react-router";
-
-
 
 export const SubjectCard = ({
   _id,
@@ -42,71 +37,69 @@ export const SubjectCard = ({
   return (
     <Card
       onClick={handleClick}
-      className=" group relative overflow-hidden rounded-2xl cursor-pointer custom-surface transition-all duration-500 hover:-translate-y-1 hover:border-cyan-400/20 hover:shadow-[0_0_30px_rgba(99,231,220,0.08)]">
-
-      <div
-        className=" absolute left-0 top-0 h-[2px] w-0 bg-gradient-to-r from-[#63E7DC] via-[#46D3C9] to-[#26BDB3] transition-all duration-500 group-hover:w-full" />
+      className=" group relative overflow-hidden rounded-2xl cursor-pointer custom-surface transition-all duration-500 hover:-translate-y-1 hover:border-cyan-400/20 hover:shadow-[0_0_30px_rgba(99,231,220,0.08)]"
+    >
+      <div className=" absolute left-0 top-0 h-[2px] w-0 bg-gradient-to-r from-[#63E7DC] via-[#46D3C9] to-[#26BDB3] transition-all duration-500 group-hover:w-full" />
       <CardContent className="p-6">
         <div className="mb-4 flex items-start justify-between">
           <div className="rounded-2xl bg-border p-3 text-2xl transition-transform duration-300 group-hover:scale-105">
             <DynamicIcon icon={icon} />
           </div>
-
-          <Badge
-            variant="secondary"
-            className={`
+          <div className="flex  gap-2">
+            {isPro && (
+              <span className="rounded-full px-3  text-xs font-medium bg-primary/20 border border-primary text-primary flex items-center gap-1">
+                <Crown className="w-3 h-3" />
+                Pro
+              </span>
+            )}
+            <Badge
+              variant="secondary"
+              className={`
               border-none rounded-lg
 
-              ${status === "In Progress"
-                ? "bg-blue-500/10 text-blue-400"
-                : ""
+              ${status === "In Progress" ? "bg-blue-500/10 text-blue-400" : ""}
+
+              ${status === "New" ? "bg-emerald-500/10 text-emerald-400" : ""}
+
+              ${
+                status === "Not Started"
+                  ? "bg-orange-500/10 text-orange-400"
+                  : ""
               }
 
-              ${status === "New"
-                ? "bg-emerald-500/10 text-emerald-400"
-                : ""
-              }
-
-              ${status === "Not Started"
-                ? "bg-orange-500/10 text-orange-400"
-                : ""
-              }
-
-              ${status === "Started"
-                ? "bg-violet-500/10 text-violet-400"
-                : ""
-              }
+              ${status === "Started" ? "bg-violet-500/10 text-violet-400" : ""}
             `}
-          >
-            {status}
-          </Badge>
+            >
+              {status}
+            </Badge>
+          </div>
         </div>
 
-        <h3 className="mb-1 text-xl font-bold">
-          {title}
-        </h3>
+        <h3 className="mb-1 text-xl font-bold">{title}</h3>
 
         <p className="mb-6 text-sm text-textColor">
           {topics} topics • {lessons} lessons done
         </p>
-
-
+{/* <div className="mt-2 mb-4">
+  <span
+    className={`inline-flex items-center rounded-md px-2.5 py-1 text-sm font-semibold border ${
+      (price ?? 0) > 0
+        ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+        : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+    }`}
+  >
+    {(price ?? 0) > 0 ? `₹${price}` : "Free"}
+  </span>
+</div> */}
         <div className="mb-5 space-y-2">
           <div className="flex justify-between text-xs font-medium">
-            <span className="text-textColor">
-              Progress
-            </span>
+            <span className="text-textColor">Progress</span>
 
-            <span style={{ color }}>
-              {progress}%
-            </span>
+            <span style={{ color }}>{progress}%</span>
           </div>
 
           <div className="relative">
-            <CustomProgress
-              value={progress}
-              className="h-2"
-            />
+            <CustomProgress value={progress} className="h-2" />
 
             <div
               className="absolute left-0 top-0 h-2 rounded-full transition-all duration-500"

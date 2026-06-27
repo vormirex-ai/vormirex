@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useLogoutMutation } from "@/store/api/authApi";
 import { logout } from "@/store/slice/authSlice";
 import { apiSlice } from "@/store/api/apiSlice";
+import UserAvatar from "../dashboard/profile/user-avtar";
 
 const UserMenu = () => {
   const [open, setOpen] = useState(false);
@@ -40,8 +41,9 @@ const UserMenu = () => {
           className="flex items-center gap-2 cursor-pointer px-2 py-1 hover:bg-white/10 rounded-md transition-all"
         >
 
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold bg-gradient-to-br from-[#00d4d4] to-[#007777]">
-            {user?.name?.charAt(0).toUpperCase()}
+          <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold bg-gradient-to-br from-[#00d4d4] to-[#007777]">
+            
+          <UserAvatar size="sm" />
           </div>
 
           <svg

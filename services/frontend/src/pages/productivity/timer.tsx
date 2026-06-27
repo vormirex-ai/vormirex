@@ -1,81 +1,113 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Flame, Trophy, Timer, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { TimerCard } from "@/components/dashboard/focus-timer/timer-display";
 import { TaskQueue } from "@/components/dashboard/focus-timer/task-queue";
 import FocusTimerHeader from "@/components/dashboard/focus-timer/focus-timer-header";
 import { StatCard } from "@/components/dashboard/dashboard-home/dashboard-stats-cards";
-
-import {
-  useDeleteFocusTaskMutation,
-  useGetFocusDataQuery,
-  useUpdateFocusTaskMutation,
-} from "@/store/api/focusApi";
+import { useDeleteFocusTaskMutation, useGetFocusDataQuery, useUpdateFocusTaskMutation} from "@/store/api/focusApi";
 import { toast } from "sonner";
+import { AppSkeletonCard } from "@/components/skeleton/card-skeleton";
 
 export function PromodoroTimer() {
-  const {
-    data: focusData,
-    isLoading,
-    error,
-    refetch,
-  } = useGetFocusDataQuery({});
+  const { taskId } = useParams();
+  const navigate = useNavigate();
+  const { data: focusData, isLoading,  isFetching, refetch} = useGetFocusDataQuery({});
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [updateFocusTask] = useUpdateFocusTaskMutation();
   const [deleteFocusTask] = useDeleteFocusTaskMutation();
 
   useEffect(() => {
-    if (focusData?.tasks?.length > 0 && !selectedTask) {
-      setSelectedTask(focusData.tasks[0]);
+    if (!focusData?.tasks?.length) return;
+
+    if (taskId) {
+      const matchedTask = focusData.tasks.find(
+        (task: any) => task._id === taskId);
+
+      if (matchedTask) {
+        setSelectedTask(matchedTask);
+        return;
+      }
     }
-  }, [focusData]);
+
+    const firstPending =
+      focusData.tasks.find(
+        (task: any) => task.status !== "completed" ) || focusData.tasks[0];
+
+    setSelectedTask(firstPending);
+
+    if (firstPending?._id) {
+      navigate(`/productivity/timer/${firstPending._id}`, {
+        replace: true,
+      });
+    }
+  }, [focusData, taskId, navigate]);
 
   const handleSelectTask = (task: any) => {
     setSelectedTask(task);
+    navigate(`/productivity/timer/${task._id}`, {
+      replace: true,
+    });
   };
 
-const handleMarkCompleted = async (task: any) => {
-  try {
-    const response = await updateFocusTask({
-      id: task._id,
-      body: {
-        status: "completed",
-      },
-    }).unwrap();
-     toast.success(response?.message || "Task marked as completed 🎉");
+  const handleMarkCompleted = async (task: any) => {
+    try {
+      const response = await updateFocusTask({
+        id: task._id,
+        body: { status: "completed"},
+      }).unwrap();
 
-    refetch();
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to update task");
-  }
-};
+      toast.success(
+        response?.message || "Task marked as completed 🎉"
+      );
 
-const handleDeleteTask = async (id: string) => {
-  try {
-    const response = await deleteFocusTask(id).unwrap();
-    if (selectedTask?._id === id) {
-      setSelectedTask(null);
+      refetch();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update task");
     }
-    toast.success(response?.message || "Task deleted successfully");
-    refetch();
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to delete task");
-  }
-};
+  };
+
+  const handleDeleteTask = async (id: string) => {
+    try {
+      const response = await deleteFocusTask(id).unwrap();
+      if (selectedTask?._id === id) {
+        setSelectedTask(null);
+      }
+      toast.success(
+        response?.message || "Task deleted successfully"
+      );
+      refetch();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete task");
+    }
+  };
 
   useEffect(() => {
-  if (!focusData?.tasks?.length) return;
-  const current = focusData.tasks.find(
-    (t: any) => t._id === selectedTask?._id
-  );
-  if (!current || current.status === "completed") {
-    const nextTask =
-      focusData.tasks.find((t: any) => t.status !== "completed") || null;
-    setSelectedTask(nextTask);
-  }
-}, [focusData]);
+    if (!focusData?.tasks?.length || !selectedTask) return;
+
+    const currentTask = focusData.tasks.find(
+      (task: any) => task._id === selectedTask._id
+    );
+
+    if (!currentTask || currentTask.status === "completed") {
+      const nextTask =
+        focusData.tasks.find(
+          (task: any) => task.status !== "completed"
+        ) || null;
+
+      setSelectedTask(nextTask);
+
+      if (nextTask?._id) {
+        navigate(
+          `/productivity/timer/${nextTask._id}`,
+          { replace: true }
+        );
+      }
+    }
+  }, [focusData, selectedTask, navigate]);
 
   const statsCards = [
     {
@@ -101,7 +133,7 @@ const handleDeleteTask = async (id: string) => {
       iconColor: "text-yellow-400",
     },
     {
-      title: "XP Earned",
+      title: "XP Earned Today",
       value: focusData?.stats?.xpEarnedToday || 0,
       suffix: "+",
       icon: Zap,
@@ -140,13 +172,21 @@ const handleDeleteTask = async (id: string) => {
           </div>
         </div>
 
-        <TaskQueue
-          taskData={focusData?.tasks}
-          selectedTask={selectedTask}
-          onSelectTask={handleSelectTask}
-          onCompleteTask={handleMarkCompleted}
-          onDeleteTask={handleDeleteTask}
-        />
+       {isLoading || isFetching ? (
+  <div className="space-y-4">
+    <AppSkeletonCard />
+    <AppSkeletonCard />
+    <AppSkeletonCard />
+  </div>
+) : (
+  <TaskQueue
+    taskData={focusData?.tasks}
+    selectedTask={selectedTask}
+    onSelectTask={handleSelectTask}
+    onCompleteTask={handleMarkCompleted}
+    onDeleteTask={handleDeleteTask}
+  />
+)}
       </div>
     </div>
   );

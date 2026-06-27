@@ -14,15 +14,22 @@ import {
 } from "@/store/api/notificationsApi";
 
 import { useGetSubjectsQuery } from "@/store/api/subjectsApi";
+import { PaginationWithLinks } from "@/components/pagination-with-link";
 
 const NotificationsPage = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [searchParams, setSearchParams] = useSearchParams();
   const notificationId = searchParams.get("notificationId");
-  const { data, isLoading } = useGetNotificationsQuery(undefined);
+  const page = Number(searchParams.get("page")) || 1;
+  const pageSize = 10;
+  const { data, isLoading } = useGetNotificationsQuery({
+    page,
+    limit: pageSize,
+  });
   const { data: statsData } = useGetNotificationStatsQuery(undefined);
   const { data: subjectsData } = useGetSubjectsQuery(undefined);
   const notifications = data?.notifications || [];
+  const totalCount = data?.total || 0;
   const subjects = subjectsData?.subjects || subjectsData?.data || [];
 
   const getSubjectById = (id: string) => {
@@ -30,7 +37,7 @@ const NotificationsPage = () => {
   };
 
   const selectedNotification = notifications.find(
-    (n: any) => n._id === notificationId
+    (n: any) => n._id === notificationId,
   );
 
   const handleBack = () => {
@@ -44,21 +51,17 @@ const NotificationsPage = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
       <div className="mx-auto space-y-6">
-
         {notificationId && selectedNotification ? (
-          <div className="space-y-6">
-
+          <div className="space-y-2">
             <button
               onClick={handleBack}
-              className="px-4 py-2 rounded-lg bg-muted hover:bg-muted/80"
+              className="px-4 py-1 rounded-lg bg-muted hover:bg-muted/80"
             >
               ← Back
             </button>
 
-            <NotificationsHeader
-              unreadCount={data?.unreadCount || 0}
-            />
-               <NotificationsStats statsData={statsData} />
+            <NotificationsHeader unreadCount={data?.unreadCount || 0} />
+            <NotificationsStats statsData={statsData} />
             <NotificationDetailsById
               notification={selectedNotification}
               getSubjectById={getSubjectById}
@@ -66,10 +69,7 @@ const NotificationsPage = () => {
           </div>
         ) : (
           <>
-
-            <NotificationsHeader
-              unreadCount={data?.unreadCount || 0}
-            />
+            <NotificationsHeader unreadCount={data?.unreadCount || 0} />
 
             <NotificationsStats statsData={statsData} />
 
@@ -79,25 +79,36 @@ const NotificationsPage = () => {
             />
 
             <div className="grid gap-6 xl:grid-cols-[1fr_320px]">
-              <div className=" max-h-[540px] overflow-y-auto custom-scrollbar">
-              <NotificationsList
-                activeTab={activeTab}
-                notifications={notifications}
-                isLoading={isLoading}
-                onSelect={(item: any) => {
-                  setSearchParams((prev) => {
-                    const params = new URLSearchParams(prev);
-                    params.set("notificationId", item._id);
-                    return params;
-                  });
-                }}
-              />
-</div>
+              <div>
+                <div className="max-h-[540px] overflow-y-auto custom-scrollbar">
+                  <NotificationsList
+                    activeTab={activeTab}
+                    notifications={notifications}
+                    isLoading={isLoading}
+                    onSelect={(item: any) => {
+                      setSearchParams((prev) => {
+                        const params = new URLSearchParams(prev);
+                        params.set("notificationId", item._id);
+                        return params;
+                      });
+                    }}
+                  />
+                </div>
+
+                {totalCount > pageSize && (
+                  <div className="mt-4">
+                    <PaginationWithLinks
+                      page={page}
+                      pageSize={pageSize}
+                      totalCount={totalCount}
+                    />
+                  </div>
+                )}
+              </div>
               <NotificationsSidebar statsData={statsData} />
             </div>
           </>
         )}
-
       </div>
     </div>
   );

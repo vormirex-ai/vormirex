@@ -58,7 +58,7 @@ export function AIRecommendations({ data }: any) {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-medium">
+                  <h4 className="text-sm font-medium line-clamp-2">
                     {item.title}
                   </h4>
 

@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import {useCreateFocusSessionMutation} from "@/store/api/focusApi";
 
 const tabs = [
-  { label: "Focus", time: 1 * 60, sub: "25min" },
+  { label: "Focus", time: 25 * 60, sub: "25min" },
   { label: "Short Break", time: 5 * 60, sub: "5min" },
   { label: "Long Break", time: 15 * 60, sub: "15min" },
 ];

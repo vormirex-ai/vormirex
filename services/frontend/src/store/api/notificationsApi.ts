@@ -3,10 +3,11 @@ import { apiSlice } from "./apiSlice";
 
 export const notificationsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getNotifications: builder.query({
-      query: () => "/notifications",
-      providesTags: ["Notifications"],
-    }),
+getNotifications: builder.query({
+  query: ({ page = 1, limit = 10 }) =>
+    `/notifications?page=${page}&limit=${limit}`,
+  providesTags: ["Notifications"],
+}),
 
 
     getNotificationStats: builder.query({
@@ -55,6 +56,14 @@ export const notificationsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Notifications"],
     }),
+
+    updateNotificationPreferences: builder.mutation({
+  query: (data) => ({
+    url: "/users/me/notifications",
+    method: "PATCH",
+    body: data,
+  }),
+}),
   }),
 });
 
@@ -67,4 +76,5 @@ export const {
   useReadAllNotificationsMutation,
   useReadNotificationMutation,
   useClearNotificationsMutation,
+  useUpdateNotificationPreferencesMutation
 } = notificationsApi;

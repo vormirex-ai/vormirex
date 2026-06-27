@@ -54,18 +54,18 @@ export function ImprovementPanel({ data }: any) {
       <div className="bg-card border border-gray-200 dark:border-cyan-500/10 rounded-2xl p-5 shadow-md dark:shadow-xl flex flex-col gap-3 max-h-[370px] overflow-y-auto custom-scrollbar">
 
         {data.map((item: any, idx: number) => (
-          <TopicRow
-            key={idx}
-            title={item.subject}
-            score={item.percent}
-            color={
-              item.percent >= 80
-                ? "text-green-600 bg-green-100 dark:bg-green-950/40 border border-green-200 dark:border-green-900/30"
-                : item.percent >= 50
-                  ? "text-orange-600 bg-orange-100 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-900/30"
-                  : "text-rose-600 bg-rose-100 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/30"
-            }
-          />
+  <TopicRow
+  key={idx}
+  title={item.topic}
+  score={item.percent}
+  color={
+    item.percent >= 80
+      ? "text-green-600 bg-green-100 dark:bg-green-950/40 border border-green-200 dark:border-green-900/30"
+      : item.percent >= 50
+      ? "text-orange-600 bg-orange-100 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-900/30"
+      : "text-rose-600 bg-rose-100 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/30"
+  }
+/>
         ))}
 
       </div>

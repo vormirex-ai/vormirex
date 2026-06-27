@@ -56,4 +56,5 @@ export interface CourseHeaderProps {
     hasCertificate: boolean;
   };
   id?: string;
+   isPro?: boolean;
 }

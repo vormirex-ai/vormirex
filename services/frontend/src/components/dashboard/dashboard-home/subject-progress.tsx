@@ -15,7 +15,7 @@ export function SubjectProgress({ data }: any) {
       <CardContent className="space-y-6 max-h-[350px] overflow-y-auto custom-scrollbar">
         {data?.map((item: any) => (
           <div key={item.subject}>
-            <div className="mb-2 flex justify-between text-sm">
+            <div className="mb-2 flex justify-between text-sm line-clamp-2">
               <span>{item.subject}</span>
               <span>{item.percent}%</span>
             </div>

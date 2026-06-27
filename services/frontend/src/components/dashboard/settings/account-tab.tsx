@@ -1,7 +1,31 @@
+import { ChangePasswordDialog } from "@/components/auth/change-password-dialog";
+import { DeleteAccountButton } from "@/components/auth/delete-account-dialog";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { apiSlice } from "@/store/api/apiSlice";
+import { useLogoutMutation } from "@/store/api/authApi";
+import { logout } from "@/store/slice/authSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 export function AccountTab() {
+   const navigate = useNavigate();
+    const dispatch = useDispatch();
+   const [logoutApi] = useLogoutMutation();
+
+   
+     const handleLogout = async () => {
+       try {
+         await logoutApi(undefined).unwrap();
+       } catch {
+       } finally {
+         dispatch(logout());
+   
+         dispatch(apiSlice.util.resetApiState());
+         navigate("/login");
+       }
+     };
+
   return (
     <div className="space-y-6">
 
@@ -14,9 +38,7 @@ export function AccountTab() {
               <p className="text-sm font-medium ">Change Password</p>
               <p className="text-xs text-slate-400">Last changed 30 days ago</p>
             </div>
-            <Button variant="outline" className="text-xs rounded-lg">
-              Change
-            </Button>
+     <ChangePasswordDialog onPasswordChanged={handleLogout}/>
           </div>
 
           <div className="flex items-center justify-between pt-4">
@@ -32,7 +54,7 @@ export function AccountTab() {
               <p className="text-sm font-medium ">Active Sessions</p>
               <p className="text-xs text-slate-400">1 active session (this device)</p>
             </div>
-            <Button variant="outline" className=" rounded-lg text-xs">
+            <Button variant="outline" className="  text-xs">
               Sign out others
             </Button>
           </div>
@@ -46,11 +68,13 @@ export function AccountTab() {
         <div className="divide-y divide-red-950/20 space-y-4">
           <div className="flex items-center justify-between pt-2">
             <div>
-              <p className="text-sm font-medium">Sign Out</p>
-              <p className="text-xs text-slate-400">Sign out from this device</p>
+              <p className="text-sm font-medium">Log Out</p>
+              <p className="text-xs text-slate-400">Logout out from this device</p>
             </div>
-            <Button variant="outline" className=" text-xs">
-              Sign Out
+            <Button
+              onClick={handleLogout}
+            variant="outline" className=" text-xs">
+              Logout
             </Button>
           </div>
 
@@ -59,9 +83,7 @@ export function AccountTab() {
               <p className="text-sm font-medium ">Delete Account</p>
               <p className="text-xs text-slate-400">Permanently delete your account and all data</p>
             </div>
-            <Button variant="destructive" className="rounded-lg text-xs">
-              Delete Account
-            </Button>
+          <DeleteAccountButton />
           </div>
         </div>
       </div>

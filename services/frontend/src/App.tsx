@@ -23,7 +23,7 @@ import AiInsightsPage from "./pages/analytics/Insights";
 import Leaderboard from "./pages/analytics/Leaderboard";
 import StudyPlannerPage from "./pages/productivity/study-planner";
 import CourseDetails from "./pages/dashboard/course-detail";
-import NotesPage from "./pages/productivity/notes";
+import NotesPage from "./pages/productivity/notes/notes";
 import InterviewBotPage from "./pages/practice/Interview-bot";
 import SettingsPage from "./pages/account/settings";
 import NotificationsPage from "./pages/dashboard/notifications";
@@ -42,6 +42,7 @@ import { TermsAndConditionPage } from "./pages/legal/terms-and-conditions";
 import { SupportPage } from "./pages/legal/support";
 import { HelpCenterPage } from "./pages/legal/help-center";
 import LegalLayout from "./components/layouts/LegalLayout";
+import NoteDetailsPage from "./pages/productivity/notes/notes-details";
 
 function App() {
   const dispatch = useDispatch();
@@ -139,9 +140,10 @@ function App() {
         </Route>
 
         <Route path="/productivity" element={<DashboardLayout />}>
-          <Route path="timer" element={<PromodoroTimer />} />
+          <Route path="timer/:taskId?" element={<PromodoroTimer />} />
           <Route path="study-planner" element={<StudyPlannerPage />} />
           <Route path="notes" element={<NotesPage />} />
+           <Route  path="notes/notes-details/:id" element={<NoteDetailsPage />} />
         </Route>
 
         <Route path="/analytics" element={<DashboardLayout />}>
