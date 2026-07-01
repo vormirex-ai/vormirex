@@ -54,7 +54,7 @@ const NoteDetailsPage = () => {
       variants={containerStagger(0.12)}
       initial="hidden"
       animate="show"
-      className="min-h-screen px-3 py-4 sm:px-4 sm:py-6 lg:px-8"
+      className="min-h-screen px-1 py-4 sm:px-4 sm:py-6 lg:px-8"
     >
     
       <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">

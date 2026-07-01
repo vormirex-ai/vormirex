@@ -25,7 +25,7 @@ export const studyPlannerFormSchema = Yup.object({
       schema
         .typeError("Enter valid minutes")
         .required("Custom duration is required")
-        .min(5),
-    otherwise: (schema) => schema.notRequired(),
+        .integer("Only whole numbers are allowed")
+        .min(5, "Minimum 5 minutes"),
   }),
 });

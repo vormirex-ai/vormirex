@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useFormik } from "formik";
-
 import {
   Dialog,
   DialogContent,
@@ -9,13 +8,11 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Plus, X, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { useGetSubjectsQuery } from "@/store/api/subjectsApi";
 import { useCreateTaskMutation } from "@/store/api/studyPlannerApi";
 import { FaPlus } from "react-icons/fa6";
 import TagsSelector from "@/components/common/add-task/tag-selector";
@@ -24,8 +21,6 @@ import TaskTypeSelect from "@/components/common/add-task/task-type-select";
 import PrioritySelector from "@/components/common/add-task/priority-selector";
 import DatePicker from "@/components/common/add-task/task-date-picker";
 import { studyPlannerFormSchema } from "../../common/add-task-form.schema";
-
-
 
 const quickTags = [
   "Exam",
@@ -40,8 +35,6 @@ const quickTags = [
 export function StudyPlannerTaskModal() {
   const [open, setOpen] = React.useState(false);
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
-
-  const { data: subjectsData } = useGetSubjectsQuery({ page: 1, limit: 100 });
   const [createTask, { isLoading }] = useCreateTaskMutation();
 
   const toggleTag = (tag: string) => {
@@ -49,6 +42,7 @@ export function StudyPlannerTaskModal() {
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
   };
+
 
   const formik = useFormik({
     initialValues: {
@@ -83,7 +77,6 @@ export function StudyPlannerTaskModal() {
         };
         const response = await createTask(payload).unwrap();
         toast.success("Task created successfully");
-
         resetForm();
         setSelectedTags([]);
         setOpen(false);
@@ -92,6 +85,7 @@ export function StudyPlannerTaskModal() {
       }
     },
   });
+
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -119,12 +113,14 @@ export function StudyPlannerTaskModal() {
           </div>
         </DialogHeader>
 
+
         <form onSubmit={formik.handleSubmit} className="space-y-5">
           <div>
             <label className="mb-2 flex items-center gap-1 text-xs uppercase tracking-wider text-textColor">
               Task Title
               <span className="text-red-500">*</span>
             </label>
+
 
             <Input
               name="title"
@@ -139,13 +135,14 @@ export function StudyPlannerTaskModal() {
               }
             />
 
+
             {formik.touched.title && formik.errors.title && (
               <p className="mt-1 text-xs text-red-400">{formik.errors.title}</p>
             )}
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-       <SubjectSelect formik={formik} />
+            <SubjectSelect formik={formik} />
             <TaskTypeSelect formik={formik} />
           </div>
 
@@ -202,16 +199,16 @@ export function StudyPlannerTaskModal() {
                 key={item.value}
                 onClick={() => formik.setFieldValue("durationType", item.value)}
                 className={`h-10 rounded-xl text-xs transition-all
-      ${
-        formik.values.durationType === item.value
-          ? "bg-primary-gradient text-black"
-          : "text-textColor"
-      }`}
+      ${formik.values.durationType === item.value
+                    ? "bg-primary-gradient text-black"
+                    : "text-textColor"
+                  }`}
               >
                 {item.label}
               </button>
             ))}
           </div>
+
 
           {formik.values.durationType === "custom" && (
             <div className="mt-2">
@@ -221,7 +218,9 @@ export function StudyPlannerTaskModal() {
 
               <Input
                 type="number"
+                name="customMinutes"
                 placeholder="e.g. 90"
+                onBlur={formik.handleBlur}
                 value={formik.values.customMinutes}
                 onChange={(e) =>
                   formik.setFieldValue("customMinutes", e.target.value)
@@ -229,8 +228,9 @@ export function StudyPlannerTaskModal() {
                 className="custom-surface mt-1"
               />
 
+
               {formik.touched.customMinutes && formik.errors.customMinutes && (
-                <p className="text-xs text-red-400">
+                <p className="mt-1 text-xs text-red-500">
                   {formik.errors.customMinutes}
                 </p>
               )}
