@@ -29,6 +29,7 @@ const envSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().nonempty('CLOUDINARY_CLOUD_NAME is required.'),
   CLOUDINARY_API_KEY: z.string().nonempty('CLOUDINARY_API_KEY is required.'),
   CLOUDINARY_API_SECRET: z.string().nonempty('CLOUDINARY_API_SECRET is required.'),
+  REDIS_URL: z.string().url().default('redis://localhost:6379'),
 });
 
 // Validate process.env against the schema

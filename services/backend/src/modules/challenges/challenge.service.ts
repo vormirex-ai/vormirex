@@ -3,6 +3,7 @@ import seedrandom from 'seedrandom';
 import User from '../user/user.model.js';
 import QuizQuestion from '../quizzes/quizQuestion.model.js';
 import ChallengeResult from './challengeResult.model.js';
+import { awardXp } from '../leaderboard/leaderboard.service.js';
 import { BadRequestError, ConflictError, NotFoundError } from '../../utils/errors.js';
 
 /**
@@ -178,8 +179,9 @@ export const submitChallenge = async (
   }
 
   // Increment user XP
-  user.xp += xpEarned;
   await user.save();
+  await awardXp(userId, xpEarned, 'challenge');
+  user.xp += xpEarned;
 
   // Save challenge result
   const challengeResult = await ChallengeResult.create({

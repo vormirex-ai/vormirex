@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import FocusTask from './focusTask.model.js';
 import FocusSession from './focusSession.model.js';
 import User from '../user/user.model.js';
+import * as leaderboardService from '../leaderboard/leaderboard.service.js';
 import { NotFoundError } from '../../utils/errors.js';
 
 // Helper to construct the unified dashboard response
@@ -150,7 +151,7 @@ export const recordSession = async (req: Request, res: Response) => {
 
   // Gamification: Award +40 XP for completed focus intervals
   if (type === 'focus') {
-    await User.findByIdAndUpdate(userId, { $inc: { xp: 40 } });
+    await leaderboardService.awardXp(userId, 40, 'focus_session');
 
     // If working on a specific task, increment its completed pomodoros count
     if (taskId) {

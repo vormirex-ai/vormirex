@@ -4,6 +4,11 @@ import User from '../user/user.model.js';
 import QuizQuestion from '../quizzes/quizQuestion.model.js';
 import ChallengeResult from './challengeResult.model.js';
 
+jest.mock('../leaderboard/leaderboard.service.js', () => ({
+  awardXp: jest.fn().mockImplementation(() => Promise.resolve()),
+  getLeaderboardData: jest.fn(),
+}));
+
 describe('Daily Challenge Service Unit Tests', () => {
   const mockUserId = '60d0fe4f5311236168a109ca';
 

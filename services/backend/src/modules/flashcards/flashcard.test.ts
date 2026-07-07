@@ -5,6 +5,12 @@ import Flashcard from './flashcard.model.js';
 import FlashcardProgress from './flashcardProgress.model.js';
 import FlashcardSession from './flashcardSession.model.js';
 import User from '../user/user.model.js';
+
+jest.mock('../leaderboard/leaderboard.service.js', () => ({
+  awardXp: jest.fn().mockImplementation(() => Promise.resolve()),
+  getLeaderboardData: jest.fn(),
+}));
+
 import Notification from '../notifications/notification.model.js';
 import mongoose from 'mongoose';
 
