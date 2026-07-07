@@ -11,6 +11,8 @@ describe('Planner Controller Unit Tests', () => {
 
   beforeEach(() => {
     jest.restoreAllMocks();
+    // @ts-ignore
+    global.__MOCK_AWARD_XP__ = jest.fn().mockImplementation(() => Promise.resolve());
     mockReq = {
       user: { userId: mockUserId },
       query: {},
@@ -135,9 +137,11 @@ describe('Planner Controller Unit Tests', () => {
 
       await plannerController.updateTask(mockReq, mockRes);
 
-      expect(User.findByIdAndUpdate).toHaveBeenCalledWith(
+      // @ts-ignore
+      expect(global.__MOCK_AWARD_XP__).toHaveBeenCalledWith(
         mockUserId,
-        { $inc: { xp: 60 } }
+        60,
+        'planner_task'
       );
       expect(FocusTask.updateOne).toHaveBeenCalledWith(
         { _id: mockTaskId, userId: mockUserId },

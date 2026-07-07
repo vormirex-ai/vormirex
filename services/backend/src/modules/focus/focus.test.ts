@@ -12,6 +12,8 @@ describe('Focus Timer Controller Unit Tests', () => {
 
   beforeEach(() => {
     jest.restoreAllMocks();
+    // @ts-ignore
+    global.__MOCK_AWARD_XP__ = jest.fn().mockImplementation(() => Promise.resolve());
     mockReq = {
       user: { userId: mockUserId },
       query: {},
@@ -191,7 +193,8 @@ describe('Focus Timer Controller Unit Tests', () => {
       });
 
       // Award +40 XP
-      expect(User.findByIdAndUpdate).toHaveBeenCalledWith(mockUserId, { $inc: { xp: 40 } });
+      // @ts-ignore
+      expect(global.__MOCK_AWARD_XP__).toHaveBeenCalledWith(mockUserId, 40, 'focus_session');
       
       // Increment task pomodoro completion
       expect(FocusTask.findOneAndUpdate).toHaveBeenCalledWith(

@@ -6,4 +6,5 @@ export default {
 
   resolver: '<rootDir>/jest-resolver.cjs',
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
+  setupFiles: ['<rootDir>/jest.setup.js'],
 };

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import FocusTask from '../focus/focusTask.model.js';
 import User from '../user/user.model.js';
+import * as leaderboardService from '../leaderboard/leaderboard.service.js';
 import { NotFoundError, BadRequestError } from '../../utils/errors.js';
 
 const buildPlannerDashboardResponse = async (userId: string, weekStartString?: string) => {
@@ -233,7 +234,7 @@ export const updateTask = async (req: Request, res: Response) => {
   // Gamification: Award XP upon completion
   if (req.body.status === 'completed' && task.status !== 'completed') {
     const xpAwardValue = task.xpAwarded !== undefined ? task.xpAwarded : 50;
-    await User.findByIdAndUpdate(userId, { $inc: { xp: xpAwardValue } });
+    await leaderboardService.awardXp(userId, xpAwardValue, 'planner_task');
   }
 
   // Handle date formatting if it is being updated
