@@ -3,6 +3,7 @@ import QuizQuestion from './quizQuestion.model.js';
 import QuizResult from './quizResult.model.js';
 import User from '../user/user.model.js';
 import Subject from '../subjects/subject.model.js';
+import { awardXp } from '../leaderboard/leaderboard.service.js';
 import { createNotification } from '../notifications/notification.controller.js';
 
 export const generateQuizQuestions = async (subjectId: string) => {
@@ -49,11 +50,8 @@ export const evaluateAndSubmitQuiz = async (userId: string, subjectId: string, a
 
   const xpEarned = correctCount * 40;
 
-  const updatedUser = await User.findByIdAndUpdate(
-    userId,
-    { $inc: { xp: xpEarned } },
-    { new: true }
-  );
+  await awardXp(userId, xpEarned, 'quiz');
+  const updatedUser = await User.findById(userId);
 
   const quizResult = await QuizResult.create({
     userId,
