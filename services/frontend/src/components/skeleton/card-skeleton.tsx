@@ -4,7 +4,8 @@ type SkeletonVariant =
   | "subject"
   | "quiz"
   | "history"
-  | "quiz-history";
+  | "quiz-history"
+  | "leaderboard";
 
 interface Props {
   variant?: SkeletonVariant;
@@ -95,6 +96,94 @@ export const AppSkeletonCard = ({ variant = "subject" }: Props) => {
   }
 
 
+  /* ===================== LEADERBOARD ===================== */
+  if (variant === "leaderboard") {
+    return (
+      <div className="max-w-4xl mx-auto p-4 md:p-8 space-y-8">
+
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="space-y-3">
+            <Skeleton className="h-8 w-52 bg-primary/20" />
+            <Skeleton className="h-4 w-72 bg-primary/10" />
+          </div>
+
+          <Skeleton className="h-10 w-56 rounded-xl bg-primary/20" />
+        </div>
+
+        {/* Podium */}
+        <div className="grid grid-cols-3 items-end gap-4 pt-6">
+          {/* 2nd */}
+          <div className="flex flex-col items-center gap-3">
+            <Skeleton className="w-16 h-16 rounded-full bg-primary/20" />
+            <Skeleton className="h-4 w-20 bg-primary/10" />
+            <Skeleton className="h-3 w-14 bg-primary/10" />
+            <Skeleton className="w-full h-24 rounded-t-xl bg-primary/20" />
+          </div>
+
+          {/* 1st */}
+          <div className="flex flex-col items-center gap-3">
+            <Skeleton className="w-20 h-20 rounded-full bg-primary/20" />
+            <Skeleton className="h-4 w-24 bg-primary/10" />
+            <Skeleton className="h-3 w-16 bg-primary/10" />
+            <Skeleton className="w-full h-36 rounded-t-xl bg-primary/20" />
+          </div>
+
+          {/* 3rd */}
+          <div className="flex flex-col items-center gap-3">
+            <Skeleton className="w-14 h-14 rounded-full bg-primary/20" />
+            <Skeleton className="h-4 w-20 bg-primary/10" />
+            <Skeleton className="h-3 w-14 bg-primary/10" />
+            <Skeleton className="w-full h-20 rounded-t-xl bg-primary/20" />
+          </div>
+        </div>
+
+        {/* Leaderboard List */}
+        <div className="custom-surface rounded-2xl p-3 space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between rounded-xl p-3"
+            >
+              <div className="flex items-center gap-4 flex-1">
+                <Skeleton className="h-5 w-5 bg-primary/20" />
+                <Skeleton className="w-10 h-10 rounded-full bg-primary/20" />
+
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-36 bg-primary/20" />
+                  <Skeleton className="h-3 w-24 bg-primary/10" />
+                </div>
+              </div>
+
+              <Skeleton className="h-4 w-16 bg-primary/20" />
+            </div>
+          ))}
+        </div>
+
+        {/* Your Rank */}
+        <div className="space-y-3">
+          <Skeleton className="h-4 w-24 bg-primary/20" />
+
+          <div className="custom-surface rounded-2xl p-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4 flex-1">
+                <Skeleton className="h-5 w-5 bg-primary/20" />
+                <Skeleton className="w-10 h-10 rounded-full bg-primary/20" />
+
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-36 bg-primary/20" />
+                  <Skeleton className="h-3 w-28 bg-primary/10" />
+                </div>
+              </div>
+
+              <Skeleton className="h-4 w-16 bg-primary/20" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 rounded-xl border border-cyan-500/10 bg-muted/20 space-y-4">
       <div className="flex items-center gap-3">
@@ -125,3 +214,5 @@ export const AppSkeletonCard = ({ variant = "subject" }: Props) => {
     </div>
   );
 };
+
+

@@ -53,7 +53,7 @@ export function LessonHeader({
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+      {/* <div className="flex flex-wrap gap-2 w-full sm:w-auto">
 
         <Button
           variant="secondary"
@@ -70,7 +70,7 @@ export function LessonHeader({
           <Share2 className="w-4 h-4 mr-2" />
           Share
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 }

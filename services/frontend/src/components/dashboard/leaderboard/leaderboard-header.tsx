@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+interface Props {
+  filter: "weekly" | "monthly" | "all-time";
+  setFilter: React.Dispatch<
+    React.SetStateAction<"weekly" | "monthly" | "all-time">
+  >;
+}
 
-const LeaderBoardHeader = () => {
-  const [filter, setFilter] = useState<"weekly" | "monthly" | "all-time">("all-time");
-
+const LeaderBoardHeader = ({
+  filter,
+  setFilter,
+}: Props) => {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
         <div className="max-w-2xl">
-          <h1 className=" text-2xl md:text-4xl  font-bold  flex items-center gap-2">
+          <h1 className="text-2xl md:text-4xl font-bold flex items-center gap-2">
             🏆 Leaderboard
           </h1>
 
@@ -17,22 +23,19 @@ const LeaderBoardHeader = () => {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-
-          <div className="inline-flex items-center p-1 rounded-xl custom-surface backdrop-blur-sm self-start sm:self-center">
-            {(["weekly", "monthly", "all-time"] as const).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setFilter(tab)}
-                className={`px-4 py-1.5 text-xs md:text-sm font-medium rounded-lg transition-all capitalize ${filter === tab
-                  ? "bg-primary-gradient  shadow-sm ring-1 ring-slate-700 text-slateText"
-                  : "text-slate-400 dark:hover:text-slate-200 hover:text-primary"
-                  }`}
-              >
-                {tab.replace("-", " ")}
-              </button>
-            ))}
-          </div>
+        <div className="inline-flex items-center p-1 rounded-xl custom-surface backdrop-blur-sm">
+          {(["weekly", "monthly", "all-time"] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setFilter(tab)}
+              className={`px-4 py-1.5 text-xs md:text-sm font-medium rounded-lg transition-all capitalize ${filter === tab
+                ? "bg-primary-gradient shadow-sm ring-1 ring-slate-700 text-slateText"
+                : "text-slate-400 hover:text-primary"
+                }`}
+            >
+              {tab.replace("-", " ")}
+            </button>
+          ))}
         </div>
       </div>
     </div>

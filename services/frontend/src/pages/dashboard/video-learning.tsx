@@ -22,20 +22,14 @@ export default function VideoLearning() {
   const { data: lessonResponse, isLoading, } = useGetSubjectLessonsQuery(finalLessonId!, { skip: !finalLessonId, });
   const lessonData = lessonResponse?.data;
 
-  if (
-    lessonData?.nextLessonId
-  ) {
+  if (lessonData?.nextLessonId) {
     dispatch(setNextLessonId(lessonData.nextLessonId)
     );
   }
 
-  const seekToTime = async (
-    timeString: string
-  ) => {
+  const seekToTime = async (timeString: string) => {
     if (!videoRef.current) return;
-
     const [minutes, seconds] = timeString.split(":").map(Number);
-
     const totalSeconds = minutes * 60 + seconds;
     videoRef.current.currentTime = totalSeconds;
     await videoRef.current.play();
@@ -53,13 +47,9 @@ export default function VideoLearning() {
         <motion.div variants={fadeUpItem}>
           <LessonHeader
             title={lessonData?.title}
-            durationMinutes={
-              lessonData?.durationMinutes
-            }
+            durationMinutes={lessonData?.durationMinutes}
             chapterTitle="Chapter"
-            lessonNumber={
-              lessonData?.sequenceOrder
-            }
+            lessonNumber={lessonData?.sequenceOrder}
           />
         </motion.div>
 

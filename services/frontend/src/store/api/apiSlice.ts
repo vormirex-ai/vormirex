@@ -4,7 +4,6 @@ import { logout, setCredentials } from "../slice/authSlice";
 
 const API_ROOT = import.meta.env.VITE_API_URL || "/api";
 
-
 const baseQuery = fetchBaseQuery({
   baseUrl: API_ROOT,
   credentials: "include",
@@ -18,19 +17,30 @@ const baseQuery = fetchBaseQuery({
 });
 
 // Custom base query that handles silent token refresh on 401/403 errors
-const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) => {
+const baseQueryWithReauth: typeof baseQuery = async (
+  args,
+  api,
+  extraOptions,
+) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error && (result.error.status === 401 || result.error.status === 403)) {
+  if (
+    result.error &&
+    (result.error.status === 401 || result.error.status === 403)
+  ) {
     // Prevent recursive refresh loops if the refresh call itself is failing
-    const isRefreshCall = typeof args === 'object' && args !== null && 'url' in args && args.url === "/auth/refresh";
+    const isRefreshCall =
+      typeof args === "object" &&
+      args !== null &&
+      "url" in args &&
+      args.url === "/auth/refresh";
 
     if (!isRefreshCall) {
       // Execute the token refresh request using cookie credentials
       const refreshResult = await baseQuery(
         { url: "/auth/refresh", method: "POST" },
         api,
-        extraOptions
+        extraOptions,
       );
 
       if (refreshResult.data) {
@@ -43,7 +53,7 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) =>
             setCredentials({
               user: (api.getState() as RootState).auth.user,
               token: newToken,
-            })
+            }),
           );
           // Retry the original query that failed, now containing the new Bearer token
           result = await baseQuery(args, api, extraOptions);
@@ -61,6 +71,19 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) =>
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Subjects", "AiChats", "Roadmaps", "Quizzes", "Flashcards", "Challenges", "Notifications","Focus","Profile","Planner","Notes"],
+  tagTypes: [
+    "Subjects",
+    "AiChats",
+    "Roadmaps",
+    "Quizzes",
+    "Flashcards",
+    "Challenges",
+    "Notifications",
+    "Focus",
+    "Profile",
+    "Planner",
+    "Notes",
+    "Leaderboard",
+  ],
   endpoints: () => ({}),
 });
